@@ -3,7 +3,6 @@ import { initCloudScene } from './cloudScene';
 import { initCmdCycle } from './cmdCycle';
 import { initCopy } from './copy';
 import { $, $$ } from './dom';
-import { initSceneSwitch } from './hero/sceneSwitch';
 import { mountHeroField } from './heroField';
 import { initScramble } from './scramble';
 import { initNav, initReveal } from './scroll';
@@ -22,8 +21,6 @@ for (const canvas of $$<HTMLCanvasElement>('canvas[data-field]')) {
     intensity: Number(canvas.dataset.intensity ?? 1),
   });
 }
-
-initSceneSwitch();
 
 const scout = $('[data-scout]');
 const scoutVariant = () => (isNight() ? 'night' : 'crt');

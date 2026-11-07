@@ -567,37 +567,6 @@ code {
     filter: none;
   }
 }
-.scene-switch {
-  position: absolute;
-  right: max(var(--gutter), calc((100% - var(--wrap)) / 2));
-  top: 84px;
-  z-index: 2;
-  display: flex;
-  background: var(--panel);
-  border: 1px solid var(--line-2);
-}
-.scene-switch button {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  color: var(--dim);
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-}
-.scene-switch button:hover {
-  color: var(--text-hi);
-}
-.scene-switch button[aria-pressed='true'] {
-  color: var(--on-copper);
-  background: var(--copper);
-}
-.scene-switch svg {
-  width: 16px;
-  height: 16px;
-}
 .hero__inner {
   position: relative;
   max-width: 1320px;
