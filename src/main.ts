@@ -1,15 +1,19 @@
-import { type ScoutState, mountScout } from '@teamtrail/scout-avatar/mount';
+import { type GuideRole, guideMarkup, mountScout } from '@teamtrail/scout-avatar/mount';
 import { initCloudScene } from './cloudScene';
 import { initCmdCycle } from './cmdCycle';
 import { initCopy } from './copy';
 import { $, $$ } from './dom';
+import { initSceneSwitch } from './hero/sceneSwitch';
 import { mountHeroField } from './heroField';
 import { initScramble } from './scramble';
 import { initNav, initReveal } from './scroll';
+import { isNight, onThemeChange } from './theme';
+import { initThemeSwitch } from './themeSwitch';
 import { initVideo } from './video';
 import { initWaitlist } from './waitlist';
 
 document.documentElement.classList.add('js');
+initThemeSwitch();
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 for (const canvas of $$<HTMLCanvasElement>('canvas[data-field]')) {
@@ -19,28 +23,28 @@ for (const canvas of $$<HTMLCanvasElement>('canvas[data-field]')) {
   });
 }
 
-// Nav mark: the detailed Scout, blinking, with a short line every few seconds.
-const navScout = $('[data-scout-nav]');
-if (navScout) {
-  const lines = ['Standing by', 'Agents on the line', 'Ready when you are'];
-  let i = 0;
-  const h = mountScout(navScout, { size: 1.25, state: 'idle', framed: false });
-  const talk = () =>
-    h.update({
-      speaking: lines[i++ % lines.length],
-      onSpeakEnd: () => {
-        h.update({ speaking: undefined });
-        setTimeout(talk, 7000);
-      },
-    });
-  if (!reducedMotion) setTimeout(talk, 2500);
-}
+initSceneSwitch();
 
 const scout = $('[data-scout]');
-if (scout) mountScout(scout, { size: 'sm', state: 'idle', framed: false });
-// Guides: Scout in each role's colour (CSS), each in its own state so the roster feels alive.
-for (const el of $$('[data-spec]'))
-  mountScout(el, { size: Number(el.dataset.size ?? 1.5), state: el.dataset.spec as ScoutState, framed: false });
+const scoutVariant = () => (isNight() ? 'night' : 'crt');
+if (scout) {
+  const h = mountScout(scout, { size: 'sm', state: 'idle', framed: false, variant: scoutVariant() });
+  onThemeChange(() => h.update({ variant: scoutVariant() }));
+}
+// Guides: symbol badges, one per speciality.
+const GUIDE_ROLES: Record<string, GuideRole> = {
+  reviewer: 'reviewer',
+  qa: 'qa',
+  security: 'security',
+  docs: 'docs',
+  architect: 'architect',
+  you: 'community',
+};
+for (const el of $$('[data-spec]')) {
+  const role = GUIDE_ROLES[/spec--(\w+)/.exec(el.className)?.[1] ?? 'reviewer'];
+  const size = 40 * Number(el.dataset.size ?? 1.4);
+  el.innerHTML = `<svg viewBox="0 0 200 200" width="${size}" height="${size}" aria-hidden="true">${guideMarkup(role)}</svg>`;
+}
 
 initCloudScene(reducedMotion);
 initNav();

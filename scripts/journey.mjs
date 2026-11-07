@@ -15,7 +15,11 @@ import { installStage } from './journey/stage.mjs';
 import { realProject } from './lib/realProject.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const media = join(root, 'public/media');
+// THEME=night captures into public/media/night/; the site swaps them in with the theme (src/theme.ts).
+const night = process.env.THEME === 'night';
+const media = join(root, night ? 'public/media/night' : 'public/media');
+mkdirSync(media, { recursive: true });
+const colorScheme = night ? 'dark' : 'light';
 const framesDir = join(root, 'capture-frames');
 const size = { width: 1680, height: 945 };
 const project = await realProject();
@@ -26,10 +30,12 @@ const agentStep = async (text, times = 1) => {
 };
 const scout = `data:image/png;base64,${readFileSync(join(root, 'scripts/assets/scout-512.png')).toString('base64')}`;
 
+const logo = `data:image/png;base64,${readFileSync(join(root, 'scripts/assets/logo-512.png')).toString('base64')}`;
+
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? '/usr/local/bin/google-chrome' });
-const page = await (await browser.newContext({ viewport: size })).newPage();
+const page = await (await browser.newContext({ viewport: size, colorScheme })).newPage();
 page.on('pageerror', (e) => console.log('pageerror:', e.message));
-await page.addInitScript(installStage, scout);
+await page.addInitScript(installStage, { scout, logo, night });
 const wait = (ms) => page.waitForTimeout(ms);
 const stage = (fn, ...args) => page.evaluate(([f, a]) => window.__stage[f](...a), [fn, args]);
 const caption = (label, text) => stage('caption', label, text);

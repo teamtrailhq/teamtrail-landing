@@ -2,14 +2,18 @@
 // seed in a temp folder, the built `teamtrail` server, and real MCP agents working it (lib/realProject.mjs).
 // Run: npm run build -w teamtrail in ../teamtrail (once), then `npm run media` here.
 // Env: CHROME_PATH (default /usr/local/bin/google-chrome).
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { realProject } from './lib/realProject.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const media = join(root, 'public/media');
+// THEME=night captures into public/media/night/; the site swaps them in with the theme (src/theme.ts).
+const night = process.env.THEME === 'night';
+const media = join(root, night ? 'public/media/night' : 'public/media');
+mkdirSync(media, { recursive: true });
+const colorScheme = night ? 'dark' : 'light';
 const project = await realProject();
 // Always end the server and agents and delete the temp project, even when a step fails.
 process.on('exit', () => project.stop());
@@ -17,7 +21,7 @@ const size = { width: 1680, height: 945 };
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? '/usr/local/bin/google-chrome' });
 // 2x pixels so the zoomed crops stay sharp; full-app shots are saved at 1x.
-const ctx = await browser.newContext({ viewport: size, deviceScaleFactor: 2 });
+const ctx = await browser.newContext({ viewport: size, deviceScaleFactor: 2, colorScheme });
 const page = await ctx.newPage();
 page.on('pageerror', (e) => console.log('pageerror:', e.message));
 

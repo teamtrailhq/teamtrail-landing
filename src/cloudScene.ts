@@ -1,148 +1,80 @@
 import { mountScout } from '@teamtrail/scout-avatar/mount';
 import { $, $$ } from './dom';
 
-/**
- * /cloud page art, in the same pixel style as Scout: clouds are drawn on a pixel grid from a few overlapping
- * circles (outline, fill, shade and a rim highlight), and the laptop and phone are small hand-drawn sprites.
- * Everything renders to crisp SVG rects; motion is CSS, off with reduced motion.
- */
+/** /cloud page art, drawn smooth like Scout's badge: clouds from a few overlapping circles on a flat base, plus a laptop and a phone. Motion is CSS, off with reduced motion. */
 
-type Palette = Record<string, string>;
+type Cloud = { w: number; h: number; circles: [number, number, number][]; base: [number, number, number] };
 const SVG = 'http://www.w3.org/2000/svg';
+const COLORS = { line: '#3a403c', top: '#eef4f4', shade: '#c5d6da' };
 
-const CLOUD: Palette = { o: '#3a403c', w: '#dfeaed', s: '#a9c0c6', h: '#ffffff' };
-const DEVICE: Palette = { o: '#3a403c', d: '#14241f', b: '#18302a', a: '#6fbf8f', k: '#2a454c' };
-
-/** Pixel rows of a cloud `w`×`h`, from circles `[cx, cy, r]` in pixel units, on a flat base from `x0` to `x1`
- * covering the last `baseH` rows, so the bottom reads as one solid line. */
-export function cloudRows(
-  w: number,
-  h: number,
-  circles: [number, number, number][],
-  [x0, x1, baseH]: [number, number, number],
-): string[] {
-  const inside = (x: number, y: number) =>
-    x >= 0 &&
-    y >= 0 &&
-    x < w &&
-    y < h &&
-    (circles.some(([cx, cy, r]) => (x + 0.5 - cx) ** 2 + (y + 0.5 - cy) ** 2 <= r * r) ||
-      (y >= h - baseH && x >= x0 && x < x1));
-  const rows: string[] = [];
-  for (let y = 0; y < h; y++) {
-    let row = '';
-    for (let x = 0; x < w; x++) {
-      if (!inside(x, y)) row += '.';
-      else if (!inside(x - 1, y) || !inside(x + 1, y) || !inside(x, y - 1) || !inside(x, y + 1)) row += 'o';
-      else if (!inside(x, y - 2) || !inside(x - 2, y)) row += 'h';
-      else row += y >= h * 0.62 ? 's' : 'w';
-    }
-    rows.push(row);
-  }
-  return rows;
-}
-
-/** Rows to an SVG of crisp rects (horizontal runs merged), `scale` screen px per pixel. */
-export function pixelSvg(rows: string[], palette: Palette, scale: number): SVGSVGElement {
-  const w = Math.max(...rows.map((r) => r.length));
+function cloudSvg({ w, h, circles, base: [x0, x1, baseH] }: Cloud, scale: number): SVGSVGElement {
   const svg = document.createElementNS(SVG, 'svg');
-  svg.setAttribute('viewBox', `0 0 ${w} ${rows.length}`);
-  svg.setAttribute('width', String(w * scale));
-  svg.setAttribute('height', String(rows.length * scale));
-  svg.setAttribute('shape-rendering', 'crispEdges');
+  const pad = 1;
+  svg.setAttribute('viewBox', `${-pad} ${-pad} ${w + pad * 2} ${h + pad * 2}`);
+  svg.setAttribute('width', String((w + pad * 2) * scale));
+  svg.setAttribute('height', String((h + pad * 2) * scale));
   svg.setAttribute('aria-hidden', 'true');
-  rows.forEach((row, y) => {
-    for (let x = 0; x < row.length;) {
-      const c = row[x];
-      let end = x + 1;
-      while (end < row.length && row[end] === c) end++;
-      if (palette[c]) {
-        const r = document.createElementNS(SVG, 'rect');
-        r.setAttribute('x', String(x));
-        r.setAttribute('y', String(y));
-        r.setAttribute('width', String(end - x));
-        r.setAttribute('height', '1');
-        r.setAttribute('fill', palette[c]);
-        svg.appendChild(r);
-      }
-      x = end;
-    }
-  });
+  const shapes = (attrs: string) =>
+    circles.map(([cx, cy, r]) => `<circle cx="${cx}" cy="${cy}" r="${r}" ${attrs}/>`).join('') +
+    `<rect x="${x0}" y="${h - baseH}" width="${x1 - x0}" height="${baseH}" rx="${baseH / 2}" ${attrs}/>`;
+  const shadeY = h * 0.62;
+  svg.innerHTML =
+    shapes(`fill="${COLORS.line}" stroke="${COLORS.line}" stroke-width="1"`) +
+    shapes(`fill="${COLORS.top}"`) +
+    `<clipPath id="cloud-${w}-${h}">${shapes('')}</clipPath>` +
+    `<rect x="0" y="${shadeY}" width="${w}" height="${h - shadeY}" fill="${COLORS.shade}" clip-path="url(#cloud-${w}-${h})"/>`;
   return svg;
 }
 
 /** Cloud shapes: a big one for Scout to sit on, and small ones for the sky. */
-const BIG = cloudRows(
-  46,
-  17,
-  [
+const BIG: Cloud = {
+  w: 46,
+  h: 17,
+  circles: [
     [11, 11, 6],
     [19, 8, 7.5],
     [28, 7, 7],
     [36, 10.5, 6.5],
-    [23, 12, 6],
+    [23, 12, 5],
   ],
-  [7, 40, 6],
-);
-const SMALL = [
-  cloudRows(
-    18,
-    8,
-    [
-      [5, 5, 3.4],
-      [10, 3.8, 4],
-      [14, 5.2, 3.2],
+  base: [6, 41, 6],
+};
+const SMALL: Cloud[] = [
+  {
+    w: 18,
+    h: 8,
+    circles: [
+      [5, 5, 3],
+      [10, 3.8, 3.8],
+      [14, 5.2, 2.8],
     ],
-    [3, 16, 3],
-  ),
-  cloudRows(
-    24,
-    9,
-    [
-      [6, 6, 3.6],
-      [12, 4, 4.4],
-      [18, 5.6, 3.8],
+    base: [2.5, 16, 3],
+  },
+  {
+    w: 24,
+    h: 9,
+    circles: [
+      [6, 6, 3],
+      [12, 4, 4],
+      [18, 5.6, 3.4],
     ],
-    [4, 21, 3],
-  ),
-  cloudRows(
-    14,
-    7,
-    [
-      [4, 4.5, 2.8],
-      [8.5, 3.4, 3.4],
-      [11, 4.6, 2.6],
+    base: [3.5, 21, 3],
+  },
+  {
+    w: 14,
+    h: 7,
+    circles: [
+      [4, 4.5, 2.4],
+      [8.5, 3.4, 3.2],
+      [11, 4.6, 2.2],
     ],
-    [2, 12, 3],
-  ),
+    base: [2, 12.5, 2.5],
+  },
 ];
 
-const LAPTOP = [
-  '..oooooooooooo..',
-  '..oddddddddddo..',
-  '..oddddddddddo..',
-  '..oddddddddddo..',
-  '..oddddddddddo..',
-  '..oddddddddddo..',
-  '..oooooooooooo..',
-  'oooooooooooooooo',
-  '.okkkkkkkkkkkko.',
-  '..oooooooooooo..',
-];
-const PHONE = [
-  '.ooooooo.',
-  'obbbbbbbo',
-  'obaaaabbo',
-  'obbbbbbbo',
-  'obaaaaabo',
-  'obaaabbbo',
-  'obbbbbbbo',
-  'obbbbbbbo',
-  'obbbbbbbo',
-  'obbbbbbbo',
-  'obbbkbbbo',
-  '.ooooooo.',
-];
+const DEVICE = 'fill="#14241f" stroke="#3a403c" stroke-width="1"';
+const LAPTOP = `<svg viewBox="0 0 16 11" width="96" height="66" aria-hidden="true"><rect x="2.5" y=".5" width="11" height="7.5" rx="1" ${DEVICE}/><rect x=".5" y="8" width="15" height="2.5" rx="1" fill="#2a454c" stroke="#3a403c" stroke-width="1"/></svg>`;
+const PHONE = `<svg viewBox="0 0 10 16" width="60" height="96" aria-hidden="true"><rect x=".5" y=".5" width="9" height="15" rx="1.8" ${DEVICE}/><path d="M2.5 4h4M2.5 6.5h5M2.5 9h3" stroke="#6fbf8f" stroke-linecap="round"/></svg>`;
 
 const LINES = ['Agents are on it', "I'll ping your phone", 'Close the laptop', 'Only the calls that matter'];
 
@@ -166,22 +98,22 @@ export function initCloudScene(reducedMotion: boolean) {
   // Hero: Scout on the big cloud.
   for (const stage of $$('[data-cloud-stage]')) {
     const cloud = $('[data-cloud-big]', stage);
-    if (cloud) cloud.appendChild(pixelSvg(BIG, CLOUD, Number(cloud.dataset.scale ?? 7)));
+    if (cloud) cloud.appendChild(cloudSvg(BIG, Number(cloud.dataset.scale ?? 7)));
     const scout = $('[data-cloud-scout]', stage);
     if (scout) talkingScout(scout, Number(scout.dataset.size ?? 3), reducedMotion);
   }
-  // Sky: small clouds drifting behind the copy; each element picks a shape and a pixel size.
+  // Sky: small clouds drifting behind the copy; each element picks a shape and a size.
   for (const el of $$('[data-cloud-small]')) {
     const shape = SMALL[Number(el.dataset.cloudSmall ?? 0) % SMALL.length];
-    el.appendChild(pixelSvg(shape, CLOUD, Number(el.dataset.scale ?? 4)));
+    el.appendChild(cloudSvg(shape, Number(el.dataset.scale ?? 4)));
   }
   // Journey strip: sleeping laptop → Scout's cloud → phone.
   const laptop = $('[data-px-laptop]');
-  if (laptop) laptop.appendChild(pixelSvg(LAPTOP, DEVICE, 6));
+  if (laptop) laptop.innerHTML = LAPTOP;
   const phone = $('[data-px-phone]');
-  if (phone) phone.appendChild(pixelSvg(PHONE, DEVICE, 6));
+  if (phone) phone.innerHTML = PHONE;
   const mid = $('[data-cloud-mid]');
-  if (mid) mid.appendChild(pixelSvg(SMALL[1], CLOUD, 5));
+  if (mid) mid.appendChild(cloudSvg(SMALL[1], 5));
   const midScout = $('[data-cloud-mid-scout]');
-  if (midScout) mountScout(midScout, { size: 1.5, state: reducedMotion ? 'idle' : 'thinking', framed: false });
+  if (midScout) mountScout(midScout, { size: 1, state: reducedMotion ? 'idle' : 'thinking', framed: false });
 }

@@ -11,6 +11,7 @@ function head({ title, description, url }) {
   return `<!doctype html>
 <html lang="en">
   <head>
+    <script>try{var t=localStorage.getItem('teamtrail-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escape(title)} · Teamtrail docs</title>
@@ -31,7 +32,7 @@ function head({ title, description, url }) {
     <link rel="icon" href="/media/brand/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/media/brand/favicon-64.png" type="image/png" sizes="64x64" />
     <link rel="alternate" type="text/markdown" href="${mdUrlFromPage(url)}" />
-${font('/node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2')}
+${font('/node_modules/@fontsource/londrina-solid/files/londrina-solid-latin-900-normal.woff2')}
 ${font('/node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2')}
 ${font('/node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2')}
     <link rel="stylesheet" href="/src/styles.css" />
