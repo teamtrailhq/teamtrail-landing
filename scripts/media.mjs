@@ -82,6 +82,15 @@ const agentStep = async (text, times = 1) => {
 };
 
 // A briefing needs time away: a short away threshold, then the tab hidden while the agents work.
+// The app defaults to night, so ask for the theme this capture is for.
+await page.addInitScript(
+  (theme) => {
+    const key = 'teamtrail.prefs';
+    const prefs = JSON.parse(localStorage.getItem(key) || '{}');
+    localStorage.setItem(key, JSON.stringify({ ...prefs, theme }));
+  },
+  night ? 'night' : 'day',
+);
 await page.addInitScript(() => {
   if (sessionStorage.getItem('capture-init')) return;
   sessionStorage.setItem('capture-init', '1');

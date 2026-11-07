@@ -11,7 +11,7 @@ function head({ title, description, url }) {
   return `<!doctype html>
 <html lang="en">
   <head>
-    <script>try{var t=localStorage.getItem('teamtrail-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+    <script>try{document.documentElement.dataset.theme=localStorage.getItem('teamtrail-theme')||'night'}catch(e){document.documentElement.dataset.theme='night'}</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escape(title)} · Teamtrail docs</title>
@@ -28,7 +28,7 @@ function head({ title, description, url }) {
     <meta property="og:image:alt" content="Scout, the Teamtrail trail lead, next to the Teamtrail wordmark." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
-    <meta name="theme-color" content="#05090b" />
+    <meta name="theme-color" content="#101815" />
     <link rel="icon" href="/media/brand/favicon-32.png?v=2" type="image/png" sizes="32x32" />
     <link rel="icon" href="/media/brand/favicon-64.png?v=2" type="image/png" sizes="64x64" />
     <link rel="alternate" type="text/markdown" href="${mdUrlFromPage(url)}" />

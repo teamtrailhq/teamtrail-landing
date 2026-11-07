@@ -4,7 +4,7 @@
 @import '@fontsource-variable/jetbrains-mono';
 
 /* Three fonts, like the app: Londrina Solid for titles and the logo, Figtree for everything else, JetBrains Mono
- * for commands and code. Colours follow the visitor's choice or, until they choose, their system. */
+ * for commands and code. Night is the default; day is the visitor's choice. */
 :root {
   color-scheme: light;
   --bg: #f3f1e7;
@@ -46,7 +46,7 @@
   --section: clamp(96px, 12vw, 160px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-/* Night follows the visitor's system until they choose with the switch in the nav (src/theme.ts). */
+/* A script in each page's head sets data-theme to night unless the visitor chose day (src/theme.ts). Without scripts, the system's preference applies. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='day']) {
     color-scheme: dark;

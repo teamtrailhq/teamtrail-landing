@@ -51,6 +51,15 @@ const setVisible = (v) =>
     document.dispatchEvent(new Event('visibilitychange'));
   }, v);
 
+// The app defaults to night, so ask for the theme this capture is for.
+await page.addInitScript(
+  (theme) => {
+    const key = 'teamtrail.prefs';
+    const prefs = JSON.parse(localStorage.getItem(key) || '{}');
+    localStorage.setItem(key, JSON.stringify({ ...prefs, theme }));
+  },
+  night ? 'night' : 'day',
+);
 // Pre-roll (not recorded): onboard on the seeded project, then the tab is "away" while the agents work.
 // A briefing needs time away: a short away threshold, applied once.
 await page.addInitScript(() => {
