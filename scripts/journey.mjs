@@ -156,6 +156,13 @@ await wait(4000);
 await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.decisions-btn').click();
 
+await page.getByRole('button', { name: /^Records/ }).click();
+await page.locator('.stats-btn').click();
+await page.locator('.perf-recs li').first().waitFor({ timeout: 10000 });
+await caption('Across every trail', 'See how each agent delivers, with plain notes from your own numbers.');
+await wait(4500);
+await page.keyboard.press('Escape');
+
 // A finding broke an assumption: the agent proposes a new plan, previewed on the map, and you approve it.
 await caption('When the facts change', 'An agent proposes a new plan. See it on the map before anything moves.');
 await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
