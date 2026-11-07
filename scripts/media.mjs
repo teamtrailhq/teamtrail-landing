@@ -1,15 +1,19 @@
-// Re-captures the command-center screenshots in public/media/ from the real app, on a real project: the dev
-// seed in a temp folder, the built `miloops` server, and real MCP agents working it (lib/realProject.mjs).
-// Run: npm run build -w miloops-cli in ../miloops (once), then `npm run media` here.
+// Re-captures the lookout screenshots in public/media/ from the real app, on a real project: the dev
+// seed in a temp folder, the built `teamtrail` server, and real MCP agents working it (lib/realProject.mjs).
+// Run: npm run build -w teamtrail in ../teamtrail (once), then `npm run media` here.
 // Env: CHROME_PATH (default /usr/local/bin/google-chrome).
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { realProject } from './lib/realProject.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const media = join(root, 'public/media');
+// THEME=night captures into public/media/night/; the site swaps them in with the theme (src/theme.ts).
+const night = process.env.THEME === 'night';
+const media = join(root, night ? 'public/media/night' : 'public/media');
+mkdirSync(media, { recursive: true });
+const colorScheme = night ? 'dark' : 'light';
 const project = await realProject();
 // Always end the server and agents and delete the temp project, even when a step fails.
 process.on('exit', () => project.stop());
@@ -17,7 +21,7 @@ const size = { width: 1680, height: 945 };
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? '/usr/local/bin/google-chrome' });
 // 2x pixels so the zoomed crops stay sharp; full-app shots are saved at 1x.
-const ctx = await browser.newContext({ viewport: size, deviceScaleFactor: 2 });
+const ctx = await browser.newContext({ viewport: size, deviceScaleFactor: 2, colorScheme });
 const page = await ctx.newPage();
 page.on('pageerror', (e) => console.log('pageerror:', e.message));
 
@@ -81,7 +85,7 @@ const agentStep = async (text, times = 1) => {
 await page.addInitScript(() => {
   if (sessionStorage.getItem('capture-init')) return;
   sessionStorage.setItem('capture-init', '1');
-  const key = 'miloops.prefs';
+  const key = 'teamtrail.prefs';
   const prefs = JSON.parse(localStorage.getItem(key) || '{}');
   localStorage.setItem(key, JSON.stringify({ ...prefs, briefing: { enabled: true, awayMinutes: 0.05 } }));
 });
@@ -98,16 +102,16 @@ await wait(4000);
 await setVisible(true);
 await page.locator('.bf-tile').first().waitFor({ timeout: 10000 });
 await wait(2500);
-// Top of the briefing: MILO's summary and the stat tiles.
-await zoom('command-center-briefing', ['.dialog.briefing h2', '.dialog.briefing .bf-tiles'], {
+// Top of the briefing: Scout's summary and the stat tiles.
+await zoom('lookout-briefing', ['.dialog.briefing h2', '.dialog.briefing .bf-tiles'], {
   aspect: 16 / 10,
   pad: 24,
 });
 await page.getByRole('button', { name: 'Dismiss' }).click();
 // Back to the normal away threshold, so the briefing stays closed for the rest of the run.
 await page.evaluate(() => {
-  const prefs = JSON.parse(localStorage.getItem('miloops.prefs') || '{}');
-  localStorage.setItem('miloops.prefs', JSON.stringify({ ...prefs, briefing: { enabled: true, awayMinutes: 15 } }));
+  const prefs = JSON.parse(localStorage.getItem('teamtrail.prefs') || '{}');
+  localStorage.setItem('teamtrail.prefs', JSON.stringify({ ...prefs, briefing: { enabled: true, awayMinutes: 15 } }));
 });
 await page.reload();
 await page.locator('.node').first().waitFor({ timeout: 15000 });
@@ -115,18 +119,18 @@ await wait(1500);
 
 await page.locator('.node', { hasText: 'silent auto-merge' }).first().click();
 await wait(1500);
-// MILO explaining the map from its info icon: the speech-bubble hint, mid-sentence.
+// Scout explaining the map from its info icon: the speech-bubble hint, mid-sentence.
 await page.locator('.map-zone .info-tip').first().hover();
 await wait(1400);
-await shot('command-center-overview');
+await shot('lookout-overview');
 await page.mouse.move(size.width / 2, size.height - 4);
 await wait(600);
 await zoom('flow-06-first-tickets', ['.map-zone'], { aspect: 16 / 10 });
 
-await page.locator('.mission-btn').click();
+await page.locator('.trail-btn').click();
 await wait(1200);
-await zoom('command-center-missions', ['.mission-btn', '.mission-menu'], { aspect: 16 / 10, pad: 48 });
-await page.getByRole('menuitem', { name: '+ New mission' }).click();
+await zoom('lookout-trails', ['.trail-btn', '.trail-menu'], { aspect: 16 / 10, pad: 48 });
+await page.getByRole('menuitem', { name: '+ New trail' }).click();
 await page.locator('.dialog').waitFor();
 const fields = page.locator('.dialog input, .dialog textarea');
 await fields.nth(0).fill('Ship team workspaces');
@@ -135,14 +139,14 @@ await fields
   .nth(2)
   .pressSequentially('Admins asked for this in the Q3 survey. Must work with existing SSO.', { delay: 18 });
 await wait(600);
-await zoom('flow-05-new-mission', ['.dialog'], { aspect: 16 / 10 });
+await zoom('flow-05-new-trail', ['.dialog'], { aspect: 16 / 10 });
 await page.keyboard.press('Escape');
 await wait(600);
 
 // Everything that needs you, ranked: questions, the new plan, the brief, a risky change, knowledge to review.
 await page.locator('.attention-queue .att-item.k-question').first().waitFor({ timeout: 20000 });
 await wait(1200);
-await zoom('command-center-queue', ['.inbox-part'], { aspect: 1, pad: 0 });
+await zoom('lookout-queue', ['.inbox-part'], { aspect: 1, pad: 0 });
 
 await page.locator('.att-item.k-question:not(.u-fyi) > button').first().click();
 await chip().waitFor({ timeout: 20000 });
@@ -156,10 +160,11 @@ await wait(1500);
 // A taller window shows the whole conversation with the suggested replies.
 await page.setViewportSize({ ...size, height: 1200 });
 await wait(800);
-await zoom('command-center-hitl-conversation', ['.comms .msg.open-q', '.comms .suggest'], { aspect: 16 / 10 });
+await zoom('lookout-hitl-conversation', ['.comms .msg.open-q', '.comms .suggest'], { aspect: 16 / 10 });
 await page.setViewportSize(size);
 await wait(500);
 
+await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.decisions-btn').click();
 await page.locator('.dv-row').first().waitFor({ timeout: 10000 });
 await hideUnshipped();
@@ -167,28 +172,30 @@ await page.locator('.dv-row button').first().click();
 await wait(1500);
 await hideUnshipped();
 // Top of the open decision: question, answer, facts and alternatives.
-await zoom('command-center-decisions', ['.dv-detail .d-head', '.dv-detail .facts'], { aspect: 16 / 10 });
+await zoom('lookout-decisions', ['.dv-detail .d-head', '.dv-detail .facts'], { aspect: 16 / 10 });
+await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.decisions-btn').click();
 await wait(1500);
 
-// Discovery: the plan-only mission has a brief waiting for review.
-await page.locator('.mission-btn').click();
+// Discovery: the plan-only trail has a brief waiting for review.
+await page.locator('.trail-btn').click();
 await page.getByRole('menuitem').filter({ hasText: 'Team workspaces' }).first().click();
 await page.getByRole('button', { name: 'Review brief' }).click({ timeout: 15000 });
 await page.locator('.brief-dialog').waitFor();
 await wait(800);
-await zoom('command-center-discovery', ['.brief-dialog'], { aspect: 16 / 10, pad: 24 });
+await zoom('lookout-discovery', ['.brief-dialog'], { aspect: 16 / 10, pad: 24 });
 await page.keyboard.press('Escape');
-await page.locator('.mission-btn').click();
+await page.locator('.trail-btn').click();
 await page.getByRole('menuitem').filter({ hasText: 'Offline-first' }).first().click();
 await wait(1200);
 
 // Knowledge: everything on record, confirmed, assumed and waiting for review.
+await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.knowledge-btn').click();
 await page.locator('.knowledge-view').waitFor();
 await page.locator('.kn-filters .chip', { hasText: 'All' }).click();
 await wait(800);
-await zoom('command-center-knowledge', ['.knowledge-view'], { aspect: 16 / 10, pad: 16 });
+await zoom('lookout-knowledge', ['.knowledge-view'], { aspect: 16 / 10, pad: 16 });
 await page.keyboard.press('Escape');
 await wait(500);
 
@@ -196,25 +203,25 @@ await wait(500);
 await page.locator('.node', { hasText: 'Instrument current' }).first().click();
 await page.locator('.criteria-section').waitFor({ timeout: 15000 });
 await wait(1000);
-await zoom('command-center-criteria', ['.inspector'], { aspect: 4 / 5, pad: 0 });
+await zoom('lookout-criteria', ['.inspector'], { aspect: 4 / 5, pad: 0 });
 
 // A proposed new plan: the map preview, then the review dialog.
-await page.locator('.replan-banner').waitFor({ timeout: 15000 });
+await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
 await page.locator('.node.mark-added').first().waitFor({ timeout: 15000 });
 await wait(600);
-await zoom('command-center-replan-map', ['.map-zone'], { aspect: 16 / 10 });
-await page.locator('.replan-banner button').first().click();
-await page.locator('.replan-dialog').waitFor();
+await zoom('lookout-reroute-map', ['.map-zone'], { aspect: 16 / 10 });
+await page.locator('.reroute-banner button').first().click();
+await page.locator('.reroute-dialog').waitFor();
 await wait(600);
-await zoom('command-center-replan', ['.replan-dialog'], { aspect: 16 / 10, pad: 24 });
-await page.locator('.replan-dialog button', { hasText: 'Close' }).click();
+await zoom('lookout-reroute', ['.reroute-dialog'], { aspect: 16 / 10, pad: 24 });
+await page.locator('.reroute-dialog button', { hasText: 'Close' }).click();
 
 // What always needs you: Settings → Risk policy.
 await page.getByRole('button', { name: 'Settings', exact: true }).click();
 const risk = page.locator('.set-sec', { hasText: 'Risk policy' });
 await risk.scrollIntoViewIfNeeded();
 await wait(600);
-await zoom('command-center-risk', ['.set-sec:has-text("Risk policy")'], { aspect: 4 / 3, pad: 16 });
+await zoom('lookout-risk', ['.set-sec:has-text("Risk policy")'], { aspect: 4 / 3, pad: 16 });
 await page.keyboard.press('Escape');
 
 // Parallel work: the overlap warning in the queue, then the ticket with the files its agent expects to change.
@@ -222,11 +229,11 @@ const overlap = page.locator('.att-item.k-overlap').first();
 await overlap.waitFor({ timeout: 20000 });
 await overlap.scrollIntoViewIfNeeded();
 await wait(600);
-await zoom('command-center-overlap', ['.att-item.k-overlap'], { aspect: 16 / 9, pad: 20 });
+await zoom('lookout-overlap', ['.att-item.k-overlap'], { aspect: 16 / 9, pad: 20 });
 await page.locator('.node', { hasText: 'Show sync status' }).first().dispatchEvent('click');
 await page.locator('.inspector', { hasText: 'Expects to change' }).waitFor({ timeout: 15000 });
 await wait(600);
-await zoom('command-center-parallel-ticket', ['.inspector'], { aspect: 4 / 5, pad: 0 });
+await zoom('lookout-parallel-ticket', ['.inspector'], { aspect: 4 / 5, pad: 0 });
 
 // Settings → Workspaces: a separate copy of the repo for each task.
 await page.getByRole('button', { name: 'Settings', exact: true }).click();
@@ -235,7 +242,7 @@ await ws.scrollIntoViewIfNeeded();
 // Shown switched on, the way a team running several agents would use it.
 await ws.getByRole('button', { name: 'Off' }).first().click();
 await wait(900);
-await zoom('command-center-workspaces', ['.set-sec:has-text("Workspaces")'], { aspect: 16 / 9, pad: 16 });
+await zoom('lookout-workspaces', ['.set-sec:has-text("Workspaces")'], { aspect: 16 / 9, pad: 16 });
 await page.keyboard.press('Escape');
 
 // Phone view of the same project.
@@ -248,8 +255,8 @@ const { data } = await cdp.send('Page.captureScreenshot', {
   format: 'png',
   clip: { x: 0, y: 0, width: 390, height: 430, scale: 1 },
 });
-writeFileSync(join(media, 'command-center-phone.png'), Buffer.from(data, 'base64'));
-console.log('saved command-center-phone.png');
+writeFileSync(join(media, 'lookout-phone.png'), Buffer.from(data, 'base64'));
+console.log('saved lookout-phone.png');
 await ctx.close();
 await browser.close();
 process.exit(0);

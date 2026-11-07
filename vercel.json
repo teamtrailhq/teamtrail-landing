@@ -3,7 +3,44 @@
   "headers": [
     {
       "source": "/assets/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/specialists",
+      "destination": "/guides",
+      "permanent": true
+    },
+    {
+      "source": "/docs/adaptive-missions",
+      "destination": "/docs/adaptive-trails",
+      "permanent": true
+    },
+    {
+      "source": "/docs/first-mission",
+      "destination": "/docs/first-trail",
+      "permanent": true
+    },
+    {
+      "source": "/docs/milo-commands",
+      "destination": "/docs/scout-commands",
+      "permanent": true
+    },
+    {
+      "source": "/docs/miloops-folder",
+      "destination": "/docs/teamtrail-folder",
+      "permanent": true
+    },
+    {
+      "source": "/docs/missions-and-tickets",
+      "destination": "/docs/trails-and-tickets",
+      "permanent": true
     }
   ]
 }

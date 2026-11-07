@@ -11,29 +11,30 @@ function head({ title, description, url }) {
   return `<!doctype html>
 <html lang="en">
   <head>
+    <script>try{var t=localStorage.getItem('teamtrail-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${escape(title)} · MILOOPS docs</title>
+    <title>${escape(title)} · Teamtrail docs</title>
     <meta name="description" content="${escape(description)}" />
     <link rel="canonical" href="%SITE_URL%${url}" />
     <meta property="og:type" content="article" />
-    <meta property="og:site_name" content="MILOOPS" />
-    <meta property="og:title" content="${escape(title)} · MILOOPS docs" />
+    <meta property="og:site_name" content="Teamtrail" />
+    <meta property="og:title" content="${escape(title)} · Teamtrail docs" />
     <meta property="og:description" content="${escape(description)}" />
     <meta property="og:url" content="%SITE_URL%${url}" />
     <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="MILO, the MILOOPS operator, next to the MILOOPS wordmark." />
+    <meta property="og:image:alt" content="Scout, the Teamtrail trail lead, next to the Teamtrail wordmark." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta name="theme-color" content="#05090b" />
     <link rel="icon" href="/media/brand/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/media/brand/favicon-64.png" type="image/png" sizes="64x64" />
     <link rel="alternate" type="text/markdown" href="${mdUrlFromPage(url)}" />
-${font('/node_modules/@fontsource/geist-pixel/files/geist-pixel-latin-400-normal.woff2')}
-${font('/node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2')}
-${font('/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2')}
+${font('/node_modules/@fontsource/londrina-solid/files/londrina-solid-latin-900-normal.woff2')}
+${font('/node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2')}
+${font('/node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2')}
     <link rel="stylesheet" href="/src/styles.css" />
     <link rel="stylesheet" href="/src/docs.css" />
   </head>`;

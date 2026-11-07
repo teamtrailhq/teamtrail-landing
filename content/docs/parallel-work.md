@@ -1,13 +1,13 @@
 # Parallel work
 
-Several agents can work at once: each can get its own git worktree, overlaps are flagged before they collide, and real clashes become a suggested ticket. MILOOPS never merges, pushes or deletes branches.
+Several agents can work at once: each can get its own git worktree, overlaps are flagged before they collide, and real clashes become a suggested ticket. Teamtrail never merges, pushes or deletes branches.
 
 ## A workspace per task
 
 Turn it on in [workspaces.json](/docs/workspaces-json/) (or **Settings → Workspaces**), or let an agent ask for one with `claim_ticket` `workspace: true`. Claiming then creates:
 
-- a branch `miloops/<mission>/<n>` from the current `HEAD`;
-- a worktree at `<repo parent>/<repo>.miloops/<mission>-<n>` by default.
+- a branch `teamtrail/<trail>/<n>` from the current `HEAD`;
+- a worktree at `<repo parent>/<repo>.teamtrail/<trail>-<n>` by default.
 
 The claim result returns `workspace: { path, branch, base }`, and the agent edits and commits only there. Claiming again reuses the same worktree. Checks, git evidence and the claim baseline for that ticket run in the worktree. When the ticket completes, the result and a ticket comment name the branch for you to review and merge.
 
@@ -29,6 +29,6 @@ The ticket inspector shows the declared files and the branch. To hold one of the
 
 ## Integration check
 
-Every 10 seconds (`$MILOOPS_INTEGRATION_POLL_MS`), MILOOPS compares `git diff --name-only <base>...<branch>` across active claims that have worktrees. When two branches changed the same files, an `integration` item lists them with **Add integration ticket**: a `task` titled "Bring together #a and #b", blocked by both tickets, listing the files. Nothing is created or merged automatically. Only active claims are compared; once a ticket closes, its branch drops out.
+Every 10 seconds (`$TEAMTRAIL_INTEGRATION_POLL_MS`), Teamtrail compares `git diff --name-only <base>...<branch>` across active claims that have worktrees. When two branches changed the same files, an `integration` item lists them with **Add integration ticket**: a `task` titled "Bring together #a and #b", blocked by both tickets, listing the files. Nothing is created or merged automatically. Only active claims are compared; once a ticket closes, its branch drops out.
 
 From the chat, `status` includes a `parallel` summary (workspaces, declared overlaps, changed-file clashes) when there's anything to report.

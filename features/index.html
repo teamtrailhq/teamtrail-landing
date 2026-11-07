@@ -1,22 +1,28 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      try {
+        var t = localStorage.getItem('teamtrail-theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MILOOPS: Features</title>
+    <title>Teamtrail: Features</title>
     <meta
       name="description"
-      content="Everything in the MILOOPS command center: missions, the Waiting on you inbox, verification and review, the decision log, briefings, live spend, and GitHub Issues and Linear sync. Plus what's coming next."
+      content="Everything in the Teamtrail Lookout: trails, the Waiting on you inbox, verification and review, the logbook, trip reports, live spend, and GitHub Issues and Linear sync. Plus what's coming next."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="MILOOPS" />
-    <meta property="og:title" content="MILOOPS: Features" />
-    <meta property="og:description" content="Everything the command center does, and what is coming next." />
+    <meta property="og:site_name" content="Teamtrail" />
+    <meta property="og:title" content="Teamtrail: Features" />
+    <meta property="og:description" content="Everything the Lookout does, and what is coming next." />
     <meta property="og:url" content="%SITE_URL%/features/" />
     <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="MILO, the MILOOPS operator, next to the MILOOPS wordmark." />
+    <meta property="og:image:alt" content="Scout, the Teamtrail trail lead, next to the Teamtrail wordmark." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta name="theme-color" content="#05090b" />
@@ -24,21 +30,21 @@
     <link rel="icon" href="/media/brand/favicon-64.png" type="image/png" sizes="64x64" />
     <link
       rel="preload"
-      href="/node_modules/@fontsource/geist-pixel/files/geist-pixel-latin-400-normal.woff2"
+      href="/node_modules/@fontsource/londrina-solid/files/londrina-solid-latin-900-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2"
+      href="/node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2"
+      href="/node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -55,24 +61,24 @@
         <canvas class="field" data-field="hero" data-intensity="0.6" aria-hidden="true"></canvas>
         <div class="wrap hero__inner">
           <span class="hero__badge" data-scramble>Features</span>
-          <h1 id="page-title">Everything the command center does.</h1>
+          <h1 id="page-title">Everything the Lookout does.</h1>
           <p class="hero__lede">
-            What you can use today, and where <span class="mark">MILOOPS</span> is going next. Every screenshot is the
-            real app, running a real mission.
+            What you can use today, and where <span class="mark">Teamtrail</span> is going next. Every screenshot is the
+            real app, running a real trail.
           </p>
         </div>
       </section>
 
-      <!-- MISSIONS -->
-      <section class="section" aria-labelledby="f-missions">
+      <!-- TRAILS -->
+      <section class="section" aria-labelledby="f-trails">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">Missions</span>
-              <h2 id="f-missions">Plan big work as a map, not a to-do list.</h2>
+              <span class="eyebrow">Trails</span>
+              <h2 id="f-trails">Plan big work as a map, not a to-do list.</h2>
             </div>
             <p>
-              A mission is the objective. Tickets are the decisions and work that get you there, with what blocks what.
+              A trail leads to a destination. Tickets are the decisions and work along the way, with what blocks what.
             </p>
           </header>
           <div class="runs">
@@ -84,18 +90,18 @@
                   height="1226"
                   loading="lazy"
                   decoding="async"
-                  alt="The mission map with tickets, their state and their dependencies."
+                  alt="The trail map with tickets, their state and their dependencies."
                 />
               </figure>
               <div class="run__copy">
                 <span class="run__n">01</span>
-                <h3>A live mission map</h3>
+                <h3>A live trail map</h3>
                 <p>
                   See what's done, what's being worked, what's blocked and what's waiting on you, with the critical path
                   and progress at a glance.
                 </p>
                 <ul class="ticks">
-                  <li data-n="01">Research, grilling, prototype, task and execute tickets</li>
+                  <li data-n="01">Research, junction, prototype, task and execute tickets</li>
                   <li data-n="02">Unblocked work moves up on its own</li>
                   <li data-n="03">Out-of-scope work is set aside, not lost</li>
                 </ul>
@@ -104,23 +110,22 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-missions.png"
+                  src="/media/lookout-trails.png"
                   width="1112"
                   height="696"
                   loading="lazy"
                   decoding="async"
-                  alt="The mission switcher listing two missions with progress and open questions."
+                  alt="The trail switcher listing two trails with progress and open questions."
                 />
               </figure>
               <div class="run__copy">
                 <span class="run__n">02</span>
-                <h3>Several missions at once</h3>
+                <h3>Several trails at once</h3>
                 <p>
-                  Switch from the title. Open questions stay tagged with their mission, so the inbox never loses
-                  context.
+                  Switch from the title. Open questions stay tagged with their trail, so the inbox never loses context.
                 </p>
                 <ul class="ticks">
-                  <li data-n="01">Plan only, or plan and execute, per mission</li>
+                  <li data-n="01">Plan only, or plan and execute, per trail</li>
                   <li data-n="02">Destination, notes, decisions so far and out of scope</li>
                 </ul>
               </div>
@@ -135,7 +140,7 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">Understanding</span>
-              <h2 id="f-understand">It learns your project before it builds.</h2>
+              <h2 id="f-understand">It learns the terrain before anyone sets off.</h2>
             </div>
             <p>Your agents start from what you already have, and they remember what they learn.</p>
           </header>
@@ -143,7 +148,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-discovery.png"
+                  src="/media/lookout-discovery.png"
                   width="2754"
                   height="1722"
                   loading="lazy"
@@ -161,14 +166,14 @@
                 <ul class="ticks">
                   <li data-n="01">Building waits for your approval</li>
                   <li data-n="02">It asks about your product, not just your code</li>
-                  <li data-n="03">Start a mission here, no terminal needed</li>
+                  <li data-n="03">Start a trail here, no terminal needed</li>
                 </ul>
               </div>
             </article>
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-knowledge.png"
+                  src="/media/lookout-knowledge.png"
                   width="2534"
                   height="1584"
                   loading="lazy"
@@ -178,15 +183,15 @@
               </figure>
               <div class="run__copy">
                 <span class="run__n">04</span>
-                <h3>A project that remembers</h3>
+                <h3>A field guide that remembers</h3>
                 <p>
-                  Rules, habits, pitfalls and dead ends are kept as your project's knowledge. Each agent gets what
-                  matters for its task, with the reason why.
+                  Rules, habits, pitfalls and dead ends go in your project's field guide. Each agent gets what matters
+                  for its task, with the reason why.
                 </p>
                 <ul class="ticks">
                   <li data-n="01">Agents suggest, you confirm</li>
                   <li data-n="02">Flagged for a second look when the code changes</li>
-                  <li data-n="03">Save any decision as knowledge in one click</li>
+                  <li data-n="03">Save any decision to the field guide in one click</li>
                 </ul>
               </div>
             </article>
@@ -200,7 +205,7 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">Waiting on you</span>
-              <h2 id="f-hitl">Only what needs you, in the right order.</h2>
+              <h2 id="f-hitl">Only the turns that need you, in the right order.</h2>
             </div>
             <p>
               Agents ask, you decide, and the decision is written down. You choose which calls are always yours, and
@@ -211,7 +216,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-queue.png"
+                  src="/media/lookout-queue.png"
                   width="716"
                   height="716"
                   loading="lazy"
@@ -236,7 +241,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-risk.png"
+                  src="/media/lookout-risk.png"
                   width="1372"
                   height="1030"
                   loading="lazy"
@@ -260,7 +265,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-hitl-conversation.png"
+                  src="/media/lookout-hitl-conversation.png"
                   width="772"
                   height="488"
                   loading="lazy"
@@ -276,7 +281,7 @@
                   below.
                 </p>
                 <ul class="ticks">
-                  <li data-n="01">Reply from the command center or with /milo inbox</li>
+                  <li data-n="01">Reply from the Lookout or with /scout inbox</li>
                   <li data-n="02">A summary or the full transcript goes on the ticket</li>
                 </ul>
               </div>
@@ -284,7 +289,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-briefing.png"
+                  src="/media/lookout-briefing.png"
                   width="1524"
                   height="952"
                   loading="lazy"
@@ -296,8 +301,8 @@
                 <span class="run__n">08</span>
                 <h3>While you were away</h3>
                 <p>
-                  Come back after a break and <span class="mark">MILO</span> tells you what changed: work done, work now
-                  blocked, what agents decided and what it cost.
+                  Come back after a break and <span class="mark">Scout</span> tells you what changed: work done, work
+                  now blocked, what agents decided and what it cost.
                 </p>
                 <ul class="ticks">
                   <li data-n="01">One click to the first answer you owe</li>
@@ -308,16 +313,16 @@
         </div>
       </section>
 
-      <!-- ADAPTIVE MISSIONS -->
+      <!-- ADAPTIVE TRAILS -->
       <section class="section" aria-labelledby="f-adapt">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">Adaptive missions</span>
-              <h2 id="f-adapt">Plans that change when the facts do.</h2>
+              <span class="eyebrow">Adaptive trails</span>
+              <h2 id="f-adapt">Reroute when the ground changes.</h2>
             </div>
             <p>
-              Every mission writes down what it assumes. When something turns out wrong, an agent proposes a new plan
+              Every trail writes down what it assumes. When something turns out wrong, an agent proposes a reroute
               instead of pushing on. Nothing changes until you approve it.
             </p>
           </header>
@@ -325,7 +330,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-replan.png"
+                  src="/media/lookout-reroute.png"
                   width="2754"
                   height="1722"
                   loading="lazy"
@@ -335,7 +340,7 @@
               </figure>
               <div class="run__copy">
                 <span class="run__n">09</span>
-                <h3>New plans you approve</h3>
+                <h3>Reroutes you approve</h3>
                 <p>
                   The agent explains what it found, which assumption broke and exactly what it wants to change. Approve
                   it, or send it back with a note.
@@ -349,12 +354,12 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-replan-map.png"
+                  src="/media/lookout-reroute-map.png"
                   width="1962"
                   height="1226"
                   loading="lazy"
                   decoding="async"
-                  alt="The mission map previewing a new plan: new tickets drawn as outlines, a cancelled one crossed out, paused ones marked."
+                  alt="The trail map previewing a new plan: new tickets drawn as outlines, a cancelled one crossed out, paused ones marked."
                 />
               </figure>
               <div class="run__copy">
@@ -362,7 +367,7 @@
                 <h3>See the change before it happens</h3>
                 <p>New work, cancelled work and paused work are drawn right on the map, before anything moves.</p>
                 <ul class="ticks">
-                  <li data-n="01">Agents can also say “this already exists” or “we're solving the wrong problem”</li>
+                  <li data-n="01">Agents can also say “this already exists” or “wrong mountain”</li>
                   <li data-n="02">They suggest a better goal, with the evidence</li>
                 </ul>
               </div>
@@ -377,18 +382,18 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">Parallel work</span>
-              <h2 id="f-parallel">Agents side by side, without clashes.</h2>
+              <h2 id="f-parallel">Many agents, nobody lost.</h2>
             </div>
             <p>
               Run several agents at once. Each can work in its own copy of your project, and you hear about it before
-              two of them change the same thing. <span class="mark">MILOOPS</span> never merges for you.
+              two of them change the same thing. <span class="mark">Teamtrail</span> never merges for you.
             </p>
           </header>
           <div class="runs">
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-overlap.png"
+                  src="/media/lookout-overlap.png"
                   width="756"
                   height="426"
                   loading="lazy"
@@ -398,7 +403,7 @@
               </figure>
               <div class="run__copy">
                 <span class="run__n">11</span>
-                <h3>A warning before agents collide</h3>
+                <h3>A warning before paths cross</h3>
                 <p>
                   Agents say which files they expect to change. If two overlap, you see it in your list right away, and
                   you can put one back in line.
@@ -414,7 +419,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-workspaces.png"
+                  src="/media/lookout-workspaces.png"
                   width="1332"
                   height="750"
                   loading="lazy"
@@ -444,7 +449,7 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">Verification</span>
-              <h2 id="f-verify">“Done” is a claim. <span class="mark">MILO</span> checks it.</h2>
+              <h2 id="f-verify">“Done” is a claim. <span class="mark">Scout</span> checks it.</h2>
             </div>
             <p>
               You agree on what done means before work starts, and nothing counts as done without proof. The checks come
@@ -455,7 +460,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-criteria.png"
+                  src="/media/lookout-criteria.png"
                   width="930"
                   height="1162"
                   loading="lazy"
@@ -515,14 +520,14 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">On the record</span>
-              <h2 id="f-record">Every decision and every result, on record.</h2>
+              <h2 id="f-record">Every decision and every result, in the logbook.</h2>
             </div>
           </header>
           <div class="runs">
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-decisions.png"
+                  src="/media/lookout-decisions.png"
                   width="1236"
                   height="772"
                   loading="lazy"
@@ -532,9 +537,9 @@
               </figure>
               <div class="run__copy">
                 <span class="run__n">14</span>
-                <h3>The decision log</h3>
+                <h3>The logbook</h3>
                 <p>
-                  Every call across your missions: the question, the answer, the options considered, the reasoning, who
+                  Every call across your trails: the question, the answer, the options considered, the reasoning, who
                   decided and the full conversation.
                 </p>
                 <ul class="ticks">
@@ -547,13 +552,13 @@
           <div class="cards cards--3" style="margin-top: 1px">
             <article class="card reveal">
               <span class="card__n">Results</span>
-              <h3>A report on every mission</h3>
+              <h3>A trip report on every trail</h3>
               <p>How long it took, how often you stepped in, what was redone and what each finished piece cost.</p>
             </article>
             <article class="card reveal">
               <span class="card__n">Trackers</span>
               <h3>Local files, GitHub Issues or Linear</h3>
-              <p>Missions sync both ways. Changes made offline wait and send in order when you're back.</p>
+              <p>Trails sync both ways. Changes made offline wait and send in order when you're back.</p>
             </article>
             <article class="card reveal">
               <span class="card__n">Any screen</span>
@@ -570,10 +575,10 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">Coming next</span>
-              <h2 id="f-next">Less babysitting, not less judgment.</h2>
+              <h2 id="f-next">Less herding, not less judgment.</h2>
             </div>
             <p>
-              Each of these keeps you in charge: <span class="mark">MILOOPS</span> proposes and ranks, and you decide.
+              Each of these keeps you in charge: <span class="mark">Teamtrail</span> proposes and ranks, and you decide.
             </p>
           </header>
           <div class="cards">
@@ -597,11 +602,11 @@
               <h3>The right model for each job</h3>
               <p>
                 Hard calls go to stronger models and routine work to cheaper ones, based on how each did on your past
-                missions.
+                trails.
               </p>
               <ul class="ticks">
                 <li data-n="01">Results by agent and kind of work</li>
-                <li data-n="02">You set the rules per mission</li>
+                <li data-n="02">You set the rules per trail</li>
               </ul>
             </article>
             <article class="card reveal">
@@ -609,7 +614,7 @@
                 <span class="card__n">03 · Cloud</span><span class="tag tag--soon">Coming</span>
               </div>
               <h3>Agents that keep working when you close the laptop</h3>
-              <p>Your agents run in the cloud, and you steer them from the same command center, on any screen.</p>
+              <p>Your agents run in the cloud, and you steer them from the same Lookout, on any screen.</p>
               <ul class="ticks">
                 <li data-n="01">Local stays free</li>
                 <li data-n="02"><a href="/cloud/">More about Cloud</a></li>
@@ -617,8 +622,8 @@
             </article>
           </div>
           <div class="more reveal">
-            <a class="btn" href="/specialists/"
-              >04 · The specialist marketplace <span class="arrow" aria-hidden="true">→</span></a
+            <a class="btn" href="/guides/"
+              >04 · The guide marketplace <span class="arrow" aria-hidden="true">→</span></a
             >
           </div>
         </div>
@@ -627,8 +632,8 @@
       <section class="final" aria-labelledby="final-title">
         <canvas class="field" data-field="final" data-intensity="0.55" aria-hidden="true"></canvas>
         <div class="wrap final__inner reveal">
-          <h2 id="final-title">Try it on your next project.</h2>
-          <p>One command in your project folder, or pick Demo in setup to explore a ready-made mission first.</p>
+          <h2 id="final-title">Try it on your next trail.</h2>
+          <p>One command in your project folder, or pick Demo in setup to explore a ready-made trail first.</p>
           <!-- @include cmd -->
         </div>
       </section>

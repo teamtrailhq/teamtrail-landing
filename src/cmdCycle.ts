@@ -33,7 +33,7 @@ export function initCmdCycle(reducedMotion: boolean) {
         const next = steps[(i + 1) % steps.length].cmd;
         if (label) label.textContent = steps[(i + 1) % steps.length].hint;
         let cur = steps[i].cmd;
-        // Erase back to the shared prefix ("npx miloops-cli"), then type the rest of the next command.
+        // Erase back to the shared prefix ("npx teamtrail"), then type the rest of the next command.
         let common = 0;
         while (common < cur.length && cur[common] === next[common]) common++;
         while (cur.length > common) {

@@ -1,6 +1,6 @@
 # workspaces.json
 
-Whether each claimed ticket gets its own git worktree, committed in `.miloops/workspaces.json`.
+Whether each claimed ticket gets its own git worktree, committed in `.teamtrail/workspaces.json`.
 
 Without the file, workspaces are off. Toggle them in **Settings → Workspaces**; `dir` can only be set in the file.
 
@@ -16,11 +16,11 @@ Without the file, workspaces are off. Toggle them in **Settings → Workspaces**
 
 ## Keys
 
-| Key         | Type        | Default             |                                                                                                                                                             |
-| ----------- | ----------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `v`         | `1`         | required            | File format version.                                                                                                                                        |
-| `worktrees` | boolean     | `false`             | `true` gives every claimed ticket a worktree on branch `miloops/<mission>/<n>`. With `false`, an agent can still ask for one per claim (`workspace: true`). |
-| `dir`       | folder path | `../<repo>.miloops` | Where worktrees go. A relative path starts from the repo root. Each worktree is `<dir>/<mission>-<n>`.                                                      |
+| Key         | Type        | Default               |                                                                                                                                                             |
+| ----------- | ----------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `v`         | `1`         | required              | File format version.                                                                                                                                        |
+| `worktrees` | boolean     | `false`               | `true` gives every claimed ticket a worktree on branch `teamtrail/<trail>/<n>`. With `false`, an agent can still ask for one per claim (`workspace: true`). |
+| `dir`       | folder path | `../<repo>.teamtrail` | Where worktrees go. A relative path starts from the repo root. Each worktree is `<dir>/<trail>-<n>`.                                                        |
 
 ## Errors
 

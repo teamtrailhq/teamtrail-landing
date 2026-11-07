@@ -1,4 +1,4 @@
-# Typecheck and build on every push and PR. The MILO avatar comes from the product repo, checked out next to this one.
+# Typecheck and build on every push and PR. The Scout avatar comes from the product repo, checked out next to this one.
 name: CI
 
 on:
@@ -19,8 +19,8 @@ jobs:
           path: landing
       - uses: actions/checkout@v4
         with:
-          repository: miloopshq/miloops
-          path: miloops
+          repository: teamtrailhq/teamtrail
+          path: teamtrail
       - uses: actions/setup-node@v4
         with:
           node-version: 22

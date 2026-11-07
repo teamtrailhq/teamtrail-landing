@@ -1,45 +1,51 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      try {
+        var t = localStorage.getItem('teamtrail-theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MILOOPS: Mission control for your AI coding agents</title>
+    <title>Teamtrail: The trail map for your AI coding agents</title>
     <meta
       name="description"
-      content="MILOOPS turns big work into a mission your AI coding agents work through together. MILO keeps every specialist briefed and brings you only the calls that need your judgment. Runs on your machine."
+      content="Teamtrail turns big work into a trail your AI coding agents work through together. Scout keeps every guide briefed and brings you only the calls that need your judgment. Runs on your machine."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="MILOOPS" />
-    <meta property="og:title" content="MILOOPS: Mission control for your AI coding agents" />
-    <meta property="og:description" content="You run the mission. MILO runs the crew." />
+    <meta property="og:site_name" content="Teamtrail" />
+    <meta property="og:title" content="Teamtrail: The trail map for your AI coding agents" />
+    <meta property="og:description" content="You run the trail. Scout runs the party." />
     <meta property="og:url" content="%SITE_URL%/" />
     <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="MILO, the MILOOPS operator, next to the MILOOPS wordmark." />
+    <meta property="og:image:alt" content="Scout, the Teamtrail trail lead, next to the Teamtrail wordmark." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta name="theme-color" content="#05090b" />
     <link rel="icon" href="/media/brand/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/media/brand/favicon-64.png" type="image/png" sizes="64x64" />
-    <link rel="apple-touch-icon" href="/media/brand/slack-icon-512.png" />
+    <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png" />
     <link
       rel="preload"
-      href="/node_modules/@fontsource/geist-pixel/files/geist-pixel-latin-400-normal.woff2"
+      href="/node_modules/@fontsource/londrina-solid/files/londrina-solid-latin-900-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2"
+      href="/node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2"
+      href="/node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -56,18 +62,18 @@
       <section class="hero" aria-labelledby="hero-title">
         <canvas class="field" data-field="hero" aria-hidden="true"></canvas>
         <div class="wrap hero__inner">
-          <span class="hero__badge" data-scramble>Mission control for AI coding agents</span>
+          <span class="hero__badge" data-scramble>The trail map for AI coding agents</span>
           <h1 id="hero-title" class="hero__title">
-            <span class="line">You run the mission.</span>
-            <span class="line"><span class="mark">MILO</span> runs the crew.</span>
+            <span class="line">You pick the destination.</span>
+            <span class="line">Your agents walk the trail.</span>
           </h1>
           <p class="hero__lede">
-            Turn big work into a mission your coding agents finish together. <span class="mark">MILO</span> keeps every
-            specialist briefed and unblocked, and only asks you for the calls that need your judgment.
+            Big work is a long trail, and agents get lost on long trails. <span class="mark">Scout</span> keeps the
+            whole party on one map, together, and only calls you back for the turns that are yours to make.
           </p>
           <div class="hero__actions" id="install">
             <!-- @include cmd -->
-            <a class="btn" href="#how">See how it works <span class="arrow" aria-hidden="true">↓</span></a>
+            <a class="btn" href="#how">See the route <span class="arrow" aria-hidden="true">↓</span></a>
           </div>
         </div>
       </section>
@@ -85,7 +91,7 @@
             loop
             playsinline
             preload="metadata"
-            aria-label="A day with MILOOPS: install it and connect Claude Code, describe an idea, MILO frames the mission, agents pick up the work, MILO briefs you when you come back, every decision lands in the Decisions log, and you answer agent questions in the inbox or from your coding agent."
+            aria-label="A day with Teamtrail: install it and connect Claude Code, describe an idea, Scout frames the trail, agents pick up the work, Scout briefs you when you come back, every decision lands in the Decisions log, and you answer agent questions in the inbox or from your coding agent."
           ></video>
         </figure>
       </div>
@@ -96,26 +102,27 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow"
-                ><span>Why <span class="mark">MILOOPS</span></span></span
+                ><span>Why <span class="mark">Teamtrail</span></span></span
               >
-              <h2 id="why-title">Big work doesn't fit in one chat.</h2>
+              <h2 id="why-title">Big work gets lost in one chat.</h2>
             </div>
             <p>
-              One agent in one chat handles a task. A real project needs dozens of decisions, several agents and you,
-              over days.
+              One agent in one chat can manage a short walk. A real project is a long trail: dozens of decisions,
+              several agents and you, over days.
             </p>
           </header>
           <ul class="trio reveal" role="list">
             <li>
               <span class="n">01</span>
-              <h3>Context evaporates</h3>
+              <h3>The trail goes cold</h3>
               <p>
-                Every new session starts from zero. What was tried, what was decided and why gets lost between chats.
+                Every new session starts from zero. What was tried, what was decided and why gets left behind between
+                chats.
               </p>
             </li>
             <li>
               <span class="n">02</span>
-              <h3>Agents wait on you, silently</h3>
+              <h3>Agents stop at a fork, silently</h3>
               <p>
                 An agent needs a call from you and stops. You find out an hour later, in a terminal you weren't
                 watching.
@@ -123,22 +130,24 @@
             </li>
             <li>
               <span class="n">03</span>
-              <h3>Nobody can say what's done</h3>
-              <p>Agents say “done”. Without checks and a record, you re-read everything before you can trust it.</p>
+              <h3>Nobody knows how far you got</h3>
+              <p>
+                Agents say “done”. Without checks and a record, you walk the whole route again before you can trust it.
+              </p>
             </li>
           </ul>
         </div>
       </section>
 
       <!-- CAST -->
-      <section class="section" id="crew" aria-labelledby="cast-title">
+      <section class="section" id="party" aria-labelledby="cast-title">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">The crew</span>
-              <h2 id="cast-title">A mission, a crew, and a sidekick that keeps them in step.</h2>
+              <span class="eyebrow">The party</span>
+              <h2 id="cast-title">A trail, a party, and a scout who keeps them together.</h2>
             </div>
-            <p>Every part of the work has a clear owner, so you steer the outcome instead of babysitting chats.</p>
+            <p>Every part of the work has a clear owner, so you steer the journey instead of herding chats.</p>
           </header>
           <div class="cast">
             <article class="role reveal">
@@ -148,7 +157,7 @@
                   ><i></i><i></i>
                 </div>
               </div>
-              <span class="role__kicker">The mission</span>
+              <span class="role__kicker">The trail</span>
               <h3>Big work, mapped as decisions</h3>
               <p>
                 Describe an idea and it becomes a map of tickets: what to research, what to decide, what to build, and
@@ -159,20 +168,20 @@
               <div class="role__visual" aria-hidden="true">
                 <div class="chips"><span>Claude Code</span><span>Codex</span><span>Reviewer</span><span>QA</span></div>
               </div>
-              <span class="role__kicker">The specialists</span>
-              <h3>Your agents, each on the right job</h3>
+              <span class="role__kicker">The guides</span>
+              <h3>Your agents, each on the right stretch</h3>
               <p>
                 Claude Code, Codex or any agent that speaks MCP picks up whatever is unblocked. A second agent reviews
                 the work.
               </p>
             </article>
             <article class="role reveal">
-              <div class="role__visual"><div data-milo aria-label="MILO"></div></div>
-              <span class="role__kicker"><span class="mark">MILO</span></span>
-              <h3>The sidekick that keeps everyone briefed</h3>
+              <div class="role__visual"><div data-scout aria-label="Scout"></div></div>
+              <span class="role__kicker"><span class="mark">Scout</span></span>
+              <h3>The guide who keeps everyone on the path</h3>
               <p>
-                <span class="mark">MILO</span> hands out work, keeps each specialist up to date, records every decision,
-                and briefs you when you come back.
+                <span class="mark">Scout</span> hands out work, keeps each agent up to date, records every decision, and
+                tells you what happened when you get back.
               </p>
             </article>
             <article class="role role--you reveal">
@@ -181,9 +190,11 @@
                   <small>WAITING ON YOU</small>What outcome would make this a clear yes for you?
                 </div>
               </div>
-              <span class="role__kicker">You, the operator</span>
-              <h3>Only the calls that need you</h3>
-              <p>Questions from every agent land in one inbox with suggested answers. Decide, and the crew moves on.</p>
+              <span class="role__kicker">You, the trail lead</span>
+              <h3>Only the turns that need you</h3>
+              <p>
+                Questions from every agent land in one inbox with suggested answers. Decide, and the party moves on.
+              </p>
             </article>
           </div>
         </div>
@@ -194,29 +205,29 @@
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">How a mission runs</span>
-              <h2 id="how-title">From an idea to verified work.</h2>
+              <span class="eyebrow">How a trail runs</span>
+              <h2 id="how-title">From trailhead to destination.</h2>
             </div>
-            <p>Five steps, in one command center that runs next to your code.</p>
+            <p>Five stages, on one map that runs next to your code.</p>
           </header>
           <div class="runs">
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/flow-05-new-mission.png"
+                  src="/media/flow-05-new-trail.png"
                   width="1576"
                   height="984"
                   loading="lazy"
                   decoding="async"
-                  alt="The New mission form with title, destination, notes and mode."
+                  alt="The New trail form with title, destination, notes and mode."
                 />
               </figure>
               <div class="run__copy">
                 <span class="run__n">01</span>
-                <h3>Describe the mission</h3>
+                <h3>Mark the destination</h3>
                 <p>
-                  Say what you want to build and what done looks like. Start it in the command center or in your agent's
-                  chat. <span class="mark">MILO</span> asks a few questions, then lays out the work in order.
+                  Say what you want to build and what done looks like. Start it in the Lookout or in your agent's chat.
+                  <span class="mark">Scout</span> asks a few questions, then draws the route.
                 </p>
                 <ul class="ticks">
                   <li data-n="01">Questions, decisions and building in one map</li>
@@ -228,7 +239,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-discovery.png"
+                  src="/media/lookout-discovery.png"
                   width="2754"
                   height="1722"
                   loading="lazy"
@@ -238,10 +249,10 @@
               </figure>
               <div class="run__copy">
                 <span class="run__n">02</span>
-                <h3>It learns your project first</h3>
+                <h3>Learn the terrain first</h3>
                 <p>
-                  Before anything is built, an agent looks at what you already have and writes a short brief: what
-                  exists, what could break and what it's assuming. You approve it, or ask for changes.
+                  Before anyone sets off, an agent looks at what you already have and writes a short brief: what exists,
+                  what could break and what it's assuming. You approve it, or ask for changes.
                 </p>
                 <ul class="ticks">
                   <li data-n="01">Nothing gets built until you approve the brief</li>
@@ -258,40 +269,40 @@
                   height="1226"
                   loading="lazy"
                   decoding="async"
-                  alt="The mission map with the first tickets charted and agents working on them."
+                  alt="The trail map with the first tickets charted and agents working on them."
                 />
               </figure>
               <div class="run__copy">
                 <span class="run__n">03</span>
-                <h3>Your agents take what's ready</h3>
+                <h3>The party sets off</h3>
                 <p>
-                  Agents pick up the work that's ready and work side by side. Each one gets what your project already
+                  Agents pick up the work that's ready and walk side by side. Each one carries what your project already
                   knows, so you never explain the same thing twice.
                 </p>
                 <ul class="ticks">
                   <li data-n="01">Each agent can work in its own copy of your project</li>
                   <li data-n="02">If an agent goes quiet, its work goes back in line</li>
-                  <li data-n="03">When the facts change, they propose a new plan for you to approve</li>
+                  <li data-n="03">When the ground changes, they propose a reroute for you to approve</li>
                 </ul>
               </div>
             </article>
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-hitl-conversation.png"
+                  src="/media/lookout-hitl-conversation.png"
                   width="772"
                   height="488"
                   loading="lazy"
                   decoding="async"
-                  alt="An agent's draft resolution waiting for the operator, with suggested replies."
+                  alt="An agent's draft resolution waiting for the trail lead, with suggested replies."
                 />
               </figure>
               <div class="run__copy">
                 <span class="run__n">04</span>
-                <h3>You make the calls that matter</h3>
+                <h3>You call the junctions</h3>
                 <p>
                   Everything that needs you waits in one list, most important first, with suggested answers. Reply in a
-                  click, or from your agent's chat with /milo inbox.
+                  click, or from your agent's chat with /scout inbox.
                 </p>
                 <ul class="ticks">
                   <li data-n="01">Only urgent questions interrupt you</li>
@@ -303,7 +314,7 @@
             <article class="run reveal">
               <figure class="shot">
                 <img
-                  src="/media/command-center-decisions.png"
+                  src="/media/lookout-decisions.png"
                   width="1236"
                   height="772"
                   loading="lazy"
@@ -313,15 +324,15 @@
               </figure>
               <div class="run__copy">
                 <span class="run__n">05</span>
-                <h3>Done means proven, and on the record</h3>
+                <h3>Arrive with proof</h3>
                 <p>
-                  You agree on what done means before work starts. Every point needs proof: your tests, a second agent's
-                  review, or your sign-off. Every decision is written down with the reasoning.
+                  You agree on what done means before anyone sets off. Every point needs proof: your tests, a second
+                  agent's review, or your sign-off. Every decision goes in the logbook, with the reasoning.
                 </p>
                 <ul class="ticks">
                   <li data-n="01">Your product's rules become points to prove</li>
                   <li data-n="02">Claude and Codex review each other's work</li>
-                  <li data-n="03">A report on how it went: time, your input, rework and cost</li>
+                  <li data-n="03">A trip report: time, your input, rework and cost</li>
                 </ul>
               </div>
             </article>
@@ -335,25 +346,25 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">What makes it different</span>
-              <h2 id="next-title">Built for missions that run for weeks.</h2>
+              <h2 id="next-title">Built for trails that take weeks.</h2>
             </div>
             <p>
-              Your agents can already write the code. <span class="mark">MILOOPS</span> is what lets you hand them the
-              big work and still sleep at night.
+              Your agents can already write the code. <span class="mark">Teamtrail</span> is what lets you send them on
+              the long route and still sleep at night.
             </p>
           </header>
           <div class="cards">
             <article class="card reveal">
               <div class="card__top"><span class="card__n">01 · Plans that adapt</span></div>
-              <h3>Plans that change when the facts do</h3>
+              <h3>Reroute when the ground changes</h3>
               <p>
-                Agents write down what they assume. When something turns out wrong, they propose a new plan, and they'll
-                even tell you when the goal itself is off. Nothing changes until you say yes.
+                Agents write down what they assume. When something turns out wrong, they propose a new route, and
+                they'll even tell you when you're climbing the wrong mountain. Nothing changes until you say yes.
               </p>
             </article>
             <article class="card reveal">
               <div class="card__top"><span class="card__n">02 · Your attention</span></div>
-              <h3>Only what needs you, in the right order</h3>
+              <h3>Only the turns that need you, in order</h3>
               <p>
                 Every question, approval and stuck task in one list, most important first, with the reason it matters.
                 Only urgent calls interrupt, and you decide which calls are always yours.
@@ -361,17 +372,17 @@
             </article>
             <article class="card reveal">
               <div class="card__top"><span class="card__n">03 · Proof</span></div>
-              <h3>Done means proven, not claimed</h3>
+              <h3>Arrived means proven, not claimed</h3>
               <p>
-                Agree on what done means before work starts. Every point needs proof: your tests, your sign-off or a
+                Agree on what done means before anyone sets off. Every point needs proof: your tests, your sign-off or a
                 second agent. Claude and Codex check each other's work.
               </p>
             </article>
             <article class="card reveal">
-              <div class="card__top"><span class="card__n">04 · A real crew</span></div>
-              <h3>Many agents, no collisions</h3>
+              <div class="card__top"><span class="card__n">04 · A real party</span></div>
+              <h3>Many agents, nobody lost</h3>
               <p>
-                Each agent works in its own copy of your project, and <span class="mark">MILO</span> warns you before
+                Each agent works in its own copy of your project, and <span class="mark">Scout</span> warns you before
                 two of them touch the same files. You review every branch; nothing is merged for you.
               </p>
             </article>
@@ -391,22 +402,22 @@
               <h2 id="not-title">Not another agent orchestrator.</h2>
             </div>
             <p>
-              Orchestrators help agents do more work. <span class="mark">MILOOPS</span> helps you trust more work with
+              Orchestrators help agents do more work. <span class="mark">Teamtrail</span> helps you trust more work with
               less of your attention.
             </p>
           </header>
           <div class="cards">
             <article class="card reveal">
               <div class="card__top"><span class="card__n">Not for quick fixes</span></div>
-              <h3>Small tasks don't need a mission</h3>
+              <h3>A short walk doesn't need a map</h3>
               <p>
-                A five-minute change? Just ask your agent. <span class="mark">MILOOPS</span> is for work that runs for
+                A five-minute change? Just ask your agent. <span class="mark">Teamtrail</span> is for work that runs for
                 days, across many agents.
               </p>
             </article>
             <article class="card reveal">
               <div class="card__top"><span class="card__n">Not autopilot</span></div>
-              <h3>The big calls stay yours</h3>
+              <h3>The big turns stay yours</h3>
               <p>
                 Agents handle the small decisions and write each one down, so you can check or change it. Anything that
                 matters comes to you.
@@ -416,33 +427,31 @@
               <div class="card__top"><span class="card__n">Not a runner</span></div>
               <h3>It never starts agents on your machine</h3>
               <p>
-                Your agents run where they always do, in your terminal. Agents that keep working in the background, with
-                your laptop closed, are what <a href="/cloud/">Cloud</a> is for.
+                Your agents run where they always do, in your terminal. Agents that keep walking with your laptop closed
+                are what <a href="/cloud/">Cloud</a> is for.
               </p>
             </article>
             <article class="card reveal">
               <div class="card__top"><span class="card__n">Not a feed</span></div>
-              <h3>No scrolling through everything agents did</h3>
-              <p>You see what needs you, in order, and why. The rest is on record when you want it.</p>
+              <h3>No play-by-play of every step</h3>
+              <p>You see what needs you, in order, and why. The rest is in the logbook when you want it.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- SPECIALISTS -->
-      <section class="section" id="specialists" aria-labelledby="spec-title">
+      <!-- GUIDES -->
+      <section class="section" id="guides" aria-labelledby="spec-title">
         <div class="wrap split">
           <div class="split__copy reveal">
-            <div><span class="eyebrow">Specialist marketplace</span> <span class="tag tag--soon">Coming</span></div>
-            <h2 id="spec-title">Hire specialists for your missions.</h2>
+            <div><span class="eyebrow">Guides</span> <span class="tag tag--soon">Coming</span></div>
+            <h2 id="spec-title">Bring a guide for the hard stretches.</h2>
             <p>
-              Every mission needs different expertise. Add a security reviewer, a QA lead or a docs writer to your crew,
-              and any agent that picks up their tickets works to their checklist.
+              Every trail has its own terrain. Add a security reviewer, a QA lead or a docs writer to your party, and
+              any agent that picks up their tickets works to their checklist.
             </p>
             <div>
-              <a class="btn" href="/specialists/"
-                >Meet the specialists <span class="arrow" aria-hidden="true">→</span></a
-              >
+              <a class="btn" href="/guides/">Meet the guides <span class="arrow" aria-hidden="true">→</span></a>
             </div>
           </div>
           <ul class="roster reveal" role="list">
@@ -480,20 +489,20 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">Yours to run</span>
-              <h2 id="trust-title">Runs on your machine. Works with your agents.</h2>
+              <h2 id="trust-title">Your map, on your machine, with your agents.</h2>
             </div>
           </header>
           <ul class="facts reveal" role="list">
             <li>
               <h3>Local-first</h3>
               <p>
-                <span class="mark">MILOOPS</span> runs on your computer. There is no
-                <span class="mark">MILOOPS</span> server and no account.
+                <span class="mark">Teamtrail</span> runs on your computer. There is no
+                <span class="mark">Teamtrail</span> server and no account.
               </p>
             </li>
             <li>
               <h3>Plain files</h3>
-              <p>Missions and decisions are markdown in your repo, or issues in GitHub or Linear.</p>
+              <p>Trails and decisions are markdown in your repo, or issues in GitHub or Linear.</p>
             </li>
             <li>
               <h3>Any agent</h3>
@@ -517,50 +526,49 @@
           <div class="faq__list reveal">
             <details>
               <summary>
-                <span class="q">What is <span class="mark">MILOOPS</span>?</span>
+                <span class="q">What is <span class="mark">Teamtrail</span>?</span>
               </summary>
               <div>
-                A command center for planning and finishing big projects with AI coding agents. It runs on your computer
-                and shows every mission, ticket, agent and open question in one window.
+                A trail map for planning and finishing big projects with AI coding agents. It runs on your computer and
+                shows every trail, ticket, agent and open question in one window.
               </div>
             </details>
             <details>
               <summary>
-                <span class="q">Who is <span class="mark">MILO</span>?</span>
+                <span class="q">Who is <span class="mark">Scout</span>?</span>
               </summary>
               <div>
-                <span class="mark">MILO</span>, the Mission Intelligence &amp; Logistics Operator, is your sidekick in
-                the command center. It hands out work, relays agents' questions to you and briefs you on the mission. It
-                never answers on your behalf.
+                <span class="mark">Scout</span> is your guide in the Lookout. It hands out work, relays agents'
+                questions to you and tells you where the trail stands. It never answers on your behalf.
               </div>
             </details>
             <details>
               <summary><span class="q">Which agents does it work with?</span></summary>
               <div>
                 Any AI coding agent that connects through MCP. Claude Code and Codex have first-class support: one
-                command connects them and adds the <code>/milo</code> command to their chat.
+                command connects them and adds the <code>/scout</code> command to their chat.
               </div>
             </details>
             <details>
               <summary><span class="q">Can I stay in my agent's chat?</span></summary>
               <div>
-                Yes. <code>/milo new</code> turns an idea into a mission, <code>/milo resume</code> picks up the work,
-                <code>/milo status</code> tells you where things stand, and <code>/milo inbox</code> lets you answer
-                waiting questions in the chat. The command center shows it all live.
+                Yes. <code>/scout new</code> turns an idea into a trail, <code>/scout resume</code> picks up the work,
+                <code>/scout status</code> tells you where things stand, and <code>/scout inbox</code> lets you answer
+                waiting questions in the chat. The Lookout shows it all live.
               </div>
             </details>
             <details>
               <summary><span class="q">Does my data leave my machine?</span></summary>
               <div>
-                <span class="mark">MILOOPS</span> keeps your plans in your project folder. If you connect GitHub or
+                <span class="mark">Teamtrail</span> keeps your plans in your project folder. If you connect GitHub or
                 Linear, your computer talks to them directly and your keys stay on your computer. Your agents still use
                 their own AI services.
               </div>
             </details>
             <details>
-              <summary><span class="q">Can I set it up without the command center?</span></summary>
+              <summary><span class="q">Can I set it up without the Lookout?</span></summary>
               <div>
-                Yes. Everything <span class="mark">MILOOPS</span> reads is a plain file in your repo or a command in
+                Yes. Everything <span class="mark">Teamtrail</span> reads is a plain file in your repo or a command in
                 your terminal: checks, what's always yours, interruptions, workspaces and trackers. The
                 <a href="/docs/">docs</a> cover every setting, with examples.
               </div>
@@ -575,28 +583,28 @@
             </details>
             <details>
               <summary>
-                <span class="q">Does <span class="mark">MILOOPS</span> run my agents for me?</span>
+                <span class="q">Does <span class="mark">Teamtrail</span> run my agents for me?</span>
               </summary>
               <div>
                 Not on your machine. You start Claude Code or Codex as usual, and they connect to
-                <span class="mark">MILOOPS</span>. If you want agents that keep working in the background while you're
-                away, that's <a href="/cloud/">MILOOPS Cloud</a>, coming soon.
+                <span class="mark">Teamtrail</span>. If you want agents that keep working in the background while you're
+                away, that's <a href="/cloud/">Teamtrail Cloud</a>, coming soon.
               </div>
             </details>
             <details>
               <summary><span class="q">Can several agents work at the same time?</span></summary>
               <div>
                 Yes. Each one can get its own copy of your project on its own branch, and you hear about it before two
-                agents change the same files. If they do, <span class="mark">MILOOPS</span> suggests a ticket to bring
+                agents change the same files. If they do, <span class="mark">Teamtrail</span> suggests a ticket to bring
                 the work together. It never merges anything for you.
               </div>
             </details>
             <details>
-              <summary><span class="q">What if the plan turns out to be wrong?</span></summary>
+              <summary><span class="q">What if the route turns out to be wrong?</span></summary>
               <div>
-                An agent that finds a wrong assumption proposes a new plan, with the evidence and a before-and-after on
+                An agent that finds a wrong assumption proposes a reroute, with the evidence and a before-and-after on
                 the map. The work it affects pauses, and nothing changes until you approve. If the work already exists
-                or the mission aims at the wrong problem, an agent can say so and suggest a better goal.
+                or the trail is on the wrong mountain, an agent can say so and suggest a better goal.
               </div>
             </details>
             <details>
@@ -617,14 +625,14 @@
             </details>
             <details>
               <summary><span class="q">Is it free?</span></summary>
-              <div>Yes. <span class="mark">MILOOPS</span> is free to use and runs on your computer.</div>
+              <div>Yes. <span class="mark">Teamtrail</span> is free to use and runs on your computer.</div>
             </details>
             <details>
               <summary><span class="q">How do I install it?</span></summary>
               <div>
-                Run <code>npx miloops-cli</code> in your project folder (Node.js 20 or newer). Then connect your agent
-                with <code>npx miloops-cli connect claude</code> or <code>npx miloops-cli connect codex</code>. Pick
-                Demo in setup to look around a ready-made mission first.
+                Run <code>npx teamtrail</code> in your project folder (Node.js 20 or newer). Then connect your agent
+                with <code>npx teamtrail connect claude</code> or <code>npx teamtrail connect codex</code>. Pick Demo in
+                setup to look around a ready-made trail first.
               </div>
             </details>
           </div>
@@ -635,10 +643,10 @@
       <section class="final" aria-labelledby="final-title">
         <canvas class="field" data-field="final" data-intensity="0.55" aria-hidden="true"></canvas>
         <div class="wrap final__inner reveal">
-          <h2 id="final-title">Ready for your first mission?</h2>
+          <h2 id="final-title">Ready to hit the trail?</h2>
           <p>
-            One command in your project folder. The command center opens in your browser and
-            <span class="mark">MILO</span> walks you through the rest.
+            One command in your project folder. The Lookout opens in your browser and
+            <span class="mark">Scout</span> walks you through the rest.
           </p>
           <!-- @include cmd -->
         </div>

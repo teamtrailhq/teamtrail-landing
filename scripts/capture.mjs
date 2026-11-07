@@ -125,11 +125,11 @@ if (want('video')) {
 
   for (const [section, hold] of [
     ['#why', 1600],
-    ['#crew', 2000],
+    ['#party', 2000],
     ['#how', 1400],
     ['#how .run:nth-child(3)', 1600],
     ['#next', 2000],
-    ['#specialists', 2000],
+    ['#guides', 2000],
     ['#trust', 1600],
   ]) {
     await scrollTo(section, 1800);

@@ -1,5 +1,5 @@
 # Deploys the landing to Vercel with the Vercel CLI. Pushes to main deploy production; PRs get a preview URL
-# posted as a comment. The MILO avatar comes from the product repo, checked out next to this one.
+# posted as a comment. The Scout avatar comes from the product repo, checked out next to this one.
 # Secrets: VERCEL_TOKEN (vercel.com/account/tokens), VERCEL_ORG_ID, VERCEL_PROJECT_ID (.vercel/project.json).
 name: Deploy
 
@@ -43,8 +43,8 @@ jobs:
       - if: steps.ready.outputs.ok
         uses: actions/checkout@v4
         with:
-          repository: miloopshq/miloops
-          path: miloops
+          repository: teamtrailhq/teamtrail
+          path: teamtrail
       - if: steps.ready.outputs.ok
         uses: actions/setup-node@v4
         with:

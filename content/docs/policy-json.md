@@ -1,6 +1,6 @@
 # policy.json
 
-What agents may decide on their own and what always comes to you, committed in `.miloops/policy.json`.
+What agents may decide on their own and what always comes to you, committed in `.teamtrail/policy.json`.
 
 Without the file, the defaults below apply. Edit it in **Settings → Risk policy** or by hand.
 

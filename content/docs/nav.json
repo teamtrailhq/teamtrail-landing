@@ -6,18 +6,18 @@
         { "slug": "introduction", "title": "Introduction" },
         { "slug": "install", "title": "Install" },
         { "slug": "connect-your-agent", "title": "Connect your agent" },
-        { "slug": "first-mission", "title": "Your first mission" }
+        { "slug": "first-trail", "title": "Your first trail" }
       ]
     },
     {
       "title": "Concepts",
       "pages": [
-        { "slug": "missions-and-tickets", "title": "Missions and tickets" },
-        { "slug": "miloops-folder", "title": "The .miloops folder" },
+        { "slug": "trails-and-tickets", "title": "Trails and tickets" },
+        { "slug": "teamtrail-folder", "title": "The .teamtrail folder" },
         { "slug": "discovery-and-knowledge", "title": "Discovery and knowledge" },
         { "slug": "waiting-on-you", "title": "Waiting on you" },
         { "slug": "verification", "title": "Verification and criteria" },
-        { "slug": "adaptive-missions", "title": "Assumptions and replans" },
+        { "slug": "adaptive-trails", "title": "Assumptions and reroutes" },
         { "slug": "parallel-work", "title": "Parallel work" }
       ]
     },
@@ -37,7 +37,7 @@
       "title": "Reference",
       "pages": [
         { "slug": "cli", "title": "CLI commands" },
-        { "slug": "milo-commands", "title": "/milo commands" },
+        { "slug": "scout-commands", "title": "/scout commands" },
         { "slug": "mcp-tools", "title": "MCP tools" },
         { "slug": "file-formats", "title": "File formats" },
         { "slug": "environment-variables", "title": "Environment variables" }

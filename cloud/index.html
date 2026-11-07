@@ -1,16 +1,22 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      try {
+        var t = localStorage.getItem('teamtrail-theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MILOOPS Cloud: your next big idea, running while you're away</title>
+    <title>Teamtrail Cloud: your next big idea, running while you're away</title>
     <meta
       name="description"
-      content="MILOOPS Cloud runs your missions for you. Bring your Claude or ChatGPT plan, connect GitHub, describe the idea and close the laptop. MILO keeps the agents on track and asks you only what matters, on your phone. Coming soon: join the waitlist."
+      content="Teamtrail Cloud runs your trails for you. Bring your Claude or ChatGPT plan, connect GitHub, describe the idea and close the laptop. Scout keeps the agents on track and asks you only what matters, on your phone. Coming soon: join the waitlist."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="MILOOPS" />
-    <meta property="og:title" content="MILOOPS Cloud: your next big idea, running while you're away" />
+    <meta property="og:site_name" content="Teamtrail" />
+    <meta property="og:title" content="Teamtrail Cloud: your next big idea, running while you're away" />
     <meta
       property="og:description"
       content="Bring your Claude or ChatGPT plan, connect GitHub, describe the idea and close the laptop. Coming soon."
@@ -19,7 +25,7 @@
     <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="MILO, the MILOOPS operator, next to the MILOOPS wordmark." />
+    <meta property="og:image:alt" content="Scout, the Teamtrail trail lead, next to the Teamtrail wordmark." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta name="theme-color" content="#05090b" />
@@ -27,21 +33,21 @@
     <link rel="icon" href="/media/brand/favicon-64.png" type="image/png" sizes="64x64" />
     <link
       rel="preload"
-      href="/node_modules/@fontsource/geist-pixel/files/geist-pixel-latin-400-normal.woff2"
+      href="/node_modules/@fontsource/londrina-solid/files/londrina-solid-latin-900-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2"
+      href="/node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2"
+      href="/node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -66,15 +72,15 @@
 
         <div class="wrap hero__inner">
           <div class="cloud-stage" data-cloud-stage aria-hidden="true">
-            <span class="cloud-stage__milo" data-cloud-milo data-size="3"></span>
+            <span class="cloud-stage__scout" data-cloud-scout data-size="2.4"></span>
             <span class="cloud-stage__cloud" data-cloud-big data-scale="7"></span>
             <span class="sticker">Coming soon</span>
           </div>
-          <span class="hero__badge"><span class="mark" data-scramble>MILOOPS Cloud</span></span>
+          <span class="hero__badge"><span class="mark" data-scramble>Teamtrail Cloud</span></span>
           <h1 id="page-title">Your next big idea, running while you're away.</h1>
           <p class="hero__lede">
-            <span class="mark">MILOOPS Cloud</span> runs your missions for you. Bring your Claude or ChatGPT plan,
-            connect GitHub, describe the idea and close the laptop. <span class="mark">MILO</span> keeps the agents on
+            <span class="mark">Teamtrail Cloud</span> runs your trails for you. Bring your Claude or ChatGPT plan,
+            connect GitHub, describe the idea and close the laptop. <span class="mark">Scout</span> keeps the agents on
             track and asks you only what matters, on your phone.
           </p>
           <div class="hero__actions">
@@ -92,7 +98,7 @@
           <header class="head head--center reveal">
             <div class="head__title">
               <span class="eyebrow">Away from the desk</span>
-              <h2 id="s-away">Close the laptop. The mission keeps moving.</h2>
+              <h2 id="s-away">Close the laptop. The party keeps walking.</h2>
             </div>
             <p>
               Your agents work in the cloud, not on your machine. When one needs a decision, it reaches you wherever you
@@ -110,13 +116,11 @@
             <li class="journey__link" aria-hidden="true"><i></i><i></i><i></i></li>
             <li>
               <span class="journey__art journey__art--cloud" aria-hidden="true">
-                <span class="journey__milo" data-cloud-mid-milo></span>
+                <span class="journey__scout" data-cloud-mid-scout></span>
                 <span data-cloud-mid></span>
               </span>
-              <h3><span class="mark">MILOOPS Cloud</span></h3>
-              <p>
-                Agents work the mission. <span class="mark">MILO</span> keeps the plan, the evidence and the record.
-              </p>
+              <h3><span class="mark">Teamtrail Cloud</span></h3>
+              <p>Agents work the trail. <span class="mark">Scout</span> keeps the plan, the evidence and the record.</p>
             </li>
             <li class="journey__link" aria-hidden="true"><i></i><i></i><i></i></li>
             <li>
@@ -152,8 +156,8 @@
               <span class="n">02</span>
               <h3>Describe the idea</h3>
               <p>
-                <span class="mark">MILO</span> asks a few questions to frame it. Agents look at what exists, write the
-                plan and turn it into a mission of decisions and work.
+                <span class="mark">Scout</span> asks a few questions to frame it. Agents look at what exists, write the
+                plan and turn it into a trail of decisions and work.
               </p>
             </li>
             <li>
@@ -161,7 +165,7 @@
               <h3>Answer from anywhere</h3>
               <p>
                 Agents work in their own cloud workspaces and open pull requests. You get the questions that matter, and
-                a briefing of what changed.
+                a trip report of what changed.
               </p>
             </li>
           </ul>
@@ -174,31 +178,31 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow"
-                ><span>Two ways to run <span class="mark">MILOOPS</span></span></span
+                ><span>Two ways to run <span class="mark">Teamtrail</span></span></span
               >
-              <h2 id="s-modes">Same <span class="mark">MILO</span>. Your machine, or ours.</h2>
+              <h2 id="s-modes">Same <span class="mark">Scout</span>. Your machine, or ours.</h2>
             </div>
-            <p>Both run the same engine, and your missions move between them as plain files.</p>
+            <p>Both run the same engine, and your trails move between them as plain files.</p>
           </header>
           <div class="modes reveal">
             <article class="mode">
               <span class="tag tag--now">Free</span>
-              <h3><span class="mark">MILOOPS Local</span></h3>
+              <h3><span class="mark">Teamtrail Local</span></h3>
               <p>For developers who live in the terminal.</p>
               <ul role="list">
                 <li>Runs on your machine, next to your repo</li>
                 <li>Your agents, in your own Claude Code or Codex sessions</li>
-                <li>Missions are plain files in your repo</li>
+                <li>Trails are plain files in your repo</li>
               </ul>
             </article>
             <article class="mode mode--cloud">
               <span class="tag tag--soon">Coming soon</span>
-              <h3><span class="mark">MILOOPS Cloud</span></h3>
+              <h3><span class="mark">Teamtrail Cloud</span></h3>
               <p>For anyone with a big idea who doesn't want to run anything.</p>
               <ul role="list">
                 <li>Hosted for you, always on</li>
                 <li>Agents run in isolated cloud workspaces</li>
-                <li>Questions and briefings on your phone</li>
+                <li>Questions and trip reports on your phone</li>
               </ul>
             </article>
           </div>
@@ -233,7 +237,7 @@
             <li>
               <h3>Take it home anytime</h3>
               <p>
-                Export your missions as plain files and keep going with <span class="mark">MILOOPS Local</span>, for
+                Export your trails as plain files and keep going with <span class="mark">Teamtrail Local</span>, for
                 free.
               </p>
             </li>
@@ -246,16 +250,16 @@
         <canvas class="field" data-field="final" data-intensity="0.55" aria-hidden="true"></canvas>
         <div class="wrap final__inner reveal">
           <span class="tag tag--soon">Coming soon</span>
-          <h2 id="s-wait">Be first on <span class="mark">MILOOPS Cloud</span>.</h2>
+          <h2 id="s-wait">Be first on <span class="mark">Teamtrail Cloud</span>.</h2>
           <p>
-            We'll email you once, when Cloud opens. Until then, <span class="mark">MILOOPS Local</span> is free to run
+            We'll email you once, when Cloud opens. Until then, <span class="mark">Teamtrail Local</span> is free to run
             on your own machine.
           </p>
           <form
             class="waitlist"
             data-waitlist
             data-list="cloud"
-            data-done="You’re on the list. We’ll email you when MILOOPS Cloud opens."
+            data-done="You’re on the list. We’ll email you when Teamtrail Cloud opens."
           >
             <input
               type="email"

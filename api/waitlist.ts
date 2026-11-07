@@ -1,7 +1,7 @@
 // Vercel serverless function: POST /api/waitlist adds an email to a Resend audience. Server-only env (Vercel
 // project settings, or .env.local in dev):
 //   RESEND_API_KEY            a Resend API key with access to Audiences
-//   RESEND_AUDIENCE_ID        the audience that collects waitlist signups (/specialists, and the fallback)
+//   RESEND_AUDIENCE_ID        the audience that collects waitlist signups (/guides, and the fallback)
 //   RESEND_CLOUD_AUDIENCE_ID  optional: a separate audience for the /cloud waitlist (`list: "cloud"`)
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const json = (status: number, body: unknown) =>

@@ -1,40 +1,104 @@
-@import '@fontsource/geist-pixel/400.css';
-@import '@fontsource-variable/ibm-plex-sans';
-@import '@fontsource-variable/geist-mono';
+@import '@fontsource/londrina-solid/400.css';
+@import '@fontsource/londrina-solid/900.css';
+@import '@fontsource-variable/figtree';
+@import '@fontsource-variable/jetbrains-mono';
 
-/* Three fonts, like the app: Geist Pixel as the accent (hero, section headings, logo), IBM Plex Sans for
- * everything else, Geist Mono for commands and code. */
+/* Three fonts, like the app: Londrina Solid for titles and the logo, Figtree for everything else, JetBrains Mono
+ * for commands and code. Colours follow the visitor's choice or, until they choose, their system. */
 :root {
-  --bg: #05090b;
-  --bg-2: #081013;
-  --panel: #0a1316;
-  --line: rgba(128, 164, 172, 0.14);
-  --line-2: rgba(128, 164, 172, 0.26);
-  --text: #b9c9cc;
-  --text-hi: #eef4f5;
-  --dim: #8598a0;
-  --accent: #84b6c2;
-  --accent-rgb: 132, 182, 194;
-  --copper: #c98b5e;
-  --copper-hi: #d9a07a;
-  --urgent: #ff4d42;
+  color-scheme: light;
+  --bg: #f3f1e7;
+  --bg-2: #ede7d2;
+  --panel: #fbfaf4;
+  --line: rgba(76, 78, 58, 0.18);
+  --line-2: rgba(76, 78, 58, 0.36);
+  --text: #38443c;
+  --text-hi: #1b2620;
+  --dim: #5e6a60;
+  --accent: #22627a;
+  --accent-rgb: 34, 98, 122;
+  --copper: #3f6b45;
+  --copper-hi: #345a3a;
+  --copper-rgb: 63, 107, 69;
+  --on-copper: #ffffff;
+  --blaze: #c8581e;
+  --tt-keyline: transparent;
+  --lede: #4a5f4e;
+  --urgent: #c4301f;
+  --urgent-rgb: 196, 48, 31;
+  --bg-rgb: 243, 241, 231;
+  --shadow: rgba(58, 52, 34, 0.28);
 
-  --pixel: 'Geist Pixel', 'IBM Plex Sans Variable', ui-monospace, monospace;
-  --sans: 'IBM Plex Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --code: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --display: 'Londrina Solid', 'Figtree Variable', sans-serif;
+  --sans: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --fs-label: 12px;
   --fs-small: 15px;
   --fs-body: 17px;
   --fs-lede: clamp(18px, 1.5vw, 20px);
-  --fs-h3: 21px;
-  --fs-h2: clamp(32px, 4vw, 52px);
-  --fs-hero: clamp(40px, 5.6vw, 82px);
+  --fs-h3: 23px;
+  --fs-h2: clamp(40px, 5.6vw, 76px);
+  --fs-hero: clamp(50px, 8.2vw, 124px);
 
   --wrap: 1200px;
   --gutter: clamp(20px, 4vw, 40px);
   --section: clamp(96px, 12vw, 160px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+/* Night follows the visitor's system until they choose with the switch in the nav (src/theme.ts). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='day']) {
+    color-scheme: dark;
+    --bg: #101815;
+    --bg-2: #131c18;
+    --panel: #17211c;
+    --line: rgba(150, 170, 155, 0.16);
+    --line-2: rgba(150, 170, 155, 0.32);
+    --text: #c3cdc1;
+    --text-hi: #eaeee3;
+    --dim: #93a497;
+    --accent: #7fc3d8;
+    --accent-rgb: 127, 195, 216;
+    --copper: #8fbf84;
+    --copper-hi: #a4cf99;
+    --copper-rgb: 143, 191, 132;
+    --on-copper: #101815;
+    --blaze: #e8833a;
+    --tt-keyline: #f1e8d3;
+    --lede: #b7cab3;
+    --urgent: #ff6b5c;
+    --urgent-rgb: 255, 107, 92;
+    --bg-rgb: 16, 24, 21;
+    --shadow: rgba(0, 0, 0, 0.5);
+  }
+}
+:root[data-theme='night'] {
+  color-scheme: dark;
+  --bg: #101815;
+  --bg-2: #131c18;
+  --panel: #17211c;
+  --line: rgba(150, 170, 155, 0.16);
+  --line-2: rgba(150, 170, 155, 0.32);
+  --text: #c3cdc1;
+  --text-hi: #eaeee3;
+  --dim: #93a497;
+  --accent: #7fc3d8;
+  --accent-rgb: 127, 195, 216;
+  --copper: #8fbf84;
+  --copper-hi: #a4cf99;
+  --copper-rgb: 143, 191, 132;
+  --on-copper: #101815;
+  --blaze: #e8833a;
+  --tt-keyline: #f1e8d3;
+  --lede: #b7cab3;
+  --urgent: #ff6b5c;
+  --urgent-rgb: 255, 107, 92;
+  --bg-rgb: 16, 24, 21;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='day'] {
+  color-scheme: light;
 }
 
 *,
@@ -97,14 +161,13 @@ ul[role='list'] {
 
 h1,
 h2 {
-  font-family: var(--pixel);
-  font-weight: 400;
+  font-family: var(--display);
+  font-weight: 900;
   color: var(--text-hi);
-  letter-spacing: -0.01em;
   line-height: 1.04;
 }
 
-/* Card titles, buttons and bold text: IBM Plex Sans semibold. */
+/* Card titles, buttons and bold text: Figtree semibold. */
 h3,
 strong,
 b {
@@ -185,7 +248,7 @@ code {
 }
 .tag--soon {
   color: var(--copper);
-  border-color: rgba(201, 139, 94, 0.45);
+  border-color: rgba(var(--copper-rgb), 0.45);
 }
 
 /* ---------- buttons ---------- */
@@ -200,7 +263,7 @@ code {
   border: 1px solid var(--line-2);
   background: transparent;
   color: var(--text-hi);
-  font: 400 var(--fs-small) var(--pixel);
+  font: 400 var(--fs-small) var(--sans);
   -webkit-text-stroke: 0.4px currentColor;
   letter-spacing: 0.06em;
   cursor: pointer;
@@ -217,12 +280,12 @@ code {
 .btn--primary {
   background: var(--copper);
   border-color: var(--copper);
-  color: #170b03;
+  color: var(--on-copper);
 }
 .btn--primary:hover {
   background: var(--copper-hi);
   border-color: var(--copper-hi);
-  color: #170b03;
+  color: var(--on-copper);
 }
 .btn--sm {
   min-height: 38px;
@@ -325,7 +388,7 @@ code {
   border-bottom: 1px solid transparent;
 }
 .nav.is-scrolled {
-  background: rgba(5, 9, 11, 0.82);
+  background: rgba(var(--bg-rgb), 0.82);
   backdrop-filter: blur(10px);
   border-bottom-color: var(--line);
 }
@@ -339,27 +402,15 @@ code {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--pixel);
-  font-size: 19px;
-  letter-spacing: 0.08em;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 23px;
   color: var(--text-hi);
+  letter-spacing: 0.018em;
 }
-.brand__mark {
-  width: 28px;
-  height: 25px;
-}
-.brand .ops {
-  color: var(--copper);
-}
-/* The nav mark: the detailed MILO (40px), mounted by main.ts. */
-.brand__milo {
+.brand__logo {
   display: block;
-  width: 40px;
-  height: 40px;
-}
-.brand__milo > .milo {
-  display: block;
-  margin: 0;
+  flex: none;
 }
 .nav__inner {
   position: relative;
@@ -371,11 +422,10 @@ code {
   transform: translateX(-50%);
   display: flex;
   gap: 32px;
-  font-family: var(--pixel);
+  font-family: var(--sans);
+  font-weight: 600;
   font-size: var(--fs-small);
-  letter-spacing: 0.06em;
   color: var(--dim);
-  font-weight: 400;
 }
 .nav__links a:hover,
 .nav__links a[aria-current='page'] {
@@ -418,7 +468,7 @@ code {
   margin-top: 10px;
   border: 1px solid var(--line-2);
   background: var(--bg-2);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 14px 34px var(--shadow);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4px);
@@ -460,6 +510,33 @@ code {
   align-items: center;
   gap: 10px;
 }
+.theme-switch {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  min-height: 38px;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--line-2);
+  border-radius: inherit;
+  cursor: pointer;
+}
+.theme-switch:hover {
+  color: var(--text-hi);
+  border-color: var(--text);
+}
+.theme-switch svg {
+  width: 18px;
+  height: 18px;
+}
+.theme-switch .moon,
+:root[data-look='night'] .theme-switch .sun {
+  display: none;
+}
+:root[data-look='night'] .theme-switch .moon {
+  display: block;
+}
 .nav__cta .gh {
   width: 15px;
   height: 15px;
@@ -484,9 +561,46 @@ code {
   height: 100%;
   pointer-events: none;
 }
+/* The grain needs headline size; on phones the type is small enough that it only hurts reading. */
+@media (max-width: 700px) {
+  .hero h1 {
+    filter: none;
+  }
+}
+.scene-switch {
+  position: absolute;
+  right: max(var(--gutter), calc((100% - var(--wrap)) / 2));
+  top: 84px;
+  z-index: 2;
+  display: flex;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+}
+.scene-switch button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--dim);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.scene-switch button:hover {
+  color: var(--text-hi);
+}
+.scene-switch button[aria-pressed='true'] {
+  color: var(--on-copper);
+  background: var(--copper);
+}
+.scene-switch svg {
+  width: 16px;
+  height: 16px;
+}
 .hero__inner {
   position: relative;
-  max-width: 1120px;
+  max-width: 1320px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -498,7 +612,7 @@ code {
   height: 28px;
   padding: 0 12px;
   border: 1px solid rgba(var(--accent-rgb), 0.45);
-  background: rgba(5, 9, 11, 0.7);
+  background: rgba(var(--bg-rgb), 0.7);
   font-family: var(--sans);
   font-size: 13px;
   letter-spacing: 0.04em;
@@ -506,7 +620,12 @@ code {
   font-weight: 500;
 }
 .hero h1 {
+  filter: url(#stamp);
   font-size: var(--fs-hero);
+  color: var(--copper);
+}
+.hero h1 .line:nth-child(2) {
+  color: var(--blaze);
 }
 .hero h1 .line {
   display: block;
@@ -520,7 +639,10 @@ code {
   max-width: 600px;
   font-size: var(--fs-lede);
   line-height: 1.6;
-  color: var(--text);
+  color: var(--lede);
+}
+.hero__lede .mark {
+  color: var(--copper);
 }
 .hero__actions {
   display: flex;
@@ -603,21 +725,44 @@ code {
   max-width: 620px;
 }
 
-/* Product shot inside a framed, striped panel. */
+/* Product shot on a map sheet: faint contour lines and a stitched border, like the Scout badge. */
 .shot {
   position: relative;
+  isolation: isolate;
   margin: 0;
-  padding: clamp(14px, 2.4vw, 32px);
-  border: 1px solid var(--line);
-  background: repeating-linear-gradient(90deg, rgba(var(--accent-rgb), 0.07) 0 3px, transparent 3px 9px), var(--bg-2);
+  padding: clamp(20px, 2.8vw, 36px);
+  border-radius: 14px;
+  background: var(--bg-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.shot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--copper);
+  opacity: 0.3;
+  -webkit-mask: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22480%22 height=%22360%22 fill=%22none%22 stroke=%22%23000%22%3E%3Cpath d=%22M0 40C80 10 150 70 240 44S400 12 480 40%22/%3E%3Cpath d=%22M0 104C70 74 170 138 250 104S410 78 480 104%22/%3E%3Cpath d=%22M0 176C90 208 150 142 240 170S390 214 480 176%22/%3E%3Cpath d=%22M0 250C60 222 140 286 230 252S420 224 480 250%22/%3E%3Cpath d=%22M0 322C100 292 170 350 260 322S400 296 480 322%22/%3E%3Cpath d=%22M322 150c26-18 72-14 84 8s-22 40-56 36-52-28-28-44z%22/%3E%3Cpath d=%22M338 160c14-10 42-8 50 4s-12 22-32 20-30-14-18-24z%22/%3E%3Cpath d=%22M62 224c20-16 60-12 68 6s-20 30-46 26-40-18-22-32z%22/%3E%3C/svg%3E');
+  mask: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22480%22 height=%22360%22 fill=%22none%22 stroke=%22%23000%22%3E%3Cpath d=%22M0 40C80 10 150 70 240 44S400 12 480 40%22/%3E%3Cpath d=%22M0 104C70 74 170 138 250 104S410 78 480 104%22/%3E%3Cpath d=%22M0 176C90 208 150 142 240 170S390 214 480 176%22/%3E%3Cpath d=%22M0 250C60 222 140 286 230 252S420 224 480 250%22/%3E%3Cpath d=%22M0 322C100 292 170 350 260 322S400 296 480 322%22/%3E%3Cpath d=%22M322 150c26-18 72-14 84 8s-22 40-56 36-52-28-28-44z%22/%3E%3Cpath d=%22M338 160c14-10 42-8 50 4s-12 22-32 20-30-14-18-24z%22/%3E%3Cpath d=%22M62 224c20-16 60-12 68 6s-20 30-46 26-40-18-22-32z%22/%3E%3C/svg%3E');
+}
+.shot::after {
+  content: '';
+  position: absolute;
+  inset: clamp(7px, 0.8vw, 11px);
+  border: 1.5px dashed rgba(var(--copper-rgb), 0.5);
+  border-radius: 9px;
+  pointer-events: none;
 }
 .shot img,
 .shot video {
   display: block;
   width: 100%;
   height: auto;
-  border: 1px solid var(--line-2);
-  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.9);
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px var(--line-2),
+    0 30px 80px -30px var(--shadow);
 }
 .shot--hero {
   margin-top: clamp(-40px, -3vw, -20px);
@@ -709,7 +854,7 @@ code {
 }
 .mini-map .q {
   border-color: var(--urgent);
-  box-shadow: 0 0 0 2px rgba(255, 77, 66, 0.2);
+  box-shadow: 0 0 0 2px rgba(var(--urgent-rgb), 0.2);
 }
 .chips {
   display: flex;
@@ -732,7 +877,7 @@ code {
   width: 80%;
   padding: 10px 12px;
   border: 1px solid var(--urgent);
-  background: rgba(255, 77, 66, 0.08);
+  background: rgba(var(--urgent-rgb), 0.08);
   font-size: 13px;
   line-height: 1.35;
   color: var(--text-hi);
@@ -753,14 +898,12 @@ code {
 .runs {
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
+  gap: clamp(40px, 6vw, 88px);
 }
 .run {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  background: var(--bg);
+  align-items: center;
 }
 .run:nth-child(even) {
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
@@ -779,11 +922,6 @@ code {
   justify-content: center;
   gap: 16px;
   padding: clamp(28px, 4vw, 56px);
-  border-left: 1px solid var(--line);
-}
-.run:nth-child(even) .run__copy {
-  border-left: 0;
-  border-right: 1px solid var(--line);
 }
 .run__n {
   display: grid;
@@ -867,7 +1005,7 @@ code {
   margin-top: 40px;
 }
 
-/* ---------- specialists teaser / page ---------- */
+/* ---------- guides teaser / page ---------- */
 
 .split {
   display: grid;
@@ -907,7 +1045,7 @@ code {
 .roster li > span:not(.spec) {
   grid-column: 2;
 }
-/* Each specialist is MILO in its own colour (the reviewer keeps MILO's). */
+/* Each guide is Scout in its own colour (the reviewer keeps Scout's). */
 .spec {
   grid-row: 1 / span 2;
   display: grid;
@@ -931,60 +1069,60 @@ code {
 .roster li:nth-child(6) .spec {
   animation-delay: -2.9s;
 }
-.spec .milo {
+.spec .scout {
   margin: 0;
 }
-.spec .milo-sprite {
+.spec .scout-sprite {
   outline: none !important;
 }
-/* /specialists hero: the crew floats over the mission field, clear of the copy. */
-.hero__crew {
+/* /guides hero: the party floats over the trail field, clear of the copy. */
+.hero__party {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
-.hero__crew .float {
+.hero__party .float {
   position: absolute;
   width: 80px;
   height: 80px;
-  animation: crew-drift 7s ease-in-out infinite;
+  animation: party-drift 7s ease-in-out infinite;
 }
-.hero__crew .float .milo-sprite {
-  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.8));
+.hero__party .float .scout-sprite {
+  filter: drop-shadow(0 10px 24px var(--shadow));
 }
-.hero__crew .float:nth-child(1) {
+.hero__party .float:nth-child(1) {
   left: 9%;
   top: 22%;
 }
-.hero__crew .float:nth-child(2) {
+.hero__party .float:nth-child(2) {
   left: 17%;
   top: 52%;
   animation-delay: -1.5s;
   animation-duration: 8s;
 }
-.hero__crew .float:nth-child(3) {
+.hero__party .float:nth-child(3) {
   left: 7%;
   top: 74%;
   animation-delay: -3s;
 }
-.hero__crew .float:nth-child(4) {
+.hero__party .float:nth-child(4) {
   right: 9%;
   top: 20%;
   animation-delay: -2s;
   animation-duration: 6.5s;
 }
-.hero__crew .float:nth-child(5) {
+.hero__party .float:nth-child(5) {
   right: 16%;
   top: 50%;
   animation-delay: -4s;
   animation-duration: 7.5s;
 }
-.hero__crew .float:nth-child(6) {
+.hero__party .float:nth-child(6) {
   right: 8%;
   top: 74%;
   animation-delay: -5s;
 }
-@keyframes crew-drift {
+@keyframes party-drift {
   0%,
   100% {
     transform: translate(0, 0);
@@ -997,7 +1135,7 @@ code {
   }
 }
 @media (max-width: 860px) {
-  .hero__crew {
+  .hero__party {
     display: none;
   }
 }
@@ -1005,22 +1143,6 @@ code {
   50% {
     transform: translateY(-3px);
   }
-}
-.spec--qa {
-  filter: sepia(1) saturate(3.2) hue-rotate(75deg) brightness(0.95);
-}
-.spec--security {
-  filter: sepia(1) saturate(4.5) hue-rotate(-38deg) brightness(0.9);
-}
-.spec--docs {
-  filter: sepia(1) saturate(3) hue-rotate(5deg);
-}
-.spec--architect {
-  filter: sepia(1) saturate(3) hue-rotate(225deg) brightness(1.05);
-}
-.spec--you {
-  filter: grayscale(1) brightness(0.7);
-  opacity: 0.55;
 }
 .roster b {
   font-family: var(--sans);
@@ -1259,7 +1381,7 @@ code {
     transition: none;
   }
   .spec,
-  .hero__crew .float {
+  .hero__party .float {
     animation: none;
   }
 }
@@ -1332,20 +1454,20 @@ code {
 
 /* ---------- /cloud ---------- */
 
-/* Nav: a tiny pixel "soon" chip next to Cloud. */
+/* Nav: a tiny "soon" chip next to Cloud. */
 .nav__soon {
   margin-left: 4px;
   padding: 1px 4px;
-  border: 1px solid rgba(201, 139, 94, 0.55);
-  font-family: var(--pixel);
+  border: 1px solid rgba(var(--copper-rgb), 0.55);
+  font-family: var(--sans);
+  font-weight: 600;
   font-size: 10px;
-  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--copper);
   vertical-align: 2px;
 }
 
-/* The sky: small pixel clouds drifting behind the copy. */
+/* The sky: small clouds drifting behind the copy. */
 .sky {
   position: absolute;
   inset: 0;
@@ -1398,7 +1520,7 @@ code {
   }
 }
 
-/* Hero: MILO sitting on the big cloud, both bobbing gently. */
+/* Hero: Scout sitting on the big cloud, both bobbing gently. */
 .cloud-stage {
   position: relative;
   display: grid;
@@ -1406,25 +1528,25 @@ code {
   margin-bottom: 4px;
   animation: cloud-bob 5s ease-in-out infinite;
 }
-.cloud-stage__milo {
+.cloud-stage__scout {
   position: relative;
   z-index: 1;
   width: 96px;
   height: 96px;
   margin-bottom: -34px;
 }
-.cloud-stage__milo .milo {
+.cloud-stage__scout .scout {
   margin: 0;
 }
-.cloud-stage__milo .milo-sprite {
+.cloud-stage__scout .scout-sprite {
   outline: none !important;
-  filter: drop-shadow(0 6px 0 rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 6px 0 var(--shadow));
 }
 .cloud-stage__cloud svg {
   display: block;
   max-width: 100%;
   height: auto;
-  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 14px 30px var(--shadow));
 }
 @keyframes cloud-bob {
   50% {
@@ -1432,7 +1554,7 @@ code {
   }
 }
 
-/* "Coming soon": a skewed pixel sticker with a hard shadow and notched corners. */
+/* "Coming soon": a skewed sticker with a hard shadow and notched corners. */
 .sticker {
   position: absolute;
   right: -46px;
@@ -1440,10 +1562,10 @@ code {
   z-index: 2;
   padding: 9px 14px 8px;
   background: var(--copper);
-  color: #170b03;
-  font-family: var(--pixel);
+  color: var(--on-copper);
+  font-family: var(--display);
+  font-weight: 900;
   font-size: 15px;
-  letter-spacing: 0.1em;
   text-transform: uppercase;
   white-space: nowrap;
   clip-path: polygon(
@@ -1460,7 +1582,7 @@ code {
     4px calc(100% - 4px),
     0 calc(100% - 4px)
   );
-  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(4px 4px 0 var(--shadow));
   transform: rotate(-9deg) skewX(-6deg);
   animation: sticker-wobble 4s ease-in-out infinite;
 }
@@ -1470,7 +1592,7 @@ code {
   }
 }
 
-/* Away from the desk: laptop → cloud → phone, with pixel packets flowing between. */
+/* Away from the desk: laptop → cloud → phone, with packets flowing between. */
 .journey {
   list-style: none;
   margin: 56px 0 0;
@@ -1507,24 +1629,25 @@ code {
 .journey__art--cloud {
   align-content: end;
 }
-.journey__milo {
+.journey__scout {
   width: 48px;
   height: 48px;
   margin-bottom: -18px;
   position: relative;
   z-index: 1;
 }
-.journey__milo .milo {
+.journey__scout .scout {
   margin: 0;
 }
-.journey__milo .milo-sprite {
+.journey__scout .scout-sprite {
   outline: none !important;
 }
 .zz {
   position: absolute;
   right: -6px;
   top: 0;
-  font-family: var(--pixel);
+  font-family: var(--display);
+  font-weight: 900;
   font-size: 18px;
   color: var(--accent);
   animation: zz-float 2.6s ease-in-out infinite;
@@ -1547,7 +1670,7 @@ code {
   width: 12px;
   height: 12px;
   background: var(--urgent);
-  box-shadow: 0 0 0 3px rgba(255, 77, 66, 0.25);
+  box-shadow: 0 0 0 3px rgba(var(--urgent-rgb), 0.25);
   animation: ping-blink 1.2s steps(1) infinite;
 }
 @keyframes ping-blink {
@@ -1603,14 +1726,13 @@ code {
   background: var(--panel);
 }
 .mode--cloud {
-  border-color: rgba(201, 139, 94, 0.45);
+  border-color: rgba(var(--copper-rgb), 0.45);
 }
 .mode h3 {
   margin: 6px 0 0;
-  font-family: var(--pixel);
-  font-weight: 400;
+  font-family: var(--display);
+  font-weight: 900;
   font-size: 26px;
-  letter-spacing: 0.04em;
   color: var(--text-hi);
 }
 .mode p {
@@ -1679,10 +1801,10 @@ code {
   }
 }
 
-/* The product name in running text: Geist Pixel, in white, wherever MILOOPS (Local, Cloud) is mentioned. */
+/* The product name in running text: bold, in white, wherever Teamtrail (Local, Cloud) is mentioned. */
 .mark {
-  font-family: var(--pixel);
-  font-weight: 400;
+  font-family: var(--sans);
+  font-weight: 600;
   color: var(--text-hi);
   white-space: nowrap;
 }
@@ -1726,7 +1848,7 @@ code {
   overflow-y: auto;
   border-bottom: 1px solid var(--line);
   background: var(--bg-2);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 18px 40px var(--shadow);
 }
 .nav__phone[hidden] {
   display: none;
@@ -1740,7 +1862,7 @@ code {
 .nav__phone-links > a {
   padding: 14px 0;
   border-bottom: 1px solid var(--line);
-  font: 400 var(--fs-body) var(--pixel);
+  font: 400 var(--fs-body) var(--sans);
   -webkit-text-stroke: 0.4px currentColor;
   letter-spacing: 0.06em;
   color: var(--text-hi);

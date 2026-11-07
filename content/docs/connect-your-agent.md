@@ -1,41 +1,41 @@
 # Connect your agent
 
-Register the MILOOPS MCP server with Claude Code or Codex, and add the `/milo` command.
+Register the Teamtrail MCP server with Claude Code or Codex, and add the `/scout` command.
 
-The `miloops-cli` package ships an MCP server, `miloops mcp`, that your agent starts over stdio. Run `miloops` in the repo as well to watch the agent live and answer its questions in the command center. The agent and the command center can start in any order.
+The `teamtrail` package ships an MCP server, `teamtrail mcp`, that your agent starts over stdio. Run `teamtrail` in the repo as well to watch the agent live and answer its questions in the Lookout. The agent and the Lookout can start in any order.
 
 ## Claude Code
 
 The quickest way:
 
 ```bash
-npx miloops-cli@next connect claude
+npx teamtrail@next connect claude
 ```
 
 This does three things:
 
-- registers the server: `claude mcp add miloops -- npx -y miloops-cli mcp`;
-- writes the `/milo` command to `.claude/commands/milo.md` in the repo;
+- registers the server: `claude mcp add teamtrail -- npx -y teamtrail mcp`;
+- writes the `/scout` command to `.claude/commands/scout.md` in the repo;
 - adds a silent `SessionStart` hook to `.claude/settings.local.json`, so tokens and cost come from the session transcript.
 
 Or register the server yourself:
 
 ```bash
-claude mcp add miloops -- npx -y miloops-cli mcp
+claude mcp add teamtrail -- npx -y teamtrail mcp
 ```
 
 ## Codex
 
 ```bash
-npx miloops-cli@next connect codex
+npx teamtrail@next connect codex
 ```
 
-It installs the command as a Codex prompt (`~/.codex/prompts/milo.md`, used as `/prompts:milo …`) and registers the server, or prints the config to add by hand to `~/.codex/config.toml`:
+It installs the command as a Codex prompt (`~/.codex/prompts/scout.md`, used as `/prompts:scout …`) and registers the server, or prints the config to add by hand to `~/.codex/config.toml`:
 
 ```toml
-[mcp_servers.miloops]
+[mcp_servers.teamtrail]
 command = "npx"
-args = ["-y", "miloops-cli", "mcp"]
+args = ["-y", "teamtrail", "mcp"]
 # ask_human waits for your answer; Codex cancels tool calls after 60 s by default.
 tool_timeout_sec = 900
 ```
@@ -47,14 +47,14 @@ With a custom `CODEX_HOME`, `connect codex` forwards it to the server so session
 Run the server over stdio in the repo:
 
 ```bash
-npx -y miloops-cli mcp
+npx -y teamtrail mcp
 ```
 
-| Flag                  | Default                                   |                                                            |
-| --------------------- | ----------------------------------------- | ---------------------------------------------------------- |
-| `--dir <path>`        | `./.miloops` (or `$MILOOPS_DIR`)          | Another tracker folder.                                    |
-| `--agent <callsign>`  | from the client (`claude-01`, `codex-01`) | Fix the session name.                                      |
-| `--lease-minutes <n>` | `15` (or `$MILOOPS_LEASE_MINUTES`)        | How long a claim lasts without a tool call from its agent. |
+| Flag                   | Default                                   |                                                            |
+| ---------------------- | ----------------------------------------- | ---------------------------------------------------------- |
+| `--dir <path>`         | `./.teamtrail` (or `$TEAMTRAIL_DIR`)      | Another tracker folder.                                    |
+| `--agent <trail name>` | from the client (`claude-01`, `codex-01`) | Fix the session name.                                      |
+| `--lease-minutes <n>`  | `15` (or `$TEAMTRAIL_LEASE_MINUTES`)      | How long a claim lasts without a tool call from its agent. |
 
 `connect claude|codex` also accepts `--dir <path>`; it's passed to the server only when it isn't the default.
 
@@ -69,4 +69,4 @@ Other agents can report usage through `report_progress` (tagged `SELF`). Nothing
 
 ## Next
 
-Start a mission: [Your first mission](/docs/first-mission/).
+Start a trail: [Your first trail](/docs/first-trail/).

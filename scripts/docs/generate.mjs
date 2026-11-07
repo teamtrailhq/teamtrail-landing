@@ -8,11 +8,11 @@ import { dirname, join } from 'node:path';
 import { frontmatter, renderMarkdown, summary } from './render.mjs';
 import { docsPage, mdUrl, pageUrl } from './template.mjs';
 
-const SITE = 'MILOOPS';
-const TAGLINE = 'A local command center for big work done by AI coding agents.';
+const SITE = 'Teamtrail';
+const TAGLINE = 'A local trail map for big work done by AI coding agents.';
 
 const placeholder = (title) =>
-  `# ${title}\n\nThis page is being written. In the meantime, see the [README on GitHub](https://github.com/miloopshq/miloops).\n`;
+  `# ${title}\n\nThis page is being written. In the meantime, see the [README on GitHub](https://github.com/teamtrailhq/teamtrail).\n`;
 
 function write(file, text) {
   mkdirSync(dirname(file), { recursive: true });

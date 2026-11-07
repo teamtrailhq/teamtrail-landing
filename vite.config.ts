@@ -19,13 +19,13 @@ function partials(): Plugin {
 
 /**
  * Absolute base for share cards (og:image must be an absolute URL): $SITE_URL, else the production URL Vercel
- * provides at build time, else the production address, https://miloops.vercel.app.
+ * provides at build time, else the production address, https://teamtrail.ai.
  */
 const SITE_URL = (
   process.env.SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : 'https://miloops.vercel.app')
+    : 'https://teamtrail.ai')
 ).replace(/\/$/, '');
 
 /**
@@ -82,7 +82,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         features: resolve(__dirname, 'features/index.html'),
-        specialists: resolve(__dirname, 'specialists/index.html'),
+        guides: resolve(__dirname, 'guides/index.html'),
         cloud: resolve(__dirname, 'cloud/index.html'),
       },
     },
