@@ -19,13 +19,13 @@ function partials(): Plugin {
 
 /**
  * Absolute base for share cards (og:image must be an absolute URL): $SITE_URL, else the production URL Vercel
- * provides at build time, else the production address, https://teamtrail.ai.
+ * provides at build time, else the production address, https://teamtrail.app.
  */
 const SITE_URL = (
   process.env.SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : 'https://teamtrail.ai')
+    : 'https://teamtrail.app')
 ).replace(/\/$/, '');
 
 /**

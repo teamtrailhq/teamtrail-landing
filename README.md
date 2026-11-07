@@ -1,6 +1,6 @@
 # Teamtrail landing page
 
-Static marketing site for [teamtrail.ai](https://teamtrail.ai): Vite + TypeScript, no framework. Three pages share one stylesheet and one script:
+Static marketing site for [teamtrail.app](https://teamtrail.app): Vite + TypeScript, no framework. Three pages share one stylesheet and one script:
 
 - `index.html`: Home, the story (trail, party, Scout, you) and what's coming.
 - `features/index.html`: everything that ships today, and the upcoming directions in detail.
@@ -66,7 +66,7 @@ The video is a scroll-through recording of Home and needs `ffmpeg` on `PATH`.
 
 ## Deploy
 
-Production is https://teamtrail.ai (Vercel project `teamtrail`). Pushes to `main` deploy it through `.github/workflows/deploy.yml` once the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets are set; by hand: `npx vercel build --prod && npx vercel deploy --prebuilt --prod`.
+Production is https://teamtrail.app (Vercel project `teamtrail`). Pushes to `main` deploy it through `.github/workflows/deploy.yml` once the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets are set; by hand: `npx vercel build --prod && npx vercel deploy --prebuilt --prod`.
 
 ## License
 
