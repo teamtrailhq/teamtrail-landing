@@ -78,7 +78,7 @@ export function installStage({ scout, logo, night }) {
         kind === 'title'
           ? `<div class="st-card"><img src="${logo}" alt="">${word}<p>The trail map for your AI coding agents.</p></div>`
           : `<div class="st-card"><img src="${logo}" alt="">${word}<code><span>$</span> npx teamtrail</code>
-             <small>Works with Claude Code, Codex and any MCP agent</small><small>teamtrail.ai</small></div>`;
+             <small>Works with Claude Code, Codex and any MCP agent</small><small>teamtrail.app</small></div>`;
       ov.classList.remove('off');
     },
     /** lines: [{ t, cls?, type?, pause? }]; `type` lines are typed after a prompt, the rest appear at once. */
