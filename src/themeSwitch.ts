@@ -1,5 +1,5 @@
 import { $$ } from './dom';
-import { chooseLook, followSystem, isNight, onThemeChange } from './theme';
+import { chooseLook, isNight, markLook, onThemeChange } from './theme';
 import { initThemedMedia } from './themedMedia';
 
 function label() {
@@ -9,7 +9,7 @@ function label() {
 
 /** The nav's sun and moon button, and everything that follows the theme. */
 export function initThemeSwitch() {
-  followSystem();
+  markLook();
   initThemedMedia();
   label();
   onThemeChange(label);

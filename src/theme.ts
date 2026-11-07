@@ -1,17 +1,11 @@
-/** The site's day or night look: the visitor's choice if they made one, otherwise their system. */
+/** The site's day or night look: night unless the visitor chose day. */
 export type Look = 'day' | 'night';
 
 const KEY = 'teamtrail-theme';
-const system = matchMedia('(prefers-color-scheme: dark)');
 const listeners = new Set<() => void>();
 
-function chosen(): Look | undefined {
-  const value = document.documentElement.dataset.theme;
-  return value === 'day' || value === 'night' ? value : undefined;
-}
-
 export function isNight() {
-  return (chosen() ?? (system.matches ? 'night' : 'day')) === 'night';
+  return document.documentElement.dataset.theme !== 'day';
 }
 
 export function onThemeChange(listener: () => void) {
@@ -19,7 +13,7 @@ export function onThemeChange(listener: () => void) {
 }
 
 function notify() {
-  document.documentElement.dataset.look = isNight() ? 'night' : 'day';
+  markLook();
   for (const listener of listeners) listener();
 }
 
@@ -33,10 +27,7 @@ export function chooseLook(look: Look) {
   notify();
 }
 
-/** Keeps followers in step when the system changes and the visitor hasn't chosen. */
-export function followSystem() {
+/** Marks the look on <html>, where the theme switch's icon reads it. */
+export function markLook() {
   document.documentElement.dataset.look = isNight() ? 'night' : 'day';
-  system.addEventListener('change', () => {
-    if (!chosen()) notify();
-  });
 }

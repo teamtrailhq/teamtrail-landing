@@ -1,7 +1,7 @@
-// The moving background behind page heroes and closing sections. The scene itself lives in src/hero/; this file
+// The moving background behind page heroes and closing sections. The map itself lives in src/hero/; this file
 // sizes the canvas, runs the clock, pauses off-screen and holds a still frame when motion is reduced.
 import { DAY, NIGHT } from './hero/common';
-import { SCENES, currentScene, onSceneChange } from './hero/scenes';
+import { drawTopo } from './hero/topo';
 import { isNight, onThemeChange } from './theme';
 
 type Options = {
@@ -11,7 +11,7 @@ type Options = {
   intensity?: number;
 };
 
-/** Far enough in that every scene has finished its opening and the map's trail has reached the X. */
+/** Far enough in that the trail has reached the X. */
 const STILL_FRAME = 22;
 
 export function mountHeroField(canvas: HTMLCanvasElement, opts: Options = {}) {
@@ -26,15 +26,13 @@ export function mountHeroField(canvas: HTMLCanvasElement, opts: Options = {}) {
 
   const now = () => (reduced ? STILL_FRAME : Math.max(0, (performance.now() - start) / 1000));
   const draw = () => {
-    const night = isNight();
     ctx.clearRect(0, 0, w, h);
-    SCENES[currentScene()].draw({
+    drawTopo({
       ctx,
       w,
       h,
       t: now(),
-      night,
-      colors: night ? NIGHT : DAY,
+      colors: isNight() ? NIGHT : DAY,
       intensity: opts.intensity ?? 1,
       hero: Boolean(opts.clearCenter),
     });
@@ -52,10 +50,6 @@ export function mountHeroField(canvas: HTMLCanvasElement, opts: Options = {}) {
   };
 
   onThemeChange(draw);
-  onSceneChange(() => {
-    start = performance.now();
-    draw();
-  });
   resize();
   new ResizeObserver(resize).observe(canvas);
   if (reduced) return;
