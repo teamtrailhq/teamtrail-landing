@@ -22,7 +22,8 @@
   --copper-rgb: 63, 107, 69;
   --on-copper: #ffffff;
   --blaze: #c8581e;
-  --tt-keyline: transparent;
+  --tt-keyline: #10302d;
+  --tt-logo-edge: #17211c;
   --lede: #4a5f4e;
   --urgent: #c4301f;
   --urgent-rgb: 196, 48, 31;
@@ -66,6 +67,7 @@
     --on-copper: #101815;
     --blaze: #e8833a;
     --tt-keyline: #f1e8d3;
+    --tt-logo-edge: #33473b;
     --lede: #b7cab3;
     --urgent: #ff6b5c;
     --urgent-rgb: 255, 107, 92;
@@ -91,6 +93,7 @@
   --on-copper: #101815;
   --blaze: #e8833a;
   --tt-keyline: #f1e8d3;
+  --tt-logo-edge: #33473b;
   --lede: #b7cab3;
   --urgent: #ff6b5c;
   --urgent-rgb: 255, 107, 92;
