@@ -29,8 +29,8 @@ function head({ title, description, url }) {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta name="theme-color" content="#101815" />
-    <link rel="icon" href="/media/brand/favicon-32.png?v=2" type="image/png" sizes="32x32" />
-    <link rel="icon" href="/media/brand/favicon-64.png?v=2" type="image/png" sizes="64x64" />
+    <link rel="icon" href="/media/brand/favicon-32.png?v=4" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/media/brand/favicon-64.png?v=4" type="image/png" sizes="64x64" />
     <link rel="alternate" type="text/markdown" href="${mdUrlFromPage(url)}" />
 ${font('/node_modules/@fontsource/londrina-solid/files/londrina-solid-latin-900-normal.woff2')}
 ${font('/node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2')}

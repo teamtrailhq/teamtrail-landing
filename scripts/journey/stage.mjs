@@ -44,7 +44,7 @@ export function installStage({ scout, logo, night }) {
   .st-cur{display:inline-block;width:10px;height:1.1em;vertical-align:-3px;background:${ink.acc};animation:stb 1s steps(1) infinite}
   @keyframes stb{50%{opacity:0}}
   .st-card{display:flex;flex-direction:column;align-items:center;gap:26px;margin-bottom:60px;text-align:center}
-  .st-card img{border-radius:50%;box-shadow:0 0 0 ${night ? '4px #f1e8d3' : '0 transparent'};width:170px;height:170px}
+  .st-card img{width:170px;height:170px}
   .st-card h1{margin:0;font:900 110px 'Londrina Solid',sans-serif;letter-spacing:.018em;color:${night ? '#eaeee3' : '#1b2620'}}
   .st-card h1 span{color:${night ? '#e8833a' : '#c8581e'}}
   .st-card p{margin:0;font:400 26px 'Figtree Variable',sans-serif;color:${night ? '#c3cdc1' : '#38443c'}}
