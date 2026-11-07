@@ -186,6 +186,15 @@ await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.decisions-btn').click();
 await wait(1500);
 
+// Trail stats: the seed's finished trail gives it results from two vendors.
+await page.getByRole('button', { name: /^Records/ }).click();
+await page.locator('.stats-btn').click();
+await page.locator('.perf-recs li').first().waitFor({ timeout: 10000 });
+await wait(800);
+await zoom('lookout-trail-stats', ['.perf-section >> nth=0', '.perf-section >> nth=1'], { aspect: 16 / 10, pad: 24 });
+await page.keyboard.press('Escape');
+await wait(500);
+
 // Discovery: the plan-only trail has a brief waiting for review.
 await page.locator('.trail-btn').click();
 await page.getByRole('menuitem').filter({ hasText: 'Team workspaces' }).first().click();

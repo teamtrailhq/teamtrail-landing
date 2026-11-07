@@ -13,12 +13,14 @@
       "title": "Concepts",
       "pages": [
         { "slug": "trails-and-tickets", "title": "Trails and tickets" },
+        { "slug": "the-lookout", "title": "The Lookout" },
         { "slug": "teamtrail-folder", "title": "The .teamtrail folder" },
         { "slug": "discovery-and-knowledge", "title": "Discovery and knowledge" },
         { "slug": "waiting-on-you", "title": "Waiting on you" },
         { "slug": "verification", "title": "Verification and criteria" },
         { "slug": "adaptive-trails", "title": "Assumptions and reroutes" },
-        { "slug": "parallel-work", "title": "Parallel work" }
+        { "slug": "parallel-work", "title": "Parallel work" },
+        { "slug": "trail-stats", "title": "Trail stats" }
       ]
     },
     {
