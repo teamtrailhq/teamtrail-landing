@@ -14,24 +14,24 @@ teamtrail knowledge import <file.md> [--dir <path>]
 
 Starts the Lookout for the current folder and opens it in your browser.
 
-| Option            | Default                          |                                                                                                            |
-| ----------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Option            | Default                              |                                                                                                            |
+| ----------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
 | `--dir <path>`    | `./.teamtrail` (or `$TEAMTRAIL_DIR`) | Tracker folder.                                                                                            |
-| `--port <n>`      | `7420`                           | Port. The next free port is used if it's taken.                                                            |
-| `--host <addr>`   | `127.0.0.1`                      | Interface to bind. Only expose it on networks you trust: the server can write files in the tracker folder. |
-| `--no-open`       |                                  | Don't open the browser.                                                                                    |
-| `-v`, `--version` |                                  | Print the version.                                                                                         |
-| `-h`, `--help`    |                                  | Show the help.                                                                                             |
+| `--port <n>`      | `7420`                               | Port. The next free port is used if it's taken.                                                            |
+| `--host <addr>`   | `127.0.0.1`                          | Interface to bind. Only expose it on networks you trust: the server can write files in the tracker folder. |
+| `--no-open`       |                                      | Don't open the browser.                                                                                    |
+| `-v`, `--version` |                                      | Print the version.                                                                                         |
+| `-h`, `--help`    |                                      | Show the help.                                                                                             |
 
 ## teamtrail mcp
 
 Serves the MCP server for coding agents over stdio. Agents start it themselves; see [Connect your agent](/docs/connect-your-agent/).
 
-| Option                | Default                            |                                                                                           |
-| --------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------- |
-| `--dir <path>`        | `./.teamtrail` (or `$TEAMTRAIL_DIR`)   | Tracker folder.                                                                           |
-| `--agent <trail name>`  | from the MCP client                | Fix the session name (otherwise `claude-01`, `codex-01`, …).                              |
-| `--lease-minutes <n>` | `15` (or `$TEAMTRAIL_LEASE_MINUTES`) | A claimed ticket returns to the queue after this long without a tool call from its agent. |
+| Option                 | Default                              |                                                                                           |
+| ---------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- |
+| `--dir <path>`         | `./.teamtrail` (or `$TEAMTRAIL_DIR`) | Tracker folder.                                                                           |
+| `--agent <trail name>` | from the MCP client                  | Fix the session name (otherwise `claude-01`, `codex-01`, …).                              |
+| `--lease-minutes <n>`  | `15` (or `$TEAMTRAIL_LEASE_MINUTES`) | A claimed ticket returns to the queue after this long without a tool call from its agent. |
 
 ## teamtrail connect claude | codex
 

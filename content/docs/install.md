@@ -21,14 +21,14 @@ teamtrail
 
 ## Options
 
-| Option            | Default                          |                                                                                                               |
-| ----------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Option            | Default                              |                                                                                                               |
+| ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
 | `--dir <path>`    | `./.teamtrail` (or `$TEAMTRAIL_DIR`) | The tracker folder.                                                                                           |
-| `--port <n>`      | `7420`, or the next free port    | Port for the Lookout and its API.                                                                      |
-| `--host <addr>`   | `127.0.0.1`                      | Interface to bind. The server can write files in the tracker folder, so only expose it on networks you trust. |
-| `--no-open`       |                                  | Don't open the browser.                                                                                       |
-| `-v`, `--version` |                                  | Print the version.                                                                                            |
-| `-h`, `--help`    |                                  | Show the help.                                                                                                |
+| `--port <n>`      | `7420`, or the next free port        | Port for the Lookout and its API.                                                                             |
+| `--host <addr>`   | `127.0.0.1`                          | Interface to bind. The server can write files in the tracker folder, so only expose it on networks you trust. |
+| `--no-open`       |                                      | Don't open the browser.                                                                                       |
+| `-v`, `--version` |                                      | Print the version.                                                                                            |
+| `-h`, `--help`    |                                      | Show the help.                                                                                                |
 
 See [CLI commands](/docs/cli/) for every command.
 

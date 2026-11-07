@@ -50,11 +50,11 @@ Run the server over stdio in the repo:
 npx -y teamtrail mcp
 ```
 
-| Flag                  | Default                                   |                                                            |
-| --------------------- | ----------------------------------------- | ---------------------------------------------------------- |
-| `--dir <path>`        | `./.teamtrail` (or `$TEAMTRAIL_DIR`)          | Another tracker folder.                                    |
-| `--agent <trail name>`  | from the client (`claude-01`, `codex-01`) | Fix the session name.                                      |
-| `--lease-minutes <n>` | `15` (or `$TEAMTRAIL_LEASE_MINUTES`)        | How long a claim lasts without a tool call from its agent. |
+| Flag                   | Default                                   |                                                            |
+| ---------------------- | ----------------------------------------- | ---------------------------------------------------------- |
+| `--dir <path>`         | `./.teamtrail` (or `$TEAMTRAIL_DIR`)      | Another tracker folder.                                    |
+| `--agent <trail name>` | from the client (`claude-01`, `codex-01`) | Fix the session name.                                      |
+| `--lease-minutes <n>`  | `15` (or `$TEAMTRAIL_LEASE_MINUTES`)      | How long a claim lasts without a tool call from its agent. |
 
 `connect claude|codex` also accepts `--dir <path>`; it's passed to the server only when it isn't the default.
 

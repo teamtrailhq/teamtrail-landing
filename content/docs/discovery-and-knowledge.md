@@ -10,7 +10,7 @@ The agent investigates and calls `submit_brief` with:
 
 | Section            | Required |                                                           |
 | ------------------ | -------- | --------------------------------------------------------- |
-| `summary`          | Yes      | What the trail changes.                                 |
+| `summary`          | Yes      | What the trail changes.                                   |
 | `productContext`   |          | Who it's for and the product rules that apply.            |
 | `existing`         | Yes      | Files, services and modules involved, each with its path. |
 | `conventions`      |          | Conventions and abstractions to follow.                   |

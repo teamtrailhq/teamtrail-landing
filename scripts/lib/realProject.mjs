@@ -7,7 +7,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const repo = process.env.TEAMTRAIL_REPO ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../teamtrail');
+const repo =
+  process.env.TEAMTRAIL_REPO ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../teamtrail');
 const cli = path.join(repo, 'packages/cli/dist/cli.js');
 
 /** Seeds a temp project, starts the server and `agents` MCP agents; `stop()` ends them and deletes the folder. */

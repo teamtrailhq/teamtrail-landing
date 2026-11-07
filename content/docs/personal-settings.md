@@ -4,11 +4,11 @@ Your own preferences and tokens, kept in your config folder on your machine and 
 
 ## The config folder
 
-| Platform     | Path                                                  |
-| ------------ | ----------------------------------------------------- |
+| Platform     | Path                                                      |
+| ------------ | --------------------------------------------------------- |
 | macOS, Linux | `~/.config/teamtrail/` (or `$XDG_CONFIG_HOME/teamtrail/`) |
-| Windows      | `%APPDATA%\teamtrail\`                                  |
-| Any          | `$TEAMTRAIL_CONFIG_DIR`, when set, wins                 |
+| Windows      | `%APPDATA%\teamtrail\`                                    |
+| Any          | `$TEAMTRAIL_CONFIG_DIR`, when set, wins                   |
 
 | File               | Holds                                                      |
 | ------------------ | ---------------------------------------------------------- |

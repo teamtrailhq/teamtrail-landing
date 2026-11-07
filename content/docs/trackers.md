@@ -6,10 +6,10 @@ Keep trails and tickets as issues in the tracker your team already uses, instead
 
 The map and tickets keep the same body format as the markdown files. Teamtrail adds:
 
-| Teamtrail                      | In the tracker                                                                                                            |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Trail                      | An issue labelled `teamtrail:map`, with the map as its body.                                                                |
-| Ticket type, HITL, plan-only | Labels: `teamtrail:research`, `teamtrail:junction`, …, `teamtrail:hitl`, `teamtrail:plan-only`.                                   |
+| Teamtrail                    | In the tracker                                                                                                              |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Trail                        | An issue labelled `teamtrail:map`, with the map as its body.                                                                |
+| Ticket type, HITL, plan-only | Labels: `teamtrail:research`, `teamtrail:junction`, …, `teamtrail:hitl`, `teamtrail:plan-only`.                             |
 | Claim, phase, verification   | A `<!-- teamtrail:meta {…} -->` marker at the end of the issue body. A human assignee in the tracker counts as a claim too. |
 | Decision record              | A comment on its ticket ending in a `<!-- teamtrail:decision {…} -->` marker.                                               |
 | Comment author               | A `<!-- teamtrail:author <id> -->` first line (the API user posts every comment).                                           |

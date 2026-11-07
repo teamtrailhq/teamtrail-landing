@@ -82,7 +82,7 @@ Field researchers with multi-day dead zones, not commuters.
 | Key                      |                                                                   |
 | ------------------------ | ----------------------------------------------------------------- |
 | `type`                   | `research`, `prototype`, `junction`, `task`, `execute`, `review`. |
-| `labels`                 | `teamtrail:<type>`, plus `teamtrail:hitl` for HITL tasks.             |
+| `labels`                 | `teamtrail:<type>`, plus `teamtrail:hitl` for HITL tasks.         |
 | `state`, `close_reason`  | `open` / `closed`; `completed` or `out_of_scope` when closed.     |
 | `assignee`               | The agent or person holding the claim.                            |
 | `blocked_by`             | Ticket ids that must close first.                                 |

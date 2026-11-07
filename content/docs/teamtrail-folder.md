@@ -31,11 +31,11 @@ Pass `--dir <path>` or set `$TEAMTRAIL_DIR` to use another folder. On GitHub Iss
 
 | Path                                                                    | Commit?  | Why                                                                                          |
 | ----------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `<trail>/`, `briefs/`, `criteria/`, `knowledge/`                      | Yes      | The shared state: teammates and agents see the same trails, decisions and knowledge.       |
+| `<trail>/`, `briefs/`, `criteria/`, `knowledge/`                        | Yes      | The shared state: teammates and agents see the same trails, decisions and knowledge.         |
 | `verification.json`, `policy.json`, `attention.json`, `workspaces.json` | Yes      | Team settings. Checks come from the repo, so no agent can change what verifies its own work. |
 | `trackers.json`                                                         | Optional | Names the tracker and repo or team; it never holds a token.                                  |
-| `.events/`, `.evidence/`, `.reroutes/`, `.attention/`                    | No       | Local history and state. Each writes its own `.gitignore`.                                   |
-| `.agents/`                                                              | No       | Sessions, answers, leases, trail names, workspaces and the server lock.                        |
+| `.events/`, `.evidence/`, `.reroutes/`, `.attention/`                   | No       | Local history and state. Each writes its own `.gitignore`.                                   |
+| `.agents/`                                                              | No       | Sessions, answers, leases, trail names, workspaces and the server lock.                      |
 
 Tokens and personal preferences never go in the repo: they live in your [config folder](/docs/personal-settings/).
 

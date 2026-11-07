@@ -4,8 +4,26 @@
 export function installStage({ scout, logo, night }) {
   // A field-notebook terminal in the site's own colours, light by day and dark at night.
   const ink = night
-    ? { page: '#131c18', win: '#17211c', line: 'rgba(150,170,155,.26)', text: '#c3cdc1', hi: '#eaeee3', dim: '#93a497', ok: '#8fbf84', acc: '#e8833a' }
-    : { page: '#ede7d2', win: '#fbfaf4', line: 'rgba(76,78,58,.26)', text: '#38443c', hi: '#1b2620', dim: '#5e6a60', ok: '#3f6b45', acc: '#c8581e' };
+    ? {
+        page: '#131c18',
+        win: '#17211c',
+        line: 'rgba(150,170,155,.26)',
+        text: '#c3cdc1',
+        hi: '#eaeee3',
+        dim: '#93a497',
+        ok: '#8fbf84',
+        acc: '#e8833a',
+      }
+    : {
+        page: '#ede7d2',
+        win: '#fbfaf4',
+        line: 'rgba(76,78,58,.26)',
+        text: '#38443c',
+        hi: '#1b2620',
+        dim: '#5e6a60',
+        ok: '#3f6b45',
+        acc: '#c8581e',
+      };
   const css = `
   #stage-cap{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;
     align-items:center;gap:10px;pointer-events:none;transition:opacity .35s}
@@ -85,7 +103,10 @@ export function installStage({ scout, logo, night }) {
           }
           await sleep(300);
           body.append(cur);
-        } else row.innerHTML = (l.t || '&nbsp;').replace(/^● Scout/, `<img class="st-face" src="${scout}" alt=""> Scout`).replace(/^● Trail/, `<img class="st-face" src="${scout}" alt=""> Trail`);
+        } else
+          row.innerHTML = (l.t || '&nbsp;')
+            .replace(/^● Scout/, `<img class="st-face" src="${scout}" alt=""> Scout`)
+            .replace(/^● Trail/, `<img class="st-face" src="${scout}" alt=""> Trail`);
         await sleep(l.pause ?? 110);
       }
     },

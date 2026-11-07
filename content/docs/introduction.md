@@ -22,7 +22,7 @@ Teamtrail is a local trail map for big work done by AI coding agents: you descri
 
 | If you want to              | Read                                                                                                                                                                 |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Install and run it          | [Install](/docs/install/), [Connect your agent](/docs/connect-your-agent/), [Your first trail](/docs/first-trail/)                                               |
+| Install and run it          | [Install](/docs/install/), [Connect your agent](/docs/connect-your-agent/), [Your first trail](/docs/first-trail/)                                                   |
 | Understand the model        | [Trails and tickets](/docs/trails-and-tickets/), [The .teamtrail folder](/docs/teamtrail-folder/)                                                                    |
 | Configure it without the UI | [verification.json](/docs/verification-json/), [policy.json](/docs/policy-json/), [attention.json](/docs/attention-json/), [workspaces.json](/docs/workspaces-json/) |
 | Look something up           | [CLI commands](/docs/cli/), [MCP tools](/docs/mcp-tools/), [File formats](/docs/file-formats/), [Environment variables](/docs/environment-variables/)                |

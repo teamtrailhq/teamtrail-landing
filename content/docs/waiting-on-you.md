@@ -4,33 +4,33 @@ One deterministic, ranked list of everything that needs you, with the reason eac
 
 ## What lands in the list
 
-| Kind               | Comes from                                                                                       |
-| ------------------ | ------------------------------------------------------------------------------------------------ |
-| `question`         | An agent asked with `ask_human`.                                                                 |
-| `blocked`          | A ticket waits on you: failed too often, or its checks couldn't run.                             |
-| `approval`         | Verified work waiting for your sign-off, or a criterion only you can confirm.                    |
-| `brief`            | A discovery brief waiting for review.                                                            |
-| `reroute`           | A pending reroute proposal. The tickets it touches are frozen.                                    |
+| Kind                | Comes from                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
+| `question`          | An agent asked with `ask_human`.                                                                 |
+| `blocked`           | A ticket waits on you: failed too often, or its checks couldn't run.                             |
+| `approval`          | Verified work waiting for your sign-off, or a criterion only you can confirm.                    |
+| `brief`             | A discovery brief waiting for review.                                                            |
+| `reroute`           | A pending reroute proposal. The tickets it touches are frozen.                                   |
 | `reroute-suggested` | A sign the plan may need to change (for example a ticket blocked after its last attempt).        |
-| `policy`           | Finished work changed high-risk files without asking you. See [policy.json](/docs/policy-json/). |
-| `integration`      | Two agents' branches changed the same files. See [Parallel work](/docs/parallel-work/).          |
-| `overlap`          | Two active claims declared overlapping files.                                                    |
-| `stalled`          | A claim whose agent went quiet.                                                                  |
-| `flag`             | A pull request or CI result that doesn't match what the agent claimed.                           |
-| `hitl-ready`       | A ticket that needs a person and is ready to start.                                              |
-| `knowledge`        | Suggested or flagged knowledge entries to review.                                                |
+| `policy`            | Finished work changed high-risk files without asking you. See [policy.json](/docs/policy-json/). |
+| `integration`       | Two agents' branches changed the same files. See [Parallel work](/docs/parallel-work/).          |
+| `overlap`           | Two active claims declared overlapping files.                                                    |
+| `stalled`           | A claim whose agent went quiet.                                                                  |
+| `flag`              | A pull request or CI result that doesn't match what the agent claimed.                           |
+| `hitl-ready`        | A ticket that needs a person and is ready to start.                                              |
+| `knowledge`         | Suggested or flagged knowledge entries to review.                                                |
 
 ## How items are ranked
 
 Each item gets a score from fixed rules, added in a fixed order so the reasons always read the same way:
 
-| Points                             | For                                                                                       |
-| ---------------------------------- | ----------------------------------------------------------------------------------------- |
-| Half the kind's weight (0–50)      | Weights per kind, from [attention.json](/docs/attention-json/).                           |
-| +25 / +10 / 0                      | Urgency: `blocking`, `soon`, `fyi` (questions; agents set it on `ask_human`).             |
-| +4 per held ticket, up to 20       | Tickets that can't move until it's handled, counted through blocking edges.               |
-| +15                                | An agent sits idle waiting for it.                                                        |
-| +1 per 15 minutes waited, up to 10 | Age.                                                                                      |
+| Points                             | For                                                                                     |
+| ---------------------------------- | --------------------------------------------------------------------------------------- |
+| Half the kind's weight (0–50)      | Weights per kind, from [attention.json](/docs/attention-json/).                         |
+| +25 / +10 / 0                      | Urgency: `blocking`, `soon`, `fyi` (questions; agents set it on `ask_human`).           |
+| +4 per held ticket, up to 20       | Tickets that can't move until it's handled, counted through blocking edges.             |
+| +15                                | An agent sits idle waiting for it.                                                      |
+| +1 per 15 minutes waited, up to 10 | Age.                                                                                    |
 | −2 per extra question, up to −10   | Several open questions from one agent in a trail: fewer, batched questions rank better. |
 
 Every item carries plain reasons, such as `blocks 4 tickets`, `claude-02 idle for 12 min` or `marked blocking`. Related items in a trail are grouped so you answer them together. Ties break by age, then id, so the order is stable.

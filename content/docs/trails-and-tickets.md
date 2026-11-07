@@ -6,14 +6,14 @@ A trail is a map of decision tickets with blocking edges; agents work the ready 
 
 Every trail has a **destination** (what done looks like) and these sections, stored in the trail's `map.md`:
 
-| Section           | What it holds                                                                                              |
-| ----------------- | ---------------------------------------------------------------------------------------------------------- |
-| Destination       | One or two sentences: what done looks like.                                                                |
-| Notes             | Context worth keeping.                                                                                     |
+| Section           | What it holds                                                                                             |
+| ----------------- | --------------------------------------------------------------------------------------------------------- |
+| Destination       | One or two sentences: what done looks like.                                                               |
+| Notes             | Context worth keeping.                                                                                    |
 | Assumptions       | What the plan relies on and could turn out wrong. See [Assumptions and reroutes](/docs/adaptive-trails/). |
-| Decisions so far  | One line per decision, added as tickets close.                                                             |
-| Not yet specified | Known unknowns. A line can be promoted to a ticket later.                                                  |
-| Out of scope      | What the trail won't do, with the reason.                                                                |
+| Decisions so far  | One line per decision, added as tickets close.                                                            |
+| Not yet specified | Known unknowns. A line can be promoted to a ticket later.                                                 |
+| Out of scope      | What the trail won't do, with the reason.                                                                 |
 
 A trail runs in one of two modes: `plan+execute` (default) or `plan-only`, which disables `execute` tickets.
 
@@ -34,14 +34,14 @@ A trail runs in one of two modes: `plan+execute` (default) or `plan-only`, which
 
 | Phase       | Meaning                                                                            |
 | ----------- | ---------------------------------------------------------------------------------- |
-| `backlog`   | Waiting on blockers, or parked on a `plan-only` trail.                           |
+| `backlog`   | Waiting on blockers, or parked on a `plan-only` trail.                             |
 | `ready`     | Nothing blocks it; any agent can claim it.                                         |
 | `working`   | Claimed by an agent.                                                               |
 | `verifying` | Completed and being checked. See [Verification and criteria](/docs/verification/). |
 | `rework`    | Checks failed; back to an agent with the output.                                   |
 | `blocked`   | Waiting on you (failed too often, can't verify, or needs your approval).           |
 | `done`      | Closed with a resolution and a decision record.                                    |
-| `cancelled` | Ruled out of scope, or cancelled by an approved reroute.                            |
+| `cancelled` | Ruled out of scope, or cancelled by an approved reroute.                           |
 
 Every phase change goes through one transition table in code and is appended to the trail's journal.
 
