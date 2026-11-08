@@ -1,19 +1,26 @@
-import { type Palette, type Point, type Rgb, type Scene, rgba } from './common';
+import { type Box, type Palette, type Point, type Rgb, type Scene, rgba } from './common';
 
 const LEVELS = [-1.8, -1.2, -0.6, 0, 0.6, 1.2, 1.8];
-const WAYPOINTS: Point[] = [
-  [0.03, 0.84],
-  [0.13, 0.9],
-  [0.23, 0.8],
-  [0.33, 0.86],
-  [0.43, 0.93],
-  [0.54, 0.87],
-  [0.64, 0.92],
-  [0.74, 0.8],
-  [0.82, 0.68],
-  [0.9, 0.5],
-  [0.95, 0.34],
+/** The walk, in the free strip under the copy: x across the hero, y from the strip's top (0) to its bottom (1). */
+const WALK_POINTS: Point[] = [
+  [0.03, 0.4],
+  [0.13, 0.8],
+  [0.23, 0.1],
+  [0.33, 0.5],
+  [0.43, 1],
+  [0.54, 0.55],
+  [0.64, 0.9],
+  [0.74, 0.15],
 ];
+/** On narrow screens the X stays low on the right, a map mark and nowhere near where a close button sits. */
+const LOW_END: Point[] = [
+  [0.85, 0.5],
+  [0.95, 0.25],
+];
+/** Margin beside the copy, in pixels, that the trail needs before it climbs to an X up the side. */
+const CLIMB_ROOM = 150;
+/** The strip's tallest swing, so a tall hero doesn't turn the walk into a zig-zag. */
+const MAX_DEPTH = 110;
 const MARKERS = [0.1, 0.26, 0.42, 0.58, 0.74];
 /** Seconds to walk the trail, then how long it rests at the X before starting again. */
 const WALK = 21;
@@ -94,11 +101,20 @@ function clearMiddle(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.globalCompositeOperation = 'source-over';
 }
 
-function drawTrail(ctx: CanvasRenderingContext2D, w: number, h: number, t: number, colors: Palette) {
-  const path = smoothPath(
-    WAYPOINTS.map(([x, y]): Point => [x * w, y * h]),
-    18,
-  );
+/** The trail's waypoints in pixels: along the strip under the copy, then up the right margin when there is room. */
+function waypoints(w: number, h: number, content: Box): Point[] {
+  const top = Math.min(content.bottom + 28, h - 40);
+  const depth = Math.min(MAX_DEPTH, Math.max(16, h - 22 - top));
+  const inStrip = ([x, y]: Point): Point => [x * w, top + y * depth];
+  const walk = WALK_POINTS.map(inStrip);
+  const margin = w - content.right;
+  if (margin < CLIMB_ROOM) return [...walk, ...LOW_END.map(inStrip)];
+  const x = (f: number) => content.right + margin * f;
+  return [...walk, [x(0.3), top - top * 0.12], [x(0.55), top * 0.6], [x(0.7), top * 0.4]];
+}
+
+function drawTrail(ctx: CanvasRenderingContext2D, w: number, h: number, t: number, colors: Palette, content: Box) {
+  const path = smoothPath(waypoints(w, h, content), 18);
   const progress = Math.min(1, (t % (WALK + REST)) / WALK);
   const last = Math.floor(progress * (path.length - 1));
   ctx.lineCap = 'round';
@@ -139,8 +155,8 @@ function drawTrail(ctx: CanvasRenderingContext2D, w: number, h: number, t: numbe
 
 /** "Map": contour lines drift slowly around the headline while a dashed trail draws itself across the bottom,
  * ticking off markers until it reaches the X. Marker squares are tickets; the blaze dot is the agent walking. */
-export function drawTopo({ ctx, w, h, t, colors, intensity, hero }: Scene) {
+export function drawTopo({ ctx, w, h, t, colors, intensity, hero, content }: Scene) {
   drawContours(ctx, w, h, t, colors.moss, intensity);
   clearMiddle(ctx, w, h);
-  if (hero) drawTrail(ctx, w, h, t, colors);
+  if (hero) drawTrail(ctx, w, h, t, colors, content ?? { left: w * 0.2, right: w * 0.8, bottom: h * 0.75 });
 }
