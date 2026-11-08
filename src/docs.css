@@ -329,6 +329,52 @@
   border-bottom: 0;
 }
 
+/* Phones: long inline code wraps instead of pushing the page sideways, and tables with three or more
+   columns stack each row as a card, its first cell as the title and the rest labelled by column. */
+@media (max-width: 640px) {
+  .prose :not(pre) > code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .table--stack {
+    overflow: visible;
+  }
+  .table--stack thead {
+    display: none;
+  }
+  .table--stack :is(table, tbody, tr, td) {
+    display: block;
+  }
+  .table--stack tr {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .table--stack tr:last-child {
+    border-bottom: 0;
+  }
+  .prose .table--stack td {
+    padding: 2px 0;
+    border: 0;
+  }
+  .prose .table--stack td:first-child {
+    padding-bottom: 6px;
+    color: var(--text-hi);
+    font-weight: 600;
+  }
+  .table--stack td:not(:first-child)::before {
+    content: attr(data-label);
+    display: block;
+    margin-top: 6px;
+    color: var(--dim);
+    font-size: var(--fs-label);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .table--stack td:empty {
+    display: none;
+  }
+}
+
 /* Previous / Next. */
 .docs-pager {
   display: grid;

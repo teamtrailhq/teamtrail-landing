@@ -66,10 +66,12 @@ export function renderMarkdown(body) {
       },
       table(token) {
         const head = token.header.map((c) => `<th>${this.parser.parseInline(c.tokens)}</th>`).join('');
-        const rows = token.rows
-          .map((r) => `<tr>${r.map((c) => `<td>${this.parser.parseInline(c.tokens)}</td>`).join('')}</tr>`)
-          .join('');
-        return `<div class="table"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>\n`;
+        // Each cell carries its column name, so phones can stack a row as a card (src/docs.css).
+        const labels = token.header.map((c) => escape(c.text.replace(/[`*_]/g, '')));
+        const cell = (c, i) => `<td data-label="${labels[i]}">${this.parser.parseInline(c.tokens)}</td>`;
+        const rows = token.rows.map((r) => `<tr>${r.map(cell).join('')}</tr>`).join('');
+        const stack = token.header.length > 2 ? ' table--stack' : '';
+        return `<div class="table${stack}"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>\n`;
       },
       link({ href, title, tokens }) {
         const text = this.parser.parseInline(tokens);
