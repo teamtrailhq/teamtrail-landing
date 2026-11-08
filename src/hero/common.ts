@@ -12,7 +12,10 @@ export type Scene = {
   intensity: number;
   /** The page hero, as opposed to the quieter field behind a closing section. */
   hero: boolean;
+  /** Where the hero's copy sits, in canvas pixels, so the trail stays in the free space around it. */
+  content?: Box;
 };
+export type Box = { left: number; right: number; bottom: number };
 
 export const DAY: Palette = { moss: [63, 107, 69], blaze: [200, 88, 30], bg: [243, 241, 231] };
 export const NIGHT: Palette = { moss: [143, 191, 132], blaze: [232, 131, 58], bg: [16, 24, 21] };
