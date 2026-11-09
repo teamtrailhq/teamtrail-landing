@@ -4,7 +4,7 @@ Static marketing site for [teamtrail.app](https://teamtrail.app): Vite + TypeScr
 
 - `index.html`: Home, the story (trail, party, Scout, you) and what's coming.
 - `features/index.html`: everything that ships today, and the upcoming directions in detail.
-- `guides/index.html`: guides, with one card per guide in the public catalog (see [Guide cards](#guide-cards)).
+- `guides/index.html`: guides, with one card per guide in the public catalog (see [Guide cards](#guide-cards)); each card opens its details in a dialog (`src/guideDialog.ts`).
 - `cloud/index.html`: Teamtrail Cloud (coming soon), with Scout on a pixel cloud (`src/cloudScene.ts`) and its own waitlist.
 
 Shared markup lives in `partials/` (`sprite`, `nav`, `footer`) and is pasted in at build time by `<!-- @include name -->` (see `vite.config.ts`).
