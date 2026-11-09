@@ -22,7 +22,7 @@ Spend isn't split by agent, because usage is recorded per trail. Each trail's [r
 
 Plain notes from your own numbers, such as one vendor's findings being upheld more often. A note only appears when both sides have at least 5 results and the difference is large enough to matter.
 
-They're information for you. Teamtrail doesn't route work from them.
+They're information for you. Teamtrail doesn't route work from them. The same numbers per ticket type show next to the tiers in **Settings → Model matching**, to help you set them; see [Model matching](/docs/model-matching/).
 
 ## Where the data comes from
 

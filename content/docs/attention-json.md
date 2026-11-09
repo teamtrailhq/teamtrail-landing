@@ -29,15 +29,16 @@ Without the file, the defaults apply. Personal choices (channel, quiet hours) li
 
 ### Default weights
 
-| Kind       | Weight | Kind                | Weight |
-| ---------- | ------ | ------------------- | ------ |
-| `question` | 60     | `integration`       | 45     |
-| `blocked`  | 60     | `stalled`           | 40     |
-| `reroute`  | 60     | `overlap`           | 40     |
-| `brief`    | 55     | `hitl-ready`        | 35     |
-| `approval` | 50     | `flag`              | 35     |
-| `policy`   | 50     | `reroute-suggested` | 30     |
-|            |        | `knowledge`         | 15     |
+| Kind          | Weight | Kind                | Weight |
+| ------------- | ------ | ------------------- | ------ |
+| `question`    | 60     | `stalled`           | 40     |
+| `blocked`     | 60     | `overlap`           | 40     |
+| `reroute`     | 60     | `hitl-ready`        | 35     |
+| `brief`       | 55     | `flag`              | 35     |
+| `approval`    | 50     | `reroute-suggested` | 30     |
+| `policy`      | 50     | `model`             | 30     |
+| `integration` | 45     | `guide-checks`      | 30     |
+| `guide`       | 45     | `knowledge`         | 15     |
 
 An item's score starts at half its kind's weight, then adds urgency, held tickets, an idle agent and age. With the defaults, a `blocking` question with an idle agent scores exactly 70, so it interrupts. See [Waiting on you](/docs/waiting-on-you/) for the full rules.
 

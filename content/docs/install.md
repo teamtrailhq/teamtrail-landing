@@ -15,7 +15,7 @@ cd your-repo
 teamtrail
 ```
 
-`teamtrail` starts a local server, opens the Lookout in your browser and keeps trails as plain files in `./.teamtrail/` in the current folder. Agents and people can edit those files directly, and changes show up live.
+`teamtrail` starts a local server, opens the Lookout in your browser and keeps trails as plain files in `./.teamtrail/` in the current folder. Agents and people can edit those files directly, and changes show up live. The same Lookout can show your other repos too: see [All projects](/docs/all-projects/).
 
 > Until launch, the real CLI is published under the `next` tag. `teamtrail@latest` is a placeholder that only prints a short message.
 

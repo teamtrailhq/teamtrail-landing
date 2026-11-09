@@ -10,11 +10,12 @@ Your own preferences and tokens, kept in your config folder on your machine and 
 | Windows      | `%APPDATA%\teamtrail\`                                    |
 | Any          | `$TEAMTRAIL_CONFIG_DIR`, when set, wins                   |
 
-| File               | Holds                                                      |
-| ------------------ | ---------------------------------------------------------- |
-| `attention.json`   | Your notification channel, quiet hours and focus mode.     |
-| `credentials.json` | GitHub, Linear and Slack tokens, written with mode `0600`. |
-| `slack.json`       | Slack settings and setup progress (no secrets).            |
+| File               | Holds                                                                                                                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `attention.json`   | Your notification channel, quiet hours and focus mode.                                                                                                                                          |
+| `credentials.json` | GitHub, Linear and Slack tokens, written with mode `0600`.                                                                                                                                      |
+| `slack.json`       | Slack settings and setup progress (no secrets).                                                                                                                                                 |
+| `projects.json`    | The repos [All projects](/docs/all-projects/) shows, and whether agents add their repo when they connect. See [File formats](/docs/file-formats/#projects-registry-projectsjson-config-folder). |
 
 ## attention.json (personal)
 

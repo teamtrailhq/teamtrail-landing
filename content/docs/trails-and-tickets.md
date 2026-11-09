@@ -30,6 +30,8 @@ A trail runs in one of two modes: `plan+execute` (default) or `plan-only`, which
 
 `blockedBy` wires tickets together: a ticket is ready only when everything it's blocked by is closed.
 
+A ticket can also ask for a [guide](/docs/guides/) (`guide`), such as `qa` or `security`: the agent that claims it gets that guide's instructions and a checklist to answer. A trail's team lists the guides its tickets use.
+
 ## Ticket phases
 
 | Phase       | Meaning                                                                            |
@@ -51,7 +53,7 @@ A claim lasts 15 minutes, and every tool call from the claiming agent renews it,
 
 ## Decisions
 
-Closing a ticket records a **decision record**: the question, the decision, a summary, the alternatives, the rationale, who decided and, for HITL tickets, the transcript. Agents can also keep other decisions with `record_decision`. Every decision shows in the **Decisions** view and in the briefing, marked as made by you or by an agent, and a later decision can supersede an earlier one. See [File formats](/docs/file-formats/).
+Closing a ticket records a **decision record**: the question, the decision, a summary, the alternatives, the rationale, who decided and, for HITL tickets, the transcript. Agents can also keep other decisions with `record_decision`. Every decision shows in the **Logbook** (Records → Logbook) and in the briefing, marked as made by you or by an agent, and a later decision can supersede an earlier one. See [File formats](/docs/file-formats/).
 
 ## Where it's stored
 

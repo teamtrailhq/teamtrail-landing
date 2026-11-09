@@ -20,7 +20,10 @@
         { "slug": "verification", "title": "Verification and criteria" },
         { "slug": "adaptive-trails", "title": "Assumptions and reroutes" },
         { "slug": "parallel-work", "title": "Parallel work" },
-        { "slug": "trail-stats", "title": "Trail stats" }
+        { "slug": "guides", "title": "Guides" },
+        { "slug": "model-matching", "title": "Model matching" },
+        { "slug": "trail-stats", "title": "Trail stats" },
+        { "slug": "all-projects", "title": "All projects" }
       ]
     },
     {
