@@ -14,14 +14,14 @@
     <title>Teamtrail: Bring a guide for the hard stretches</title>
     <meta
       name="description"
-      content="The Teamtrail guide marketplace: add a reviewer, QA lead, security expert or docs writer to your trail's party. Any agent that picks up their tickets works to their checklist. Join the waitlist."
+      content="Teamtrail guides: give a ticket a reviewer, QA lead, security expert or docs writer. Whichever agent takes it follows the guide and answers its checklist before the work counts as done. Five built in, more in the catalog, or write your own."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Teamtrail" />
     <meta property="og:title" content="Teamtrail: Bring a guide for the hard stretches" />
     <meta
       property="og:description"
-      content="Add a reviewer, QA, security or docs guide to your trail. Join the waitlist."
+      content="Give a ticket a reviewer, QA, security or docs guide. Five built in, more in the catalog, or write your own."
     />
     <meta property="og:url" content="%SITE_URL%/guides/" />
     <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
@@ -74,18 +74,37 @@
         </div>
 
         <div class="wrap hero__inner">
-          <span class="hero__badge" data-scramble>Guide marketplace · Coming</span>
+          <span class="hero__badge" data-scramble>Guides · Available now</span>
           <h1 id="page-title">Bring a guide for the hard stretches.</h1>
           <p class="hero__lede">
-            Every trail has its own terrain. Give your party a reviewer, a QA lead, a security expert or a docs writer.
-            Any agent that picks up their tickets works to their role, and <span class="mark">Scout</span> makes sure
-            the checklist gets done.
+            Every trail has its own terrain. Give a ticket a reviewer, a QA lead, a security expert or a docs writer.
+            Whichever agent takes it works to their role, and can't finish until the guide's checklist is answered.
           </p>
           <div class="hero__actions">
-            <a class="btn btn--primary" href="#waitlist"
-              >Join the waitlist <span class="arrow" aria-hidden="true">↓</span></a
+            <div class="cmd cmd--wide">
+              <span class="cmd__label">Add a guide from the catalog</span>
+              <span class="cmd__line"
+                ><span class="prompt" aria-hidden="true">$</span>
+                <span class="cmd__text">npx teamtrail@next guides add a11y</span></span
+              >
+              <button
+                class="copy"
+                type="button"
+                data-copy="npx teamtrail@next guides add a11y"
+                aria-label="Copy the command"
+              >
+                <svg class="ico i-copy" viewBox="0 0 20 20" aria-hidden="true">
+                  <rect x="6.5" y="6.5" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M13.5 3.5h-10v10" fill="none" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+                <svg class="ico i-check" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.8" />
+                </svg>
+              </button>
+            </div>
+            <a class="btn" href="https://github.com/teamtrailhq/teamtrail-guides"
+              >Browse the catalog <span class="arrow" aria-hidden="true">→</span></a
             >
-            <a class="btn" href="#how">How it works</a>
           </div>
         </div>
       </section>
@@ -112,7 +131,7 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">How it works</span>
-              <h2 id="s-how">Pick them, add them to the party, and they work to the checklist.</h2>
+              <h2 id="s-how">Pick a guide, give it a ticket, and the work meets its checklist.</h2>
             </div>
           </header>
           <ul class="trio reveal" role="list">
@@ -120,67 +139,50 @@
               <span class="n">01</span>
               <h3>Pick a guide</h3>
               <p>
-                Browse a moderated catalog of roles, or write your own. Each one is a short file: instructions, a
-                checklist and the checks it needs.
+                Five come built in. Add more from a reviewed catalog, or write your own: a short file with instructions,
+                a checklist and the checks it needs.
               </p>
             </li>
             <li>
               <span class="n">02</span>
-              <h3>Add them to the trail</h3>
+              <h3>Give it a ticket</h3>
               <p>
-                Tickets say which role they need, and the trail lists its party. <span class="mark">Scout</span> routes
-                each ticket to an agent that can take it.
+                Each ticket can ask for a guide, and each trail lists its team. Pick them in the Lookout, or let your
+                agents suggest them when they plan the trail.
               </p>
             </li>
             <li>
               <span class="n">03</span>
-              <h3>They work to their checklist</h3>
+              <h3>The work meets the checklist</h3>
               <p>
-                The agent that claims the ticket gets the role's instructions and checklist, and can't finish until
-                every item is answered.
+                The agent that takes the ticket gets the guide's instructions and checklist, and can't finish until it
+                has answered every item.
               </p>
             </li>
           </ul>
         </div>
       </section>
 
-      <!-- ROSTER -->
-      <section class="section" aria-labelledby="s-roster">
-        <div class="wrap split">
-          <div class="split__copy reveal">
-            <span class="eyebrow">The first guides</span>
-            <h2 id="s-roster">Five built-in roles, and room for yours.</h2>
+      <!-- CATALOG -->
+      <section class="section" id="catalog" aria-labelledby="s-catalog">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">The catalog</span>
+              <h2 id="s-catalog">Every guide you can bring today.</h2>
+            </div>
             <p>
-              The reviewer builds on the independent review <span class="mark">Teamtrail</span> already runs today: a
-              different agent checks every change before it counts as done. The others follow the same pattern.
+              The five built-in guides are already in your project. Others come from the catalog, where every guide is
+              read by a maintainer before it's marked Verified. In the Lookout, open Settings, then Guides, then Browse
+              guides.
             </p>
+          </header>
+          <!-- @guide-cards -->
+          <div class="more reveal">
+            <a class="btn" href="https://github.com/teamtrailhq/teamtrail-guides"
+              >Browse the catalog on GitHub <span class="arrow" aria-hidden="true">→</span></a
+            >
           </div>
-          <ul class="roster reveal" role="list">
-            <li>
-              <span class="spec spec--reviewer" data-spec="thinking" aria-hidden="true"></span><b>Reviewer</b
-              ><span>Checks the change against what was claimed, with findings and a verdict</span>
-            </li>
-            <li>
-              <span class="spec spec--qa" data-spec="idle" aria-hidden="true"></span><b>QA</b
-              ><span>Tries the edges and failure paths before it ships</span>
-            </li>
-            <li>
-              <span class="spec spec--security" data-spec="alert" aria-hidden="true"></span><b>Security</b
-              ><span>Reads the change the way an attacker would</span>
-            </li>
-            <li>
-              <span class="spec spec--docs" data-spec="idle" aria-hidden="true"></span><b>Docs</b
-              ><span>Keeps docs and examples true to the code</span>
-            </li>
-            <li>
-              <span class="spec spec--architect" data-spec="thinking" aria-hidden="true"></span><b>Architect</b
-              ><span>Guards boundaries and the shape of the system</span>
-            </li>
-            <li class="add">
-              <span class="spec spec--you" data-spec="idle" aria-hidden="true"></span><b>+ Community</b
-              ><span>Roles from the catalog, or one you write for your team</span>
-            </li>
-          </ul>
         </div>
       </section>
 
@@ -194,29 +196,29 @@
             </div>
             <p>
               Bringing someone in from a catalog has to be safe by default. These rules are enforced by
-              <span class="mark">Teamtrail</span>, not by the role.
+              <span class="mark">Teamtrail</span>, not by the guide.
             </p>
           </header>
           <ul class="facts reveal" role="list">
             <li>
-              <h3>No code in a role</h3>
-              <p>Roles are instructions and checklists. No scripts, no hooks, nothing that runs on install.</p>
+              <h3>No code in a guide</h3>
+              <p>Guides are instructions and checklists. No scripts, no hooks, nothing that runs when you add one.</p>
             </li>
             <li>
               <h3>You approve every check</h3>
-              <p>A command a role proposes runs only after you approve it, and it goes into your repo's config.</p>
+              <p>A command a guide proposes runs only after you approve it, and it goes into your repo's config.</p>
             </li>
             <li>
               <h3>Pinned and verified</h3>
               <p>
-                Each installed role is pinned to a version and fingerprint. A file that changes is switched off until
-                you look.
+                Each guide you add is pinned to a version and fingerprint. A file that changes is switched off until you
+                look.
               </p>
             </li>
             <li>
-              <h3>Roles only add rules</h3>
+              <h3>Guides only add rules</h3>
               <p>
-                A role can add checks and checklist items. It can't skip review, lower verification or decide for you.
+                A guide can add checks and checklist items. It can't skip review, lower verification or decide for you.
               </p>
             </li>
           </ul>
@@ -228,41 +230,97 @@
         <div class="wrap">
           <header class="head head--center reveal">
             <div class="head__title">
-              <span class="eyebrow">Any agent can wear the role</span>
+              <span class="eyebrow">Any agent, any model</span>
               <h2 id="s-agent">Guides aren't tied to a model.</h2>
             </div>
             <p>
-              A role is plain text that travels with the ticket. Claude Code, Codex or any agent that connects over MCP
-              picks it up when it claims the work. No vendor lock-in, no hosted agents, and still all on your machine.
+              A guide is plain text that travels with the ticket. Claude Code, Codex or any agent you connect picks it
+              up when it takes the work. No vendor lock-in, no hosted agents, and still all on your machine.
             </p>
           </header>
         </div>
       </section>
 
-      <!-- WAITLIST -->
-      <section class="final" id="waitlist" aria-labelledby="s-wait">
+      <!-- WRITE YOUR OWN -->
+      <section class="section" id="write" aria-labelledby="s-write">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">Write your own</span>
+              <h2 id="s-write">Your team's know-how, in one short file.</h2>
+            </div>
+            <p>
+              A guide is a markdown file: a few lines about it, a checklist, and plain steps for the agent. Start from
+              one in the catalog and make it yours.
+            </p>
+          </header>
+          <ul class="trio reveal" role="list">
+            <li>
+              <span class="n">01</span>
+              <h3>Write it</h3>
+              <p>
+                Copy a guide from the catalog and change the name, the checklist and the steps. The
+                <a href="/docs/guides/">docs</a> list every field.
+              </p>
+            </li>
+            <li>
+              <span class="n">02</span>
+              <h3>Check it</h3>
+              <p>
+                <code>teamtrail guides lint ./my-guide.md</code> checks the format and refuses anything that would steer
+                an agent around you. Every finding names its line.
+              </p>
+            </li>
+            <li>
+              <span class="n">03</span>
+              <h3>Add it, or share it</h3>
+              <p>
+                <code>teamtrail guides add ./my-guide.md</code> adds it to your project. To share it with everyone, send
+                it to the catalog:
+                <a href="https://github.com/teamtrailhq/teamtrail-guides/blob/main/CONTRIBUTING.md"
+                  >how to contribute a guide</a
+                >.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- START -->
+      <section class="final" aria-labelledby="s-start">
         <canvas class="field" data-field="final" data-intensity="0.55" aria-hidden="true"></canvas>
         <div class="wrap final__inner reveal">
-          <span class="tag tag--soon">Coming</span>
-          <h2 id="s-wait">Be first to bring a guide.</h2>
+          <h2 id="s-start">Bring your first guide.</h2>
           <p>
-            We'll email you once, when the marketplace opens. Until then, <span class="mark">Teamtrail</span> and its
-            built-in review work today.
+            The five built-in guides are already in your project. One command adds one more from the catalog, and you
+            approve anything it wants to run.
           </p>
-          <form class="waitlist" data-waitlist>
-            <input
-              type="email"
-              name="email"
-              placeholder="you@company.com"
-              aria-label="Email address"
-              required
-              autocomplete="email"
-            />
-            <!-- Honeypot: hidden from people, filled in by bots. -->
-            <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
-            <button class="btn btn--primary" type="submit">Join the waitlist</button>
-            <span class="waitlist__status" data-waitlist-status role="status" aria-live="polite"></span>
-          </form>
+          <div class="hero__actions">
+            <div class="cmd cmd--wide">
+              <span class="cmd__label">Add the accessibility guide</span>
+              <span class="cmd__line"
+                ><span class="prompt" aria-hidden="true">$</span>
+                <span class="cmd__text">npx teamtrail@next guides add a11y</span></span
+              >
+              <button
+                class="copy"
+                type="button"
+                data-copy="npx teamtrail@next guides add a11y"
+                aria-label="Copy the command"
+              >
+                <svg class="ico i-copy" viewBox="0 0 20 20" aria-hidden="true">
+                  <rect x="6.5" y="6.5" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M13.5 3.5h-10v10" fill="none" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+                <svg class="ico i-check" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.8" />
+                </svg>
+              </button>
+            </div>
+            <a class="btn" href="https://github.com/teamtrailhq/teamtrail-guides"
+              >Browse the catalog <span class="arrow" aria-hidden="true">→</span></a
+            >
+          </div>
         </div>
       </section>
     </main>
