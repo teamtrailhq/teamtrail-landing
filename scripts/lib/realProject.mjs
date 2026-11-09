@@ -1,6 +1,8 @@
 // A real Teamtrail project for the capture scripts, set up the way a user has one: the dev seed written into a
 // temp folder, the built `teamtrail` server serving it, and real MCP agents (scripts/dev-agent.mjs) working it.
 // Needs the product repo next to this one (../teamtrail, or TEAMTRAIL_REPO) with the CLI built: npm run build -w teamtrail.
+// The project registry (All projects) lives in a temp config dir (TEAMTRAIL_CONFIG_DIR), never in yours: this project
+// plus the seed's second repo, billing-service, so the Lookout shows two projects.
 import { execFileSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -19,8 +21,23 @@ export async function realProject({ agents = 2 } = {}) {
   const dir = path.join(tmp, 'fieldnote-app');
   fs.mkdirSync(dir);
   const data = path.join(dir, '.teamtrail');
-  const env = { ...process.env, TEAMTRAIL_DIR: data };
+  const config = path.join(tmp, 'config');
+  const env = { ...process.env, TEAMTRAIL_DIR: data, TEAMTRAIL_CONFIG_DIR: config };
   execFileSync('npm', ['run', '--silent', 'seed'], { cwd: repo, env, stdio: 'ignore' });
+  // The seed turns model matching on, and the scripted agents report no model (so they count as balanced) and would
+  // never take the strongest-tier junctions they ask about. Start with it off; the captures switch it on in Settings.
+  for (const entry of fs.readdirSync(data, { withFileTypes: true })) {
+    const map = path.join(data, entry.name, 'map.md');
+    if (!entry.isDirectory() || !fs.existsSync(map)) continue;
+    fs.writeFileSync(map, fs.readFileSync(map, 'utf8').replace(/^model-matching: on$/m, 'model-matching: off'));
+  }
+  // The seed writes its second repo under the product repo's node_modules/.cache; copy it next to this one.
+  const billing = path.join(tmp, 'billing-service');
+  fs.cpSync(path.join(repo, 'node_modules/.cache/teamtrail-dev-projects/billing-service'), billing, {
+    recursive: true,
+  });
+  for (const root of [dir, billing])
+    execFileSync(process.execPath, [cli, 'projects', 'add', root], { env, stdio: 'ignore' });
 
   const server = spawn(process.execPath, [cli, '--no-open', '--port', '0', '--dir', data], { cwd: dir, env });
   const url = await new Promise((resolve, reject) => {

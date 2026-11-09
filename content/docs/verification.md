@@ -30,7 +30,9 @@ Checks run with argv arrays (no shell), with tokens kept out of their environmen
 
 ## Independent review
 
-At `checks+review`, a `review` ticket is created for another agent. The agent that did the work can never review it. When Claude and Codex agents both run, each reviews the other's work first. The reviewer calls `submit_review` with `PASS`, `FAIL` (back for rework with findings) or `NEEDS_HUMAN`.
+At `checks+review`, a `review` ticket is created for another agent. The agent that did the work can never review it. When Claude and Codex agents both run, each reviews the other's work first. The reviewer calls `submit_review` with `PASS`, `FAIL` (back for rework with findings) or `NEEDS_HUMAN`. With `reviewer` on the trail's team, review tickets come with the reviewer [guide](/docs/guides/), and the reviewer answers its checklist.
+
+A ticket's guide can add checks from `verification.json` to the ones its completion runs, never remove one or change the level.
 
 ## Evidence from git and pull requests
 

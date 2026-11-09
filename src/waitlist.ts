@@ -1,6 +1,6 @@
 import { $ } from './dom';
 
-/** Waitlist forms (/guides, /cloud): POST { email, list } to /api/waitlist, which adds it to Resend. */
+/** Waitlist forms (/cloud): POST { email, list } to /api/waitlist, which adds it to Resend. */
 const ENDPOINT = (import.meta.env.VITE_WAITLIST_URL as string | undefined) ?? '/api/waitlist';
 
 export function initWaitlist() {
@@ -25,7 +25,7 @@ export function initWaitlist() {
       const body = (await r.json().catch(() => ({}))) as { error?: string };
       if (!r.ok) throw new Error(body.error ?? 'That didn’t go through. Please try again.');
       form.classList.add('is-done');
-      if (status) status.textContent = form.dataset.done ?? 'You’re on the list. We’ll email you when guides open.';
+      if (status) status.textContent = form.dataset.done ?? 'You’re on the list. We’ll email you when it opens.';
     } catch (err) {
       if (status) status.textContent = (err as Error).message;
     } finally {

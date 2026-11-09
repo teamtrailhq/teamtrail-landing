@@ -55,8 +55,13 @@ npx -y teamtrail mcp
 | `--dir <path>`         | `./.teamtrail` (or `$TEAMTRAIL_DIR`)      | Another tracker folder.                                    |
 | `--agent <trail name>` | from the client (`claude-01`, `codex-01`) | Fix the session name.                                      |
 | `--lease-minutes <n>`  | `15` (or `$TEAMTRAIL_LEASE_MINUTES`)      | How long a claim lasts without a tool call from its agent. |
+| `--no-register`        |                                           | Don't add this repo to All projects.                       |
 
 `connect claude|codex` also accepts `--dir <path>`; it's passed to the server only when it isn't the default.
+
+## Your other repos
+
+When the server or `connect` starts, it adds its repo to the list of projects in your config folder, so one Lookout shows every repo you work in: see [All projects](/docs/all-projects/). Pass `--no-register` (to `mcp` or `connect`) or set `TEAMTRAIL_NO_REGISTER` to opt out.
 
 ## Usage and cost
 

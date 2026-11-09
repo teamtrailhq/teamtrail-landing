@@ -1,0 +1,132 @@
+{
+  "repo": "https://github.com/teamtrailhq/teamtrail-guides",
+  "guides": [
+    {
+      "id": "architect",
+      "name": "Architect",
+      "version": "1.0.0",
+      "summary": "Shapes how the change fits the system before and while it is built.",
+      "author": "Teamtrail",
+      "builtin": true,
+      "verified": true,
+      "reported": false,
+      "types": ["research", "junction", "prototype", "task"],
+      "source": "https://github.com/teamtrailhq/teamtrail-guides/blob/main/guides/architect.md",
+      "checklist": [
+        "Named the modules and files the change touches, with real paths",
+        "Compared at least two options and said why one wins",
+        "Followed the project's existing conventions, or said why not",
+        "Described the data, API and migration impact",
+        "Recorded the decision with its rationale and alternatives"
+      ],
+      "checks": []
+    },
+    {
+      "id": "docs",
+      "name": "Docs",
+      "version": "1.0.0",
+      "summary": "Keeps the docs, examples and changelog true to what the code does.",
+      "author": "Teamtrail",
+      "builtin": true,
+      "verified": true,
+      "reported": false,
+      "types": ["research", "task", "execute"],
+      "source": "https://github.com/teamtrailhq/teamtrail-guides/blob/main/guides/docs.md",
+      "checklist": [
+        "Updated every doc page, README and help text the change affects",
+        "Every example and command in the docs runs as written",
+        "Added a changelog line in plain language",
+        "Wrote for the reader's task, without internal jargon"
+      ],
+      "checks": []
+    },
+    {
+      "id": "qa",
+      "name": "QA",
+      "version": "1.0.0",
+      "summary": "Tests the change like a user would and makes sure the tests cover it.",
+      "author": "Teamtrail",
+      "builtin": true,
+      "verified": true,
+      "reported": false,
+      "types": ["task", "execute", "prototype"],
+      "source": "https://github.com/teamtrailhq/teamtrail-guides/blob/main/guides/qa.md",
+      "checklist": [
+        "Ran the full test suite and it passes",
+        "Added or updated tests that fail without the change",
+        "Tried the edge cases the ticket and its criteria name (empty, large, invalid input)",
+        "Checked the change by hand where tests can't reach it (UI, CLI output, messages)",
+        "Listed what you did not test, and why"
+      ],
+      "checks": []
+    },
+    {
+      "id": "reviewer",
+      "name": "Reviewer",
+      "version": "1.0.0",
+      "summary": "Independent review of another agent's finished work before it counts as done.",
+      "author": "Teamtrail",
+      "builtin": true,
+      "verified": true,
+      "reported": false,
+      "types": ["review"],
+      "source": "https://github.com/teamtrailhq/teamtrail-guides/blob/main/guides/reviewer.md",
+      "checklist": [
+        "Read the whole diff the review ticket names, not only its summary",
+        "The change does what the reviewed ticket asks, and nothing it rules out",
+        "Every acceptance criterion has evidence that holds up",
+        "Ran the tests or commands that cover the change, or said why not",
+        "No secrets, debug leftovers or unrelated edits in the diff",
+        "Each finding names a file and line the author can act on"
+      ],
+      "checks": []
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "version": "1.0.0",
+      "summary": "Looks at the change as an attacker would before it ships.",
+      "author": "Teamtrail",
+      "builtin": true,
+      "verified": true,
+      "reported": false,
+      "types": ["research", "task", "execute", "review"],
+      "source": "https://github.com/teamtrailhq/teamtrail-guides/blob/main/guides/security.md",
+      "checklist": [
+        "Every input from outside is validated where it enters",
+        "Access checks cover every new or changed route, command and query",
+        "No keys, tokens or passwords in the code, logs or error messages",
+        "New dependencies are maintained, pinned and needed",
+        "Error paths fail closed and reveal no internals",
+        "Wrote down the risks you found and what you did about each"
+      ],
+      "checks": []
+    },
+    {
+      "id": "a11y",
+      "name": "Accessibility",
+      "version": "1.0.0",
+      "summary": "Checks that new UI works with a keyboard, a screen reader and enough contrast. An example community guide.",
+      "author": "Teamtrail (example)",
+      "builtin": false,
+      "verified": true,
+      "reported": false,
+      "types": ["task", "execute", "prototype", "review"],
+      "source": "https://github.com/teamtrailhq/teamtrail-guides/blob/main/guides/a11y.md",
+      "checklist": [
+        "Every new control can be reached and used with the keyboard alone, with a visible focus ring",
+        "Focus order follows the reading order, and dialogs keep focus inside until closed",
+        "Every image, icon button and form field has a text alternative or a label",
+        "Text and icons meet WCAG AA contrast in every theme the app ships",
+        "Colour is never the only way information is shown",
+        "Ran pa11y-ci (or the project's accessibility check) and fixed or explained each issue"
+      ],
+      "checks": [
+        {
+          "name": "a11y",
+          "run": "npx pa11y-ci"
+        }
+      ]
+    }
+  ]
+}

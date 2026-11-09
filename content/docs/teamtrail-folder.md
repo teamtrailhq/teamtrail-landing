@@ -15,6 +15,10 @@ Pass `--dir <path>` or set `$TEAMTRAIL_DIR` to use another folder. On GitHub Iss
 ├── briefs/<trail>.md         the discovery brief and its status
 ├── criteria/<trail>.md       acceptance criteria per ticket
 ├── knowledge/K-<n>.md          project and product knowledge
+├── guides/<id>.md              installed and hand-written guides
+├── guides.lock.json            the guides you approved, pinned by hash
+├── guides.json                 the guide catalogs to search
+├── models.json                 your own models and their tiers
 ├── verification.json           checks run on completion
 ├── policy.json                 what always needs you
 ├── attention.json              how the ranked list interrupts you
@@ -33,11 +37,12 @@ Pass `--dir <path>` or set `$TEAMTRAIL_DIR` to use another folder. On GitHub Iss
 | ----------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- |
 | `<trail>/`, `briefs/`, `criteria/`, `knowledge/`                        | Yes      | The shared state: teammates and agents see the same trails, decisions and knowledge.         |
 | `verification.json`, `policy.json`, `attention.json`, `workspaces.json` | Yes      | Team settings. Checks come from the repo, so no agent can change what verifies its own work. |
+| `guides/`, `guides.lock.json`, `guides.json`, `models.json`             | Yes      | Teammates get the same [guides](/docs/guides/) and [model tiers](/docs/model-matching/).     |
 | `trackers.json`                                                         | Optional | Names the tracker and repo or team; it never holds a token.                                  |
 | `.events/`, `.evidence/`, `.reroutes/`, `.attention/`                   | No       | Local history and state. Each writes its own `.gitignore`.                                   |
 | `.agents/`                                                              | No       | Sessions, answers, leases, trail names, workspaces and the server lock.                      |
 
-Tokens and personal preferences never go in the repo: they live in your [config folder](/docs/personal-settings/).
+Tokens, personal preferences and the list of projects for [All projects](/docs/all-projects/) never go in the repo: they live in your [config folder](/docs/personal-settings/). Each repo keeps its own `.teamtrail/` folder.
 
 ## Editing by hand
 

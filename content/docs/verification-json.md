@@ -2,7 +2,7 @@
 
 The checks that run when an agent claims a ticket is done, committed in `.teamtrail/verification.json`.
 
-Without this file, nothing is verified. The file comes from your repo, so no agent can change what verifies its own work; Teamtrail never edits it.
+Without this file, nothing is verified. The file comes from your repo, so no agent can change what verifies its own work. Teamtrail only writes to it when you approve a check a [guide](/docs/guides/) proposes.
 
 ## Example
 

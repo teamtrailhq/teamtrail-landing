@@ -4,21 +4,24 @@ One deterministic, ranked list of everything that needs you, with the reason eac
 
 ## What lands in the list
 
-| Kind                | Comes from                                                                                       |
-| ------------------- | ------------------------------------------------------------------------------------------------ |
-| `question`          | An agent asked with `ask_human`.                                                                 |
-| `blocked`           | A ticket waits on you: failed too often, or its checks couldn't run.                             |
-| `approval`          | Verified work waiting for your sign-off, or a criterion only you can confirm.                    |
-| `brief`             | A discovery brief waiting for review.                                                            |
-| `reroute`           | A pending reroute proposal. The tickets it touches are frozen.                                   |
-| `reroute-suggested` | A sign the plan may need to change (for example a ticket blocked after its last attempt).        |
-| `policy`            | Finished work changed high-risk files without asking you. See [policy.json](/docs/policy-json/). |
-| `integration`       | Two agents' branches changed the same files. See [Parallel work](/docs/parallel-work/).          |
-| `overlap`           | Two active claims declared overlapping files.                                                    |
-| `stalled`           | A claim whose agent went quiet.                                                                  |
-| `flag`              | A pull request or CI result that doesn't match what the agent claimed.                           |
-| `hitl-ready`        | A ticket that needs a person and is ready to start.                                              |
-| `knowledge`         | Suggested or flagged knowledge entries to review.                                                |
+| Kind                | Comes from                                                                                                           |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `question`          | An agent asked with `ask_human`.                                                                                     |
+| `blocked`           | A ticket waits on you: failed too often, or its checks couldn't run.                                                 |
+| `approval`          | Verified work waiting for your sign-off, or a criterion only you can confirm.                                        |
+| `brief`             | A discovery brief waiting for review.                                                                                |
+| `reroute`           | A pending reroute proposal. The tickets it touches are frozen.                                                       |
+| `reroute-suggested` | A sign the plan may need to change (for example a ticket blocked after its last attempt).                            |
+| `policy`            | Finished work changed high-risk files without asking you. See [policy.json](/docs/policy-json/).                     |
+| `integration`       | Two agents' branches changed the same files. See [Parallel work](/docs/parallel-work/).                              |
+| `overlap`           | Two active claims declared overlapping files.                                                                        |
+| `stalled`           | A claim whose agent went quiet.                                                                                      |
+| `flag`              | A pull request or CI result that doesn't match what the agent claimed.                                               |
+| `hitl-ready`        | A ticket that needs a person and is ready to start.                                                                  |
+| `knowledge`         | Suggested or flagged knowledge entries to review.                                                                    |
+| `model`             | A ready ticket set for a stronger model than any connected agent runs. See [Model matching](/docs/model-matching/).  |
+| `guide`             | A [guide](/docs/guides/) agents can't use: new and not approved, changed since you approved it, or failing the lint. |
+| `guide-checks`      | Check commands an approved guide proposes, waiting for your approval. They don't run until then.                     |
 
 ## How items are ranked
 
