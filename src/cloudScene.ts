@@ -115,5 +115,5 @@ export function initCloudScene(reducedMotion: boolean) {
   const mid = $('[data-cloud-mid]');
   if (mid) mid.appendChild(cloudSvg(SMALL[1], 5));
   const midScout = $('[data-cloud-mid-scout]');
-  if (midScout) mountScout(midScout, { size: 1, state: reducedMotion ? 'idle' : 'thinking', framed: false });
+  if (midScout) mountScout(midScout, { size: 1.3, state: reducedMotion ? 'idle' : 'thinking', framed: false });
 }
