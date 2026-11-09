@@ -16,7 +16,8 @@
     "media": "node scripts/media.mjs",
     "journey": "node scripts/journey.mjs",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "guides:snapshot": "node scripts/guides/snapshot.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

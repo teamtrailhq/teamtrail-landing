@@ -3,6 +3,8 @@ import { resolve } from 'node:path';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import type * as Waitlist from './api/waitlist';
 import { generateDocs } from './scripts/docs/generate.mjs';
+import { renderGuideCards } from './scripts/guides/cards.mjs';
+import { loadCatalog } from './scripts/guides/catalog.mjs';
 
 /** `<!-- @include nav -->` pastes partials/nav.html, so the pages share one nav, footer and icon sprite. */
 function partials(): Plugin {
@@ -50,6 +52,25 @@ function docs(): Plugin {
   };
 }
 
+/**
+ * `<!-- @guide-cards -->` on /guides becomes one card per guide in the public catalog, read once per build or dev
+ * start (scripts/guides/catalog.mjs), with the committed snapshot as the fallback when offline.
+ */
+function guideCards(): Plugin {
+  let cards: Promise<string> | undefined;
+  return {
+    name: 'guide-cards',
+    transformIndexHtml: {
+      order: 'pre',
+      handler: async (html) => {
+        if (!html.includes('<!-- @guide-cards -->')) return html;
+        cards ??= loadCatalog(__dirname).then(renderGuideCards);
+        return html.replace('<!-- @guide-cards -->', await cards);
+      },
+    },
+  };
+}
+
 /** Serves api/waitlist.ts in `vite dev` the way Vercel does in production, with env from .env.local. */
 function devApi(): Plugin {
   return {
@@ -76,7 +97,7 @@ function devApi(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [docs(), partials(), devApi()],
+  plugins: [docs(), partials(), guideCards(), devApi()],
   build: {
     rollupOptions: {
       input: {

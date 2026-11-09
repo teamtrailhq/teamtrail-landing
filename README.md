@@ -1,10 +1,10 @@
 # Teamtrail landing page
 
-Static marketing site for [teamtrail.app](https://teamtrail.app): Vite + TypeScript, no framework. Three pages share one stylesheet and one script:
+Static marketing site for [teamtrail.app](https://teamtrail.app): Vite + TypeScript, no framework. The pages share one stylesheet and one script:
 
 - `index.html`: Home, the story (trail, party, Scout, you) and what's coming.
 - `features/index.html`: everything that ships today, and the upcoming directions in detail.
-- `guides/index.html`: the guide marketplace story and its waitlist.
+- `guides/index.html`: guides, with one card per guide in the public catalog (see [Guide cards](#guide-cards)).
 - `cloud/index.html`: Teamtrail Cloud (coming soon), with Scout on a pixel cloud (`src/cloudScene.ts`) and its own waitlist.
 
 Shared markup lives in `partials/` (`sprite`, `nav`, `footer`) and is pasted in at build time by `<!-- @include name -->` (see `vite.config.ts`).
@@ -29,7 +29,7 @@ Requires Node 20+.
 
 ## Waitlist
 
-The `/guides` form posts `{ email }` to `/api/waitlist`, a Vercel serverless function (`api/waitlist.ts`) that adds the address to a Resend audience. It validates the email, ignores bots that fill the hidden honeypot field, and treats an address already on the list as success. `npm run dev` serves the same function locally.
+The `/cloud` form posts `{ email, list: "cloud" }` to `/api/waitlist`, a Vercel serverless function (`api/waitlist.ts`) that adds the address to a Resend audience. It validates the email, ignores bots that fill the hidden honeypot field, and treats an address already on the list as success. `npm run dev` serves the same function locally.
 
 It needs two server-side env vars (never exposed to the browser):
 
@@ -40,6 +40,14 @@ It needs two server-side env vars (never exposed to the browser):
 | `RESEND_CLOUD_AUDIENCE_ID` | Optional: a separate audience for the `/cloud` waitlist. Without it, Cloud signups go to `RESEND_AUDIENCE_ID`. |
 
 Set them in Vercel (project → Settings → Environment Variables, for Production and Preview) and, for local dev, in `.env.local` (git-ignored). Without them the form says the waitlist isn't configured.
+
+## Guide cards
+
+The cards on `/guides` come from the public guide catalog, [teamtrailhq/teamtrail-guides](https://github.com/teamtrailhq/teamtrail-guides): its `index.json`, `reported.json` and each guide's file (for the checklist and checks). `scripts/guides/catalog.mjs` reads them once per build or dev start, `scripts/guides/cards.mjs` renders the cards, and the `guide-cards` plugin in `vite.config.ts` pastes them over `<!-- @guide-cards -->`. When the catalog can't be reached, the build uses the committed snapshot in `content/guides/catalog.json`, so it never breaks offline. Refresh the snapshot with:
+
+```bash
+npm run guides:snapshot
+```
 
 ## Product media
 
