@@ -49,7 +49,8 @@ const shot = async (name) => {
 
 /**
  * Close-up of the part a landing section talks about: the union of `sels` plus padding,
- * widened or heightened to `aspect` (w/h) around its center, kept inside the viewport. Saved at 2x.
+ * widened or heightened to `aspect` (w/h) around its center (`aspect: null` keeps the union's own shape), kept
+ * inside the viewport. Saved at 2x.
  */
 const zoom = async (name, sels, { aspect = 4 / 3, pad = 16 } = {}) => {
   const boxes = await Promise.all(sels.map((s) => page.locator(s).first().boundingBox()));
@@ -63,8 +64,9 @@ const zoom = async (name, sels, { aspect = 4 / 3, pad = 16 } = {}) => {
     return [Math.max(0, lo), Math.min(max, Math.max(0, lo) + len)];
   };
   const vp = page.viewportSize();
-  if ((x1 - x0) / (y1 - y0) < aspect) [x0, x1] = grow(x0, x1, (y1 - y0) * aspect, vp.width);
-  else [y0, y1] = grow(y0, y1, (x1 - x0) / aspect, vp.height);
+  const ratio = (x1 - x0) / (y1 - y0);
+  if (aspect && ratio < aspect) [x0, x1] = grow(x0, x1, (y1 - y0) * aspect, vp.width);
+  else if (aspect) [y0, y1] = grow(y0, y1, (x1 - x0) / aspect, vp.height);
   [x0, y0] = [Math.max(0, x0), Math.max(0, y0)];
   [x1, y1] = [Math.min(vp.width, x1), Math.min(vp.height, y1)];
   const clip = { x: Math.round(x0), y: Math.round(y0), width: Math.round(x1 - x0), height: Math.round(y1 - y0) };
@@ -222,6 +224,8 @@ await page.locator('.node', { hasText: 'Instrument current' }).first().click();
 await page.locator('.criteria-section').waitFor({ timeout: 15000 });
 await wait(1000);
 await zoom('lookout-criteria', ['.inspector'], { aspect: 4 / 5, pad: 0 });
+// The same ticket asks for the QA guide: the guide and the agent's checklist answers, under the ticket's title.
+await zoom('lookout-ticket-guide', ['.inspector .zone-title', '.inspector .ticket-guide'], { aspect: null, pad: 0 });
 
 // A proposed new plan: the map preview, then the review dialog.
 await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
@@ -240,6 +244,22 @@ const risk = page.locator('.set-sec', { hasText: 'Risk policy' });
 await risk.scrollIntoViewIfNeeded();
 await wait(600);
 await zoom('lookout-risk', ['.set-sec:has-text("Risk policy")'], { aspect: 4 / 3, pad: 16 });
+
+// Settings → Model matching: the tier per ticket type, with hints from Trail stats. Switched on here (it starts off
+// so the scripted agents can take every ticket, see lib/realProject.mjs).
+await page.locator('.set-sec', { hasText: 'Match work to models' }).scrollIntoViewIfNeeded();
+await page.locator('.model-matching-toggle').click();
+await page.locator('.tier-grid .tier-row').first().waitFor({ timeout: 10000 });
+await wait(900);
+await zoom('lookout-model-matching', ['.set-sec:has-text("Match work to models")'], { aspect: 16 / 10, pad: 16 });
+
+// Settings → Guides → Browse guides: the public catalog, live.
+await page.getByRole('button', { name: 'Browse guides' }).click();
+await page.locator('.catalog-dialog .catalog-list li').nth(2).waitFor({ timeout: 20000 });
+await wait(800);
+await zoom('lookout-guide-catalog', ['.catalog-dialog'], { aspect: 16 / 10, pad: 24 });
+await page.locator('.catalog-dialog').getByRole('button', { name: 'Close' }).click();
+await wait(400);
 await page.keyboard.press('Escape');
 
 // Parallel work: the overlap warning in the queue, then the ticket with the files its agent expects to change.
@@ -262,6 +282,21 @@ await ws.getByRole('button', { name: 'Off' }).first().click();
 await wait(900);
 await zoom('lookout-workspaces', ['.set-sec:has-text("Workspaces")'], { aspect: 16 / 9, pad: 16 });
 await page.keyboard.press('Escape');
+
+// All projects: this repo and billing-service (lib/realProject.mjs), with one Needs you list across them.
+// 1440 wide is the smallest window that shows the list and the projects side by side.
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.locator('.project-btn').click();
+await page.locator('.trail-item.all-projects').click();
+await page.locator('.projects-view .pj-item').first().waitFor({ timeout: 15000 });
+await wait(1500);
+await zoom('lookout-all-projects', ['.projects-view'], { aspect: 16 / 10, pad: 0 });
+await page.keyboard.press('Escape');
+await page.setViewportSize(size);
+// No hover tip or focus ring left over for the phone shot.
+await page.mouse.move(size.width / 2, size.height - 4);
+await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur());
+await wait(600);
 
 // Phone view of the same project.
 const cdp = await ctx.newCDPSession(page);

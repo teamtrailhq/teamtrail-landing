@@ -152,7 +152,7 @@ await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.decisions-btn').click();
 await page.locator('.dv-row button').first().click();
 await caption('Existing project · decisions', 'Every answer is logged with its reasoning.');
-await wait(4000);
+await wait(3400);
 await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.decisions-btn').click();
 
@@ -160,7 +160,7 @@ await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.stats-btn').click();
 await page.locator('.perf-recs li').first().waitFor({ timeout: 10000 });
 await caption('Across every trail', 'See how each agent delivers, with plain notes from your own numbers.');
-await wait(4500);
+await wait(3600);
 await page.keyboard.press('Escape');
 
 // A finding broke an assumption: the agent proposes a new plan, previewed on the map, and you approve it.
@@ -186,6 +186,14 @@ await wait(700);
 await page.keyboard.press('Escape');
 await page.locator('.trail-btn').click({ force: true });
 await wait(2600);
+await page.keyboard.press('Escape');
+// Every repo: All projects, with this repo and billing-service (lib/realProject.mjs) in one Needs you list.
+await caption('Every repo', 'More than one repo? One list of what needs you across all of them.');
+await page.locator('.project-btn').click();
+await wait(900);
+await page.locator('.trail-item.all-projects').click();
+await page.locator('.projects-view .pj-item').first().waitFor({ timeout: 10000 });
+await wait(3000);
 await page.keyboard.press('Escape');
 await caption('', '');
 await stage('card', 'end');

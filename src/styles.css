@@ -2018,3 +2018,7 @@ code {
     font-size: 14px;
   }
 }
+/* Keeps a file name such as ./my-guide.md from breaking at its hyphen. */
+.nowrap {
+  white-space: nowrap;
+}

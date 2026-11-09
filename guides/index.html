@@ -160,6 +160,27 @@
               </p>
             </li>
           </ul>
+          <div class="runs" style="margin-top: clamp(40px, 6vw, 88px)">
+            <article class="run reveal">
+              <figure class="shot">
+                <img
+                  src="/media/lookout-ticket-guide.png"
+                  width="796"
+                  height="786"
+                  loading="lazy"
+                  decoding="async"
+                  alt="A ticket that asks for the QA guide, with the agent's answer to every item on the guide's checklist."
+                />
+              </figure>
+              <div class="run__copy">
+                <h3>Every answer, on the ticket</h3>
+                <p>
+                  The checklist answers stay with the ticket: who answered, when, and a note on anything not done. You
+                  see them in the Lookout next to the work.
+                </p>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -267,16 +288,16 @@
               <span class="n">02</span>
               <h3>Check it</h3>
               <p>
-                <code>teamtrail guides lint ./my-guide.md</code> checks the format and refuses anything that would steer
-                an agent around you. Every finding names its line.
+                <code>teamtrail guides lint <span class="nowrap">./my-guide.md</span></code> checks the format and
+                refuses anything that would steer an agent around you. Every finding names its line.
               </p>
             </li>
             <li>
               <span class="n">03</span>
               <h3>Add it, or share it</h3>
               <p>
-                <code>teamtrail guides add ./my-guide.md</code> adds it to your project. To share it with everyone, send
-                it to the catalog:
+                <code>teamtrail guides add <span class="nowrap">./my-guide.md</span></code> adds it to your project. To
+                share it with everyone, send it to the catalog:
                 <a href="https://github.com/teamtrailhq/teamtrail-guides/blob/main/CONTRIBUTING.md"
                   >how to contribute a guide</a
                 >.
