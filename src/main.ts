@@ -2,6 +2,7 @@ import { type GuideRole, guideMarkup, mountScout } from '@teamtrail/scout-avatar
 import { initCloudScene } from './cloudScene';
 import { initCmdCycle } from './cmdCycle';
 import { initCopy } from './copy';
+import { initGhStars } from './ghStars';
 import { $, $$ } from './dom';
 import { initGuideDialogs } from './guideDialog';
 import { mountHeroField } from './heroField';
@@ -46,6 +47,7 @@ for (const el of $$('[data-spec]')) {
 
 initCloudScene(reducedMotion);
 initNav();
+void initGhStars();
 initReveal(reducedMotion);
 initScramble(reducedMotion);
 initCopy();

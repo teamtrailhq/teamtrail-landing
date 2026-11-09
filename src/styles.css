@@ -20,6 +20,7 @@
   --copper: #3f6b45;
   --copper-hi: #345a3a;
   --copper-rgb: 63, 107, 69;
+  --star: #b7791f;
   --on-copper: #ffffff;
   --blaze: #c8581e;
   --tt-keyline: #10302d;
@@ -64,6 +65,7 @@
     --copper: #8fbf84;
     --copper-hi: #a4cf99;
     --copper-rgb: 143, 191, 132;
+    --star: #e3b341;
     --on-copper: #101815;
     --blaze: #e8833a;
     --tt-keyline: #f1e8d3;
@@ -90,6 +92,7 @@
   --copper: #8fbf84;
   --copper-hi: #a4cf99;
   --copper-rgb: 143, 191, 132;
+  --star: #e3b341;
   --on-copper: #101815;
   --blaze: #e8833a;
   --tt-keyline: #f1e8d3;
@@ -613,9 +616,6 @@ code {
   font-size: var(--fs-lede);
   line-height: 1.6;
   color: var(--lede);
-}
-.hero__lede .mark {
-  color: var(--copper);
 }
 .hero__actions {
   display: flex;
@@ -1612,9 +1612,9 @@ code {
   align-content: end;
 }
 .journey__scout {
-  width: 48px;
-  height: 48px;
-  margin-bottom: -18px;
+  width: 52px;
+  height: 52px;
+  margin-bottom: -26px;
   position: relative;
   z-index: 1;
 }
@@ -1623,6 +1623,7 @@ code {
 }
 .journey__scout .scout-sprite {
   outline: none !important;
+  filter: drop-shadow(0 4px 0 var(--shadow));
 }
 .zz {
   position: absolute;
@@ -1784,10 +1785,9 @@ code {
 }
 
 /* The product name in running text: bold, in white, wherever Teamtrail (Local, Cloud) is mentioned. */
+/* A highlighted name (Scout, Teamtrail): same font and weight as the text around it, set apart by colour. */
 .mark {
-  font-family: var(--sans);
-  font-weight: 600;
-  color: var(--text-hi);
+  color: var(--copper);
   white-space: nowrap;
 }
 
@@ -2007,6 +2007,25 @@ code {
 /* Keeps a file name such as ./my-guide.md from breaking at its hyphen. */
 .nowrap {
   white-space: nowrap;
+}
+
+/* GitHub stars on the nav button: a gold star and the live count, after a thin divider. */
+.gh-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 2px;
+  padding-left: 10px;
+  border-left: 1px solid var(--line-2);
+  font-variant-numeric: tabular-nums;
+}
+.gh-stars[hidden] {
+  display: none;
+}
+.gh-star {
+  width: 14px;
+  height: 14px;
+  color: var(--star);
 }
 
 /* /guides: a guide's details in a native modal dialog (src/guideDialog.ts). */
