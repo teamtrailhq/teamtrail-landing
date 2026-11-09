@@ -100,6 +100,45 @@ const closeSettings = async () => {
   await wait(500);
 };
 
+/**
+ * Waits until the map holds still: the same cards in the same places for 1.5s, and none half-loaded (a card an
+ * agent just created can show for a moment without its title, and the map shifts to make room for it).
+ */
+const settleMap = async () => {
+  const snap = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll('.map-zone .node')]
+        .map((n) => {
+          const r = n.getBoundingClientRect();
+          return `${Math.round(r.x)},${Math.round(r.y)}:${n.textContent?.trim()}`;
+        })
+        .join('|'),
+    );
+  const blank = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll('.map-zone .node')].some(
+        (n) => !n.querySelector('.title')?.textContent?.trim() || !n.querySelector('.key')?.textContent?.trim(),
+      ),
+    );
+  for (let t = 0; t < 30; t++) {
+    const a = await snap();
+    await wait(1500);
+    if (a === (await snap()) && !(await blank())) return;
+  }
+  throw new Error('the map never settled');
+};
+
+/**
+ * Before a full-app shot: the pointer parked in a neutral corner, focus dropped, and no tooltip (the plain one or
+ * Scout's speech bubble, both `[role=tooltip]`) left open over what the shot is about.
+ */
+const clearUi = async () => {
+  await page.mouse.move(size.width - 4, size.height - 4);
+  await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur());
+  await page.locator('[role="tooltip"], .tooltip, .scout-tip').first().waitFor({ state: 'detached', timeout: 5000 });
+  await wait(400);
+};
+
 /** Waits until the agents' output shows `text` (e.g. "asking:"), counting occurrences. */
 const agentStep = async (text, times = 1) => {
   for (let t = 0; t < 240; t++) {
@@ -156,12 +195,10 @@ await wait(1500);
 
 await page.locator('.node', { hasText: 'silent auto-merge' }).first().click();
 await wait(1500);
-// Scout explaining the map from its info icon: the speech-bubble hint, mid-sentence.
-await page.locator('.map-zone .info-tip').first().hover();
-await wait(1400);
+// The whole app, with nothing open over it.
+await clearUi();
+await settleMap();
 await shot('lookout-overview');
-await page.mouse.move(size.width / 2, size.height - 4);
-await wait(600);
 await zoom('flow-06-first-tickets', ['.map-zone'], { aspect: 16 / 10 });
 
 await page.locator('.trail-btn').click();
@@ -259,6 +296,7 @@ await zoom('lookout-ticket-guide', ['.inspector .zone-title', '.inspector .ticke
 await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
 await page.locator('.node.mark-added').first().waitFor({ timeout: 15000 });
 await wait(600);
+await clearUi();
 await zoom('lookout-reroute-map', ['.map-zone'], { aspect: 16 / 10 });
 await page.locator('.reroute-banner button').first().click();
 await page.locator('.reroute-dialog').waitFor();
@@ -318,13 +356,12 @@ await page.locator('.project-btn').click();
 await page.locator('.trail-item.all-projects').click();
 await page.locator('.projects-view .pj-item').first().waitFor({ timeout: 15000 });
 await wait(1500);
+await clearUi();
 await zoom('lookout-all-projects', ['.projects-view'], { aspect: 16 / 10, pad: 0 });
 await page.keyboard.press('Escape');
 await page.setViewportSize(size);
 // No hover tip or focus ring left over for the phone shot.
-await page.mouse.move(size.width / 2, size.height - 4);
-await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur());
-await wait(600);
+await clearUi();
 
 // Phone view of the same project.
 const cdp = await ctx.newCDPSession(page);
