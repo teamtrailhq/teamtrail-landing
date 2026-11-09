@@ -87,7 +87,13 @@ Adding a guide fetches the file, checks its sha256 against the catalog's index, 
 
 ## Writing your own
 
-A guide is one markdown file:
+Start a guide for your team with:
+
+```bash
+npx teamtrail@next guides new perf
+```
+
+It writes `.teamtrail/guides/perf.md` from a template that already passes the safety lint, signed with your git name (`--author <name>` to sign it otherwise). Replace the placeholders with your instructions and checklist:
 
 ```md
 ---
@@ -107,14 +113,13 @@ license: MIT
 Measure the change on the slowest device you support, before and after, and write both numbers down.
 ```
 
-Check it, then add it to your project:
+Check it with `teamtrail guides lint`. Without a path it lints your project's own guides.
 
-```bash
-npx teamtrail@next guides lint ./perf.md
-npx teamtrail@next guides add ./perf.md
-```
+Then approve it in the Lookout: **Settings → Guides → Write your own** lists the guides your team wrote, each as **Not approved yet** or **Approved**. Agents can't use a guide until the trail lead approves it, and again after every edit. Once it's approved, give tickets the guide `perf` or put it on a trail's team.
 
-`guides add` with a file runs the same lint, copies the file into `.teamtrail/guides/` and pins it. A file you put in `.teamtrail/guides/` by hand isn't used until you approve it in **Settings → Guides** (**Approve guide**). To share it with everyone, open a pull request on the catalog; its `CONTRIBUTING.md` explains the review.
+`guides add ./perf.md` adds a guide file from elsewhere: it runs the same lint, copies the file into `.teamtrail/guides/` and pins it.
+
+To share a guide with everyone, open a pull request on the [public catalog](https://github.com/teamtrailhq/teamtrail-guides); its [`CONTRIBUTING.md`](https://github.com/teamtrailhq/teamtrail-guides/blob/main/CONTRIBUTING.md) explains the review. **Write your own** links to it too.
 
 ### The file format
 
@@ -170,24 +175,23 @@ proposedChecks:
 ## Approval and pinning
 
 - **Checks only after you approve them.** A guide's proposed check never runs until you approve it, from the prompt in `guides add`, with `--approve-checks`, or in **Settings → Guides**. Approving writes it to `verification.json`, the only place Teamtrail runs commands from, and records its argv's hash in the lock. If a later version changes the command, you're asked again. Without a terminal, `guides add` approves nothing unless you pass `--approve-checks`.
-- **Pinned by hash.** `guides.lock.json` records each guide's version, sha256, source and who added it. A guide file edited after you approved it is switched off until you look at it again (**Approve guide**). The same happens when its lock entry changes outside Teamtrail, for example an agent editing the file or a teammate's change pulled with git. Its tickets get a `guideWarning`, and the guide shows in Waiting on you.
+- **Pinned by hash.** `guides.lock.json` records each guide's version, sha256, source and who added it. A guide file edited after you approved it is switched off until you look at it again (**Approve**). The same happens when its lock entry changes outside Teamtrail, for example an agent editing the file or a teammate's change pulled with git. Its tickets get a `guideWarning`, and the guide shows in Waiting on you.
 - **Guides only add.** A guide can add checks and a checklist. It can't lower the verification level, drop or reorder a check, change who decides, or let an agent review its own work. A switched-off guide keeps adding the checks its approved version required.
 - **Removing a guide** deletes its file and lock entry. Checks you approved stay in `verification.json`; edit that file to drop them.
 
 ## Other catalogs
 
-`.teamtrail/guides.json` lists the catalogs to search, in order:
+`.teamtrail/guides.json` adds catalogs to search, in order. The ones it lists come first, then the official one:
 
 ```json
 {
   "v": 1,
-  "registries": [
-    { "name": "teamtrail", "url": "https://raw.githubusercontent.com/teamtrailhq/teamtrail-guides/main" },
-    { "name": "acme", "url": "https://raw.githubusercontent.com/acme/guides/main" }
-  ]
+  "registries": [{ "name": "acme", "url": "https://raw.githubusercontent.com/acme/guides/main" }]
 }
 ```
 
-Each registry needs a `name` and an `https` URL (or `http://localhost`). When the file is missing or lists no valid registry, the official catalog is used. When it lists any, only those are used, so keep the official one in the list if you want it. Pick one with `--registry <name>`; `guides add <id>` without it uses the first.
+Each registry needs a `name` and an `https` URL (or `http://localhost`). Add `"official": false` to leave the official catalog out, or list it yourself (name `teamtrail`) to put it somewhere else in the order. When the file is missing, only the official catalog is used.
+
+`guides search` and `guides add <id>` look in every catalog, in order, and `guides add` says which one the guide came from. An id in more than one catalog is refused until you pick one: `guides add acme/perf`, or `--registry acme`.
 
 A catalog is a git repo with `guides/<id>.md`, an `examples/<id>/` test example per guide, and an `index.json` built from them.

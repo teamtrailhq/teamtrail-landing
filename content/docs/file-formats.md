@@ -249,11 +249,12 @@ Teamtrail also keeps the lock as you last approved it in `.agents/guides-approve
 ```json
 {
   "v": 1,
-  "registries": [{ "name": "teamtrail", "url": "https://raw.githubusercontent.com/teamtrailhq/teamtrail-guides/main" }]
+  "registries": [{ "name": "acme", "url": "https://raw.githubusercontent.com/acme/guides/main" }],
+  "official": true
 }
 ```
 
-Optional; committed. The catalogs to search, in order, each with a `name` and an `https` URL. Missing, or with no valid registry, means the official catalog. See [Guides](/docs/guides/#other-catalogs).
+Optional; committed. Catalogs to search besides the official one, in order, each with a `name` and an `https` URL. The ones listed come first, then the official catalog. `official` (default `true`): `false` leaves the official catalog out. Listing the official catalog yourself (name `teamtrail` or its URL) puts it where you list it. Missing means the official catalog alone. See [Guides](/docs/guides/#other-catalogs).
 
 ## Checklist answers: `.evidence/<trail>/<ticket>/checklist.json`
 
