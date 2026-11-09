@@ -18,7 +18,14 @@ Writes go through a local outbox, so they survive going offline and replay once 
 
 ## Connect
 
-Open **Settings → Tracker** in the Lookout and pick GitHub or Linear. The choice is saved in `.teamtrail/trackers.json`, which holds no secrets:
+The first time you open the Lookout it asks **Where should your trails live?**: local files, GitHub Issues or Linear. Later, change it in **Settings → Project → Tracker**.
+
+Nothing connects until you press **Connect**:
+
+- **GitHub** shows the account it will use (from `gh auth login`, an environment variable or a saved token) and a searchable picker of your repos, starting on the `origin` remote. **Use another token** lets you paste one and type the repo instead.
+- **Linear** shows whose API key it is, a searchable picker of your teams and, optionally, a project. Without a key in `$LINEAR_API_KEY`, paste one first.
+
+The choice is saved in `.teamtrail/trackers.json`, which holds no secrets:
 
 ```json
 {

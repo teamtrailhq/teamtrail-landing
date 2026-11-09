@@ -4,26 +4,26 @@ The web app `teamtrail` serves on your machine, where you steer your trails. It 
 
 ## The zones
 
-| Zone               | What it's for                                                                                                                                                                                              |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Communication      | **Waiting on you**, the [ranked list](/docs/waiting-on-you/) of what needs you, and the conversation with the agent asking. Up next shows the tickets ready to pick up.                                    |
-| Trail map          | Every ticket as a sign on the trail, with what blocks what, its guide, and whether it waits for a stronger model. **Fit** shows the whole map, and the **Summary** tab at the bottom slides up the counts. |
-| Trail step         | The selected ticket: type, who has it, what blocks it, its [guide](/docs/guides/) (pick one under **Guide**) and checklist answers, its criteria and the knowledge its agent gets.                         |
-| Current trail step | What each agent is doing right now, step by step. With [model matching](/docs/model-matching/) on, each session shows its model's tier.                                                                    |
-| Activity log       | Everything that happened, newest first.                                                                                                                                                                    |
-| Trail plan         | The plan's tabs: Not yet specified, Assumptions, Decisions, Out of scope, Notes and Report.                                                                                                                |
+| Zone               | What it's for                                                                                                                                                                                                                                      |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Communication      | **Waiting on you**, the [ranked list](/docs/waiting-on-you/) of what needs you, and the conversation with the agent asking. Up next shows the tickets ready to pick up.                                                                            |
+| Trail map          | Every ticket as a card on the trail (its status, title, type, guide and who has it), joined to what it blocks, and whether it waits for a stronger model. **Fit** shows the whole map, and the **Summary** tab at the bottom slides up the counts. |
+| Trail step         | The selected ticket: type, who has it, what blocks it, its [guide](/docs/guides/) (pick one under **Guide**) and checklist answers, its criteria and the knowledge its agent gets.                                                                 |
+| Current trail step | What each agent is doing right now, step by step. With [model matching](/docs/model-matching/) on, each session shows its model's tier.                                                                                                            |
+| Activity log       | Everything that happened, newest first.                                                                                                                                                                                                            |
+| Trail plan         | The plan's tabs: Not yet specified, Assumptions, Decisions, Out of scope, Notes and Report.                                                                                                                                                        |
 
 ## The header
 
-| Control        | What it does                                                                                                                                            |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Repo name      | With more than one project, switch projects or open **All projects**. A badge counts what interrupts in your other projects.                            |
-| Trail title    | Switch trails, or start a new one.                                                                                                                      |
-| Focus          | Hold back interruptions. See [Personal settings](/docs/personal-settings/).                                                                             |
-| Plan + execute | The trail's mode: plan only, or plan and build.                                                                                                         |
-| Records        | The views below.                                                                                                                                        |
-| Sun or moon    | Switch between the day and night themes.                                                                                                                |
-| Settings       | The tracker, Slack, verification, model matching, risk policy, attention, workspaces, projects, guides, the trail's team, appearance and the changelog. |
+| Control        | What it does                                                                                                                 |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Repo name      | With more than one project, switch projects or open **All projects**. A badge counts what interrupts in your other projects. |
+| Trail title    | Switch trails, or start a new one.                                                                                           |
+| Focus          | Hold back interruptions. See [Personal settings](/docs/personal-settings/).                                                  |
+| Plan + execute | The trail's mode: plan only, or plan and build.                                                                              |
+| Records        | The views below.                                                                                                             |
+| Settings       | Opens the Settings page. See [Settings](#settings) below.                                                                    |
+| Sun or moon    | Switch between the day and night themes.                                                                                     |
 
 ## Records
 
@@ -40,18 +40,16 @@ Open it from the repo name in the header. One **Needs you** list across your rep
 
 ## Settings
 
-| Section                | What it's for                                                                                                                                             |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Trail #n               | The trail's mode: plan only, or plan and build.                                                                                                           |
-| Tracker, Slack         | Local files, [GitHub Issues or Linear](/docs/trackers/); [Slack](/docs/slack/).                                                                           |
-| Verification           | The trail's [verification level](/docs/verification/) and the checks in `verification.json`.                                                              |
-| Model matching         | Turn [model matching](/docs/model-matching/) on for the trail and set the tier per ticket type, with what Trail stats measured.                           |
-| Risk policy, Attention | [policy.json](/docs/policy-json/), [attention.json](/docs/attention-json/) and your [focus hours](/docs/personal-settings/).                              |
-| Workspaces             | A [git worktree per claim](/docs/parallel-work/), and removing finished ones.                                                                             |
-| Projects               | The repos [All projects](/docs/all-projects/) shows, and whether agents add their repo when they connect.                                                 |
-| Guides                 | Every [guide](/docs/guides/) with its status: approve new or changed guides and the checks they propose, remove one, or **Browse guides** in the catalog. |
-| Team of #n             | The guides the trail's tickets use. With Reviewer on the team, review tickets get the reviewer guide.                                                     |
-| Appearance             | Day, night or match your system.                                                                                                                          |
+**Settings** in the header opens a full page, with the groups in a side nav and one group at a time on the right. **Esc** or **Back to the Lookout** returns to the map. Each section can be linked to directly: `?settings=<section>`, for example `?settings=tracker`, `?settings=models` or `?settings=guides`. Each section says where it's saved: committed to the repo, only on this machine, or only in this browser.
+
+| Group              | Sections                                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This trail         | **Trail mode** (plan only, or plan and build), **Verification** (the [level](/docs/verification/) and the checks in `verification.json`), **[Model matching](/docs/model-matching/)** and **Team** (the guides the trail's tickets use; with Reviewer on the team, review tickets get the reviewer guide).                                                                                   |
+| Project            | **Tracker** (local files, [GitHub Issues or Linear](/docs/trackers/)), **Workspaces** (a [git worktree per claim](/docs/parallel-work/), and removing finished ones), **Risk policy** ([policy.json](/docs/policy-json/)), **Guides** (every [guide](/docs/guides/) with its status, approving new or changed guides and their checks, and **Browse guides** in the catalog) and **Labels**. |
+| Attention & alerts | **Attention** ([attention.json](/docs/attention-json/) and your [focus hours](/docs/personal-settings/)), **[Slack](/docs/slack/)** and **Trip report** (how long away before Scout briefs you).                                                                                                                                                                                             |
+| You                | **Appearance** (day, night or match your system), **HITL transcript** and **Agent**.                                                                                                                                                                                                                                                                                                         |
+| All projects       | **Projects**: the repos [All projects](/docs/all-projects/) shows, and whether agents add their repo when they connect.                                                                                                                                                                                                                                                                      |
+| About              | **Changelog**: what changed in each release.                                                                                                                                                                                                                                                                                                                                                 |
 
 ## On a trail's report
 
