@@ -185,6 +185,8 @@ await caption('Every trail', 'Running several trails? Switch in one click.');
 await wait(700);
 await page.keyboard.press('Escape');
 await page.locator('.trail-btn').click({ force: true });
+// No hover tip over the open menu.
+await page.mouse.move(size.width / 2, size.height - 4);
 await wait(2600);
 await page.keyboard.press('Escape');
 // Every repo: All projects, with this repo and billing-service (lib/realProject.mjs) in one Needs you list.
