@@ -1923,7 +1923,8 @@ code {
 .gcard__summary {
   color: var(--text);
 }
-.gcard h4 {
+.gcard h4,
+.gdlg h4 {
   margin: 0 0 8px;
   font-family: var(--sans);
   font-size: var(--fs-label);
@@ -1949,21 +1950,6 @@ code {
   font-size: 13px;
   padding-top: 2px;
 }
-.gcard__more {
-  margin-top: 6px;
-}
-.gcard__more summary {
-  cursor: pointer;
-  width: fit-content;
-  font-size: var(--fs-small);
-  color: var(--dim);
-}
-.gcard__more summary:hover {
-  color: var(--accent);
-}
-.gcard__more[open] summary {
-  margin-bottom: 6px;
-}
 .gcard__checks {
   font-size: var(--fs-small);
   color: var(--dim);
@@ -1982,8 +1968,8 @@ code {
   padding-top: 4px;
 }
 .gcard .cmd--static {
-  width: 100%;
-  flex: 1 1 100%;
+  width: auto;
+  flex: 1 1 240px;
   font-size: 14px;
   padding: 6px 6px 6px 14px;
 }
@@ -2040,4 +2026,84 @@ code {
   width: 14px;
   height: 14px;
   color: var(--star);
+}
+
+/* /guides: a guide's details in a native modal dialog (src/guideDialog.ts). */
+.gcard__summary {
+  flex: 1;
+}
+.gcard__details {
+  flex: none;
+}
+.gdlg {
+  width: min(640px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 1px solid var(--line-2);
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 24px 64px var(--shadow);
+  overflow: hidden;
+}
+.gdlg::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+.gdlg__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: calc(100dvh - 34px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(22px, 4vw, 34px);
+}
+.gdlg .gcard__head {
+  padding-right: 40px;
+}
+.gdlg__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--dim);
+  font: 400 22px/1 var(--sans);
+  cursor: pointer;
+}
+.gdlg__close:hover,
+.gdlg__close:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.gdlg__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.gdlg .cmd--static {
+  width: 100%;
+  font-size: 14px;
+  padding: 6px 6px 6px 14px;
+}
+html:has(.gdlg[open]) {
+  overflow: hidden;
+}
+@media (max-width: 480px) {
+  .gcard__head {
+    grid-template-columns: 48px minmax(0, 1fr);
+    row-gap: 8px;
+  }
+  .gcard__head > .tag {
+    grid-column: 2;
+    justify-self: start;
+  }
 }
