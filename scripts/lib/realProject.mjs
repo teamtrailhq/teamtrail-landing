@@ -3,8 +3,9 @@
 // Needs the product repo next to this one (../teamtrail, or TEAMTRAIL_REPO) with the CLI built: npm run build -w teamtrail.
 // The project registry (All projects) lives in a temp config dir (TEAMTRAIL_CONFIG_DIR), never in yours: this project
 // plus the seed's second repo, billing-service, so the Lookout shows two projects.
-// The repos sit at /tmp/fieldnote-app and /tmp/billing-service rather than in a random temp folder, because their
-// paths show in the shots (each claim's worktree, in Settings → Workspaces). One capture runs at a time.
+// The repos sit in /Users/Shared/code (CAPTURE_CODE_DIR overrides it) rather than in a temp folder, because their
+// paths show in the shots (each claim's worktree, in Settings → Workspaces) and should read like a dev folder, with
+// no temp folder or user name in them. Each run empties and then deletes them. One capture runs at a time.
 import { execFileSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -26,7 +27,10 @@ const SOURCES = {
   'src/notes/NoteList.tsx': 'export function NoteList() {\n  return null;\n}\n',
 };
 
-/** A folder of ours under /tmp, emptied first; refuses one it didn't make. */
+/** Where the capture repos go. */
+const CODE = process.env.CAPTURE_CODE_DIR ?? '/Users/Shared/code';
+
+/** A folder of ours in CODE, emptied first; refuses one it didn't make. */
 function fresh(dir) {
   if (fs.existsSync(dir)) {
     if (!fs.existsSync(path.join(dir, MARKER))) throw new Error(`${dir} exists and isn't a capture project`);
@@ -58,8 +62,8 @@ export async function realProject({ agents = 2 } = {}) {
   if (!fs.existsSync(cli)) throw new Error('build the CLI first: npm run build -w teamtrail');
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'teamtrail-capture-'));
   // The folder name shows as the project name in the header.
-  const dir = '/tmp/fieldnote-app';
-  const billing = '/tmp/billing-service';
+  const dir = path.join(CODE, 'fieldnote-app');
+  const billing = path.join(CODE, 'billing-service');
   const worktrees = `${dir}.teamtrail`;
   for (const d of [dir, billing, worktrees]) fresh(d);
   const data = path.join(dir, '.teamtrail');
@@ -110,8 +114,14 @@ export async function realProject({ agents = 2 } = {}) {
         try {
           fs.rmSync(d, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
         } catch {
-          // the server may still be flushing; the OS cleans temp folders
+          // the server may still be flushing; the next run empties it
         }
+      }
+      // The code folder too, when the capture was all that was in it.
+      try {
+        fs.rmdirSync(CODE);
+      } catch {
+        // not empty, or already gone
       }
     },
   };

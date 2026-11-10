@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { AGAIN, CHECK_IN, FRAME, RESUME, SETUP } from './journey/scenes.mjs';
 import { installStage } from './journey/stage.mjs';
+import { clippedCards, frameMap } from './lib/frameMap.mjs';
 import { realProject } from './lib/realProject.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -45,6 +46,23 @@ const term = async (title, lines, label, text) => {
   await stage('term', title, lines);
 };
 const chip = () => page.locator('.comms .suggest .chip').first();
+/**
+ * Frames the map so no card is cut at its edges: the first four columns of the trail when they fit whole, else the
+ * first five, else all of it.
+ */
+const frameHero = async () => {
+  const first = ['#2', '#3', '#8', '#21', '#22', '#4', '#6', '#7', '#5', '#9', '#10', '#11'];
+  const picks = [
+    { keys: first, added: true },
+    { keys: [...first, '#12', '#15'], added: true },
+    { keys: [...first, '#12', '#15', '#13'], added: true, destination: true },
+  ];
+  for (const pick of picks) {
+    await frameMap(page, pick, 0.96);
+    if (!(await clippedCards(page)).length) return;
+  }
+  throw new Error(`the hero map cuts through: ${(await clippedCards(page)).join(', ')}`);
+};
 const setVisible = (v) =>
   page.evaluate((v) => {
     Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => (v ? 'visible' : 'hidden') });
@@ -86,11 +104,22 @@ const frames = [];
 cdp.on('Page.screencastFrame', ({ data, metadata, sessionId }) => {
   const file = join(framesDir, `f${String(frames.length).padStart(5, '0')}.jpg`);
   writeFileSync(file, Buffer.from(data, 'base64'));
-  frames.push({ file, ts: metadata.timestamp });
+  frames.push({ file, ts: metadata.timestamp - pausedFor });
   cdp.send('Page.screencastFrameAck', { sessionId }).catch(() => {});
 });
 const screencast = { format: 'jpeg', quality: 90, maxWidth: size.width, maxHeight: size.height };
 await cdp.send('Page.startScreencast', screencast);
+// Pausing the recording takes the paused time out of the video: frames after it are dated back by it.
+let pausedFor = 0;
+let pausedAt = 0;
+const pause = async () => {
+  await cdp.send('Page.stopScreencast');
+  pausedAt = Date.now() / 1000;
+};
+const resume = async () => {
+  pausedFor += Date.now() / 1000 - pausedAt;
+  await cdp.send('Page.startScreencast', screencast);
+};
 
 await term('fieldnote-app — zsh', SETUP, 'Setup once', 'Install once. One command connects Claude Code or Codex.');
 await term(
@@ -100,7 +129,10 @@ await term(
   'Type your idea in Claude Code. Scout asks a few questions to frame the trail.',
 );
 
-// The trail Scout charted, live: agents working, one waiting on you.
+// The trail Scout charted, live: agents working, one waiting on you. The recording pauses while the map is framed
+// so every card is whole (the first question selects its ticket and glides the map to it first), and for the
+// poster, which is this frame without the caption over it.
+await pause();
 await stage('hide');
 // The away threshold is seconds long here: keep the trail lead "present" while the tab is visible. Hiding the
 // tab still counts as away, which is what opens the briefing later.
@@ -111,15 +143,14 @@ await page
   .click({ timeout: 3000 })
   .catch(() => {});
 await agentStep('asking:');
+await wait(2000);
+await frameHero();
 await caption('New project · trail map', 'Scout maps the trail. Agents pick up every ticket that isn’t blocked.');
-await wait(1500);
-// The poster: this frame without the caption over it. The recording pauses for it, so the video never shows the
-// caption gone; the frame before simply holds a moment longer.
-await cdp.send('Page.stopScreencast');
 await page.mouse.move(size.width - 2, size.height - 2);
+await wait(800);
 await page.screenshot({ path: join(framesDir, 'poster.png'), style: '#stage-cap { visibility: hidden !important; }' });
-await cdp.send('Page.startScreencast', screencast);
-await wait(3500);
+await resume();
+await wait(5000);
 
 // An agent asks; answer in the inbox.
 await caption('During the day · an agent asks', 'Everything that needs you, most important first. Answer in a click.');
@@ -199,6 +230,11 @@ await wait(2600);
 await page.keyboard.press('Escape');
 // Every repo: All projects, with this repo and billing-service (lib/realProject.mjs) in one Needs you list.
 await caption('Every repo', 'More than one repo? One list of what needs you across all of them.');
+// Nothing left open over the header (a dialog that opened late would take the click).
+await page
+  .locator('.scrim')
+  .waitFor({ state: 'detached', timeout: 2000 })
+  .catch(() => page.keyboard.press('Escape'));
 await page.locator('.project-btn').click();
 await wait(900);
 await page.locator('.trail-item.all-projects').click();
@@ -210,7 +246,7 @@ await stage('card', 'end');
 await wait(3200);
 
 await cdp.send('Page.stopScreencast');
-const end = Date.now() / 1000;
+const end = Date.now() / 1000 - pausedFor;
 await browser.close();
 
 // Frames arrive on repaint; per-frame durations from their timestamps keep holds at real length.

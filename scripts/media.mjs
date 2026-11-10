@@ -7,6 +7,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
+import { clippedCards, frameMap as frame } from './lib/frameMap.mjs';
 import { realProject } from './lib/realProject.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -162,7 +163,7 @@ const settleMap = async () => {
         (n) => !n.querySelector('.title')?.textContent?.trim() || !n.querySelector('.key')?.textContent?.trim(),
       ),
     );
-  for (let t = 0; t < 30; t++) {
+  for (let t = 0; t < 60; t++) {
     const a = await snap();
     await wait(1500);
     if (a === (await snap()) && !(await blank())) return;
@@ -170,72 +171,11 @@ const settleMap = async () => {
   throw new Error('the map never settled');
 };
 
-/**
- * Frames part of the map: Fit, then zoom and pan so the cards `pick` chooses (by key, and new cards) fill the
- * map zone. The map zooms with the wheel around the pointer and pans by dragging, as a person would.
- */
-const frameMap = async (pick, fill = 0.94) => {
-  await page.locator('.map-zone').getByRole('button', { name: 'Fit' }).click();
-  await wait(900);
-  const union = () =>
-    page.evaluate((pick) => {
-      const nodes = [...document.querySelectorAll('.map-zone .node')];
-      const keyOf = (n) => n.querySelector('.key')?.textContent?.trim();
-      // `added`: the plan's new cards right of the first picked one (not the new card in the first column).
-      const left = nodes.find((n) => keyOf(n) === pick.keys[0])?.getBoundingClientRect().left ?? 0;
-      const isAdded = (n) => /mark-added/.test(n.getAttribute('class')) && n.getBoundingClientRect().left >= left;
-      const picked = nodes.filter((n) => pick.keys.includes(keyOf(n)) || (pick.added && isAdded(n)));
-      if (pick.destination) picked.push(document.querySelector('.map-zone .destination'));
-      const rects = picked.map((n) => n.getBoundingClientRect());
-      const x0 = Math.min(...rects.map((r) => r.left));
-      const y0 = Math.min(...rects.map((r) => r.top));
-      const x1 = Math.max(...rects.map((r) => r.right));
-      const y1 = Math.max(...rects.map((r) => r.bottom));
-      return { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
-    }, pick);
-  // The map's own area: below the zone header and the reroute banner.
-  const area = await page.evaluate(() => {
-    const zone = document.querySelector('.map-zone').getBoundingClientRect();
-    const svg = document.querySelector('.map-zone svg').getBoundingClientRect();
-    return { x: zone.x, y: svg.y, width: zone.width, height: zone.bottom - svg.y };
-  });
-  /** Drags the map so the picked cards sit in the middle of the area. */
-  const centre = async () => {
-    const u = await union();
-    // Grab the map where there is no card or button under the pointer.
-    const from = await page.evaluate((a) => {
-      for (let fy = 0.1; fy < 1; fy += 0.1)
-        for (let fx = 0.1; fx < 1; fx += 0.1) {
-          const p = { x: a.x + a.width * fx, y: a.y + a.height * fy };
-          const el = document.elementFromPoint(p.x, p.y);
-          if (el?.closest('.map-zone') && !el.closest('.node, button, a')) return p;
-        }
-      return { x: a.x + a.width / 2, y: a.y + a.height / 2 };
-    }, area);
-    const dx = area.x + area.width / 2 - (u.x + u.width / 2);
-    const dy = area.y + area.height / 2 - (u.y + u.height / 2);
-    await page.mouse.move(from.x, from.y);
-    await page.mouse.down();
-    await page.mouse.move(from.x + dx, from.y + dy, { steps: 12 });
-    await page.mouse.up();
-    await wait(700);
-  };
-  // Zoom towards the size that fills the area, then centre; twice, since the map eases its zoom.
-  for (let pass = 0; pass < 2; pass++) {
-    await centre();
-    const u = await union();
-    const k = Math.min((area.width * fill) / u.width, (area.height * fill) / u.height);
-    await page.mouse.move(u.x + u.width / 2, u.y + u.height / 2);
-    // Wheel zoom is exp(-deltaY * 0.0015) per event; small steps, as a person scrolls.
-    const steps = 6;
-    for (let i = 0; i < steps; i++) {
-      await page.mouse.wheel(0, -Math.log(k) / 0.0015 / steps);
-      await wait(80);
-    }
-    await wait(700);
-  }
-  await centre();
-  await wait(300);
+/** Frames the map (lib/frameMap.mjs) and refuses a frame that cuts a card in half. */
+const frameMap = async (pick, fill) => {
+  await frame(page, pick, fill);
+  const cut = await clippedCards(page);
+  if (cut.length) throw new Error(`the map frame cuts through: ${cut.join(', ')}`);
 };
 
 /** Waits until the agents' output shows `text` (e.g. "asking:"), counting occurrences. */
@@ -479,11 +419,25 @@ await wait(400);
 await closeSettings();
 
 // Parallel work: the overlap warning in the queue, then the ticket with the files its agent expects to change.
+// A tall window, so the warning and the items around it show whole, without scrolling the list.
+await page.setViewportSize({ ...size, height: 1500 });
 const overlap = page.locator('.att-item.k-overlap').first();
 await overlap.waitFor({ timeout: 20000 });
-await overlap.scrollIntoViewIfNeeded();
+await overlap.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+await wait(800);
+// The warning between its neighbours in Waiting on you.
+await page.evaluate(() => {
+  const items = [...document.querySelectorAll('.att-item')];
+  const i = items.findIndex((el) => el.classList.contains('k-overlap'));
+  items[i - 1]?.setAttribute('data-shot', 'before');
+  items[i + 1]?.setAttribute('data-shot', 'after');
+});
+await zoom('lookout-overlap', ['[data-shot="before"]', '.att-item.k-overlap', '[data-shot="after"]'], {
+  aspect: null,
+  pad: 0,
+});
+await page.setViewportSize(size);
 await wait(600);
-await zoom('lookout-overlap', ['.att-item.k-overlap'], { aspect: null, pad: 0 });
 await page.locator('.node', { hasText: 'Show sync status' }).first().dispatchEvent('click');
 await page.locator('.inspector', { hasText: 'Expects to change' }).waitFor({ timeout: 15000 });
 await wait(600);
