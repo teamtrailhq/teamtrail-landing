@@ -4,6 +4,8 @@
 //   npm run build && npm run preview -- --port 4319   # sends vercel.json's headers
 //   BASE=http://localhost:4319 npm run verify:csp     # or BASE=<a Vercel preview URL>
 // The waitlist is submitted with the honeypot filled, so a real deployment answers ok and adds nobody.
+// A preview behind Vercel Authentication answers with a sign-in redirect: to check one, set
+// VERCEL_AUTOMATION_BYPASS_SECRET to the project's Protection Bypass for Automation secret.
 import { chromium } from 'playwright-core';
 
 const BASE = (process.env.BASE ?? 'http://localhost:4319').replace(/\/$/, '');
@@ -13,6 +15,9 @@ const LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)/.test(BASE);
 // `vite preview` answers unknown paths with Home, so the not-found page is opened by name there.
 const NOT_FOUND = LOCAL ? '/404.html' : '/no-such-page';
 const PAGES = ['/', '/features/', '/guides/', '/cloud/', '/docs/', '/docs/install/', NOT_FOUND];
+
+const BYPASS = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+const extraHTTPHeaders = BYPASS ? { 'x-vercel-protection-bypass': BYPASS, 'x-vercel-set-bypass-cookie': 'true' } : {};
 
 const problems = [];
 const note = (where, what) => problems.push(`${where}: ${what}`);
@@ -111,6 +116,8 @@ async function visit(context, path, theme) {
   const page = await context.newPage();
   await watch(page, where);
   const response = await page.goto(BASE + path, { waitUntil: 'load' });
+  if (!page.url().startsWith(BASE))
+    throw new Error(`${BASE} sent us to ${new URL(page.url()).host}: is it behind a sign-in?`);
   await checkHeaders(response, where);
   const look = await page.evaluate(() => document.documentElement.dataset.theme);
   if (look !== theme) note(where, `the theme boot script did not run: data-theme is ${look}`);
@@ -127,6 +134,7 @@ for (const theme of ['night', 'day']) {
   const context = await browser.newContext({
     viewport: { width: 1280, height: 900 },
     permissions: ['clipboard-write'],
+    extraHTTPHeaders,
   });
   await context.addInitScript((look) => localStorage.setItem('teamtrail-theme', look), theme);
   for (const path of PAGES) await visit(context, path, theme);
