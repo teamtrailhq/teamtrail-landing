@@ -180,11 +180,19 @@ const settleMap = async () => {
   throw new Error('the map never settled');
 };
 
-/** Frames the map (lib/frameMap.mjs) and refuses a frame that cuts a card in half. */
+/**
+ * Frames the map (lib/frameMap.mjs) and refuses a frame that cuts a card in half. A card an agent creates while the
+ * map is being framed shifts it, so a cut frame is tried again once the map holds still.
+ */
 const frameMap = async (pick, fill) => {
-  await frame(page, pick, fill);
-  const cut = await clippedCards(page);
-  if (cut.length) throw new Error(`the map frame cuts through: ${cut.join(', ')}`);
+  let cut = [];
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await frame(page, pick, fill);
+    cut = await clippedCards(page);
+    if (!cut.length) return;
+    await settleMap();
+  }
+  throw new Error(`the map frame cuts through: ${cut.join(', ')}`);
 };
 
 /** Waits until the agents' output shows `text` (e.g. "asking:"), counting occurrences. */
