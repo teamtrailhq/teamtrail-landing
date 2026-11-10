@@ -60,7 +60,7 @@ export const CHECK_IN = [
   { t: '● teamtrail · status', cls: 'ok' },
   { t: '  #18 Ship team workspaces · 3 of 8 decided' },
   { t: '  Running   claude-33 · #22 Spike the riskiest integration point', cls: 'dim' },
-  { t: '  Spend     $0.21 · 52k tokens', cls: 'dim' },
+  { t: '  Spend     $2.84 · 712k tokens', cls: 'dim' },
   { t: '' },
   { t: '/scout inbox', type: true, prompt: CC },
   { t: '● teamtrail · list_inbox', cls: 'ok' },

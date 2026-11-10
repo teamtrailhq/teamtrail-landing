@@ -22,7 +22,8 @@ mkdirSync(media, { recursive: true });
 const colorScheme = night ? 'dark' : 'light';
 const framesDir = join(root, 'capture-frames');
 const size = { width: 1680, height: 945 };
-const project = await realProject();
+// Three agents, so the map has work in flight while one of them waits on you.
+const project = await realProject({ agents: 3 });
 process.on('exit', () => project.stop());
 /** Waits until the agents' output shows `text` `times` times. */
 const agentStep = async (text, times = 1) => {
@@ -88,7 +89,8 @@ cdp.on('Page.screencastFrame', ({ data, metadata, sessionId }) => {
   frames.push({ file, ts: metadata.timestamp });
   cdp.send('Page.screencastFrameAck', { sessionId }).catch(() => {});
 });
-await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 90, maxWidth: size.width, maxHeight: size.height });
+const screencast = { format: 'jpeg', quality: 90, maxWidth: size.width, maxHeight: size.height };
+await cdp.send('Page.startScreencast', screencast);
 
 await term('fieldnote-app — zsh', SETUP, 'Setup once', 'Install once. One command connects Claude Code or Codex.');
 await term(
@@ -110,8 +112,14 @@ await page
   .catch(() => {});
 await agentStep('asking:');
 await caption('New project · trail map', 'Scout maps the trail. Agents pick up every ticket that isn’t blocked.');
-await wait(5000);
-await page.screenshot({ path: join(framesDir, 'poster.png') });
+await wait(1500);
+// The poster: this frame without the caption over it. The recording pauses for it, so the video never shows the
+// caption gone; the frame before simply holds a moment longer.
+await cdp.send('Page.stopScreencast');
+await page.mouse.move(size.width - 2, size.height - 2);
+await page.screenshot({ path: join(framesDir, 'poster.png'), style: '#stage-cap { visibility: hidden !important; }' });
+await cdp.send('Page.startScreencast', screencast);
+await wait(3500);
 
 // An agent asks; answer in the inbox.
 await caption('During the day · an agent asks', 'Everything that needs you, most important first. Answer in a click.');

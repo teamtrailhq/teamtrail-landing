@@ -1,8 +1,10 @@
 // A real Teamtrail project for the capture scripts, set up the way a user has one: the dev seed written into a
-// temp folder, the built `teamtrail` server serving it, and real MCP agents (scripts/dev-agent.mjs) working it.
+// git repo, the built `teamtrail` server serving it, and real MCP agents (scripts/dev-agent.mjs) working it.
 // Needs the product repo next to this one (../teamtrail, or TEAMTRAIL_REPO) with the CLI built: npm run build -w teamtrail.
 // The project registry (All projects) lives in a temp config dir (TEAMTRAIL_CONFIG_DIR), never in yours: this project
 // plus the seed's second repo, billing-service, so the Lookout shows two projects.
+// The repos sit at /tmp/fieldnote-app and /tmp/billing-service rather than in a random temp folder, because their
+// paths show in the shots (each claim's worktree, in Settings → Workspaces). One capture runs at a time.
 import { execFileSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -12,14 +14,54 @@ import { fileURLToPath } from 'node:url';
 const repo =
   process.env.TEAMTRAIL_REPO ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../teamtrail');
 const cli = path.join(repo, 'packages/cli/dist/cli.js');
+const MARKER = '.teamtrail-capture';
 
-/** Seeds a temp project, starts the server and `agents` MCP agents; `stop()` ends them and deletes the folder. */
+/** The app's own files, so the repo looks like Fieldnote and each claim gets a worktree to work in. */
+const SOURCES = {
+  'package.json': '{\n  "name": "fieldnote-app",\n  "private": true\n}\n',
+  'README.md': '# Fieldnote\n\nNotes for field researchers, online or off.\n',
+  'src/sync/client.ts': 'export async function pushEdits() {}\n',
+  'src/storage/notes.ts': 'export function saveNote() {}\n',
+  'src/api/notes.ts': 'export async function putNote() {}\n',
+  'src/notes/NoteList.tsx': 'export function NoteList() {\n  return null;\n}\n',
+};
+
+/** A folder of ours under /tmp, emptied first; refuses one it didn't make. */
+function fresh(dir) {
+  if (fs.existsSync(dir)) {
+    if (!fs.existsSync(path.join(dir, MARKER))) throw new Error(`${dir} exists and isn't a capture project`);
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, MARKER), 'Made by the landing capture scripts; deleted after each run.\n');
+}
+
+/** A git repo with one commit, so claims get their own worktree (`<repo>.teamtrail/<trail>-<n>`). */
+function gitRepo(dir) {
+  for (const [file, text] of Object.entries(SOURCES)) {
+    fs.mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
+    fs.writeFileSync(path.join(dir, file), text);
+  }
+  fs.writeFileSync(path.join(dir, '.gitignore'), `${MARKER}\n`);
+  const git = (...args) =>
+    execFileSync('git', ['-c', 'user.name=Fieldnote', '-c', 'user.email=dev@fieldnote.app', ...args], {
+      cwd: dir,
+      stdio: 'ignore',
+    });
+  git('init', '-q', '-b', 'main');
+  git('add', '-A');
+  git('commit', '-q', '-m', 'Fieldnote');
+}
+
+/** Seeds the project, starts the server and `agents` MCP agents; `stop()` ends them and deletes the folders. */
 export async function realProject({ agents = 2 } = {}) {
   if (!fs.existsSync(cli)) throw new Error('build the CLI first: npm run build -w teamtrail');
-  // The folder name shows as the project name in the header.
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'teamtrail-capture-'));
-  const dir = path.join(tmp, 'fieldnote-app');
-  fs.mkdirSync(dir);
+  // The folder name shows as the project name in the header.
+  const dir = '/tmp/fieldnote-app';
+  const billing = '/tmp/billing-service';
+  const worktrees = `${dir}.teamtrail`;
+  for (const d of [dir, billing, worktrees]) fresh(d);
   const data = path.join(dir, '.teamtrail');
   const config = path.join(tmp, 'config');
   const env = { ...process.env, TEAMTRAIL_DIR: data, TEAMTRAIL_CONFIG_DIR: config };
@@ -31,8 +73,10 @@ export async function realProject({ agents = 2 } = {}) {
     if (!entry.isDirectory() || !fs.existsSync(map)) continue;
     fs.writeFileSync(map, fs.readFileSync(map, 'utf8').replace(/^model-matching: on$/m, 'model-matching: off'));
   }
+  // A worktree per claimed ticket, the way a team running several agents works.
+  fs.writeFileSync(path.join(data, 'workspaces.json'), `${JSON.stringify({ v: 1, worktrees: true }, null, 2)}\n`);
+  gitRepo(dir);
   // The seed writes its second repo under the product repo's node_modules/.cache; copy it next to this one.
-  const billing = path.join(tmp, 'billing-service');
   fs.cpSync(path.join(repo, 'node_modules/.cache/teamtrail-dev-projects/billing-service'), billing, {
     recursive: true,
   });
@@ -62,10 +106,12 @@ export async function realProject({ agents = 2 } = {}) {
     stop() {
       party.kill();
       server.kill();
-      try {
-        fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
-      } catch {
-        // the server may still be flushing; the OS cleans temp folders
+      for (const d of [tmp, dir, billing, worktrees]) {
+        try {
+          fs.rmSync(d, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+        } catch {
+          // the server may still be flushing; the OS cleans temp folders
+        }
       }
     },
   };
