@@ -99,15 +99,30 @@ export async function frameMap(page, pick, fill = 0.94) {
   await page.waitForTimeout(300);
 }
 
-/** Titles of the cards the map area cuts through (partly in view), so a capture can refuse a clipped frame. */
-export async function clippedCards(page) {
+/**
+ * Titles of the cards a capture would spoil: those the map area (or `clip`, the part of the page being captured)
+ * cuts through, and those a button over the map (Summary, Fit) covers. A capture refuses a frame that has any.
+ */
+export async function clippedCards(page, clip) {
   const area = await mapArea(page);
-  return page.evaluate((a) => {
-    const [x1, y1] = [a.x + a.width, a.y + a.height];
-    return [...document.querySelectorAll('.map-zone .node')]
-      .map((n) => ({ n, r: n.getBoundingClientRect() }))
-      .filter(({ r }) => r.right > a.x && r.left < x1 && r.bottom > a.y && r.top < y1)
-      .filter(({ r }) => r.left < a.x || r.right > x1 || r.top < a.y || r.bottom > y1)
-      .map(({ n }) => n.querySelector('.title')?.textContent?.trim() ?? '?');
-  }, area);
+  return page.evaluate(
+    ([a, c]) => {
+      const x0 = Math.max(a.x, c?.x ?? a.x);
+      const y0 = Math.max(a.y, c?.y ?? a.y);
+      const x1 = Math.min(a.x + a.width, c ? c.x + c.width : Infinity);
+      const y1 = Math.min(a.y + a.height, c ? c.y + c.height : Infinity);
+      const buttons = [...document.querySelectorAll('.map-zone button')]
+        .filter((b) => !b.closest('.zone-title, header, .reroute-banner'))
+        .map((b) => b.getBoundingClientRect())
+        .filter((b) => b.top >= a.y);
+      const covered = (r) =>
+        buttons.some((b) => r.right > b.left && r.left < b.right && r.bottom > b.top && r.top < b.bottom);
+      return [...document.querySelectorAll('.map-zone .node')]
+        .map((n) => ({ n, r: n.getBoundingClientRect() }))
+        .filter(({ r }) => r.right > x0 && r.left < x1 && r.bottom > y0 && r.top < y1)
+        .filter(({ r }) => r.left < x0 || r.right > x1 || r.top < y0 || r.bottom > y1 || covered(r))
+        .map(({ n }) => n.querySelector('.title')?.textContent?.trim() ?? '?');
+    },
+    [area, clip ?? null],
+  );
 }

@@ -14,7 +14,7 @@ export const SETUP = [
   { t: '' },
   { t: 'teamtrail', type: true },
   { t: '' },
-  { t: '  Teamtrail 0.7.0 · Scout online', cls: 'ok' },
+  { t: '  Teamtrail 0.24.0 · Scout online', cls: 'ok' },
   { t: '  Lookout  http://localhost:7420/' },
   { t: '  Tracker         .teamtrail/' },
   { t: '  Press Ctrl+C to stop.', cls: 'dim', pause: 1600 },
@@ -40,7 +40,7 @@ export const FRAME = [
 export const AGAIN = [
   { t: 'teamtrail', type: true },
   { t: '' },
-  { t: '  Teamtrail 0.7.0 · Scout online', cls: 'ok' },
+  { t: '  Teamtrail 0.24.0 · Scout online', cls: 'ok' },
   { t: '  Lookout  http://localhost:7420/' },
   { t: '  Last trail    #18 Ship team workspaces', cls: 'dim', pause: 1300 },
 ];

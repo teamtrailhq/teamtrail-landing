@@ -114,6 +114,15 @@ const zoom = async (name, sels, { aspect = 4 / 3, pad = 16, top = pad, bottom = 
   await page.screenshot({ path: file, clip });
   fit(file, width);
   console.log('saved', `${name}.png`, width ? `${width}w` : `${clip.width * 2}x${clip.height * 2}`);
+  return clip;
+};
+
+/** A map close-up: the map zone, refused when the crop cuts a card or a button covers one. */
+const mapShot = async (name) => {
+  await settleMap();
+  const clip = await zoom(name, ['.map-zone'], { aspect: 16 / 10, pad: 0, width: 1960 });
+  const cut = await clippedCards(page, clip);
+  if (cut.length) throw new Error(`${name} cuts through or covers: ${cut.join(', ')}`);
 };
 
 /**
@@ -236,7 +245,11 @@ await wait(1500);
 
 await page.locator('.node', { hasText: 'silent auto-merge' }).first().click();
 await wait(1500);
-// The whole app, with nothing open over it.
+// The whole app, with nothing open over it, the map framed so no card is cut at its edges.
+await frameMap(
+  { keys: ['#2', '#3', '#8', '#21', '#22', '#4', '#6', '#7', '#5', '#9', '#10', '#11'], added: true },
+  0.96,
+);
 await settleMap();
 await shot('lookout-overview');
 
@@ -246,14 +259,14 @@ await page.setViewportSize(mapSize);
 await wait(800);
 await frameMap(
   {
-    keys: ['#2', '#3', '#8', '#21', '#22', '#4', '#6', '#7', '#5', '#9', '#10', '#11', '#12', '#15', '#13'],
+    // #14 is the out-of-scope card below the trail: in the frame whole, clear of the Summary button.
+    keys: ['#2', '#3', '#8', '#21', '#22', '#4', '#6', '#7', '#5', '#9', '#10', '#11', '#12', '#15', '#13', '#14'],
     added: true,
     destination: true,
   },
-  0.96,
+  0.9,
 );
-await settleMap();
-await zoom('flow-06-first-tickets', ['.map-zone'], { aspect: 16 / 10, pad: 0, width: 1960 });
+await mapShot('flow-06-first-tickets');
 await page.setViewportSize(size);
 await wait(800);
 
@@ -364,10 +377,14 @@ await wait(500);
 // Acceptance criteria on a ticket, with the knowledge it brings.
 await page.locator('.node', { hasText: 'Instrument current' }).first().click();
 await page.locator('.criteria-section').waitFor({ timeout: 15000 });
+// A taller window, so the ticket shows whole down to its criteria (they sit under the description and the guide).
+await page.setViewportSize({ ...size, height: 1500 });
 await wait(1000);
-await zoom('lookout-criteria', ['.inspector'], { aspect: null, pad: 0 });
+await zoom('lookout-criteria', ['.inspector .zone-title', '.inspector .criteria-section'], { aspect: null, pad: 0 });
 // The same ticket asks for the QA guide: the guide and the agent's checklist answers, under the ticket's title.
 await zoom('lookout-ticket-guide', ['.inspector .zone-title', '.inspector .ticket-guide'], { aspect: null, pad: 0 });
+await page.setViewportSize(size);
+await wait(600);
 
 // A proposed new plan, drawn on the map: the cancelled ticket, the new ones and the one rewired after them.
 await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
@@ -375,7 +392,7 @@ await page.locator('.node.mark-added').first().waitFor({ timeout: 15000 });
 await page.setViewportSize(mapSize);
 await wait(800);
 await frameMap({ keys: ['#5', '#9', '#10', '#11', '#12', '#15', '#13'], added: true, destination: true });
-await zoom('lookout-reroute-map', ['.map-zone'], { aspect: 16 / 10, pad: 0, width: 1960 });
+await mapShot('lookout-reroute-map');
 await page.setViewportSize(size);
 await wait(800);
 await page.locator('.reroute-banner button').first().click();
