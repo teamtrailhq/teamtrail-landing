@@ -6,7 +6,8 @@
         { "slug": "introduction", "title": "Introduction" },
         { "slug": "install", "title": "Install" },
         { "slug": "connect-your-agent", "title": "Connect your agent" },
-        { "slug": "first-trail", "title": "Your first trail" }
+        { "slug": "first-trail", "title": "Your first trail" },
+        { "slug": "remote-agents", "title": "Remote agents" }
       ]
     },
     {

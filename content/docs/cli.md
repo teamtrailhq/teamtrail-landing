@@ -1,6 +1,6 @@
 ---
 title: CLI commands · Teamtrail docs
-description: Every teamtrail command and flag: start the Lookout, connect agents, run the MCP server, manage projects and guides.
+description: Every teamtrail command and flag: start the Lookout, connect agents, run the MCP server over stdio or HTTP, manage projects and guides.
 ---
 
 # CLI commands
@@ -10,7 +10,9 @@ Every `teamtrail` command and flag.
 ```text
 teamtrail [options]
 teamtrail mcp [--dir <path>] [--agent <trail name>] [--lease-minutes <n>] [--no-register]
+teamtrail mcp --http [--port <n>] [--host <addr>] [--allow-host <name>] [--dir <path>]
 teamtrail connect claude|codex [--dir <path>] [--no-register]
+teamtrail connect claude|codex --url <http(s)://host:port/mcp> [--token-stdin | --token <token>] [--allow-http]
 teamtrail projects add [path] | list | remove <id|path>
 teamtrail connect slack [options]
 teamtrail knowledge import <file.md> [--dir <path>]
@@ -21,14 +23,14 @@ teamtrail guides list|search|add|new|update|remove|lint … [--dir <path>]
 
 Starts the Lookout for the current folder and opens it in your browser.
 
-| Option            | Default                              |                                                                                                            |
-| ----------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| `--dir <path>`    | `./.teamtrail` (or `$TEAMTRAIL_DIR`) | Tracker folder.                                                                                            |
-| `--port <n>`      | `7420`                               | Port. The next free port is used if it's taken.                                                            |
-| `--host <addr>`   | `127.0.0.1`                          | Interface to bind. Only expose it on networks you trust: the server can write files in the tracker folder. |
-| `--no-open`       |                                      | Don't open the browser.                                                                                    |
-| `-v`, `--version` |                                      | Print the version.                                                                                         |
-| `-h`, `--help`    |                                      | Show the help.                                                                                             |
+| Option            | Default                              |                                                                                                                                                                                                                                             |
+| ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--dir <path>`    | `./.teamtrail` (or `$TEAMTRAIL_DIR`) | Tracker folder.                                                                                                                                                                                                                             |
+| `--port <n>`      | `7420`                               | Port. The next free port is used if it's taken.                                                                                                                                                                                             |
+| `--host <addr>`   | `127.0.0.1`                          | Interface to bind. The Lookout has no sign-in, so only expose it on networks you trust, and never through a proxy or tunnel. From another device, open it by IP address: see [From another device](/docs/the-lookout/#from-another-device). |
+| `--no-open`       |                                      | Don't open the browser.                                                                                                                                                                                                                     |
+| `-v`, `--version` |                                      | Print the version.                                                                                                                                                                                                                          |
+| `-h`, `--help`    |                                      | Show the help.                                                                                                                                                                                                                              |
 
 ## teamtrail mcp
 
@@ -41,11 +43,40 @@ Serves the MCP server for coding agents over stdio. Agents start it themselves; 
 | `--lease-minutes <n>`  | `15` (or `$TEAMTRAIL_LEASE_MINUTES`) | A claimed ticket returns to the queue after this long without a tool call from its agent.              |
 | `--no-register`        |                                      | Don't add this repo to [All projects](/docs/all-projects/) on start (or set `$TEAMTRAIL_NO_REGISTER`). |
 
+## teamtrail mcp --http
+
+Serves the same MCP tools over streamable HTTP, for agents on other machines or in cloud sandboxes, until you press Ctrl+C. Nothing else is served on the port. Every request needs a token created in **Settings → Project → Remote agents**; with no token it answers 401. See [Remote agents](/docs/remote-agents/).
+
+| Option                | Default     |                                                                                                                                      |
+| --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `--port <n>`          | `7421`      | Port; the path is `/mcp`. Without the flag, the next free port is used if it's taken; with it, a taken port is an error.             |
+| `--host <addr>`       | `127.0.0.1` | Interface to bind. The connection is plain HTTP: put it behind HTTPS (a reverse proxy or a tunnel) before agents elsewhere use it.   |
+| `--allow-host <name>` |             | A host name the endpoint answers to, such as your proxy's or tunnel's. Repeat it for more. `localhost` and IP addresses always work. |
+
+`--dir`, `--lease-minutes` and `--no-register` work as above. `--agent` isn't taken: every session gets its own trail name. `--port`, `--host` and `--allow-host` need `--http`.
+
 ## teamtrail connect claude | codex
 
 Registers the MCP server with Claude Code or Codex and installs the [`/scout` command](/docs/scout-commands/). For Claude Code it also adds a `SessionStart` hook, so usage comes from the session transcript. Takes `--dir <path>` and `--no-register`.
 
 Like `mcp`, it adds the repo to [All projects](/docs/all-projects/) unless `--no-register` or `$TEAMTRAIL_NO_REGISTER` is set, or auto-register is off in **Settings → Projects**.
+
+## teamtrail connect claude | codex --url
+
+```bash
+teamtrail connect claude --url https://trail.example.com/mcp
+```
+
+Points the agent at a Teamtrail MCP server over HTTP instead of starting one, and installs the `/scout` command. See [Remote agents](/docs/remote-agents/).
+
+| Option             |                                                                                                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--url <endpoint>` | The endpoint, `http://` or `https://`, ending in `/mcp`. No credentials or query in it.                                                                 |
+| `--token-stdin`    | Read the agent's token from stdin.                                                                                                                      |
+| `--token <token>`  | The token on the command line, which lands in your shell history. Not together with `--token-stdin`.                                                    |
+| `--allow-http`     | Check the token against a plain-HTTP endpoint on another machine anyway. Without it that check is skipped, because it would send the token unencrypted. |
+
+Without either token flag, the token comes from `$TEAMTRAIL_TOKEN`. Claude Code keeps the token in its own config, so `connect claude --url` needs one. Codex stores only the variable's name and reads `$TEAMTRAIL_TOKEN` each time it starts. `--dir` and `--no-register` don't apply here: there is no local server and no repo to register.
 
 ## teamtrail connect slack
 

@@ -33,14 +33,14 @@ Pass `--dir <path>` or set `$TEAMTRAIL_DIR` to use another folder. On GitHub Iss
 
 ## Commit or keep local
 
-| Path                                                                    | Commit?  | Why                                                                                          |
-| ----------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `<trail>/`, `briefs/`, `criteria/`, `knowledge/`                        | Yes      | The shared state: teammates and agents see the same trails, decisions and knowledge.         |
-| `verification.json`, `policy.json`, `attention.json`, `workspaces.json` | Yes      | Team settings. Checks come from the repo, so no agent can change what verifies its own work. |
-| `guides/`, `guides.lock.json`, `guides.json`, `models.json`             | Yes      | Teammates get the same [guides](/docs/guides/) and [model tiers](/docs/model-matching/).     |
-| `trackers.json`                                                         | Optional | Names the tracker and repo or team; it never holds a token.                                  |
-| `.events/`, `.evidence/`, `.reroutes/`, `.attention/`                   | No       | Local history and state. Each writes its own `.gitignore`.                                   |
-| `.agents/`                                                              | No       | Sessions, answers, leases, trail names, workspaces and the server lock.                      |
+| Path                                                                    | Commit?  | Why                                                                                                                                                          |
+| ----------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `<trail>/`, `briefs/`, `criteria/`, `knowledge/`                        | Yes      | The shared state: teammates and agents see the same trails, decisions and knowledge.                                                                         |
+| `verification.json`, `policy.json`, `attention.json`, `workspaces.json` | Yes      | Team settings. Checks come from the repo, so no agent can change what verifies its own work.                                                                 |
+| `guides/`, `guides.lock.json`, `guides.json`, `models.json`             | Yes      | Teammates get the same [guides](/docs/guides/) and [model tiers](/docs/model-matching/).                                                                     |
+| `trackers.json`                                                         | Optional | Names the tracker and repo or team; it never holds a token.                                                                                                  |
+| `.events/`, `.evidence/`, `.reroutes/`, `.attention/`                   | No       | Local history and state. Each writes its own `.gitignore`.                                                                                                   |
+| `.agents/`                                                              | No       | Sessions, answers, leases, trail names, workspaces, the server lock and [remote agents](/docs/remote-agents/)' token hashes. It writes its own `.gitignore`. |
 
 Tokens, personal preferences and the list of projects for [All projects](/docs/all-projects/) never go in the repo: they live in your [config folder](/docs/personal-settings/). Each repo keeps its own `.teamtrail/` folder.
 

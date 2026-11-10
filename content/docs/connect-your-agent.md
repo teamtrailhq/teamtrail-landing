@@ -64,6 +64,16 @@ npx -y teamtrail mcp
 
 `connect claude|codex` also accepts `--dir <path>`; it's passed to the server only when it isn't the default.
 
+## Agents on other machines
+
+An agent on another machine or in a cloud sandbox can't start the server next to your repo. It connects over HTTP instead, with a token you create in the Lookout:
+
+```bash
+npx -y teamtrail@next connect claude --url https://trail.example.com/mcp
+```
+
+See [Remote agents](/docs/remote-agents/) for the setup and what to put in front of it.
+
 ## Your other repos
 
 When the server or `connect` starts, it adds its repo to the list of projects in your config folder, so one Lookout shows every repo you work in: see [All projects](/docs/all-projects/). Pass `--no-register` (to `mcp` or `connect`) or set `TEAMTRAIL_NO_REGISTER` to opt out.

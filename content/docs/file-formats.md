@@ -65,6 +65,7 @@ The JSON holds `id` (`S-<n>`), `tickets` (ticket ids that depend on it), and opt
 ```md
 ---
 id: '3'
+format: '2'
 title: Who is the primary offline user?
 type: junction
 labels: [teamtrail:junction]
@@ -81,6 +82,8 @@ Decision ticket for the Fieldnote offline sync trail.
 
 ## Comments
 
+<!-- teamtrail:comments -->
+
 ### claude-07 @ 2026-11-04T11:57:05.757Z
 
 **Resolution**
@@ -88,17 +91,20 @@ Decision ticket for the Fieldnote offline sync trail.
 Field researchers with multi-day dead zones, not commuters.
 ```
 
-| Key                      |                                                                   |
-| ------------------------ | ----------------------------------------------------------------- |
-| `type`                   | `research`, `prototype`, `junction`, `task`, `execute`, `review`. |
-| `labels`                 | `teamtrail:<type>`, plus `teamtrail:hitl` for HITL tasks.         |
-| `state`, `close_reason`  | `open` / `closed`; `completed` or `out_of_scope` when closed.     |
-| `assignee`               | The agent or person holding the claim.                            |
-| `blocked_by`             | Ticket ids that must close first.                                 |
-| `status`                 | Optional: `verifying`, `rework` or `blocked`.                     |
-| `verification`, `checks` | Optional per-ticket overrides of the level and the checks to run. |
-| `review_of`              | On `review` tickets: the ticket under review.                     |
-| `guide`                  | Optional: the [guide](/docs/guides/) the claiming agent takes on. |
+| Key                      |                                                                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `format`                 | `2`: the comments start at `## Comments` followed by the `<!-- teamtrail:comments -->` marker. Files without it are older and still read. |
+| `type`                   | `research`, `prototype`, `junction`, `task`, `execute`, `review`.                                                                         |
+| `labels`                 | `teamtrail:<type>`, plus `teamtrail:hitl` for HITL tasks.                                                                                 |
+| `state`, `close_reason`  | `open` / `closed`; `completed` or `out_of_scope` when closed.                                                                             |
+| `assignee`               | The agent or person holding the claim.                                                                                                    |
+| `blocked_by`             | Ticket ids that must close first.                                                                                                         |
+| `status`                 | Optional: `verifying`, `rework` or `blocked`.                                                                                             |
+| `verification`, `checks` | Optional per-ticket overrides of the level and the checks to run.                                                                         |
+| `review_of`              | On `review` tickets: the ticket under review.                                                                                             |
+| `guide`                  | Optional: the [guide](/docs/guides/) the claiming agent takes on.                                                                         |
+
+Comments start at the `## Comments` heading with the marker under it, and each one at a `### <author> @ <time>` line. So that text can never be read as either, a line of a body or a comment that looks like one is written with a leading backslash, and a `<!-- teamtrail:` opener inside text is written `<\!-- teamtrail:`. Reading the file restores both.
 
 ## Decision: `<trail>/decisions/D-<n>.md`
 
@@ -314,9 +320,21 @@ One JSON object per line, append-only. Transitions (`kind: "transition"`: `event
 
 Readers skip kinds they don't know, so old and new journals both load.
 
+Changes that belong to the project rather than one trail have their own files. `.events/_remote-agents.jsonl` records each [remote agent](/docs/remote-agents/) token you create or revoke (`kind: "remote-agent"`, `action` `token-created` or `token-revoked`, `tokenId`, `name`), never the token or its hash.
+
 ## Local coordination: `.agents/`
 
 Written by Teamtrail processes, not meant for hand edits: agent sessions, answers, ticket leases (with declared `touches` and the `workspace`), trail names, prepared workspaces (`workspaces/`), the latest integration scan (`integration.json`), the guide lock as you last approved it (`guides-approved.json`) and the server lock.
+
+Remote agents add three things here, all local:
+
+| File                       |                                                                                                                                                                                           |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `remote-tokens.json`       | `{ "v": 1, "tokens": [{ "id": "rt_…", "name", "hash", "createdAt" }] }`. `hash` is the token's SHA-256; the token itself is never stored. A missing or damaged file means no token works. |
+| `remote-tokens-used.json`  | `{ "v": 1, "used": { "<id>": <epoch ms> } }`: when each token was last used, to the minute.                                                                                               |
+| `mcp-endpoints/<pid>.json` | One file per running `teamtrail` or `teamtrail mcp --http`, with the `url` of its MCP endpoint. Removed on exit.                                                                          |
+
+Create and revoke tokens in **Settings → Project → Remote agents**, not by editing the file. See [Remote agents](/docs/remote-agents/).
 
 ## Projects registry: `projects.json` (config folder)
 
