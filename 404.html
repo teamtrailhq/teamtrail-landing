@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      try {
+        var t = localStorage.getItem('teamtrail-theme');
+        document.documentElement.dataset.theme = t || 'night';
+      } catch (e) {
+        document.documentElement.dataset.theme = 'night';
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page not found · Teamtrail</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#101815" />
+    <link rel="icon" href="/media/brand/favicon-32.png?v=4" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/media/brand/favicon-64.png?v=4" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png?v=4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <!-- @include sprite -->
+    <!-- @include nav -->
+
+    <main id="main">
+      <section class="hero hero--page" aria-labelledby="page-title">
+        <div class="wrap hero__inner">
+          <span class="hero__badge">404</span>
+          <h1 id="page-title">This trail doesn't go anywhere.</h1>
+          <p class="hero__lede">The page moved or never existed. Head back to the trailhead, or look in the docs.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="/">Home</a>
+            <a class="btn" href="/docs/">Docs</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

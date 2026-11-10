@@ -1,3 +1,8 @@
+---
+title: Install Teamtrail from npm · Teamtrail docs
+description: Install the teamtrail command with npm (Node.js 20 or newer), and open the Lookout for a repo.
+---
+
 # Install
 
 Install the `teamtrail` command and open the Lookout for a repo.

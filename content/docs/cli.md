@@ -1,3 +1,8 @@
+---
+title: CLI commands · Teamtrail docs
+description: Every teamtrail command and flag: start the Lookout, connect agents, run the MCP server, manage projects and guides.
+---
+
 # CLI commands
 
 Every `teamtrail` command and flag.

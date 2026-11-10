@@ -5,6 +5,8 @@ import type * as Waitlist from './api/waitlist';
 import { generateDocs } from './scripts/docs/generate.mjs';
 import { renderGuideCards } from './scripts/guides/cards.mjs';
 import { loadCatalog } from './scripts/guides/catalog.mjs';
+import { analytics } from './scripts/analytics.mjs';
+import { seo } from './scripts/seo/seo.mjs';
 
 /** `<!-- @include nav -->` pastes partials/nav.html, so the pages share one nav, footer and icon sprite. */
 function partials(): Plugin {
@@ -20,15 +22,11 @@ function partials(): Plugin {
 }
 
 /**
- * Absolute base for share cards (og:image must be an absolute URL): $SITE_URL, else the production URL Vercel
- * provides at build time, else the production address, https://teamtrail.app.
+ * The canonical address, for canonical links, share cards (og:image must be absolute), JSON-LD, the sitemap and
+ * llms.txt: $SITE_URL, else https://www.teamtrail.app. Not Vercel's production URL: that is the bare
+ * teamtrail.app, which redirects to www, and a canonical must not point at a redirect.
  */
-const SITE_URL = (
-  process.env.SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : 'https://teamtrail.app')
-).replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL ?? 'https://www.teamtrail.app').replace(/\/$/, '');
 
 /**
  * The docs: content/docs/*.md and nav.json become docs/<slug>/index.html pages (build inputs), raw Markdown at
@@ -97,7 +95,7 @@ function devApi(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [docs(), partials(), guideCards(), devApi()],
+  plugins: [docs(), partials(), guideCards(), seo({ root: __dirname, siteUrl: SITE_URL }), analytics(), devApi()],
   build: {
     rollupOptions: {
       input: {
@@ -105,6 +103,7 @@ export default defineConfig({
         features: resolve(__dirname, 'features/index.html'),
         guides: resolve(__dirname, 'guides/index.html'),
         cloud: resolve(__dirname, 'cloud/index.html'),
+        notFound: resolve(__dirname, '404.html'),
       },
     },
   },
