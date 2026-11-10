@@ -1,3 +1,8 @@
+---
+title: MCP tools reference · Teamtrail docs
+description: Every tool the teamtrail mcp server offers to Claude Code, Codex and other MCP agents, grouped by what agents use it for.
+---
+
 # MCP tools
 
 Every tool the `teamtrail mcp` server offers, grouped by what agents use it for.

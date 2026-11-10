@@ -1,3 +1,8 @@
+---
+title: Teamtrail docs: a trail map for AI coding agents
+description: How Teamtrail works: you describe a trail, Claude Code, Codex or any MCP agent maps and does the work, and you make the calls that matter. Start here.
+---
+
 # Introduction
 
 Teamtrail is a local trail map for big work done by AI coding agents: you describe a trail, your agents map and do the work, and you make the calls that matter.

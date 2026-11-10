@@ -1,3 +1,8 @@
+---
+title: Connect Claude Code, Codex or any MCP agent · Teamtrail docs
+description: Register the Teamtrail MCP server with Claude Code, Codex or any MCP client in one command, and add the /scout command to your agent's chat.
+---
+
 # Connect your agent
 
 Register the Teamtrail MCP server with Claude Code or Codex, and add the `/scout` command.

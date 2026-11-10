@@ -1,3 +1,8 @@
+---
+title: /scout commands for Claude Code and Codex · Teamtrail docs
+description: The /scout command drives Teamtrail from your agent's chat in Claude Code or Codex: start a trail, resume work, check status and answer questions.
+---
+
 # /scout commands
 
 The `/scout` command drives Teamtrail from your agent's chat.
