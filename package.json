@@ -16,6 +16,8 @@
     "media": "node scripts/media.mjs",
     "journey": "node scripts/journey.mjs",
     "typecheck": "tsc --noEmit",
+    "verify:csp": "node scripts/verify-csp.mjs",
+    "test": "node --experimental-strip-types --test \"test/*.test.mjs\"",
     "format": "prettier --write .",
     "guides:snapshot": "node scripts/guides/snapshot.mjs"
   },

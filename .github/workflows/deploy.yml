@@ -1,6 +1,9 @@
-# Deploys the landing to Vercel with the Vercel CLI. Pushes to main deploy production; PRs get a preview URL
-# posted as a comment. The Scout avatar comes from the product repo, checked out next to this one.
+# Deploys the landing to Vercel with the Vercel CLI. Production deploys only from main (a push, or a manual
+# run on main); PRs from branches in this repo get a preview URL posted as a comment, and a manual run on any
+# other branch is a preview too. PRs from forks are skipped: they get no secrets.
+# The Scout avatar comes from the product repo, checked out next to this one.
 # Secrets: VERCEL_TOKEN (vercel.com/account/tokens), VERCEL_ORG_ID, VERCEL_PROJECT_ID (.vercel/project.json).
+# Actions are pinned to commit SHAs (the comment names the release) and the Vercel CLI to one version.
 name: Deploy
 
 on:
@@ -13,18 +16,23 @@ concurrency:
   group: landing-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  pull-requests: write
+# Nothing by default; the job asks for what it uses.
+permissions: {}
 
 env:
+  VERCEL_CLI: vercel@65.14.0
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
   deploy:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
+      # The preview URL comment.
+      pull-requests: write
     defaults:
       run:
         working-directory: landing
@@ -37,18 +45,20 @@ jobs:
           if [ -n "$TOKEN" ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; else echo "::warning::VERCEL_TOKEN is not set; skipping the deploy."; fi
         working-directory: .
       - if: steps.ready.outputs.ok
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           path: landing
           # Full history: sitemap.xml and the docs' dateModified use each page's last commit date.
           fetch-depth: 0
+          persist-credentials: false
       - if: steps.ready.outputs.ok
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           repository: teamtrailhq/teamtrail
           path: teamtrail
+          persist-credentials: false
       - if: steps.ready.outputs.ok
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
@@ -58,20 +68,41 @@ jobs:
       - if: steps.ready.outputs.ok
         name: Target
         id: target
-        run: echo "env=${{ github.event_name == 'pull_request' && 'preview' || 'production' }}" >> "$GITHUB_OUTPUT"
+        # Production only from main, and never from a pull request, whatever starts the run.
+        env:
+          PRODUCTION: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+        run: |
+          if [ "$PRODUCTION" = "true" ]; then
+            echo "env=production" >> "$GITHUB_OUTPUT"
+            echo "flag=--prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "env=preview" >> "$GITHUB_OUTPUT"
+          fi
+      # The token reaches the CLI through the environment, never the command line, and only the steps that
+      # talk to Vercel get it: the build runs without it.
       - if: steps.ready.outputs.ok
-        run: npx vercel@latest pull --yes --environment=${{ steps.target.outputs.env }} --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          TARGET: ${{ steps.target.outputs.env }}
+        run: npx --yes "$VERCEL_CLI" pull --yes --environment="$TARGET"
       - if: steps.ready.outputs.ok
-        run: npx vercel@latest build ${{ steps.target.outputs.env == 'production' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          FLAG: ${{ steps.target.outputs.flag }}
+        run: npx --yes "$VERCEL_CLI" build $FLAG
       - if: steps.ready.outputs.ok
         name: Deploy
         id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          FLAG: ${{ steps.target.outputs.flag }}
         run: |
-          url=$(npx vercel@latest deploy --prebuilt ${{ steps.target.outputs.env == 'production' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(npx --yes "$VERCEL_CLI" deploy --prebuilt $FLAG)
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Deployed ($url)" >> "$GITHUB_STEP_SUMMARY"
       - name: Comment the preview URL
         if: steps.ready.outputs.ok && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr comment ${{ github.event.pull_request.number }} --edit-last --create-if-none --body "Landing preview → ${{ steps.deploy.outputs.url }}"
+          PR: ${{ github.event.pull_request.number }}
+          URL: ${{ steps.deploy.outputs.url }}
+        run: gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --edit-last --create-if-none --body "Landing preview → $URL"

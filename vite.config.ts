@@ -1,11 +1,14 @@
 import { readFileSync } from 'node:fs';
+import type { IncomingMessage } from 'node:http';
 import { resolve } from 'node:path';
+import { Readable } from 'node:stream';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import type * as Waitlist from './api/waitlist';
 import { generateDocs } from './scripts/docs/generate.mjs';
 import { renderGuideCards } from './scripts/guides/cards.mjs';
 import { loadCatalog } from './scripts/guides/catalog.mjs';
 import { analytics } from './scripts/analytics.mjs';
+import { securityHeadersPlugin } from './scripts/security/headers.mjs';
 import { seo } from './scripts/seo/seo.mjs';
 
 /** `<!-- @include nav -->` pastes partials/nav.html, so the pages share one nav, footer and icon sprite. */
@@ -69,6 +72,16 @@ function guideCards(): Plugin {
   };
 }
 
+/** The dev server's request as the web Request Vercel hands the function: same headers, body streamed. */
+function toWebRequest(req: IncomingMessage): Request {
+  const headers = new Headers();
+  for (const [name, value] of Object.entries(req.headers)) {
+    if (value !== undefined) headers.set(name, Array.isArray(value) ? value.join(', ') : value);
+  }
+  const init = { method: 'POST', headers, body: Readable.toWeb(req) as ReadableStream, duplex: 'half' };
+  return new Request(`http://${req.headers.host ?? 'localhost'}/api/waitlist`, init);
+}
+
 /** Serves api/waitlist.ts in `vite dev` the way Vercel does in production, with env from .env.local. */
 function devApi(): Plugin {
   return {
@@ -80,14 +93,10 @@ function devApi(): Plugin {
           res.statusCode = 405;
           return res.end();
         }
-        const chunks: Buffer[] = [];
-        for await (const c of req) chunks.push(c as Buffer);
         const { POST } = (await server.ssrLoadModule('/api/waitlist.ts')) as typeof Waitlist;
-        const r = await POST(
-          new Request('http://localhost/api/waitlist', { method: 'POST', body: Buffer.concat(chunks) }),
-        );
+        const r = await POST(toWebRequest(req));
         res.statusCode = r.status;
-        res.setHeader('Content-Type', 'application/json');
+        r.headers.forEach((value, name) => res.setHeader(name, value));
         res.end(await r.text());
       });
     },
@@ -95,8 +104,18 @@ function devApi(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [docs(), partials(), guideCards(), seo({ root: __dirname, siteUrl: SITE_URL }), analytics(), devApi()],
+  plugins: [
+    docs(),
+    partials(),
+    guideCards(),
+    seo({ root: __dirname, siteUrl: SITE_URL }),
+    analytics(),
+    securityHeadersPlugin({ root: __dirname }),
+    devApi(),
+  ],
   build: {
+    // Small fonts stay files: an inlined data: font would need `font-src data:` in the Content-Security-Policy.
+    assetsInlineLimit: 0,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),

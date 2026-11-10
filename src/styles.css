@@ -2112,3 +2112,18 @@ html:has(.gdlg[open]) {
     justify-self: start;
   }
 }
+
+/* One-off spacing and the hidden icon sprite. Classes, not style="" attributes: the Content-Security-Policy
+   (scripts/security/csp.mjs) allows no inline styles. Last in the file so they win over the base rules. */
+.sprite {
+  position: absolute;
+}
+.section--flush.section--padded-top {
+  padding-top: var(--section);
+}
+.cards.cards--joined {
+  margin-top: 1px;
+}
+.runs.runs--spaced {
+  margin-top: clamp(40px, 6vw, 88px);
+}

@@ -1,10 +1,14 @@
-# Typecheck and build on every push and PR. The Scout avatar comes from the product repo, checked out next to this one.
+# Format check, tests and build on every push and PR. The Scout avatar comes from the product repo, checked out
+# next to this one. Actions are pinned to commit SHAs; the comment after each names the release.
 name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -14,18 +18,22 @@ jobs:
       run:
         working-directory: landing
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           path: landing
-      - uses: actions/checkout@v4
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           repository: teamtrailhq/teamtrail
           path: teamtrail
-      - uses: actions/setup-node@v4
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: landing/package-lock.json
       - run: npm ci
       - run: npx prettier --check .
+      - run: npm test
+      # Fails when vercel.json's security headers no longer match the built pages (scripts/security/headers.mjs).
       - run: npm run build
