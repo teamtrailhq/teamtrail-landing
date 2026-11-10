@@ -80,6 +80,10 @@ Production is https://www.teamtrail.app (Vercel project `teamtrail`; the bare te
 
 The canonical address is `https://www.teamtrail.app` (`$SITE_URL` overrides it). `scripts/seo/seo.mjs` adds a canonical link, Twitter title and description (from the page's `og:` tags) and JSON-LD to every page at build time: Organization, WebSite, SoftwareApplication and FAQPage (read from the FAQ on Home) on Home, a BreadcrumbList on the other pages. Docs pages get a TechArticle and BreadcrumbList from `scripts/docs/template.mjs`; a doc's frontmatter can set its `title` and `description`. The build writes `sitemap.xml` (every page, lastmod from its last commit) and `robots.txt`, and `scripts/docs/generate.mjs` writes `llms.txt` and `llms-full.txt` from `content/docs`, so new pages are listed everywhere without edits. `404.html` is the not-found page and isn't indexed.
 
+## Analytics
+
+`scripts/analytics.mjs` adds Vercel Web Analytics to every built page: page views and referrers, with no cookies. It only records once Web Analytics is switched on for the project in Vercel (the project → Analytics → Enable).
+
 ## License
 
 [FSL-1.1-ALv2](LICENSE). The Teamtrail and Scout names and artwork are trademarks and aren't covered by the license.

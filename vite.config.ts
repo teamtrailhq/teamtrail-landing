@@ -5,6 +5,7 @@ import type * as Waitlist from './api/waitlist';
 import { generateDocs } from './scripts/docs/generate.mjs';
 import { renderGuideCards } from './scripts/guides/cards.mjs';
 import { loadCatalog } from './scripts/guides/catalog.mjs';
+import { analytics } from './scripts/analytics.mjs';
 import { seo } from './scripts/seo/seo.mjs';
 
 /** `<!-- @include nav -->` pastes partials/nav.html, so the pages share one nav, footer and icon sprite. */
@@ -94,7 +95,7 @@ function devApi(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [docs(), partials(), guideCards(), seo({ root: __dirname, siteUrl: SITE_URL }), devApi()],
+  plugins: [docs(), partials(), guideCards(), seo({ root: __dirname, siteUrl: SITE_URL }), analytics(), devApi()],
   build: {
     rollupOptions: {
       input: {
