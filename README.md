@@ -1,6 +1,6 @@
 # Teamtrail landing page
 
-Static marketing site for [teamtrail.app](https://teamtrail.app): Vite + TypeScript, no framework. The pages share one stylesheet and one script:
+Static marketing site for [teamtrail.app](https://www.teamtrail.app): Vite + TypeScript, no framework. The pages share one stylesheet and one script:
 
 - `index.html`: Home, the story (trail, party, Scout, you) and what's coming.
 - `features/index.html`: everything that ships today, and the upcoming directions in detail.
@@ -76,7 +76,15 @@ The video is a scroll-through recording of Home and needs `ffmpeg` on `PATH`.
 
 ## Deploy
 
-Production is https://teamtrail.app (Vercel project `teamtrail`). Pushes to `main` deploy it through `.github/workflows/deploy.yml` once the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets are set; by hand: `npx vercel build --prod && npx vercel deploy --prebuilt --prod`.
+Production is https://www.teamtrail.app (Vercel project `teamtrail`; the bare teamtrail.app redirects there). Pushes to `main` deploy it through `.github/workflows/deploy.yml` once the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets are set; by hand: `npx vercel build --prod && npx vercel deploy --prebuilt --prod`.
+
+## Search and LLMs
+
+The canonical address is `https://www.teamtrail.app` (`$SITE_URL` overrides it). `scripts/seo/seo.mjs` adds a canonical link, Twitter title and description (from the page's `og:` tags) and JSON-LD to every page at build time: Organization, WebSite, SoftwareApplication and FAQPage (read from the FAQ on Home) on Home, a BreadcrumbList on the other pages. Docs pages get a TechArticle and BreadcrumbList from `scripts/docs/template.mjs`; a doc's frontmatter can set its `title` and `description`. The build writes `sitemap.xml` (every page, lastmod from its last commit) and `robots.txt`, and `scripts/docs/generate.mjs` writes `llms.txt` and `llms-full.txt` from `content/docs`, so new pages are listed everywhere without edits. `404.html` is the not-found page and isn't indexed.
+
+## Analytics
+
+`scripts/analytics.mjs` adds Vercel Web Analytics to every built page: page views and referrers, with no cookies. It only records once Web Analytics is switched on for the project in Vercel (the project → Analytics → Enable).
 
 ## License
 

@@ -2,7 +2,7 @@
 // toggle on small screens. The pages themselves are rendered at build time (scripts/docs).
 import { $, $$ } from './dom';
 
-const SITE = 'https://teamtrail.app';
+const SITE = 'https://www.teamtrail.app';
 
 /** Copies text and flashes the button's label, so the copy is confirmed where it happened. */
 async function copyWithFeedback(button: HTMLElement, text: string) {
