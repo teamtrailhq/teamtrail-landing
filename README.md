@@ -51,12 +51,14 @@ npm run guides:snapshot
 
 ## Product media
 
-Screenshots and the explainer video (`landing-journey-720.mp4` and its poster) live in `public/media/`; favicons and the OG image in `public/media/brand/`. Both come from the real product on a real project (`scripts/lib/realProject.mjs`): the dev seed in a temp folder, the built `teamtrail` server, and real MCP agents (`scripts/dev-agent.mjs` in the product repo) that the scripts answer in the inbox. Nothing is simulated.
+Screenshots and the explainer video (`landing-journey-720.mp4` and its poster) live in `public/media/`; favicons and the OG image in `public/media/brand/`. Both come from the real product on a real project (`scripts/lib/realProject.mjs`): the dev seed in a git repo at `/Users/Shared/code/fieldnote-app` (`CAPTURE_CODE_DIR` to change it; its paths show in the shots, so one capture runs at a time), the built `teamtrail` server with a worktree per claimed ticket, and three real MCP agents (`scripts/dev-agent.mjs` in the product repo) that the scripts answer in the inbox. Nothing is simulated.
 
 ```bash
 (cd ../teamtrail && npm install && npm run build -w teamtrail)   # once, and after CLI or app changes
 npm run media              # here: every screenshot
 npm run journey            # here: the hero video and poster (needs ffmpeg)
+THEME=night npm run media  # and again for the night set in public/media/night/
+THEME=night npm run journey
 ```
 
 Uses Playwright with the system Chrome (`CHROME_PATH`).

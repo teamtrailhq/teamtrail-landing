@@ -14,7 +14,7 @@ export const SETUP = [
   { t: '' },
   { t: 'teamtrail', type: true },
   { t: '' },
-  { t: '  Teamtrail 0.7.0 · Scout online', cls: 'ok' },
+  { t: '  Teamtrail 0.24.0 · Scout online', cls: 'ok' },
   { t: '  Lookout  http://localhost:7420/' },
   { t: '  Tracker         .teamtrail/' },
   { t: '  Press Ctrl+C to stop.', cls: 'dim', pause: 1600 },
@@ -40,7 +40,7 @@ export const FRAME = [
 export const AGAIN = [
   { t: 'teamtrail', type: true },
   { t: '' },
-  { t: '  Teamtrail 0.7.0 · Scout online', cls: 'ok' },
+  { t: '  Teamtrail 0.24.0 · Scout online', cls: 'ok' },
   { t: '  Lookout  http://localhost:7420/' },
   { t: '  Last trail    #18 Ship team workspaces', cls: 'dim', pause: 1300 },
 ];
@@ -60,7 +60,7 @@ export const CHECK_IN = [
   { t: '● teamtrail · status', cls: 'ok' },
   { t: '  #18 Ship team workspaces · 3 of 8 decided' },
   { t: '  Running   claude-33 · #22 Spike the riskiest integration point', cls: 'dim' },
-  { t: '  Spend     $0.21 · 52k tokens', cls: 'dim' },
+  { t: '  Spend     $2.84 · 712k tokens', cls: 'dim' },
   { t: '' },
   { t: '/scout inbox', type: true, prompt: CC },
   { t: '● teamtrail · list_inbox', cls: 'ok' },

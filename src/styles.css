@@ -740,6 +740,11 @@ code {
 .shot--hero {
   margin-top: clamp(-40px, -3vw, -20px);
 }
+/* A small crop shown at its own size (its width and height are CSS pixels; the file is 2x), never stretched. */
+.shot--natural img {
+  width: auto;
+  max-width: 100%;
+}
 
 /* ---------- problem ---------- */
 
