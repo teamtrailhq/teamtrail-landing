@@ -13,13 +13,13 @@ Your own preferences and tokens, kept in your config folder on your machine and 
 | File               | Holds                                                                                                                                                                                           |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `attention.json`   | Your notification channel, quiet hours and focus mode.                                                                                                                                          |
-| `credentials.json` | GitHub, Linear and Slack tokens, written with mode `0600`.                                                                                                                                      |
+| `credentials.json` | GitHub, Linear and Slack tokens, and the token from [Sign in with GitHub](/docs/trackers/#sign-in-with-github), written with mode `0600`.                                                       |
 | `slack.json`       | Slack settings and setup progress (no secrets).                                                                                                                                                 |
 | `projects.json`    | The repos [All projects](/docs/all-projects/) shows, and whether agents add their repo when they connect. See [File formats](/docs/file-formats/#projects-registry-projectsjson-config-folder). |
 
 ## attention.json (personal)
 
-Set in **Settings → Attention** or by hand. Focus mode from the header writes `focusUntil`.
+Set in **Settings → Attention** or by hand. The [focus control](#focus-in-the-header) in the header writes `focusUntil` and `focusOffUntil`.
 
 ```json
 {
@@ -29,14 +29,34 @@ Set in **Settings → Attention** or by hand. Focus mode from the header writes 
 }
 ```
 
-| Key          | Type                                                 | Default   |                                                                                                                                                     |
-| ------------ | ---------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `v`          | `1`                                                  |           | File format version.                                                                                                                                |
-| `channel`    | `browser` \| `slack-dm` \| `slack-channel` \| `none` | `browser` | Where interrupting items go. `none` sends everything to the digest.                                                                                 |
-| `focus`      | `{ from, to, days? }`                                | none      | Daily quiet hours, `HH:MM` in your local time. `to` before `from` spans midnight. `days` are `0` (Sunday) to `6` (Saturday); without it, every day. |
-| `focusUntil` | epoch milliseconds                                   | none      | Focus mode until this time.                                                                                                                         |
+| Key             | Type                                                 | Default   |                                                                                                                                                     |
+| --------------- | ---------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `v`             | `1`                                                  |           | File format version.                                                                                                                                |
+| `channel`       | `browser` \| `slack-dm` \| `slack-channel` \| `none` | `browser` | Where interrupting items go. `none` sends everything to the digest.                                                                                 |
+| `focus`         | `{ from, to, days? }`                                | none      | Daily quiet hours, `HH:MM` in your local time. `to` before `from` spans midnight. `days` are `0` (Sunday) to `6` (Saturday); without it, every day. |
+| `focusUntil`    | epoch milliseconds                                   | none      | Focus mode until this time.                                                                                                                         |
+| `focusOffUntil` | epoch milliseconds                                   | none      | Quiet hours paused until this time, after **End focus now** during them.                                                                            |
 
 During focus mode and quiet hours nothing interrupts you; the list in **Waiting on you** keeps updating. Browser notifications need your permission, asked when you pick the browser channel. Choosing the browser doesn't turn off Slack interrupts; only `none` does.
+
+## Focus in the header
+
+The header always shows whether focus is on:
+
+| It says                        | Meaning                                                                   |
+| ------------------------------ | ------------------------------------------------------------------------- |
+| **Focus on · until 12:00**     | Focus is on, switched on here or by your quiet hours, until that time.    |
+| **Focus paused · until 12:00** | You ended focus during your quiet hours; they hold again after that time. |
+| **Focus off**                  | Interrupting items notify you.                                            |
+
+Click it to see why focus is on or off and how many items it holds back, and to change it:
+
+- **Focus for 1 hour** or **Focus for 3 hours**, while it's off.
+- **End focus now**, while it's on, even during your quiet hours. They then pause until they would have ended.
+- **Resume quiet hours** or **Focus for 1 hour**, while they're paused.
+- **Quiet hours** opens **Settings → Attention**, where you set them.
+
+Focus is yours: it's kept in your `attention.json` on this machine, never in the repo, so a teammate's focus never changes yours.
 
 The team's threshold and weights are in the repo: [attention.json](/docs/attention-json/).
 

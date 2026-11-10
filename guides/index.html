@@ -271,8 +271,8 @@
               <h2 id="s-write">Your team's know-how, in one short file.</h2>
             </div>
             <p>
-              A guide is a markdown file: a few lines about it, a checklist, and plain steps for the agent. Start from
-              one in the catalog and make it yours.
+              A guide is a markdown file: a few lines about it, a checklist, and plain steps for the agent. One command
+              starts it from a template, and you make it yours.
             </p>
           </header>
           <ul class="trio reveal" role="list">
@@ -280,24 +280,25 @@
               <span class="n">01</span>
               <h3>Write it</h3>
               <p>
-                Copy a guide from the catalog and change the name, the checklist and the steps. The
-                <a href="/docs/guides/">docs</a> list every field.
+                <code>teamtrail guides new <span class="nowrap">&lt;id&gt;</span></code> writes a template that already
+                passes the lint. Change the name, the checklist and the steps. The <a href="/docs/guides/">docs</a> list
+                every field.
               </p>
             </li>
             <li>
               <span class="n">02</span>
               <h3>Check it</h3>
               <p>
-                <code>teamtrail guides lint <span class="nowrap">./my-guide.md</span></code> checks the format and
-                refuses anything that would steer an agent around you. Every finding names its line.
+                <code>teamtrail guides lint</code> checks your project's guides and refuses anything that would steer an
+                agent around you. Every finding names its line.
               </p>
             </li>
             <li>
               <span class="n">03</span>
-              <h3>Add it, or share it</h3>
+              <h3>Approve it, or share it</h3>
               <p>
-                <code>teamtrail guides add <span class="nowrap">./my-guide.md</span></code> adds it to your project. To
-                share it with everyone, send it to the catalog:
+                Approve it in Settings → Guides → Write your own. Agents use it only after you do, and again after every
+                edit. To share it with everyone, send it to the catalog:
                 <a href="https://github.com/teamtrailhq/teamtrail-guides/blob/main/CONTRIBUTING.md"
                   >how to contribute a guide</a
                 >.

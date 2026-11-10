@@ -16,10 +16,10 @@ Environment variables Teamtrail reads, for running it without the UI or in scrip
 
 ## Trackers
 
-| Variable                   |                                                                                         |
-| -------------------------- | --------------------------------------------------------------------------------------- |
-| `GITHUB_TOKEN`, `GH_TOKEN` | GitHub token, when none is saved in Settings. Without either, `gh auth token` is tried. |
-| `LINEAR_API_KEY`           | Linear API key, when none is saved.                                                     |
+| Variable                   |                                                                                                                                                                         |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GITHUB_TOKEN`, `GH_TOKEN` | GitHub token, when none is pasted in Settings. They come before a [GitHub sign-in](/docs/trackers/#sign-in-with-github); without any of them, `gh auth token` is tried. |
+| `LINEAR_API_KEY`           | Linear API key, when none is saved.                                                                                                                                     |
 
 ## Agents and usage
 

@@ -40,7 +40,7 @@ Every item carries plain reasons, such as `blocks 4 tickets`, `claude-02 idle fo
 
 ## Interruptions
 
-Only items scoring at or above the team's **interrupt** threshold (default 70) notify you actively, by browser notification or Slack. Everything else waits in the list and in the digest. Focus mode (an hour, from the header) and your quiet hours hold interruptions back but never hide the list.
+Only items scoring at or above the team's **interrupt** threshold (default 70) notify you actively, by browser notification or Slack. Everything else waits in the list and in the digest. Focus (for an hour or three, from the header's **Focus** control) and your quiet hours hold interruptions back, even urgent ones, but never hide the list. See [Focus in the header](/docs/personal-settings/#focus-in-the-header).
 
 - Team rules: [attention.json](/docs/attention-json/).
 - Your channel and quiet hours: [Personal settings](/docs/personal-settings/).
