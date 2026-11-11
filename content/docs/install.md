@@ -20,7 +20,7 @@ cd your-repo
 teamtrail
 ```
 
-`teamtrail` starts a local server at `http://127.0.0.1:7420/`, opens the Lookout in your browser and keeps trails as plain files in `./.teamtrail/` in the current folder. To sign the browser in, open the one-time **Sign in** link it prints in the terminal: see [Sign in to the Lookout](/docs/sign-in/). Agents and people can edit those files directly, and changes show up live. The same Lookout can show your other repos too: see [All projects](/docs/all-projects/).
+`teamtrail` starts a local server at `http://127.0.0.1:7420/`, opens your browser on the Lookout's sign-in page (one click signs in) and keeps trails as plain files in `./.teamtrail/` in the current folder. For another browser, it prints a one-time **Sign in** link in the terminal: see [Sign in to the Lookout](/docs/sign-in/). Agents and people can edit those files directly, and changes show up live. The same Lookout can show your other repos too: see [All projects](/docs/all-projects/).
 
 > Until launch, the real CLI is published under the `next` tag. `teamtrail@latest` is a placeholder that only prints a short message.
 

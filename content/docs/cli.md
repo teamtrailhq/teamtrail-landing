@@ -17,13 +17,13 @@ teamtrail projects add [path] | list | remove <id|path>
 teamtrail connect slack [options]
 teamtrail knowledge import <file.md> [--dir <path>]
 teamtrail approve [--hash <hash>]… [--dir <path>]
-teamtrail pair [--dir <path>]
+teamtrail pair [--dir <path>] [--no-open]
 teamtrail guides list|search|add|new|update|remove|lint … [--dir <path>]
 ```
 
 ## teamtrail
 
-Starts the Lookout for the current folder at `http://127.0.0.1:<port>/`, opens it in your browser and prints a one-time **Sign in** link for it. See [Sign in to the Lookout](/docs/sign-in/).
+Starts the Lookout for the current folder at `http://127.0.0.1:<port>/`, opens your browser on its sign-in page ready to sign in with one click, and prints a one-time **Sign in** link for another browser. See [Sign in to the Lookout](/docs/sign-in/).
 
 | Option            | Default                              |                                                                                                                                                                                                                   |
 | ----------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -100,7 +100,7 @@ What the repo asks this machine to trust and you haven't approved here: check co
 teamtrail pair
 ```
 
-Prints a new one-time link that signs a browser in to the Lookout running for this folder. It works once, for 10 minutes. It first checks that the server at the Lookout's address really is that Lookout. Phones and other computers pair from the Lookout instead: **Settings → You → Browsers & devices**. See [Sign in to the Lookout](/docs/sign-in/).
+Opens a browser tab ready to sign in to the Lookout running for this folder, and prints a new one-time link for another browser. The link works once, for 10 minutes; the tab's own code, within a minute. It first checks that the server at the Lookout's address really is that Lookout. `--no-open` only prints the link. Phones and other computers pair from the Lookout instead: **Settings → You → Browsers & devices**. See [Sign in to the Lookout](/docs/sign-in/).
 
 ## teamtrail knowledge import
 

@@ -1,11 +1,11 @@
 ---
 title: Sign in to the Lookout · Teamtrail docs
-description: The Lookout opens only in browsers you've paired. Sign in with the one-time link teamtrail prints, pair other browsers with teamtrail pair, and phones with a short code or QR code.
+description: The Lookout opens only in browsers you've paired. teamtrail opens your browser ready to sign in with one click, prints a one-time link for another browser, and phones pair with a short code or QR code.
 ---
 
 # Sign in to the Lookout
 
-The Lookout opens only in browsers you've paired. The first time, you open the link `teamtrail` prints.
+The Lookout opens only in browsers you've paired. The first time, `teamtrail` opens your browser ready to sign in: one click.
 
 ## The first browser
 
@@ -14,14 +14,28 @@ cd your-repo
 teamtrail
 ```
 
-The Lookout is at `http://127.0.0.1:7420/` (or the next free port). `teamtrail` opens it in your browser and prints a one-time **Sign in** link in its terminal:
+The Lookout is at `http://127.0.0.1:7420/` (or the next free port). `teamtrail` opens your default web browser on its sign-in page with the code filled in. Click **Sign in this browser**. That page's code works once, within a minute.
+
+It also prints a one-time **Sign in** link in its terminal, for another browser:
 
 ```text
   Lookout  http://127.0.0.1:7420/
   Sign in  http://127.0.0.1:7420/#pair=…
 ```
 
-Open the link and click **Sign in this browser**. The link works once, within 10 minutes, and only for the Lookout that printed it. It's never passed to the browser on a command line, where other programs could read it, so the browser opens on the Lookout itself and you click the link in the terminal.
+Open it there and click **Sign in this browser**. The link works once, within 10 minutes, and only for the Lookout that printed it.
+
+A code is never passed to the browser on a command line, where other programs could read it. Teamtrail finds your default web browser by name (never whatever opens `.html` files) and opens it on a one-time page in its config folder, readable only by your user, that sends it on to the sign-in page. The page is deleted once used, when its code expires, or when `teamtrail` stops.
+
+Every sign-in through the opened page is announced in the terminal, with the time and a short id:
+
+```text
+  Signed in a browser (opened page) at 10:42:07: Chrome on macOS · si_3f9c2a. Not you? Revoke it in Settings → Browsers & devices.
+```
+
+**Settings → You → Browsers & devices** marks that browser with the same id. If it wasn't you, **Revoke** it there. Why this matters: [What sign-in protects](#what-sign-in-protects).
+
+If the default browser can't be found, or it's a Snap or Flatpak browser on Linux (they can't read the page), the Lookout opens without the code and the terminal says why. Use the printed link.
 
 A browser that isn't paired sees **Pair this browser**, with how to get a link.
 
@@ -35,7 +49,9 @@ While the Lookout runs, run this in the repo:
 teamtrail pair
 ```
 
-It prints a new one-time link, after checking that the server at the Lookout's address really is that Lookout. Open it in the other browser and click **Sign in this browser**.
+After checking that the server at the Lookout's address really is that Lookout, it opens a browser tab ready to sign in, the same way `teamtrail` does, and prints a new one-time link (10 minutes) for any other browser. Click **Sign in this browser** in whichever you use.
+
+`teamtrail pair --no-open` only prints the link.
 
 ## A phone or another computer
 
@@ -78,18 +94,20 @@ Sign-in stops a program on your machine, or a device on your network, that isn't
 - Before the page sends its session, the server proves it is your Lookout. If it can't, the page says **Teamtrail isn't running here** and sends nothing. It reconnects once the Lookout is back.
 - The code in a sign-in link travels after `#`, which no server sees.
 
-It can't stop a program that can read Teamtrail's config folder (it can make a pairing code, as `teamtrail pair` does), or one that can read your browser's profile on disk. [`teamtrail connect`](/docs/connect-your-agent/#keep-agents-out-of-the-config-folder) keeps the agents it registers out of the config folder.
+It can't stop a program that can write Teamtrail's config folder (it can make a pairing code, as `teamtrail pair` does), one that can read it while a sign-in page Teamtrail opened waits (up to a minute; such a sign-in is announced), or one that can read your browser's profile on disk. [`teamtrail connect`](/docs/connect-your-agent/#keep-agents-out-of-the-config-folder) keeps the agents it registers out of the config folder.
 
 The MCP endpoints keep their own tokens and are not affected: see [Remote agents](/docs/remote-agents/).
 
 ## Troubleshooting
 
-| You see                                                                        | What to do                                                                                                   |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| **Pair this browser**                                                          | Open the Sign in link from the terminal, or run `teamtrail pair` for a new one.                              |
-| **Teamtrail isn't running here**                                               | Start `teamtrail` in the repo. The page reconnects by itself once the Lookout answers.                       |
-| The link no longer works                                                       | It was used, it's older than 10 minutes, or the Lookout restarted. Run `teamtrail pair`.                     |
-| `teamtrail pair`: `No Lookout is running for this folder`                      | Start `teamtrail` first: it prints a link of its own.                                                        |
-| `teamtrail pair`: `This folder is open in a Lookout started in another folder` | Run `teamtrail pair` in the folder where that Lookout was started.                                           |
-| A phone stopped working                                                        | The Lookout restarted, or your network changed. Restart `teamtrail` if the address changed, then pair again. |
-| **Pair a device** says the Lookout listens on this machine only                | Start it with `--host`, on a network you trust.                                                              |
+| You see                                                                        | What to do                                                                                                                                               |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Pair this browser**                                                          | Open the Sign in link from the terminal, or run `teamtrail pair` for a new one.                                                                          |
+| **Teamtrail isn't running here**                                               | Start `teamtrail` in the repo. The page reconnects by itself once the Lookout answers.                                                                   |
+| The link no longer works                                                       | It was used, it's older than 10 minutes, or the Lookout restarted. Run `teamtrail pair`.                                                                 |
+| **This link was already used or has expired** in the tab Teamtrail opened      | If you didn't sign in just now, someone else may have. Check **Browsers & devices** in a signed-in browser, or restart `teamtrail` to end every session. |
+| The browser opened signed out                                                  | No default browser was found, or it's a Snap or Flatpak. Use the link printed in the terminal.                                                           |
+| `teamtrail pair`: `No Lookout is running for this folder`                      | Start `teamtrail` first: it prints a link of its own.                                                                                                    |
+| `teamtrail pair`: `This folder is open in a Lookout started in another folder` | Run `teamtrail pair` in the folder where that Lookout was started.                                                                                       |
+| A phone stopped working                                                        | The Lookout restarted, or your network changed. Restart `teamtrail` if the address changed, then pair again.                                             |
+| **Pair a device** says the Lookout listens on this machine only                | Start it with `--host`, on a network you trust.                                                                                                          |

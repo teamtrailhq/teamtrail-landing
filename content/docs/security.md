@@ -144,7 +144,7 @@ Teamtrail protects against:
 
 It doesn't protect against:
 
-- **an agent that can read your config folder**: it can read the machine key, make a pairing code and approve for itself;
+- **an agent that can read your config folder**: it can read the machine key, make a pairing code and approve for itself. For up to 60 seconds after `teamtrail` or `teamtrail pair` opens your browser, it could also use that sign-in page's code first. That's why every sign-in through the opened page is announced in the terminal and marked in **Settings → You → Browsers & devices** (revoke one you didn't make), and why [`teamtrail connect`](/docs/connect-your-agent/#keep-agents-out-of-the-config-folder) keeps agents out of the folder;
 - **a program that can read your browser's profile** on disk: it can copy a session;
 - **an unrestricted shell on your account**: anything that runs as you can do what you can. Any local agent can also pass your words with `answer_question`; those answers guide, but never pass a gate.
 
