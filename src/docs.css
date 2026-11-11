@@ -45,8 +45,8 @@
 .docs-nav a {
   display: block;
   padding: 5px 12px;
-  margin-left: -12px;
   border-left: 1px solid transparent;
+  border-radius: 0 6px 6px 0;
   color: var(--dim);
   font-size: var(--fs-small);
   line-height: 1.4;
