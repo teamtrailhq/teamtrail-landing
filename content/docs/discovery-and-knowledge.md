@@ -4,7 +4,7 @@ Agents learn your project before they build: a discovery brief you approve, and 
 
 ## The discovery brief
 
-New trails start with a **discovery ticket** (`research`, "Discovery brief: map the existing system"). Until you accept the brief, agents can only claim `research`, `junction` and `review` tickets; claiming anything else returns the reason, for example that the brief is still waiting for your review.
+Every new trail starts with a **discovery ticket** (`research`, "Discovery brief: map the existing system"). Until you accept the brief, agents can only claim `research`, `junction` and `review` tickets; claiming anything else returns the reason, for example that the brief is still waiting for your review.
 
 The agent investigates and calls `submit_brief` with:
 
@@ -19,9 +19,11 @@ The agent investigates and calls `submit_brief` with:
 | `assumptions`      |          | What the plan relies on (numbered `A-1`, `A-2`, …).       |
 | `openQuestions`    |          | What the agent couldn't find out.                         |
 
-The brief's status moves `draft` → `submitted` → `accepted`, or `changes-requested` with your note, which the agent reads with `get_brief`. On accept, the brief's assumptions become the trail's [assumptions](/docs/adaptive-trails/). Trails started with `discovery: false` have no brief and no gate.
+The brief's status moves `draft` → `submitted` → `accepted`, or `changes-requested` with your note, which the agent reads with `get_brief`. On accept, the brief's assumptions become the trail's [assumptions](/docs/adaptive-trails/). To skip discovery, an agent passes `discovery: false` with a reason to `start_trail`. That's a request to you, not a switch: the trail still starts with discovery, and the request waits in the Lookout (or Slack) for you to **Approve** or **Decline**. Once you approve, implementation tickets can be claimed without a brief. A trail with no brief that you never approved this way (an older trail, or one whose brief file went missing) waits in **Settings → Project → Approvals** as "runs without discovery", on its own.
 
 In the Lookout: the banner on the map, then **Accept** or **Request changes**. Sections can be saved as knowledge with one click.
+
+Accepting records the brief exactly as you read it, on your machine. A brief marked accepted in the file by an agent, or in a teammate's push, opens no gate here until you approve it in **Settings → Project → Approvals**. The same goes for confirmed criteria and knowledge.
 
 ## Project knowledge
 

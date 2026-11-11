@@ -45,6 +45,8 @@ The choice is saved in `.teamtrail/trackers.json`, which holds no secrets:
 
 `active` is `markdown` (the default), `github` or `linear`. For Linear, `projectId` is optional: trails are then created in that project and only its trails are listed.
 
+The tracker you pick in Settings is also remembered on your machine. When `trackers.json` names another tracker, repo or team (an agent edited it, or a teammate pushed a change), Teamtrail keeps using the one you picked and asks in **Settings → Project → Approvals**: **Use** the new one, or **Keep** yours. Nothing is read from or sent to the new one until you choose.
+
 ## Sign in with GitHub
 
 No `gh` login or token needed. In the GitHub setup, **Sign in with GitHub** shows a code. **Open GitHub** takes you to github.com to enter it, and once you approve, the picker shows your repos as you.
@@ -54,6 +56,16 @@ The sign-in uses GitHub's device flow with Teamtrail's GitHub OAuth app and the 
 **Sign out** forgets the token on this machine. GitHub keeps the grant until you revoke it there (**Settings → Applications → Authorized OAuth Apps**).
 
 With `$GITHUB_TOKEN` or `$GH_TOKEN` set, that token wins, so the Lookout doesn't offer to sign in.
+
+## Who counts as you
+
+Anyone who can write to the tracker can write Teamtrail's markers into an issue. So Teamtrail trusts tracker content by who wrote it:
+
+- **Your account.** Anything the token's own account writes counts as you, including agents on your machine that use `gh` as the same login, as they do when they write local files.
+- **Teammates.** GitHub collaborators with write access, or Linear members who aren't guests or deactivated, can claim, move and close tickets. Their decisions show under their name (`@mona`, `Grace (@grace)`), never as yours.
+- **Anyone else.** Their markers are plain text, with no effect.
+
+An issue's settings (its verification level, checks, guide and model matching) count as written only when your account wrote them, or you accepted them on this machine. When someone else changes them, the settings you accepted stay in force and a `tracker-settings` item waits in [Waiting on you](/docs/waiting-on-you/): **Accept as is** or **Keep stricter**. On a new machine, where nothing has been accepted yet, the stricter of the issue's and the project's settings apply and completions wait until you settle them.
 
 ## Tokens
 

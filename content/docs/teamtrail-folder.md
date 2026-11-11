@@ -33,19 +33,21 @@ Pass `--dir <path>` or set `$TEAMTRAIL_DIR` to use another folder. On GitHub Iss
 
 ## Commit or keep local
 
-| Path                                                                    | Commit?  | Why                                                                                          |
-| ----------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `<trail>/`, `briefs/`, `criteria/`, `knowledge/`                        | Yes      | The shared state: teammates and agents see the same trails, decisions and knowledge.         |
-| `verification.json`, `policy.json`, `attention.json`, `workspaces.json` | Yes      | Team settings. Checks come from the repo, so no agent can change what verifies its own work. |
-| `guides/`, `guides.lock.json`, `guides.json`, `models.json`             | Yes      | Teammates get the same [guides](/docs/guides/) and [model tiers](/docs/model-matching/).     |
-| `trackers.json`                                                         | Optional | Names the tracker and repo or team; it never holds a token.                                  |
-| `.events/`, `.evidence/`, `.reroutes/`, `.attention/`                   | No       | Local history and state. Each writes its own `.gitignore`.                                   |
-| `.agents/`                                                              | No       | Sessions, answers, leases, trail names, workspaces and the server lock.                      |
+| Path                                                                    | Commit?  | Why                                                                                                                                                          |
+| ----------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `<trail>/`, `briefs/`, `criteria/`, `knowledge/`                        | Yes      | The shared state: teammates and agents see the same trails, decisions and knowledge.                                                                         |
+| `verification.json`, `policy.json`, `attention.json`, `workspaces.json` | Yes      | Team settings. Check commands and a lowered policy apply on each machine only once approved there.                                                           |
+| `guides/`, `guides.lock.json`, `guides.json`, `models.json`             | Yes      | Teammates get the same [guides](/docs/guides/) and [model tiers](/docs/model-matching/).                                                                     |
+| `trackers.json`                                                         | Optional | Names the tracker and repo or team; it never holds a token.                                                                                                  |
+| `.events/`, `.evidence/`, `.reroutes/`, `.attention/`                   | No       | Local history and state. Each writes its own `.gitignore`.                                                                                                   |
+| `.agents/`                                                              | No       | Sessions, answers, leases, trail names, workspaces, the server lock and [remote agents](/docs/remote-agents/)' token hashes. It writes its own `.gitignore`. |
 
-Tokens, personal preferences and the list of projects for [All projects](/docs/all-projects/) never go in the repo: they live in your [config folder](/docs/personal-settings/). Each repo keeps its own `.teamtrail/` folder.
+Tokens, personal preferences and the list of projects for [All projects](/docs/all-projects/) never go in the repo: they live in your [config folder](/docs/personal-settings/). So do your approvals and the signed record of each trail's state. Each repo keeps its own `.teamtrail/` folder.
 
 ## Editing by hand
 
 Every file is meant to be readable and editable. The Lookout watches the folder and updates live when a file changes, whether an agent, a teammate's `git pull` or your editor changed it. Config files are validated on read; problems show in Settings, and the file's defaults apply until it's fixed.
+
+What decides how work moves counts only once you approved it on your machine. A changed check command, a lowered policy or level, or a ticket retyped, closed or unblocked by editing its file waits in **Settings → Project → Approvals**. Titles, bodies and comments can be edited freely; the Lookout marks them as edited outside Teamtrail. See [Approvals and security](/docs/security/).
 
 See [File formats](/docs/file-formats/) for each file's format.

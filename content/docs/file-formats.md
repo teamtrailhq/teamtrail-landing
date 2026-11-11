@@ -65,6 +65,7 @@ The JSON holds `id` (`S-<n>`), `tickets` (ticket ids that depend on it), and opt
 ```md
 ---
 id: '3'
+format: '2'
 title: Who is the primary offline user?
 type: junction
 labels: [teamtrail:junction]
@@ -81,6 +82,8 @@ Decision ticket for the Fieldnote offline sync trail.
 
 ## Comments
 
+<!-- teamtrail:comments -->
+
 ### claude-07 @ 2026-11-04T11:57:05.757Z
 
 **Resolution**
@@ -88,17 +91,20 @@ Decision ticket for the Fieldnote offline sync trail.
 Field researchers with multi-day dead zones, not commuters.
 ```
 
-| Key                      |                                                                   |
-| ------------------------ | ----------------------------------------------------------------- |
-| `type`                   | `research`, `prototype`, `junction`, `task`, `execute`, `review`. |
-| `labels`                 | `teamtrail:<type>`, plus `teamtrail:hitl` for HITL tasks.         |
-| `state`, `close_reason`  | `open` / `closed`; `completed` or `out_of_scope` when closed.     |
-| `assignee`               | The agent or person holding the claim.                            |
-| `blocked_by`             | Ticket ids that must close first.                                 |
-| `status`                 | Optional: `verifying`, `rework` or `blocked`.                     |
-| `verification`, `checks` | Optional per-ticket overrides of the level and the checks to run. |
-| `review_of`              | On `review` tickets: the ticket under review.                     |
-| `guide`                  | Optional: the [guide](/docs/guides/) the claiming agent takes on. |
+| Key                      |                                                                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `format`                 | `2`: the comments start at `## Comments` followed by the `<!-- teamtrail:comments -->` marker. Files without it are older and still read. |
+| `type`                   | `research`, `prototype`, `junction`, `task`, `execute`, `review`.                                                                         |
+| `labels`                 | `teamtrail:<type>`, plus `teamtrail:hitl` for HITL tasks.                                                                                 |
+| `state`, `close_reason`  | `open` / `closed`; `completed` or `out_of_scope` when closed.                                                                             |
+| `assignee`               | The agent or person holding the claim.                                                                                                    |
+| `blocked_by`             | Ticket ids that must close first.                                                                                                         |
+| `status`                 | Optional: `verifying`, `rework` or `blocked`.                                                                                             |
+| `verification`, `checks` | Optional per-ticket overrides of the level and the checks to run.                                                                         |
+| `review_of`              | On `review` tickets: the ticket under review.                                                                                             |
+| `guide`                  | Optional: the [guide](/docs/guides/) the claiming agent takes on.                                                                         |
+
+Comments start at the `## Comments` heading with the marker under it, and each one at a `### <author> @ <time>` line. So that text can never be read as either, a line of a body or a comment that looks like one is written with a leading backslash, and a `<!-- teamtrail:` opener inside text is written `<\!-- teamtrail:`. Reading the file restores both.
 
 ## Decision: `<trail>/decisions/D-<n>.md`
 
@@ -242,7 +248,7 @@ Written by Teamtrail when you add, update or approve a guide or one of its check
 | `approvedChecks`     | Proposed checks you approved: name to the hash of their `run`, `cwd` and `timeoutSec`. A change needs approval again. |
 | `requiresChecks`     | The approved version's required checks. They still apply if the file is edited after approval.                        |
 
-Teamtrail also keeps the lock as you last approved it in `.agents/guides-approved.json` (local). An entry of `guides.lock.json` that differs from it, changed by an agent or pulled with git, switches its guide off until you approve it again.
+Teamtrail also keeps the lock as you approved it on this machine, in your [config folder](/docs/personal-settings/) (`projects/<id>/guides-approved.json`), never in the repo. An entry of `guides.lock.json` that differs from it, changed by an agent or pulled with git, switches its guide off until you approve it again on this machine.
 
 ## Guide catalogs: `guides.json`
 
@@ -254,7 +260,7 @@ Teamtrail also keeps the lock as you last approved it in `.agents/guides-approve
 }
 ```
 
-Optional; committed. Catalogs to search besides the official one, in order, each with a `name` and an `https` URL. The ones listed come first, then the official catalog. `official` (default `true`): `false` leaves the official catalog out. Listing the official catalog yourself (name `teamtrail` or its URL) puts it where you list it. Missing means the official catalog alone. See [Guides](/docs/guides/#other-catalogs).
+Optional; committed. Catalogs to search besides the official one, in order, each with a `name` and an `https` URL. The ones listed come first, then the official catalog. `official` (default `true`): `false` leaves the official catalog out. Listing the official catalog yourself (name `teamtrail` or its URL) puts it where you list it. Missing means the official catalog alone. The name `teamtrail` is reserved for the official catalog. The file is read only as you approved it on this machine, in **Settings → Project → Approvals**. See [Guides](/docs/guides/#other-catalogs).
 
 ## Checklist answers: `.evidence/<trail>/<ticket>/checklist.json`
 
@@ -314,9 +320,21 @@ One JSON object per line, append-only. Transitions (`kind: "transition"`: `event
 
 Readers skip kinds they don't know, so old and new journals both load.
 
+Changes that belong to the project rather than one trail have their own files. `.events/_remote-agents.jsonl` records each [remote agent](/docs/remote-agents/) token you create or revoke (`kind: "remote-agent"`, `action` `token-created` or `token-revoked`, `tokenId`, `name`), never the token or its hash. `.events/_sign-in.jsonl` records browsers [paired](/docs/sign-in/) with the Lookout, device codes made and sign-ins revoked, never a session or a code. `.events/_slack.jsonl` records Slack owner changes.
+
 ## Local coordination: `.agents/`
 
-Written by Teamtrail processes, not meant for hand edits: agent sessions, answers, ticket leases (with declared `touches` and the `workspace`), trail names, prepared workspaces (`workspaces/`), the latest integration scan (`integration.json`), the guide lock as you last approved it (`guides-approved.json`) and the server lock.
+Written by Teamtrail processes, not meant for hand edits: agent sessions, answers, ticket leases (with declared `touches` and the `workspace`), trail names, prepared workspaces (`workspaces/`), the latest integration scan (`integration.json`) and the server lock. It holds no approvals: those are in your [config folder](/docs/personal-settings/), and an old `guides-approved.json` here is never read as one.
+
+Remote agents add three things here, all local:
+
+| File                       |                                                                                                                                                                                           |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `remote-tokens.json`       | `{ "v": 1, "tokens": [{ "id": "rt_…", "name", "hash", "createdAt" }] }`. `hash` is the token's SHA-256; the token itself is never stored. A missing or damaged file means no token works. |
+| `remote-tokens-used.json`  | `{ "v": 1, "used": { "<id>": <epoch ms> } }`: when each token was last used, to the minute.                                                                                               |
+| `mcp-endpoints/<pid>.json` | One file per running `teamtrail` or `teamtrail mcp --http`, with the `url` of its MCP endpoint. Removed on exit.                                                                          |
+
+Create and revoke tokens in **Settings → Project → Remote agents**, not by editing the file. See [Remote agents](/docs/remote-agents/).
 
 ## Projects registry: `projects.json` (config folder)
 

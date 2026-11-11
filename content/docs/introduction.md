@@ -12,7 +12,7 @@ Teamtrail is a local trail map for big work done by AI coding agents: you descri
 1. You describe a trail, usually from your agent's chat with `/scout new "<idea>"`.
 2. The agent frames it with you, studies the repo, and charts a **trail map**: a set of decision tickets wired with blocking edges.
 3. Agents claim tickets over [MCP](/docs/mcp-tools/), ask you questions, record decisions with evidence, and prove their work against the checks and criteria you agreed on.
-4. You steer in the **Lookout**, a web app that `teamtrail` serves on your machine, or straight from the chat with [`/scout`](/docs/scout-commands/).
+4. You steer in the **Lookout**, a web app that `teamtrail` serves on your machine, or straight from the chat with [`/scout`](/docs/scout-commands/). What decides how work moves counts only once you approved it there.
 
 ## What matters for developers
 
@@ -31,5 +31,6 @@ Teamtrail is a local trail map for big work done by AI coding agents: you descri
 | Understand the model        | [Trails and tickets](/docs/trails-and-tickets/), [The .teamtrail folder](/docs/teamtrail-folder/)                                                                    |
 | Shape how agents work       | [Guides](/docs/guides/), [Model matching](/docs/model-matching/), [Parallel work](/docs/parallel-work/)                                                              |
 | Supervise several repos     | [All projects](/docs/all-projects/)                                                                                                                                  |
+| Know what's protected       | [Sign in to the Lookout](/docs/sign-in/), [Approvals and security](/docs/security/)                                                                                  |
 | Configure it without the UI | [verification.json](/docs/verification-json/), [policy.json](/docs/policy-json/), [attention.json](/docs/attention-json/), [workspaces.json](/docs/workspaces-json/) |
 | Look something up           | [CLI commands](/docs/cli/), [MCP tools](/docs/mcp-tools/), [File formats](/docs/file-formats/), [Environment variables](/docs/environment-variables/)                |

@@ -20,20 +20,20 @@ cd your-repo
 teamtrail
 ```
 
-`teamtrail` starts a local server, opens the Lookout in your browser and keeps trails as plain files in `./.teamtrail/` in the current folder. Agents and people can edit those files directly, and changes show up live. The same Lookout can show your other repos too: see [All projects](/docs/all-projects/).
+`teamtrail` starts a local server at `http://127.0.0.1:7420/`, opens the Lookout in your browser and keeps trails as plain files in `./.teamtrail/` in the current folder. To sign the browser in, open the one-time **Sign in** link it prints in the terminal: see [Sign in to the Lookout](/docs/sign-in/). Agents and people can edit those files directly, and changes show up live. The same Lookout can show your other repos too: see [All projects](/docs/all-projects/).
 
 > Until launch, the real CLI is published under the `next` tag. `teamtrail@latest` is a placeholder that only prints a short message.
 
 ## Options
 
-| Option            | Default                              |                                                                                                               |
-| ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `--dir <path>`    | `./.teamtrail` (or `$TEAMTRAIL_DIR`) | The tracker folder.                                                                                           |
-| `--port <n>`      | `7420`, or the next free port        | Port for the Lookout and its API.                                                                             |
-| `--host <addr>`   | `127.0.0.1`                          | Interface to bind. The server can write files in the tracker folder, so only expose it on networks you trust. |
-| `--no-open`       |                                      | Don't open the browser.                                                                                       |
-| `-v`, `--version` |                                      | Print the version.                                                                                            |
-| `-h`, `--help`    |                                      | Show the help.                                                                                                |
+| Option            | Default                              |                                                                                                                                                                                                                                                                             |
+| ----------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--dir <path>`    | `./.teamtrail` (or `$TEAMTRAIL_DIR`) | The tracker folder.                                                                                                                                                                                                                                                         |
+| `--port <n>`      | `7420`, or the next free port        | Port for the Lookout and its API. With the flag, a taken port is an error.                                                                                                                                                                                                  |
+| `--host <addr>`   | `127.0.0.1`                          | IP address to bind, never a host name. `0.0.0.0` (or `::`) means each of the machine's network addresses. Other devices still need to be paired, and the connection is plain HTTP, so only use it on networks you trust: see [Other devices](/docs/sign-in/#other-devices). |
+| `--no-open`       |                                      | Don't open the browser.                                                                                                                                                                                                                                                     |
+| `-v`, `--version` |                                      | Print the version.                                                                                                                                                                                                                                                          |
+| `-h`, `--help`    |                                      | Show the help.                                                                                                                                                                                                                                                              |
 
 See [CLI commands](/docs/cli/) for every command.
 

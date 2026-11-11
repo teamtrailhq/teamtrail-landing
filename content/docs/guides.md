@@ -70,18 +70,19 @@ npx teamtrail@next guides add a11y
 
 In the Lookout: **Settings → Guides → Browse guides**. It shows only Verified guides by default (turn off **Verified only** to see all). Each guide shows its author, review history, checklist, the commands it proposes and its full instructions before you add it.
 
-Adding a guide fetches the file, checks its sha256 against the catalog's index, runs the safety lint, copies it to `.teamtrail/guides/<id>.md` and pins it in `.teamtrail/guides.lock.json`. Commit both, and teammates get the same guide. A guide that fails the lint can't be added. The catalog's copies of built-in guides are for reading and are never added.
+Adding a guide fetches the file, checks its sha256 against the catalog's index, runs the safety lint, shows you the whole guide and, once you approve it, copies it to `.teamtrail/guides/<id>.md` and pins it in `.teamtrail/guides.lock.json`. Commit both, and teammates get the same guide. A guide that fails the lint can't be added. The catalog's copies of built-in guides are for reading and are never added.
 
 `teamtrail guides update` installs newer catalog versions. See [CLI commands](/docs/cli/#teamtrail-guides) for every subcommand.
 
 ### What the catalog labels mean
 
-| Label        | Meaning                                                                                  |
-| ------------ | ---------------------------------------------------------------------------------------- |
-| Built in     | Ships with Teamtrail and already works; the catalog's copy is for reading.               |
-| Verified     | A catalog maintainer reviewed the guide's latest change.                                 |
-| Not reviewed | The latest change was merged without a named reviewer. The CLI shows it as `unreviewed`. |
-| Reported     | Someone reported the guide, and the maintainers are looking into it.                     |
+| Label                          | Meaning                                                                                                   |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Built in                       | Ships with Teamtrail and already works; the catalog's copy is for reading.                                |
+| Verified                       | A catalog maintainer reviewed the guide's latest change.                                                  |
+| Verified by `<host>`'s catalog | A guide from another catalog in `guides.json`: that catalog's own review, not the Teamtrail maintainers'. |
+| Not reviewed                   | The latest change was merged without a named reviewer. The CLI shows it as `unreviewed`.                  |
+| Reported                       | Someone reported the guide, and the maintainers are looking into it.                                      |
 
 **Report this guide** in the Lookout opens the catalog's report form.
 
@@ -175,6 +176,8 @@ proposedChecks:
 ## Approval and pinning
 
 - **Checks only after you approve them.** A guide's proposed check never runs until you approve it, from the prompt in `guides add`, with `--approve-checks`, or in **Settings → Guides**. Approving writes it to `verification.json`, the only place Teamtrail runs commands from, and records its argv's hash in the lock. If a later version changes the command, you're asked again. Without a terminal, `guides add` approves nothing unless you pass `--approve-checks`.
+- **Unknown programs need your acknowledgement.** A proposed check that runs a program Teamtrail doesn't know says so, and its button reads **I know what it runs: approve check `<name>`**. The CLI asks about it only at a terminal; `--approve-checks` never approves one. A command line that itself carries or downloads code is refused.
+- **Approved per machine.** What you approved is kept in your [config folder](/docs/personal-settings/), outside the repo. A guide a teammate added shows as approved elsewhere until you approve it on your machine, and a repo moved to another folder is asked again.
 - **Pinned by hash.** `guides.lock.json` records each guide's version, sha256, source and who added it. A guide file edited after you approved it is switched off until you look at it again (**Approve**). The same happens when its lock entry changes outside Teamtrail, for example an agent editing the file or a teammate's change pulled with git. Its tickets get a `guideWarning`, and the guide shows in Waiting on you.
 - **Guides only add.** A guide can add checks and a checklist. It can't lower the verification level, drop or reorder a check, change who decides, or let an agent review its own work. A switched-off guide keeps adding the checks its approved version required.
 - **Removing a guide** deletes its file and lock entry. Checks you approved stay in `verification.json`; edit that file to drop them.
@@ -190,7 +193,9 @@ proposedChecks:
 }
 ```
 
-Each registry needs a `name` and an `https` URL (or `http://localhost`). Add `"official": false` to leave the official catalog out, or list it yourself (name `teamtrail`) to put it somewhere else in the order. When the file is missing, only the official catalog is used.
+Each registry needs a `name` and an `https` URL (or `http://localhost` or `http://127.0.0.1`). The name `teamtrail` is reserved for the official catalog.
+
+An agent can edit this file, so its catalogs are searched only once you approve it in **Settings → Project → Approvals**, on its own. Approving covers where guides come from, not the guides: each one is still shown whole and approved on its own. Guides from these catalogs carry their catalog's review as **Verified by `<host>`'s catalog**. Add `"official": false` to leave the official catalog out, or list it yourself (name `teamtrail`) to put it somewhere else in the order. When the file is missing, only the official catalog is used.
 
 `guides search` and `guides add <id>` look in every catalog, in order, and `guides add` says which one the guide came from. An id in more than one catalog is refused until you pick one: `guides add acme/perf`, or `--registry acme`.
 

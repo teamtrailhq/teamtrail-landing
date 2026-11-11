@@ -17,11 +17,12 @@ The quickest way:
 npx teamtrail@next connect claude
 ```
 
-This does three things:
+This does four things:
 
-- registers the server: `claude mcp add teamtrail -- npx -y teamtrail mcp`;
+- registers the server, pinned to the version you ran: `claude mcp add teamtrail -- npx -y teamtrail@<version> mcp`, so Claude Code never starts a newer one by surprise (run `connect` again from a newer version to update);
 - writes the `/scout` command to `.claude/commands/scout.md` in the repo;
-- adds a silent `SessionStart` hook to `.claude/settings.local.json`, so tokens and cost come from the session transcript.
+- adds a silent `SessionStart` hook to `.claude/settings.local.json`, so tokens and cost come from the session transcript;
+- keeps Claude Code out of Teamtrail's config folder (below).
 
 Or register the server yourself:
 
@@ -45,7 +46,31 @@ args = ["-y", "teamtrail", "mcp"]
 tool_timeout_sec = 900
 ```
 
-With a custom `CODEX_HOME`, `connect codex` forwards it to the server so session logs can be found.
+With a custom `CODEX_HOME`, `connect codex` forwards it to the server so session logs can be found. Like `connect claude`, it registers the version you ran.
+
+It also prints a permissions profile that keeps Codex's commands out of Teamtrail's config folder. Until you add it, they can read that folder, the machine key included: see below.
+
+## Keep agents out of the config folder
+
+Teamtrail's [config folder](/docs/personal-settings/) holds this machine's key, which signs your answers, approvals and trail state, plus your tracker credentials. An agent that can read it can approve for itself. So `connect` keeps the agent out of it. Pass `--no-protect-config` to skip this.
+
+**Claude Code.** `connect claude` adds deny rules to Claude Code's user settings (`~/.claude/settings.json`): `Read` and `Edit` rules for the folder in `permissions.deny`, and the folder in `sandbox.filesystem.denyRead` and `denyWrite` for sandboxed commands. It keeps what's already there, adds nothing twice, and prints what it added and how to remove it.
+
+The rules are best effort unless Claude Code's sandbox is on. Without it, they stop Claude's own file tools, but a shell command such as `cat` can still read the folder.
+
+**Codex.** Codex can deny a folder only through a default permissions profile, which changes how it sandboxes every folder. That's your call, so `connect codex` only prints the profile to add to `~/.codex/config.toml`:
+
+```toml
+default_permissions = "teamtrail"
+[permissions.teamtrail]
+extends = ":workspace"
+[permissions.teamtrail.filesystem]
+"/Users/you/.config/teamtrail" = "deny"
+```
+
+Until you add it, Codex's commands can read the folder, `machine.key` included. Its workspace-write sandbox already keeps them from writing there.
+
+Teamtrail's own MCP server isn't affected by either: agents don't apply these rules to the MCP servers they start. With a custom `$TEAMTRAIL_CONFIG_DIR`, the default `~/.config/teamtrail` is denied too.
 
 ## Other MCP clients
 
@@ -63,6 +88,16 @@ npx -y teamtrail mcp
 | `--no-register`        |                                           | Don't add this repo to All projects.                       |
 
 `connect claude|codex` also accepts `--dir <path>`; it's passed to the server only when it isn't the default.
+
+## Agents on other machines
+
+An agent on another machine or in a cloud sandbox can't start the server next to your repo. It connects over HTTP instead, with a token you create in the Lookout:
+
+```bash
+npx -y teamtrail@next connect claude --url https://trail.example.com/mcp
+```
+
+See [Remote agents](/docs/remote-agents/) for the setup and what to put in front of it.
 
 ## Your other repos
 
