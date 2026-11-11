@@ -24,7 +24,11 @@
   --on-copper: #ffffff;
   --blaze: #c8581e;
   --tt-keyline: #10302d;
-  --tt-logo-edge: #17211c;
+  /* The logo's light and dark versions (partials/sprite.html #tt-logo). */
+  --tt-logo-tile: #e9f1e6;
+  --tt-logo-edge: #d3e2cd;
+  --tt-logo-mark: #4f8a48;
+  --tt-logo-dot: #e07a2f;
   --lede: #4a5f4e;
   --urgent: #c4301f;
   --urgent-rgb: 196, 48, 31;
@@ -69,7 +73,10 @@
     --on-copper: #101815;
     --blaze: #e8833a;
     --tt-keyline: #f1e8d3;
-    --tt-logo-edge: #33473b;
+    --tt-logo-tile: #17211c;
+    --tt-logo-edge: #2a3a31;
+    --tt-logo-mark: #8fbf84;
+    --tt-logo-dot: #e8833a;
     --lede: #b7cab3;
     --urgent: #ff6b5c;
     --urgent-rgb: 255, 107, 92;
@@ -96,7 +103,10 @@
   --on-copper: #101815;
   --blaze: #e8833a;
   --tt-keyline: #f1e8d3;
-  --tt-logo-edge: #33473b;
+  --tt-logo-tile: #17211c;
+  --tt-logo-edge: #2a3a31;
+  --tt-logo-mark: #8fbf84;
+  --tt-logo-dot: #e8833a;
   --lede: #b7cab3;
   --urgent: #ff6b5c;
   --urgent-rgb: 255, 107, 92;
