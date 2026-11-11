@@ -1,7 +1,8 @@
 // Overlay injected into the lookout page while the journey records: chapter label + caption,
-// full-screen terminal / Claude Code windows that type their lines, and the title and end cards.
+// full-screen terminal / Claude Code windows that type their lines, and the title and end cards. The cards are wide,
+// so they carry the teamtrail. wordmark (`wordmark`: the #tt-wordmark symbol's markup) and never the square t. tile.
 // Runs in the browser (page.addInitScript), so it must stay self-contained.
-export function installStage({ scout, logo, night }) {
+export function installStage({ scout, wordmark, night }) {
   // A field-notebook terminal in the site's own colours, light by day and dark at night.
   const ink = night
     ? {
@@ -43,10 +44,10 @@ export function installStage({ scout, logo, night }) {
 .st-face{width:26px;height:26px;vertical-align:-7px}
   .st-cur{display:inline-block;width:10px;height:1.1em;vertical-align:-3px;background:${ink.acc};animation:stb 1s steps(1) infinite}
   @keyframes stb{50%{opacity:0}}
-  .st-card{display:flex;flex-direction:column;align-items:center;gap:26px;margin-bottom:60px;text-align:center}
-  .st-card img{width:170px;height:170px}
-  .st-card h1{margin:0;font:900 110px 'Londrina Solid',sans-serif;letter-spacing:.018em;color:${night ? '#eaeee3' : '#1b2620'}}
-  .st-card h1 span{color:${night ? '#e8833a' : '#c8581e'}}
+  .st-card{display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center;
+    --tt-wordmark-ink:${night ? '#eef0e4' : '#16302a'};--tt-wordmark-dot:${night ? '#e8833a' : '#e07a2f'}}
+  .st-card h1{margin:0 0 14px;line-height:0}
+  .st-card h1 svg{width:600px;height:auto;display:block}
   .st-card p{margin:0;font:400 26px 'Figtree Variable',sans-serif;color:${night ? '#c3cdc1' : '#38443c'}}
   .st-card code{font:400 28px 'JetBrains Mono Variable',monospace;color:${night ? '#eaeee3' : '#1b2620'};padding:14px 24px;border:1px solid ${night ? 'rgba(150,170,155,.32)' : 'rgba(76,78,58,.3)'}}
   .st-card code span{color:${night ? '#8fbf84' : '#3f6b45'}}
@@ -73,11 +74,11 @@ export function installStage({ scout, logo, night }) {
     },
     card(kind) {
       ensure();
-      const word = '<h1>Teamtrail</h1>';
+      const word = `<h1><svg viewBox="-4.40 -77.20 414.70 83.00" role="img" aria-label="teamtrail.">${wordmark}</svg></h1>`;
       ov.innerHTML =
         kind === 'title'
-          ? `<div class="st-card"><img src="${logo}" alt="">${word}<p>The trail map for your AI coding agents.</p></div>`
-          : `<div class="st-card"><img src="${logo}" alt="">${word}<code><span>$</span> npx teamtrail</code>
+          ? `<div class="st-card">${word}<p>The trail map for your AI coding agents.</p></div>`
+          : `<div class="st-card">${word}<code><span>$</span> npx teamtrail</code>
              <small>Works with Claude Code, Codex and any MCP agent</small><small>teamtrail.app</small></div>`;
       ov.classList.remove('off');
     },
