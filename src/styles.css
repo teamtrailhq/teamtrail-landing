@@ -29,6 +29,8 @@
   --tt-logo-edge: #d3e2cd;
   --tt-logo-mark: #4f8a48;
   --tt-logo-dot: #e07a2f;
+  --tt-wordmark-ink: #16302a;
+  --tt-wordmark-dot: #e07a2f;
   --lede: #4a5f4e;
   --urgent: #c4301f;
   --urgent-rgb: 196, 48, 31;
@@ -77,6 +79,8 @@
     --tt-logo-edge: #2a3a31;
     --tt-logo-mark: #8fbf84;
     --tt-logo-dot: #e8833a;
+    --tt-wordmark-ink: #eef0e4;
+    --tt-wordmark-dot: #e8833a;
     --lede: #b7cab3;
     --urgent: #ff6b5c;
     --urgent-rgb: 255, 107, 92;
@@ -107,6 +111,8 @@
   --tt-logo-edge: #2a3a31;
   --tt-logo-mark: #8fbf84;
   --tt-logo-dot: #e8833a;
+  --tt-wordmark-ink: #eef0e4;
+  --tt-wordmark-dot: #e8833a;
   --lede: #b7cab3;
   --urgent: #ff6b5c;
   --urgent-rgb: 255, 107, 92;
