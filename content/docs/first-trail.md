@@ -9,7 +9,7 @@ cd your-repo
 teamtrail
 ```
 
-Open the one-time **Sign in** link it prints in the terminal and click **Sign in this browser**. See [Sign in to the Lookout](/docs/sign-in/).
+Your browser opens on the Lookout's sign-in page: click **Sign in this browser**. If it opens signed out instead, use the one-time **Sign in** link printed in the terminal. See [Sign in to the Lookout](/docs/sign-in/).
 
 If the repo already has trails or checks committed, **Settings → Project → Approvals** asks you to adopt them on this machine first: see [Approvals and security](/docs/security/#the-first-run).
 
