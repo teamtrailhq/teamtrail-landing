@@ -13,20 +13,21 @@ Each trail has a level; a ticket can override it.
 | `checks+review`       | Checks pass, then a different agent reviews the work.             |
 | `checks+review+human` | Checks and review pass, then you approve.                         |
 
-New trails start at the `default` level from `verification.json`; the level applies to the ticket types in `appliesTo` (default `execute` and `task`). Without `verification.json`, nothing is verified. Change a trail's level in the ticket inspector or the verification panel.
+New trails start at the `default` level from `verification.json`; the level applies to the ticket types in `appliesTo` (default `execute` and `task`). Without `verification.json`, nothing is verified. Change a trail's level in the ticket inspector or the verification panel, on the machine Teamtrail runs on. A level lowered in the files below the one you approved doesn't apply until you approve it in **Settings → Project → Approvals**.
 
 ## What happens on completion
 
 `close_ticket` or `report_completion` runs the checks first. The result's `status` is:
 
-| Status      | Meaning                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------ |
-| `done`      | Closed.                                                                                    |
-| `rework`    | A check failed; `feedback` has the failing output. The agent fixes it and completes again. |
-| `verifying` | Still running (`pending: true`) or waiting for review. Poll with `verification_status`.    |
-| `blocked`   | Failed `maxAttempts` times, or the checks couldn't run. You decide.                        |
+| Status             | Meaning                                                                                                                       |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| `done`             | Closed.                                                                                                                       |
+| `rework`           | A check failed; `feedback` has the failing output. The agent fixes it and completes again.                                    |
+| `verifying`        | Still running (`pending: true`) or waiting for review. Poll with `verification_status`.                                       |
+| `blocked`          | Failed `maxAttempts` times, or the checks couldn't run. You decide.                                                           |
+| `waiting-approval` | The check commands aren't approved on this machine yet. The work is kept; approve them in **Settings → Project → Approvals**. |
 
-Checks run with argv arrays (no shell), with tokens kept out of their environment and token-shaped output redacted. Results, output and git evidence are stored per attempt in `.teamtrail/.evidence/`.
+Checks run with argv arrays (no shell), only once you've [approved the commands](/docs/security/#check-commands) on this machine, with an allowlisted environment and token-shaped output redacted. Results, output and git evidence are stored per attempt in `.teamtrail/.evidence/`.
 
 ## Independent review
 

@@ -14,7 +14,7 @@ The `/scout` command drives Teamtrail from your agent's chat.
 | `/scout new "<idea>"`   | Frames the idea with you, charts a trail, does discovery, then works it.                                                                                                                           |
 | `/scout resume [trail]` | Picks up the trail and works ready tickets until none is ready.                                                                                                                                    |
 | `/scout status`         | Progress, running sessions, what's waiting on you and what interrupts, blocked and rework tickets, spend, and one line when another of your [projects](/docs/all-projects/) has something waiting. |
-| `/scout inbox`          | The ranked [Waiting on you](/docs/waiting-on-you/) list. Answer questions in the chat; everything else is decided in the Lookout.                                                                  |
+| `/scout inbox`          | The ranked [Waiting on you](/docs/waiting-on-you/) list. Answer questions in the chat to guide the agent; calls that are yours to make, and everything else, are decided in the Lookout or Slack.  |
 
 ## new "<idea>"
 

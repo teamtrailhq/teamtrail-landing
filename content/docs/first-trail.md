@@ -9,6 +9,10 @@ cd your-repo
 teamtrail
 ```
 
+Open the one-time **Sign in** link it prints in the terminal and click **Sign in this browser**. See [Sign in to the Lookout](/docs/sign-in/).
+
+If the repo already has trails or checks committed, **Settings → Project → Approvals** asks you to adopt them on this machine first: see [Approvals and security](/docs/security/#the-first-run).
+
 ## 2. Describe the trail
 
 In Claude Code (Codex: `/prompts:scout new …`):
@@ -17,7 +21,7 @@ In Claude Code (Codex: `/prompts:scout new …`):
 /scout new "Let field researchers edit notes offline for a week"
 ```
 
-The agent first checks the work is trail-sized: a bug fix or a single endpoint doesn't need a trail. Then it asks 3–4 framing questions (who it's for, what done looks like, what's out of scope, what's already decided). Answer in the chat or in the Lookout's **Waiting on you** list.
+The agent first checks the work is trail-sized: a bug fix or a single endpoint doesn't need a trail. Then it asks 3–4 framing questions (who it's for, what done looks like, what's out of scope, what's already decided). Answer in the chat or in the Lookout's **Waiting on you** list. Chat answers guide the agent; calls that are yours to make need your answer in the Lookout or Slack.
 
 You can also create a trail from the Lookout (**New trail**), then let an agent pick it up with `/scout resume`.
 
@@ -48,4 +52,4 @@ Each agent claims the next ready ticket, agrees on [acceptance criteria](/docs/v
 
 ## Skip discovery
 
-For small, well-understood trails, ask the agent to skip it: `start_trail` takes `discovery: false`, and implementation tickets are claimable right away.
+For small, well-understood trails, ask the agent to skip it. The agent passes `discovery: false` to `start_trail`, and you get a request to **Approve** or **Decline** in the Lookout or Slack. Saying yes in the chat doesn't approve it. Once you approve, implementation tickets are claimable right away.

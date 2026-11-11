@@ -2,7 +2,9 @@
 
 The checks that run when an agent claims a ticket is done, committed in `.teamtrail/verification.json`.
 
-Without this file, nothing is verified. The file comes from your repo, so no agent can change what verifies its own work. Teamtrail only writes to it when you approve a check a [guide](/docs/guides/) proposes.
+Without this file, nothing is verified. Teamtrail only writes to it when you approve a check a [guide](/docs/guides/) proposes.
+
+**Its commands run only once you approve them on your machine.** An agent can edit this file and a teammate can push it, so a new or changed command waits in **Settings → Project → Approvals** (or `teamtrail approve`). Until then completions that need checks end with `waiting-approval`, and the work is kept. See [Approvals and security](/docs/security/#check-commands).
 
 ## Example
 
@@ -42,7 +44,15 @@ Without this file, nothing is verified. The file comes from your repo, so no age
 | `timeoutSec` | positive integer | `600`     | Time limit for this check.                                                                         |
 | `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo.                        |
 
-Checks run without your tokens in their environment, and token-shaped output is redacted. With [workspaces](/docs/parallel-work/) on, a ticket's checks run in its worktree.
+Checks run with an allowlisted environment: the shell, locale and toolchain basics, without tokens, keys or anything named like a secret. Name extra variables a check needs in `TEAMTRAIL_CHECK_ENV` on your machine, never in the repo:
+
+```bash
+TEAMTRAIL_CHECK_ENV="DATABASE_URL, REDIS_URL, APP_*" teamtrail
+```
+
+Token-shaped output is redacted. With [workspaces](/docs/parallel-work/) on, a ticket's checks run in its worktree.
+
+Checks run as you, without a sandbox: they can read what your account can read. Approval covers the command line, not what it runs (`npm run check` runs `package.json` scripts an agent can edit).
 
 ### noChanges
 

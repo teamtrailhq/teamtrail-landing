@@ -5,6 +5,7 @@
       "pages": [
         { "slug": "introduction", "title": "Introduction" },
         { "slug": "install", "title": "Install" },
+        { "slug": "sign-in", "title": "Sign in to the Lookout" },
         { "slug": "connect-your-agent", "title": "Connect your agent" },
         { "slug": "first-trail", "title": "Your first trail" },
         { "slug": "remote-agents", "title": "Remote agents" }
@@ -15,6 +16,7 @@
       "pages": [
         { "slug": "trails-and-tickets", "title": "Trails and tickets" },
         { "slug": "the-lookout", "title": "The Lookout" },
+        { "slug": "security", "title": "Approvals and security" },
         { "slug": "teamtrail-folder", "title": "The .teamtrail folder" },
         { "slug": "discovery-and-knowledge", "title": "Discovery and knowledge" },
         { "slug": "waiting-on-you", "title": "Waiting on you" },

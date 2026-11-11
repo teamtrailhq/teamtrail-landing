@@ -2,7 +2,9 @@
 
 What agents may decide on their own and what always comes to you, committed in `.teamtrail/policy.json`.
 
-Without the file, the defaults below apply. Edit it in **Settings → Risk policy** or by hand.
+Without the file, the defaults below apply. Edit it in **Settings → Risk policy**, on the machine Teamtrail runs on, or by hand.
+
+A change made by hand, by an agent or in a teammate's push that lowers what needs you doesn't apply on your machine until you approve it in **Settings → Project → Approvals**. Until then the stricter levels hold. See [Approvals and security](/docs/security/).
 
 ## Levels
 

@@ -27,12 +27,12 @@ In the repo:
 npx teamtrail@next mcp --http
 ```
 
-This serves the agent tools at `http://localhost:7421/mcp` and nothing else on that port: no Lookout and no API. It prints the endpoint and how many tokens can connect, and runs until you press Ctrl+C.
+This serves the agent tools at `http://127.0.0.1:7421/mcp` and nothing else on that port: no Lookout and no API. It prints the endpoint and how many tokens can connect, and runs until you press Ctrl+C.
 
 | Option                | Default     |                                                                                                                                             |
 | --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--port <n>`          | `7421`      | Port. Without the flag, the next free port is used if it's taken; with it, a taken port is an error.                                        |
-| `--host <addr>`       | `127.0.0.1` | Interface to bind. The connection is plain HTTP: see [Security](#security) before you change it.                                            |
+| `--host <addr>`       | `127.0.0.1` | IP address to bind; a host name is refused. The connection is plain HTTP: see [Security](#security) before you change it.                   |
 | `--allow-host <name>` |             | A host name agents may reach the endpoint by: your proxy's or tunnel's. Repeat it for more names. `localhost` and IP addresses always work. |
 
 `--dir`, `--lease-minutes` and `--no-register` work as they do for [`teamtrail mcp`](/docs/cli/#teamtrail-mcp). `--agent` isn't taken: every session gets its own trail name.
@@ -97,7 +97,7 @@ npx teamtrail@next mcp --http --allow-host trail.example.com
 A tunnel, here a Cloudflare quick tunnel. Start it first, because it prints the host name:
 
 ```bash
-cloudflared tunnel --url http://localhost:7421
+cloudflared tunnel --url http://127.0.0.1:7421
 npx teamtrail@next mcp --http --allow-host <name>.trycloudflare.com
 ```
 
@@ -105,7 +105,7 @@ Agents then connect to `https://<name>.trycloudflare.com/mcp`.
 
 `ask_human` holds a request open while it waits for you, up to 10 minutes by default, so don't give the proxy a short timeout.
 
-`--host` binds another interface without a proxy. Use it only on a network you trust: the token crosses it unencrypted.
+`--host` binds another IP address without a proxy. Use it only on a network you trust: the token crosses it unencrypted.
 
 ### The Host and Origin rule
 
@@ -118,12 +118,13 @@ This is what stops a web page in someone's browser from reaching the endpoint. T
 
 ### Never share the Lookout's port
 
-The Lookout (port `7420`) has no sign-in. Whoever can reach it can read your trails, answer questions and approve work as you. So it protects itself in two ways:
+The Lookout (port `7420`) is for you, not for agents. Its API needs a [paired browser](/docs/sign-in/), never a token, and it protects itself further:
 
 - Its own `/mcp` answers this machine only.
+- It refuses a `Host` that isn't `localhost` or an IP address, so a proxy's or tunnel's host name gets a 403.
 - The settings that change what runs on your machine or whom it trusts, tokens included, can only be changed from this machine.
 
-"This machine" means where the connection comes from. A reverse proxy or tunnel running on your machine connects from your machine, so one in front of the Lookout's port opens all of it to whoever reaches the proxy. Share only the `mcp --http` port.
+Share only the `mcp --http` port.
 
 ### What a token grants
 
@@ -146,20 +147,20 @@ So give an agent you don't fully trust only trails with [verification](/docs/ver
 
 A remote agent's files aren't on your machine, and nobody may be sitting at it. So:
 
-|                                                                  | Local agent                                                    | Remote agent                                                                                                                                                          |
-| ---------------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Worktree                                                         | One per claim, when [workspaces](/docs/parallel-work/) are on. | None. It works on a branch in its own checkout and pushes it.                                                                                                         |
-| Finished work on a trail with verification                       | The checks run and git evidence is read.                       | No check runs and no git evidence is read. The ticket comes to you as blocked: review its branch or pull request and approve, or pull the work and re-run the checks. |
-| Answering as you                                                 | `answer_question` passes on what you said in the chat.         | No `answer_question`. You answer in the Lookout or Slack.                                                                                                             |
-| Skipping discovery                                               | `start_trail` with `discovery: false`, when you say so.        | Refused. A trail it starts always begins with discovery.                                                                                                              |
-| The trail's mode and destination                                 | `update_trail` changes them.                                   | Refused. You switch the mode in the Lookout; it proposes a new destination with `propose_reroute`.                                                                    |
-| A ticket that's yours to decide (junction, prototype, HITL task) | The agent asks you, then closes it.                            | Closes only after you answered a question the agent asked on that ticket, in the Lookout or Slack.                                                                    |
-| Usage                                                            | Claude Code and Codex: read from the agent's own logs (`LOG`). | Self-reported through `report_progress` (`SELF`).                                                                                                                     |
-| Your other projects                                              | `projects_status` shows them.                                  | Refused. The connection is for this repo only.                                                                                                                        |
+|                                                                  | Local agent                                                                                               | Remote agent                                                                                                                                                          |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Worktree                                                         | One per claim, when [workspaces](/docs/parallel-work/) are on.                                            | None. It works on a branch in its own checkout and pushes it.                                                                                                         |
+| Finished work on a trail with verification                       | The checks run and git evidence is read.                                                                  | No check runs and no git evidence is read. The ticket comes to you as blocked: review its branch or pull request and approve, or pull the work and re-run the checks. |
+| Answering as you                                                 | `answer_question` passes on what you said in the chat. It guides agents, but never passes a gate.         | No `answer_question`. You answer in the Lookout or Slack.                                                                                                             |
+| Skipping discovery                                               | `start_trail` with `discovery: false` asks you: a request you approve or decline in the Lookout or Slack. | Refused. A trail it starts always begins with discovery.                                                                                                              |
+| The trail's mode and destination                                 | `update_trail` asks you: a request you approve or decline in the Lookout or Slack.                        | Refused. You switch the mode in the Lookout; it proposes a new destination with `propose_reroute`.                                                                    |
+| A ticket that's yours to decide (junction, prototype, HITL task) | Closes only after you answered a question the agent asked on that ticket, in the Lookout or Slack.        | The same.                                                                                                                                                             |
+| Usage                                                            | Claude Code and Codex: read from the agent's own logs (`LOG`).                                            | Self-reported through `report_progress` (`SELF`).                                                                                                                     |
+| Your other projects                                              | `projects_status` shows them.                                                                             | Refused. The connection is for this repo only.                                                                                                                        |
 
 Two rules hold for every agent, local ones too:
 
-- **"The human decided" needs your real answer.** A decision is recorded as yours only when it rests on your answer to a specific question the agent asked with `ask_human`. One answer backs one decision. See [MCP tools](/docs/mcp-tools/#decisions-the-human-made).
+- **"The human decided" needs your real answer.** A decision is recorded as yours only when it rests on your answer, given in the Lookout or Slack, to a specific question the agent asked with `ask_human`. One answer backs one decision. See [MCP tools](/docs/mcp-tools/#decisions-the-human-made) and [Your decisions](/docs/security/#your-decisions).
 - **Single-line inputs stay on one line.** Titles, names, ids and paths are refused when they hold a line break or another control character. Free text such as a ticket body, a question or a resolution may span lines.
 
 ## Per client
@@ -193,14 +194,14 @@ Any client that speaks streamable HTTP works. Give it the endpoint's URL and the
 
 ## On a headless server
 
-Tokens are created in the Lookout, and only from the machine it runs on. On a server with no browser, start the Lookout there without opening one, and reach it through an SSH port-forward:
+Tokens are created in the Lookout, and only from the machine it runs on. On a server with no browser, start the Lookout there without opening one, and reach it through an SSH port-forward that keeps the same port on both ends:
 
 ```bash
 teamtrail --no-open                             # on the server, in the repo
 ssh -L 7420:127.0.0.1:7420 you@server           # on your laptop
 ```
 
-Then open `http://localhost:7420` on your laptop. To the Lookout the connection comes from the server itself, so **Settings → Project → Remote agents** works as usual.
+Then open the **Sign in** link the server printed in its terminal (`http://127.0.0.1:7420/#pair=…`) in your laptop's browser, and click **Sign in this browser**. To the Lookout the connection comes from the server itself, so **Settings → Project → Remote agents** works as usual. If the link expired, run `teamtrail pair` on the server for a new one.
 
 ## Limits
 

@@ -1,6 +1,6 @@
 # Personal settings
 
-Your own preferences and tokens, kept in your config folder on your machine and never in the repo.
+Your own preferences and tokens, and what you approved, kept in your config folder on your machine and never in the repo.
 
 ## The config folder
 
@@ -10,12 +10,14 @@ Your own preferences and tokens, kept in your config folder on your machine and 
 | Windows      | `%APPDATA%\teamtrail\`                                    |
 | Any          | `$TEAMTRAIL_CONFIG_DIR`, when set, wins                   |
 
-| File               | Holds                                                                                                                                                                                           |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `attention.json`   | Your notification channel, quiet hours and focus mode.                                                                                                                                          |
-| `credentials.json` | GitHub, Linear and Slack tokens, and the token from [Sign in with GitHub](/docs/trackers/#sign-in-with-github), written with mode `0600`.                                                       |
-| `slack.json`       | Slack settings and setup progress (no secrets).                                                                                                                                                 |
-| `projects.json`    | The repos [All projects](/docs/all-projects/) shows, and whether agents add their repo when they connect. See [File formats](/docs/file-formats/#projects-registry-projectsjson-config-folder). |
+| File               | Holds                                                                                                                                                                                                                                                                                                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `attention.json`   | Your notification channel, quiet hours and focus mode.                                                                                                                                                                                                                                                                                        |
+| `credentials.json` | GitHub, Linear and Slack tokens, and the token from [Sign in with GitHub](/docs/trackers/#sign-in-with-github), written with mode `0600`.                                                                                                                                                                                                     |
+| `slack.json`       | Slack settings and setup progress (no secrets).                                                                                                                                                                                                                                                                                               |
+| `machine.key`      | This machine's secret, which signs your answers, approvals and trail state. Written with mode `0600`. Keep agents from reading it: see [Keep agents out of the config folder](/docs/connect-your-agent/#keep-agents-out-of-the-config-folder).                                                                                                |
+| `projects/<id>/`   | What this machine trusts about one repo: your [approvals](/docs/security/), the signed record of each trail's state, the browsers [signed in](/docs/sign-in/) to its Lookout, the tracker you picked and the settings you accepted, and tracker writes queued while offline. A repo moved to another folder gets a new id and is asked again. |
+| `projects.json`    | The repos [All projects](/docs/all-projects/) shows, and whether agents add their repo when they connect. See [File formats](/docs/file-formats/#projects-registry-projectsjson-config-folder).                                                                                                                                               |
 
 ## attention.json (personal)
 
