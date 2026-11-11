@@ -68,7 +68,7 @@ npm run guides:snapshot
 
 ## Product media
 
-Screenshots and the explainer video (`landing-journey-720.mp4` and its poster) live in `public/media/`; favicons and the OG image in `public/media/brand/`. Both come from the real product on a real project (`scripts/lib/realProject.mjs`): the dev seed in a git repo at `/Users/Shared/code/fieldnote-app` (`CAPTURE_CODE_DIR` to change it; its paths show in the shots, so one capture runs at a time), the built `teamtrail` server with a worktree per claimed ticket, and three real MCP agents (`scripts/dev-agent.mjs` in the product repo) that the scripts answer in the inbox. Nothing is simulated.
+Screenshots and the explainer video (`landing-journey-720.mp4` and its poster) live in `public/media/`; favicons and the OG image in `public/media/brand/`. The favicons, OG image and avatar are exported from the product repo's `packages/scout-avatar` (`npm run capture`, its `brand/` folder); `favicon.svg` is its `logoFaviconSvg()` (the light mark, the dark one on dark tabs), and the PNGs and `public/favicon.ico` (16, 32 and 48 px) are the light mark for browsers without SVG icons. Bump the `?v=` on the icon links (and in `scripts/docs/template.mjs`) when they change. Both come from the real product on a real project (`scripts/lib/realProject.mjs`): the dev seed in a git repo at `/Users/Shared/code/fieldnote-app` (`CAPTURE_CODE_DIR` to change it; its paths show in the shots, so one capture runs at a time), the built `teamtrail` server with a worktree per claimed ticket, and three real MCP agents (`scripts/dev-agent.mjs` in the product repo) that the scripts answer in the inbox. Nothing is simulated.
 
 ```bash
 (cd ../teamtrail && npm install && npm run build -w teamtrail)   # once, and after CLI or app changes
