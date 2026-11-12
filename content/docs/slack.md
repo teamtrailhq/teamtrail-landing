@@ -34,7 +34,20 @@ If you set up your own Slack app with an earlier version, Settings → Slack ask
 - **Approvals:** sign off verified work with **Approve**, or send it back with **Rework…**.
 - **Requests:** an agent's request to skip discovery or change a trail's mode or destination comes as a card. Approve it in the Lookout (**Open in Lookout**); **Decline** works in Slack too.
 - **Notifications:** to a DM or a channel, for the events you pick: `awaiting`, `blocked`, `trail.done` (default) and `resolved`, with full detail or titles only.
-- **`/scout` slash command:** `decide [text]`, `status [trail]`, `inbox`, `help`. Replies only you can see; `inbox` links each item to the Lookout.
+- **Ask Scout:** mention @Scout in a channel, DM Scout, or use the `/scout` slash command, in a word or in your own words. Read-only answers; in a channel, only you see them (help is the one answer posted for everyone).
+
+  | Ask                                                                 | Scout answers with                                                                                                      |
+  | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+  | `inbox`, "what's in my inbox?"                                      | Questions waiting on you, each linked to the Lookout                                                                    |
+  | `status [trail]`                                                    | A trail at a glance, or all trails                                                                                      |
+  | `ticket #12`, `#12`, "what's blocking #12?"                         | The ticket's state, what blocks it and what it blocks, who's on it, questions waiting on you about it, and its decision |
+  | "what's blocked?"                                                   | Every blocked ticket, and what it waits for                                                                             |
+  | `decisions [trail or words]`, "what did we decide about retention?" | Decisions in force, newest first, as one-line summaries with who made each call                                         |
+  | `who`, "who's working?"                                             | The agents working now, their ticket and step, and whether they wait on you                                             |
+  | `help`                                                              | This list                                                                                                               |
+
+  `/scout decide [text]` records a decision (a mention can't open the dialog, so there "decide" lists decisions). Scout reads what you write without an AI model: it looks for a known word or a ticket key like `#12`.
+
 - **Save as decision:** a message shortcut that records a thread as a decision.
 - **Home tab:** says whether Scout is connected for you, with a link to the Lookout.
 
@@ -56,7 +69,7 @@ When your Teamtrail isn't running, Scout says so ("Your Teamtrail isn't running�
 
 ## What passes through the Scout service
 
-- **Passes through, in memory only:** the questions, answers, digests and approvals Scout posts, your clicks, `/scout` commands and the threads you save as decisions. The service doesn't store or log their text.
+- **Passes through, in memory only:** the questions, answers, digests and approvals Scout posts, your clicks, `/scout` commands, @Scout mentions and DMs to Scout, and the threads you save as decisions. The service doesn't store or log their text.
 - **Stored by the service:** your workspace's bot token (encrypted), your Slack user and workspace ids, your link (a hash of its secret, never the secret), and for up to 30 days the ids of messages your Teamtrail posted, so clicks go back to it.
 - **Never leaves your machine:** trails, tickets, decisions, approvals, evidence and the gates that decide what counts as your word.
 
