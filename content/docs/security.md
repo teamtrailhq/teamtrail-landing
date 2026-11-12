@@ -74,9 +74,10 @@ The commands in [`verification.json`](/docs/verification-json/) run on your mach
 
 Teamtrail never answers or approves for you. What counts as your call:
 
-- **Answers count toward gates only when you give them in the Lookout or Slack.** You can also answer in an agent's chat: the agent passes your words on with `answer_question`, and the Lookout shows them. A chat answer guides agents, but it never passes a gate: a high-risk decision, or closing a ticket that's yours to decide, needs your answer in the Lookout or Slack.
-- **Tickets that need a person close only with your answer.** A junction, a prototype or a HITL task closes only after you answered, in the Lookout or Slack, a question the agent asked on that ticket.
-- **Skipping discovery, or changing a trail's mode or destination, is a request.** When an agent asks for it, you get a request to **Approve** or **Decline** in the Lookout or Slack. Nothing changes until you approve, and no answer to a question stands in for it. Meanwhile the trail carries on as it is.
+- **Answers count toward gates only when you give them in the Lookout or Slack.** You can also answer in an agent's chat: the agent passes your words on with `answer_question`, and the Lookout shows them. A chat answer guides agents, but it never passes a gate: closing a ticket that's yours to decide needs your answer in the Lookout or Slack.
+- **High-risk calls need the Lookout.** A decision your [risk policy](/docs/policy-json/) rates high, by its category or by the files it changed, counts only with your answer in the Lookout. Slack shows these with **Open in Lookout**, and Teamtrail refuses a Slack answer for them. See [Slack](#slack).
+- **Tickets that need a person close only with your answer.** A junction, a prototype or a HITL task closes only after you answered, in the Lookout or Slack, a question the agent asked on that ticket. If the ticket is high risk, only an answer in the Lookout closes it.
+- **Skipping discovery, or changing a trail's mode or destination, is a request.** When an agent asks for it, you get a request to **Approve** or **Decline**. You approve it in the Lookout; you can decline it in the Lookout or Slack. Nothing changes until you approve, and no answer to a question stands in for it. Meanwhile the trail carries on as it is.
 - **A trail that runs without discovery needs its own approval.** It's never part of approving everything at once.
 
 ## Changes outside Teamtrail
@@ -131,7 +132,15 @@ Your config folder holds this machine's key, which signs your answers, approvals
 
 ## Slack
 
-Nothing is sent to Slack, and nobody can act from it, until you confirm the owner: you get a one-time code in the Lookout, enter it on Scout's Home tab in Slack, then confirm that account in the Lookout. See [Slack](/docs/slack/).
+Slack reaches your machine through Teamtrail's **Scout service** (`scout.teamtrail.app`): Slack sends it every click and command, and your Teamtrail keeps an outbound connection to it. That puts the service in the path of your Slack answers, so:
+
+- **The owner is the Slack account you connect, and you confirm it.** Connecting starts from this machine's signed-in Lookout, which keeps a one-time secret (PKCE) that only it holds, and shows **Connect as @you in _Workspace_?** before anything is saved. A code from someone else's connect can't finish yours.
+- **High-risk calls need the Lookout.** An answer that arrives from Slack never backs a high-risk decision, never approves high-risk work, and never approves a change to a trail's settings, even if the service were compromised. Teamtrail checks this in its own gates, not only in Slack's buttons.
+- **Clicks reach only the Teamtrail that posted the message.** The service routes each click by its own record of who posted what, and your Teamtrail accepts a click only on a message it posted, from its owner or the people they allowed.
+- **The service stores no message text.** Questions, answers and threads pass through it in memory. It stores your workspace's bot token (encrypted), Slack ids, and your link as a hash. Its code is public in the [Teamtrail repo](https://github.com/teamtrailhq/teamtrail/tree/main/apps/scout-service).
+- **The link token goes only to the service it was made with**, and lives in `credentials.json` (mode `0600`).
+
+The trust you add: for everything that isn't high risk, an answer from Slack counts as yours, so you rely on the Scout service to pass Slack's events on faithfully. If that's not acceptable for a project, don't connect Slack, or rate the categories you care about as high in [policy.json](/docs/policy-json/). See [Slack](/docs/slack/) and the [privacy policy](/privacy/).
 
 ## Security model and limits
 
@@ -140,12 +149,14 @@ Teamtrail protects against:
 - **an agent that can only write files in the repo**: it can't approve its own checks, briefs or criteria, change gate fields, or record your decisions;
 - **a teammate's push**: committed approvals and state changes wait for you on your machine;
 - **other devices on your network**: they need pairing, and even then can't change what runs on your machine or whom it trusts;
-- **other programs on your machine reaching the Lookout**: they need a paired browser's session, which is never a cookie and is sent only to a server that proved it is your Lookout.
+- **other programs on your machine reaching the Lookout**: they need a paired browser's session, which is never a cookie and is sent only to a server that proved it is your Lookout;
+- **a compromised Scout service**: it can't approve high-risk calls or trail settings, or reach another person's Teamtrail.
 
 It doesn't protect against:
 
 - **an agent that can read your config folder**: it can read the machine key, make a pairing code and approve for itself. For up to 60 seconds after `teamtrail` or `teamtrail pair` opens your browser, it could also use that sign-in page's code first. That's why every sign-in through the opened page is announced in the terminal and marked in **Settings → You → Browsers & devices** (revoke one you didn't make), and why [`teamtrail connect`](/docs/connect-your-agent/#keep-agents-out-of-the-config-folder) keeps agents out of the folder;
 - **a program that can read your browser's profile** on disk: it can copy a session;
-- **an unrestricted shell on your account**: anything that runs as you can do what you can. Any local agent can also pass your words with `answer_question`; those answers guide, but never pass a gate.
+- **an unrestricted shell on your account**: anything that runs as you can do what you can. Any local agent can also pass your words with `answer_question`; those answers guide, but never pass a gate;
+- **a compromised Scout service, for what isn't high risk**: if you connect Slack, it could pass on an answer or click you didn't give, on a question or approval below high risk. See [Slack](#slack).
 
 Run agents in a sandbox that blocks the config folder where you can. Where the sandbox blocks it, Teamtrail fails closed and tells both you and the agent why.

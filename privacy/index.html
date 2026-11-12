@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      try {
+        var t = localStorage.getItem('teamtrail-theme');
+        document.documentElement.dataset.theme = t || 'night';
+      } catch (e) {
+        document.documentElement.dataset.theme = 'night';
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy policy | Teamtrail</title>
+    <meta
+      name="description"
+      content="What Teamtrail collects on its website and through Scout, its Slack app, why, how long it keeps it, and how to have it deleted."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Teamtrail" />
+    <meta property="og:title" content="Privacy policy | Teamtrail" />
+    <meta
+      property="og:description"
+      content="What Teamtrail collects on its website and through Scout, its Slack app, and how to have it deleted."
+    />
+    <meta property="og:url" content="%SITE_URL%/privacy/" />
+    <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="The teamtrail wordmark, ending in an orange dot, above a trail through the mountains."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
+    <meta name="theme-color" content="#101815" />
+    <link rel="icon" href="/media/brand/favicon-32.png?v=5" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/media/brand/favicon-64.png?v=5" type="image/png" sizes="64x64" />
+    <link rel="icon" href="/media/brand/favicon.svg?v=5" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png?v=5" />
+    <link
+      rel="preload"
+      href="/node_modules/@fontsource/londrina-solid/files/londrina-solid-latin-900-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <!-- @include sprite -->
+    <!-- @include nav -->
+
+    <main id="main">
+      <section class="hero hero--page hero--legal" aria-labelledby="page-title">
+        <div class="wrap hero__inner">
+          <span class="hero__badge">Privacy</span>
+          <h1 id="page-title">Privacy policy.</h1>
+          <p class="hero__lede">
+            What we collect on this website and through <span class="mark">Scout</span>, our Slack app, why, how long we
+            keep it, and how to have it deleted. Last updated 12 November 2026.
+          </p>
+        </div>
+      </section>
+
+      <section class="section section--flush">
+        <div class="wrap legal">
+          <h2>The short version</h2>
+          <ul>
+            <li>
+              <span class="mark">Teamtrail</span> runs on your own machine. Your trails, tickets, decisions, code and
+              agents' work stay there, or in the GitHub or Linear tracker you connect. We never receive them.
+            </li>
+            <li>
+              If you connect <span class="mark">Scout</span> to Slack, messages between Slack and your machine pass
+              through our Scout service. It doesn't store or log their text.
+            </li>
+            <li>We don't sell data, show ads, or use anything here to train AI models.</li>
+          </ul>
+
+          <h2>Who we are</h2>
+          <p>
+            The controller of the data described here is GOMOVEO, which makes Teamtrail. Write to
+            <a href="mailto:kontakt@gomoveo.pl">kontakt@gomoveo.pl</a> with any question or request about your data.
+          </p>
+
+          <h2>This website</h2>
+          <ul>
+            <li>
+              <strong>Analytics.</strong> We use Vercel Web Analytics to count page views and referring sites. It sets
+              no cookies and doesn't build a profile of you.
+            </li>
+            <li>
+              <strong>The Cloud waitlist.</strong> If you join it, we keep your email address in a mailing list hosted
+              by Resend, to email you when Teamtrail Cloud opens. We keep it until then, or until you ask us to remove
+              it.
+            </li>
+            <li>
+              <strong>Hosting.</strong> The site is hosted by Vercel, which processes your IP address and browser
+              details to serve pages and keep them safe from abuse.
+            </li>
+            <li>
+              <strong>GitHub stars.</strong> Your browser asks GitHub's public API for the star count shown in the menu,
+              so GitHub sees that request.
+            </li>
+          </ul>
+
+          <h2>Scout in Slack</h2>
+          <p>
+            <span class="mark">Scout</span> is <span class="mark">Teamtrail</span>'s Slack app. Slack can't reach your
+            machine directly, so it works through the Scout service, which we run on Railway. Your
+            <span class="mark">Teamtrail</span> keeps one outbound connection to it.
+          </p>
+          <h3>What the Scout service stores</h3>
+          <ul>
+            <li>
+              <strong>For each Slack workspace that installs Scout:</strong> its id and name, Scout's bot user id, the
+              permissions Slack granted, who installed it and when, and the bot token Slack issues, encrypted.
+            </li>
+            <li>
+              <strong>For each person who connects their Teamtrail:</strong> their Slack user id and workspace id, a
+              link id, a hash of the link's secret (never the secret itself), and when it was created and last
+              connected.
+            </li>
+            <li>
+              <strong>To route clicks to the right Teamtrail:</strong> the ids of messages and views each link posted or
+              opened (channel, timestamp and view ids, never their content), for up to 30 days; the id of your direct
+              message with <span class="mark">Scout</span>, for up to a year; and a thread you used Save as decision on,
+              for 10 minutes.
+            </li>
+            <li>
+              <strong>While you connect:</strong> one-time codes and install states, stored as hashes, for at most 10
+              minutes.
+            </li>
+          </ul>
+          <h3>What passes through without being stored</h3>
+          <p>
+            The questions, answers, digests and approvals <span class="mark">Scout</span> posts, your clicks,
+            <code>/scout</code> commands and the threads you save as decisions travel through the service in memory, on
+            their way between Slack and your machine. The service doesn't write their text to its database or its logs.
+            Its logs record what happened (for example, a delivery or a Slack call) with ids, method names and timings
+            only.
+          </p>
+          <h3>How Slack data is used</h3>
+          <ul>
+            <li>Only to deliver <span class="mark">Scout</span>'s features to the person who connected it.</li>
+            <li>Never sold, shared for advertising, or used to train AI models.</li>
+            <li>
+              Shared only with the providers that run the service (Railway, for hosting and its database) and with Slack
+              itself.
+            </li>
+          </ul>
+          <h3>Keeping and deleting it</h3>
+          <ul>
+            <li>
+              <strong>Disconnect</strong> in the Lookout (Settings → Slack) deletes your link and the message ids tied
+              to it.
+            </li>
+            <li>
+              <strong>Uninstalling</strong> <span class="mark">Scout</span> from a workspace, or revoking its tokens,
+              deletes the workspace's token and every link in it.
+            </li>
+            <li>
+              Message and view ids expire on their own within 30 days, the id of your direct message with
+              <span class="mark">Scout</span> within a year, and connection codes within minutes.
+            </li>
+            <li>To have anything else deleted, write to <a href="mailto:kontakt@gomoveo.pl">kontakt@gomoveo.pl</a>.</li>
+          </ul>
+
+          <h2>The Teamtrail software</h2>
+          <p>
+            The <code>teamtrail</code> command and the Lookout run on your machine and don't send us your project data
+            or usage. They talk to the trackers you connect (GitHub, Linear), the guide catalogs you use, and, only if
+            you connect Slack, the Scout service.
+          </p>
+
+          <h2>Your rights</h2>
+          <p>
+            You can ask us what we hold about you, and ask us to correct, export or delete it. Write to
+            <a href="mailto:kontakt@gomoveo.pl">kontakt@gomoveo.pl</a>; we answer within 30 days, usually much sooner.
+            If you're in the EU or UK, you can also complain to your data protection authority.
+          </p>
+
+          <h2>Changes</h2>
+          <p>
+            When this policy changes, we update it here and change the date at the top. For changes that affect what
+            <span class="mark">Scout</span> handles, we also say so in the release notes.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

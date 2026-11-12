@@ -54,4 +54,4 @@ Only items scoring at or above the team's **interrupt** threshold (default 70) n
 
 ## From the chat
 
-`list_inbox` returns the same ranked items with their reasons, and `/scout inbox` lists them. Questions can be answered in the chat, and those answers guide the agent. They never pass a gate: a high-risk call or a ticket that's yours to decide needs your answer in the Lookout or Slack. Everything else is decided in the Lookout. Teamtrail never answers or approves on your behalf.
+`list_inbox` returns the same ranked items with their reasons, and `/scout inbox` lists them. Questions can be answered in the chat, and those answers guide the agent. They never pass a gate: a ticket that's yours to decide needs your answer in the Lookout or Slack, and a high-risk call your answer in the Lookout. Everything else is decided in the Lookout. Teamtrail never answers or approves on your behalf.

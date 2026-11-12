@@ -32,13 +32,6 @@ page.on('pageerror', (e) => console.log('pageerror:', e.message));
 
 const wait = (ms, p = page) => p.waitForTimeout(ms);
 const chip = () => page.locator('.comms .suggest .chip').first();
-/** Integrations still in progress keep an empty filter in Decisions; the landing doesn't show them. */
-const hideUnshipped = () =>
-  page.evaluate(() =>
-    document.querySelectorAll('.dv-opt, .dv-filters option').forEach((el) => {
-      if (/slack/i.test(el.textContent ?? '')) el.style.display = 'none';
-    }),
-  );
 
 const setVisible = (v) =>
   page.evaluate((v) => {
@@ -331,10 +324,8 @@ await wait(500);
 await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.decisions-btn').click();
 await page.locator('.dv-row').first().waitFor({ timeout: 10000 });
-await hideUnshipped();
 await page.locator('.dv-row button', { hasText: 'CRDT vs last-write-wins' }).first().click();
 await wait(1500);
-await hideUnshipped();
 await zoom('lookout-decisions', ['.dv-detail .d-head', '.dv-detail .actions'], {
   aspect: null,
   pad: 24,

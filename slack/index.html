@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      try {
+        var t = localStorage.getItem('teamtrail-theme');
+        document.documentElement.dataset.theme = t || 'night';
+      } catch (e) {
+        document.documentElement.dataset.theme = 'night';
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scout in Slack: answer your agents without leaving Slack</title>
+    <meta
+      name="description"
+      content="Scout is Teamtrail's Slack app. Answer your agents' questions, approve finished work and save threads as decisions from Slack, while your trails, decisions and approvals stay on your machine. Free, no account."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Teamtrail" />
+    <meta property="og:title" content="Scout in Slack: answer your agents without leaving Slack" />
+    <meta
+      property="og:description"
+      content="Agent questions, approvals and decisions in Slack. Your trails stay on your machine. Free, no account."
+    />
+    <meta property="og:url" content="%SITE_URL%/slack/" />
+    <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="The teamtrail wordmark, ending in an orange dot, above a trail through the mountains."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
+    <meta name="theme-color" content="#101815" />
+    <link rel="icon" href="/media/brand/favicon-32.png?v=5" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/media/brand/favicon-64.png?v=5" type="image/png" sizes="64x64" />
+    <link rel="icon" href="/media/brand/favicon.svg?v=5" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png?v=5" />
+    <link
+      rel="preload"
+      href="/node_modules/@fontsource/londrina-solid/files/londrina-solid-latin-900-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <!-- @include sprite -->
+    <!-- @include nav -->
+
+    <main id="main">
+      <section class="hero hero--page" aria-labelledby="page-title">
+        <canvas class="field" data-field="hero" data-intensity="0.6" aria-hidden="true"></canvas>
+        <div class="wrap hero__inner">
+          <div class="slack-pair" aria-hidden="true">
+            <span class="slack-pair__item slack-pair__scout"><span data-slack-scout data-size="2.4"></span></span>
+            <span class="slack-pair__link"><i></i><i></i><i></i></span>
+            <span class="slack-pair__item slack-pair__slack"
+              ><img src="/media/brand/slack-mark.svg" width="72" height="72" alt=""
+            /></span>
+          </div>
+          <span class="hero__badge" data-scramble>Scout in Slack</span>
+          <h1 id="page-title">Answer your agents from Slack.</h1>
+          <p class="hero__lede">
+            <span class="mark">Scout</span> is <span class="mark">Teamtrail</span>'s Slack app. Your agents' questions,
+            finished work to approve and trail updates reach you in Slack, and your answers go straight back to the
+            <span class="mark">Teamtrail</span> on your machine. Free, no account.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="%SCOUT_INSTALL_URL%">Add Scout to Slack</a>
+            <a class="btn" href="#what-passes">What passes through Slack</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHAT IT DOES -->
+      <section class="section" aria-labelledby="s-does">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">What Scout does</span>
+              <h2 id="s-does">The calls that need you, where you already are.</h2>
+            </div>
+            <p>
+              Only what crosses your interrupt threshold gets its own message. Everything else waits in one digest per
+              trail.
+            </p>
+          </header>
+          <div class="cards cards--3">
+            <article class="card reveal">
+              <span class="card__n">Questions</span>
+              <h3>Answer agents in a message</h3>
+              <p>
+                An urgent question arrives with answer buttons, or Reply to answer in your own words. The waiting agent
+                gets it right away.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Approvals</span>
+              <h3>Sign off finished work</h3>
+              <p>
+                Verified work that waits for you comes with Approve and Rework. Agents' requests to change a trail's
+                settings come too, to approve in the Lookout or decline in Slack.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Digests</span>
+              <h3>One message per trail</h3>
+              <p>
+                Everything that doesn't interrupt goes into a digest at your team's pace, instead of a stream of
+                notifications.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">/scout</span>
+              <h3>Ask from any channel</h3>
+              <p>
+                <code>/scout status</code> for a trail at a glance, <code>/scout inbox</code> for what waits on you,
+                <code>/scout decide</code> to record a decision.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Save as decision</span>
+              <h3>Keep what a thread decided</h3>
+              <p>
+                A message shortcut that records a Slack thread as a decision on a trail, or settles the ticket it was
+                about.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Home tab</span>
+              <h3>See where you stand</h3>
+              <p>Scout's Home tab shows whether it's connected for you, with a link to your Lookout.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONNECT -->
+      <section class="section section--flush" id="connect" aria-labelledby="s-connect">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">Connect in a minute</span>
+              <h2 id="s-connect">One app, added from the Lookout.</h2>
+            </div>
+          </header>
+          <ul class="trio reveal" role="list">
+            <li>
+              <span class="n">01</span>
+              <h3>Open Settings → Slack</h3>
+              <p>
+                In the Lookout on your machine, or start it there with <code>npx teamtrail connect slack</code>. Choose
+                <strong>Add Scout to Slack</strong>.
+              </p>
+            </li>
+            <li>
+              <span class="n">02</span>
+              <h3>Allow it in Slack</h3>
+              <p>
+                Slack's own screen asks you to add <span class="mark">Scout</span> to your workspace. A workspace admin
+                may have to approve the app once.
+              </p>
+            </li>
+            <li>
+              <span class="n">03</span>
+              <h3>Confirm it's you</h3>
+              <p>
+                Back in the Lookout, check "Connect as @you in your workspace?" and choose Connect. That Slack account
+                is the owner; nothing is saved before you confirm.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- WHAT PASSES -->
+      <section class="section" id="what-passes" aria-labelledby="s-passes">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">Your trails stay home</span>
+              <h2 id="s-passes">What passes through, and what never does.</h2>
+            </div>
+            <p>
+              Slack can't reach your laptop, so <span class="mark">Scout</span> works through a small
+              <span class="mark">Teamtrail</span> service. Your <span class="mark">Teamtrail</span> keeps one outbound
+              connection to it.
+            </p>
+          </header>
+          <div class="modes reveal">
+            <article class="mode">
+              <h3>Passes through the Scout service</h3>
+              <p>In memory, on its way between Slack and your machine. Never stored or logged.</p>
+              <ul role="list">
+                <li>Questions, answers and digests that Scout posts or you send</li>
+                <li>Your clicks, <code>/scout</code> commands and Save as decision threads</li>
+              </ul>
+            </article>
+            <article class="mode">
+              <h3>Never leaves your machine</h3>
+              <p>Your <span class="mark">Teamtrail</span> decides; the service only carries messages.</p>
+              <ul role="list">
+                <li>Your trails, tickets and code</li>
+                <li>Decisions, approvals and the evidence behind them</li>
+                <li>The gates that decide what counts as your word</li>
+              </ul>
+            </article>
+          </div>
+          <p class="slack-note reveal">
+            The service keeps only what it needs to deliver: your workspace's Slack token, encrypted, and a link between
+            your Slack account and your <span class="mark">Teamtrail</span>, stored as a hash. See the
+            <a href="/privacy/">privacy policy</a>.
+          </p>
+        </div>
+      </section>
+
+      <!-- YOUR CALL -->
+      <section class="section" aria-labelledby="s-call">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">Still your call</span>
+              <h2 id="s-call">The riskiest calls stay in the Lookout.</h2>
+            </div>
+          </header>
+          <ul class="facts reveal" role="list">
+            <li>
+              <h3>High risk needs the Lookout</h3>
+              <p>
+                A question or a finished change that your risk policy rates high shows Open in Lookout in Slack. An
+                answer given in Slack never counts for it.
+              </p>
+            </li>
+            <li>
+              <h3>Settings change in the Lookout</h3>
+              <p>
+                Skipping discovery, or changing a trail's mode or destination, is approved in the Lookout. You can
+                decline it in Slack.
+              </p>
+            </li>
+            <li>
+              <h3>Only the people you choose</h3>
+              <p>
+                Buttons count only for the owner and the people they allow, and only on messages your own
+                <span class="mark">Teamtrail</span> posted.
+              </p>
+            </li>
+            <li>
+              <h3>Off means off</h3>
+              <p>
+                When <span class="mark">Teamtrail</span> isn't running, <span class="mark">Scout</span> says so and does
+                nothing. Nothing waits on a server to act for you later.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="final" aria-labelledby="final-title">
+        <canvas class="field" data-field="final" data-intensity="0.55" aria-hidden="true"></canvas>
+        <div class="wrap final__inner reveal">
+          <span class="tag tag--now">Free</span>
+          <h2 id="final-title">Bring <span class="mark">Scout</span> to Slack.</h2>
+          <p>
+            Free with <span class="mark">Teamtrail Local</span>, no account. Add it from the Lookout on your machine;
+            <a href="/docs/slack/">the Slack docs</a> walk you through it.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="%SCOUT_INSTALL_URL%">Add Scout to Slack</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

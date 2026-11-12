@@ -84,7 +84,7 @@ Without either token flag, the token comes from `$TEAMTRAIL_TOKEN`. Claude Code 
 
 ## teamtrail connect slack
 
-Starts the Lookout on the [Slack](/docs/slack/) setup. It takes the same options as `teamtrail`.
+Starts the Lookout on **Settings → Slack**, to add Scout to Slack through Teamtrail's Scout service; your trails stay on this machine. See [Slack](/docs/slack/). It takes the same options as `teamtrail`.
 
 ## teamtrail approve
 
