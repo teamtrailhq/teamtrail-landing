@@ -31,11 +31,11 @@ function partials(): Plugin {
  * teamtrail.app, which redirects to www, and a canonical must not point at a redirect.
  */
 /**
- * Where every "Add Scout to Slack" button on the site goes (`%SCOUT_INSTALL_URL%` in the pages). For now the Slack
- * docs, since Scout is added from the Lookout. Switch it to the Scout service's direct install address
- * (https://scout.teamtrail.app/...) once the service has one, for the Slack Marketplace.
+ * Where every "Add Scout to Slack" button on the site goes (`%SCOUT_INSTALL_URL%` in the pages): the Scout service's
+ * direct install, which sends the browser to Slack's consent screen and, once Scout is in the workspace, to a page
+ * saying to connect from Teamtrail (Settings -> Slack). It's also the direct install URL for the Slack Marketplace.
  */
-const SCOUT_INSTALL_URL = '/docs/slack/';
+const SCOUT_INSTALL_URL = 'https://scout.teamtrail.app/install-slack';
 
 const SITE_URL = (process.env.SITE_URL ?? 'https://www.teamtrail.app').replace(/\/$/, '');
 
