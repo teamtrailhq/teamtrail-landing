@@ -363,9 +363,10 @@ code {
   display: grid;
   gap: 14px;
   justify-items: start;
-  width: min(100%, 560px);
+  width: min(100%, 720px);
   margin: 40px auto 0;
   padding: 22px 24px;
+  text-wrap: pretty;
   border: 1px solid var(--line-2);
   background: var(--bg);
   text-align: left;
