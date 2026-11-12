@@ -2,6 +2,8 @@
 
 Get urgent agent questions, approvals and trail updates in Slack, from Scout, Teamtrail's Slack app. Free, no account.
 
+> **What you need:** Teamtrail running on your computer (`npx teamtrail@next` in your project). Scout talks only to your Teamtrail and answers only while it runs; when it's off, Scout says so in Slack.
+
 Slack can't reach your machine, so Scout works through the **Scout service**, a small service Teamtrail runs at `scout.teamtrail.app`. Your Teamtrail keeps one outbound connection to it. Your trails, decisions and approvals stay on your machine; see [What passes through the Scout service](#what-passes-through-the-scout-service).
 
 ## Connect

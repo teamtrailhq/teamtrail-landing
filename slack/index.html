@@ -82,6 +82,33 @@
             <a class="btn btn--primary" href="%SCOUT_INSTALL_URL%">Add Scout to Slack</a>
             <a class="btn" href="#what-passes">What passes through Slack</a>
           </div>
+          <aside class="needs" aria-labelledby="needs-title">
+            <h2 class="needs__title" id="needs-title">What you need</h2>
+            <ul class="needs__list">
+              <li><span class="mark">Teamtrail</span> running on your computer. Scout talks to it, and only to it.</li>
+              <li>Scout answers only while it runs. When it's off, Scout tells you so.</li>
+            </ul>
+            <div class="cmd cmd--static">
+              <span class="cmd__label">In your project</span>
+              <span class="cmd__line"
+                ><span class="prompt" aria-hidden="true">$</span>
+                <span class="cmd__text">npx teamtrail@next</span></span
+              >
+              <button class="copy" type="button" data-copy="npx teamtrail@next" aria-label="Copy the command">
+                <svg class="ico i-copy" viewBox="0 0 20 20" aria-hidden="true">
+                  <rect x="6.5" y="6.5" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M13.5 3.5h-10v10" fill="none" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+                <svg class="ico i-check" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.8" />
+                </svg>
+              </button>
+            </div>
+            <p class="needs__more">
+              Then add Scout from the Lookout: Settings → Slack.
+              <a href="/docs/slack/">How Scout and Teamtrail connect</a>
+            </p>
+          </aside>
         </div>
       </section>
 
