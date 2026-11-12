@@ -16,7 +16,7 @@ Teamtrail is a local trail map for big work done by AI coding agents: you descri
 
 ## What matters for developers
 
-- **Local-first.** Trails are plain files in your repo's [`.teamtrail/` folder](/docs/teamtrail-folder/), or issues in your [GitHub or Linear tracker](/docs/trackers/). There is no Teamtrail server.
+- **Local-first.** Trails are plain files in your repo's [`.teamtrail/` folder](/docs/teamtrail-folder/), or issues in your [GitHub or Linear tracker](/docs/trackers/). Nothing needs a Teamtrail server; optional [Slack](/docs/slack/) is the one thing that goes through Teamtrail's Scout service, and your trails, decisions and approvals never leave your machine.
 - **Agent-agnostic.** Everything goes through MCP tools. Claude Code and Codex are the primary agents, and any MCP client works.
 - **No model calls.** Teamtrail never calls a model. Agents write briefs, knowledge and criteria; Teamtrail gives them structure and enforces the gates in code.
 - **Deterministic.** Lifecycle, gates, ranking and selection are code, not prompts. The same inputs give the same result, and every automated choice comes with a reason.
