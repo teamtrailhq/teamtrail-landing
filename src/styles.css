@@ -2253,11 +2253,6 @@ html:has(.gdlg[open]) {
 .legal strong {
   color: var(--text-hi);
 }
-.legal__todo {
-  background: rgba(var(--urgent-rgb), 0.16);
-  outline: 1px dashed var(--urgent);
-  padding: 0 4px;
-}
 
 /* One-off spacing and the hidden icon sprite. Classes, not style="" attributes: the Content-Security-Policy
    (scripts/security/csp.mjs) allows no inline styles. Last in the file so they win over the base rules. */
