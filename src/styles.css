@@ -2130,13 +2130,78 @@ html:has(.gdlg[open]) {
 }
 
 /* ---------- /slack: Scout in Slack ---------- */
-.slack-icon {
+/* Scout and Slack's mark, side by side, floating out of step. Scout is mounted like on /cloud (slackScene.ts). */
+.slack-pair {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 3vw, 28px);
+  margin-bottom: 4px;
+}
+.slack-pair__item {
+  display: grid;
+  place-items: center;
   width: 112px;
   height: 112px;
-  border-radius: 24px;
-  box-shadow:
-    0 0 0 1px var(--line-2),
-    0 18px 40px -18px var(--shadow);
+  animation: slack-float 5s ease-in-out infinite;
+}
+.slack-pair__slack {
+  animation-delay: -2.5s;
+}
+.slack-pair__slack img {
+  width: 72px;
+  height: 72px;
+}
+.slack-pair__scout > span {
+  width: 96px;
+  height: 96px;
+}
+.slack-pair__scout .scout {
+  margin: 0;
+}
+.slack-pair__scout .scout-sprite {
+  outline: none !important;
+  filter: drop-shadow(0 6px 0 var(--shadow));
+}
+.slack-pair__link {
+  display: flex;
+  gap: 6px;
+}
+.slack-pair__link i {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  opacity: 0.2;
+  animation: packet 1.5s steps(1) infinite;
+}
+.slack-pair__link i:nth-child(2) {
+  animation-delay: 0.5s;
+}
+.slack-pair__link i:nth-child(3) {
+  animation-delay: 1s;
+}
+@keyframes slack-float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slack-pair__item,
+  .slack-pair__link i {
+    animation: none;
+  }
+  .slack-pair__link i {
+    opacity: 0.6;
+  }
+}
+@media (max-width: 560px) {
+  .slack-pair__item {
+    width: 88px;
+    height: 88px;
+  }
+  .slack-pair__slack img {
+    width: 56px;
+    height: 56px;
+  }
 }
 .slack-note {
   max-width: 760px;

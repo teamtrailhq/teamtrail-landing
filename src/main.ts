@@ -1,5 +1,6 @@
 import { type GuideRole, guideMarkup, mountScout } from '@teamtrail/scout-avatar/mount';
 import { initCloudScene } from './cloudScene';
+import { initSlackScene } from './slackScene';
 import { initCmdCycle } from './cmdCycle';
 import { initCopy } from './copy';
 import { initGhStars } from './ghStars';
@@ -46,6 +47,7 @@ for (const el of $$('[data-spec]')) {
 }
 
 initCloudScene(reducedMotion);
+initSlackScene();
 initNav();
 void initGhStars();
 initReveal(reducedMotion);
