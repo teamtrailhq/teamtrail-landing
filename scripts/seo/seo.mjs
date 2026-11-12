@@ -8,7 +8,13 @@ import { breadcrumbs, faqPage, homeGraph } from './jsonld.mjs';
 import { lastmod } from './lastmod.mjs';
 
 /** Breadcrumb names of the top-level pages; any other page uses its title. */
-const CRUMBS = { '/features/': 'Features', '/guides/': 'Guides', '/cloud/': 'Cloud' };
+const CRUMBS = {
+  '/features/': 'Features',
+  '/guides/': 'Guides',
+  '/cloud/': 'Cloud',
+  '/slack/': 'Scout in Slack',
+  '/privacy/': 'Privacy',
+};
 
 const attr = (html, re) => re.exec(html)?.[1];
 const ldScript = (data) =>

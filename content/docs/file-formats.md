@@ -320,7 +320,7 @@ One JSON object per line, append-only. Transitions (`kind: "transition"`: `event
 
 Readers skip kinds they don't know, so old and new journals both load.
 
-Changes that belong to the project rather than one trail have their own files. `.events/_remote-agents.jsonl` records each [remote agent](/docs/remote-agents/) token you create or revoke (`kind: "remote-agent"`, `action` `token-created` or `token-revoked`, `tokenId`, `name`), never the token or its hash. `.events/_sign-in.jsonl` records browsers [paired](/docs/sign-in/) with the Lookout, device codes made and sign-ins revoked, never a session or a code. `.events/_slack.jsonl` records Slack owner changes.
+Changes that belong to the project rather than one trail have their own files. `.events/_remote-agents.jsonl` records each [remote agent](/docs/remote-agents/) token you create or revoke (`kind: "remote-agent"`, `action` `token-created` or `token-revoked`, `tokenId`, `name`), never the token or its hash. `.events/_sign-in.jsonl` records browsers [paired](/docs/sign-in/) with the Lookout, device codes made and sign-ins revoked, never a session or a code. `.events/_slack.jsonl` records Slack connected and disconnected, and people allowed or removed (`kind: "slack"`); older journals also hold the owner changes of versions with your own Slack app.
 
 ## Local coordination: `.agents/`
 

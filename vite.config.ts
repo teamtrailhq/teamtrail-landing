@@ -18,6 +18,7 @@ function partials(): Plugin {
     transformIndexHtml: (html) =>
       html
         .replaceAll('%SITE_URL%', SITE_URL)
+        .replaceAll('%SCOUT_INSTALL_URL%', SCOUT_INSTALL_URL)
         .replace(/<!-- @include (\w+) -->/g, (_, name: string) =>
           readFileSync(resolve(__dirname, 'partials', `${name}.html`), 'utf8'),
         ),
@@ -29,6 +30,13 @@ function partials(): Plugin {
  * llms.txt: $SITE_URL, else https://www.teamtrail.app. Not Vercel's production URL: that is the bare
  * teamtrail.app, which redirects to www, and a canonical must not point at a redirect.
  */
+/**
+ * Where every "Add Scout to Slack" button on the site goes (`%SCOUT_INSTALL_URL%` in the pages). For now the Slack
+ * docs, since Scout is added from the Lookout. Switch it to the Scout service's direct install address
+ * (https://scout.teamtrail.app/...) once the service has one, for the Slack Marketplace.
+ */
+const SCOUT_INSTALL_URL = '/docs/slack/';
+
 const SITE_URL = (process.env.SITE_URL ?? 'https://www.teamtrail.app').replace(/\/$/, '');
 
 /**
@@ -122,6 +130,8 @@ export default defineConfig({
         features: resolve(__dirname, 'features/index.html'),
         guides: resolve(__dirname, 'guides/index.html'),
         cloud: resolve(__dirname, 'cloud/index.html'),
+        slack: resolve(__dirname, 'slack/index.html'),
+        privacy: resolve(__dirname, 'privacy/index.html'),
         notFound: resolve(__dirname, '404.html'),
       },
     },

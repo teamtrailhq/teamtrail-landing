@@ -2129,6 +2129,71 @@ html:has(.gdlg[open]) {
   }
 }
 
+/* ---------- /slack: Scout in Slack ---------- */
+.slack-icon {
+  width: 112px;
+  height: 112px;
+  border-radius: 24px;
+  box-shadow:
+    0 0 0 1px var(--line-2),
+    0 18px 40px -18px var(--shadow);
+}
+.slack-note {
+  max-width: 760px;
+  margin-top: 40px;
+  color: var(--dim);
+  font-size: var(--fs-small);
+}
+.slack-note a,
+.legal a {
+  color: var(--accent);
+}
+.card code {
+  font-size: 0.9em;
+}
+
+/* ---------- /privacy: a readable column ---------- */
+.hero--legal {
+  padding-bottom: 56px;
+}
+.legal {
+  max-width: 760px;
+  font-size: var(--fs-body);
+  line-height: 1.65;
+}
+.legal h2 {
+  margin: 56px 0 16px;
+  font-family: var(--display);
+  font-size: clamp(28px, 3vw, 38px);
+  color: var(--text-hi);
+}
+.legal h2:first-child {
+  margin-top: 0;
+}
+.legal h3 {
+  margin: 28px 0 10px;
+  font-size: 19px;
+  color: var(--text-hi);
+}
+.legal p,
+.legal ul {
+  margin: 0 0 14px;
+}
+.legal ul {
+  padding-left: 22px;
+}
+.legal li + li {
+  margin-top: 8px;
+}
+.legal strong {
+  color: var(--text-hi);
+}
+.legal__todo {
+  background: rgba(var(--urgent-rgb), 0.16);
+  outline: 1px dashed var(--urgent);
+  padding: 0 4px;
+}
+
 /* One-off spacing and the hidden icon sprite. Classes, not style="" attributes: the Content-Security-Policy
    (scripts/security/csp.mjs) allows no inline styles. Last in the file so they win over the base rules. */
 .sprite {
