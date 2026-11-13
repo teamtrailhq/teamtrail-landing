@@ -353,7 +353,7 @@ await sonnet.call(
   { turns: 2 },
 );
 // The trail plan shows the assumptions, S-2 marked challenged.
-await page.locator('.sections-tabs').getByRole('button').first().click();
+await page.locator('.sections-tabs').getByRole('combobox', { name: 'Plan section' }).click();
 await page
   .getByRole('option', { name: /^Assumptions/ })
   .or(page.locator('.sections-tabs').getByText(/^Assumptions/))
