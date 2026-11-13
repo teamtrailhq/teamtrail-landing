@@ -2314,3 +2314,24 @@ html:has(.gdlg[open]) {
 .runs.runs--spaced {
   margin-top: clamp(40px, 6vw, 88px);
 }
+
+/* /scout: the plush photo beside its story, and a button at the foot of each way to support. */
+.adopt__photo {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.adopt__photo img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+}
+.adopt__photo figcaption {
+  font-size: var(--fs-small);
+  color: var(--dim);
+}
+.card .adopt__cta {
+  align-self: flex-start;
+  margin-top: auto;
+}
