@@ -3,7 +3,7 @@
 // Run: npm run build -w teamtrail in ../teamtrail (once), then `npm run media` here (THEME=night for the night set).
 // Env: CHROME_PATH (default /usr/local/bin/google-chrome).
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
@@ -56,9 +56,16 @@ const clearUi = async () => {
   await wait(400);
 };
 
-/** Shrinks a 2x crop wider than `max` pixels, so the map shots stay a sensible file size. */
+/** Shrinks a 2x crop wider than `max` pixels, so the map shots stay a sensible file size: sips on macOS, else ffmpeg. */
 const fit = (file, max) => {
-  if (max) execFileSync('sips', ['--resampleWidth', String(max), file], { stdio: 'ignore' });
+  if (!max) return;
+  if (process.platform === 'darwin') {
+    execFileSync('sips', ['--resampleWidth', String(max), file], { stdio: 'ignore' });
+    return;
+  }
+  const tmp = `${file}.fit.png`;
+  execFileSync('ffmpeg', ['-y', '-i', file, '-vf', `scale=${max}:-1:flags=lanczos`, tmp], { stdio: 'ignore' });
+  renameSync(tmp, file);
 };
 
 const shot = async (name) => {
@@ -214,6 +221,7 @@ await page.addInitScript(() => {
   const prefs = JSON.parse(localStorage.getItem(key) || '{}');
   localStorage.setItem(key, JSON.stringify({ ...prefs, briefing: { enabled: true, awayMinutes: 0.05 } }));
 });
+await project.signIn(page);
 await page.goto(project.url);
 await page.locator('.dialog.onboarding').waitFor({ timeout: 20000 });
 await wait(800);
@@ -234,7 +242,7 @@ await zoom('lookout-briefing', ['.dialog.briefing h2', '.dialog.briefing .bf-til
   pad: 24,
   bottom: 12,
 });
-await page.getByRole('button', { name: 'Dismiss' }).click();
+await page.getByRole('dialog', { name: 'While you were away' }).getByRole('button', { name: 'Dismiss' }).click();
 // Back to the normal away threshold, so the briefing stays closed for the rest of the run.
 await page.evaluate(() => {
   const prefs = JSON.parse(localStorage.getItem('teamtrail.prefs') || '{}');

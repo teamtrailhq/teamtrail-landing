@@ -1907,15 +1907,24 @@ code {
   letter-spacing: 0.06em;
   color: var(--text-hi);
 }
+/* Theme switch and Install side by side, Star on GitHub across the row below: one height for all three. */
 .nav__phone-cta {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto 1fr;
   gap: 10px;
   margin-top: 20px;
 }
+.nav__phone-cta .theme-switch {
+  width: 46px;
+  min-height: 46px;
+}
 .nav__phone-cta .btn {
+  min-height: 46px;
   justify-content: center;
   gap: 8px;
+}
+.nav__phone-cta .btn:last-child {
+  grid-column: 1 / -1;
 }
 .nav__phone-cta .gh {
   width: 15px;
@@ -2304,4 +2313,25 @@ html:has(.gdlg[open]) {
 }
 .runs.runs--spaced {
   margin-top: clamp(40px, 6vw, 88px);
+}
+
+/* /scout: the plush photo beside its story, and a button at the foot of each way to support. */
+.adopt__photo {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.adopt__photo img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+}
+.adopt__photo figcaption {
+  font-size: var(--fs-small);
+  color: var(--dim);
+}
+.card .adopt__cta {
+  align-self: flex-start;
+  margin-top: auto;
 }

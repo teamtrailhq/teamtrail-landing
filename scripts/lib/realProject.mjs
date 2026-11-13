@@ -1,5 +1,6 @@
 // A real Teamtrail project for the capture scripts, set up the way a user has one: the dev seed written into a
 // git repo, the built `teamtrail` server serving it, and real MCP agents (scripts/dev-agent.mjs) working it.
+// Call `signIn(page)` before the first visit: the Lookout only opens to a browser signed in with its printed link.
 // Needs the product repo next to this one (../teamtrail, or TEAMTRAIL_REPO) with the CLI built: npm run build -w teamtrail.
 // The project registry (All projects) lives in a temp config dir (TEAMTRAIL_CONFIG_DIR), never in yours: this project
 // plus the seed's second repo, billing-service, so the Lookout shows two projects.
@@ -88,12 +89,14 @@ export async function realProject({ agents = 2 } = {}) {
     execFileSync(process.execPath, [cli, 'projects', 'add', root], { env, stdio: 'ignore' });
 
   const server = spawn(process.execPath, [cli, '--no-open', '--port', '0', '--dir', data], { cwd: dir, env });
-  const url = await new Promise((resolve, reject) => {
+  // The Lookout signs browsers in with the one-time link it prints under its address (`#pair=…`).
+  const { url, signInLink } = await new Promise((resolve, reject) => {
     let out = '';
     server.stdout.on('data', (c) => {
       out += c;
-      const m = out.match(/Lookout\s+(http:\S+)/);
-      if (m) resolve(m[1]);
+      const lookout = out.match(/Lookout\s+(http:\S+)/);
+      const link = out.match(/Sign in\s+(http:\S+#pair=\S+)/);
+      if (lookout && link) resolve({ url: lookout[1], signInLink: link[1] });
     });
     server.on('exit', (code) => reject(new Error(`teamtrail exited ${code}: ${out}`)));
   });
@@ -105,6 +108,15 @@ export async function realProject({ agents = 2 } = {}) {
 
   return {
     url,
+    /** Signs `page`'s browser in with the printed link, once per capture: the session stays in the page's storage. */
+    async signIn(page) {
+      await page.goto(signInLink);
+      // The page reloads once it has stored the session: wait for that load, not the one `goto` already saw.
+      const reloaded = page.waitForEvent('load', { timeout: 15000 });
+      await page.getByRole('button', { name: 'Sign in this browser' }).click();
+      await page.waitForFunction(() => !!localStorage.getItem('teamtrail.session'));
+      await reloaded;
+    },
     /** Agent output so far, for waiting on a step ("asking:", "closed #7"). */
     agentLog: () => log,
     stop() {
