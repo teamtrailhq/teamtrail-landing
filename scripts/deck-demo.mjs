@@ -220,9 +220,9 @@ await wait(4500);
 // 6. Discovery first: the agent maps what exists, in a brief.
 await caption(CAPTIONS.discovery);
 await claude.call('claim_ticket', { ticket: K.discovery });
-await claude.call('report_progress', { step: 'Resolve', message: 'reading src/cart/totals.js' }, { turns: 4 });
+await claude.call('report_progress', { step: 'Investigate', message: 'reading src/cart/totals.js' }, { turns: 4 });
 await wait(2500);
-await claude.call('report_progress', { step: 'Resolve', message: 'reading src/checkout/summary.js' }, { turns: 3 });
+await claude.call('report_progress', { step: 'Investigate', message: 'reading src/checkout/summary.js' }, { turns: 3 });
 await wait(2000);
 await claude.call(
   'submit_brief',
@@ -276,9 +276,11 @@ await caption(CAPTIONS.agents);
 const sonnet = await connectAgent({ repo, cli, dir, home, env, name: 'claude-02', model: 'claude-sonnet-4-5' });
 agents.push(sonnet);
 await sonnet.call('claim_ticket', { ticket: K.totals });
-await sonnet.call('report_progress', { step: 'Resolve', message: 'reading src/cart/totals.js' }, { turns: 3 });
+await sonnet.call('report_progress', { step: 'Investigate', message: 'reading src/cart/totals.js' }, { turns: 3 });
 await claude.call('claim_ticket', { ticket: K.rule });
-await claude.call('report_progress', { step: 'Resolve', message: 'how discounts apply' }, { turns: 2 });
+await claude
+  .call('report_progress', { step: 'Resolve', message: 'how discounts apply' }, { turns: 2 })
+  .catch(() => claude.call('report_progress', { step: 'Investigate', message: 'how discounts apply' }));
 await page.locator('.fit-btn').click();
 await wait(4500);
 
