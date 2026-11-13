@@ -91,6 +91,7 @@ await page.addInitScript(() => {
   const prefs = JSON.parse(localStorage.getItem(key) || '{}');
   localStorage.setItem(key, JSON.stringify({ ...prefs, briefing: { enabled: true, awayMinutes: 0.05 } }));
 });
+await project.signIn(page);
 await page.goto(project.url);
 await page.locator('.dialog.onboarding').waitFor({ timeout: 20000 });
 await page.getByRole('button', { name: 'Get started' }).click();
