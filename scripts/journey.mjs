@@ -210,7 +210,7 @@ await page.keyboard.press('Escape');
 await caption('When the facts change', 'An agent proposes a new plan. See it on the map before anything moves.');
 await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
 await wait(3200);
-await page.locator('.reroute-banner button').first().click();
+await page.locator('.reroute-banner').getByRole('button', { name: 'Review' }).click();
 await page.locator('.reroute-dialog').waitFor();
 await caption('When the facts change', 'Why, the evidence and every change. Nothing happens until you approve.');
 await wait(4500);
