@@ -38,7 +38,8 @@ const wordmark = readFileSync(join(root, 'partials/sprite.html'), 'utf8').match(
 )[1];
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? '/usr/local/bin/google-chrome' });
-const page = await (await browser.newContext({ viewport: size, colorScheme })).newPage();
+// The overlay injects its own <style>, which the Lookout's Content-Security-Policy (style-src 'self') would block.
+const page = await (await browser.newContext({ viewport: size, colorScheme, bypassCSP: true })).newPage();
 page.on('pageerror', (e) => console.log('pageerror:', e.message));
 await page.addInitScript(installStage, { scout, wordmark, night });
 const wait = (ms) => page.waitForTimeout(ms);
@@ -103,6 +104,9 @@ await stage('term', 'fieldnote-app — zsh', []);
 
 rmSync(framesDir, { recursive: true, force: true });
 mkdirSync(framesDir, { recursive: true });
+// Pausing the recording takes the paused time out of the video: frames after it are dated back by it.
+let pausedFor = 0;
+let pausedAt = 0;
 const cdp = await page.context().newCDPSession(page);
 const frames = [];
 cdp.on('Page.screencastFrame', ({ data, metadata, sessionId }) => {
@@ -113,9 +117,6 @@ cdp.on('Page.screencastFrame', ({ data, metadata, sessionId }) => {
 });
 const screencast = { format: 'jpeg', quality: 90, maxWidth: size.width, maxHeight: size.height };
 await cdp.send('Page.startScreencast', screencast);
-// Pausing the recording takes the paused time out of the video: frames after it are dated back by it.
-let pausedFor = 0;
-let pausedAt = 0;
 const pause = async () => {
   await cdp.send('Page.stopScreencast');
   pausedAt = Date.now() / 1000;
