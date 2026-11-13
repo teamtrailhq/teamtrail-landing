@@ -323,10 +323,13 @@ await wait(1500);
 await caption(CAPTIONS.decision);
 await page.getByRole('button', { name: /Records/ }).click();
 await page.getByRole('menuitem', { name: /Logbook/ }).click();
+// The Logbook opens on the newest decision; select it by its question only if it isn't already shown.
 await page
+  .locator('.decisions-view')
   .getByText(/count before or after discounts/)
   .first()
-  .click({ timeout: 15000 });
+  .click({ timeout: 3000 })
+  .catch(() => {});
 await wait(4500);
 await page.keyboard.press('Escape');
 await wait(800);
