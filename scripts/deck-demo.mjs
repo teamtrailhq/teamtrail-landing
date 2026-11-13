@@ -352,11 +352,13 @@ await sonnet.call(
   },
   { turns: 2 },
 );
+// The trail plan shows the assumptions, S-2 marked challenged.
+await page.locator('.sections-tabs').getByRole('button').first().click();
 await page
-  .locator('.plan-zone select, .plan select')
+  .getByRole('option', { name: /^Assumptions/ })
+  .or(page.locator('.sections-tabs').getByText(/^Assumptions/))
   .first()
-  .selectOption({ label: /Assumptions/ })
-  .catch(() => {});
+  .click({ timeout: 5000 });
 await wait(4500);
 
 // 14. The work, verified by the repo's tests.
@@ -399,7 +401,7 @@ await term(
   STATUS({
     trail: `${t.key} ${t.title}`,
     progress: t.progress,
-    spend: `$${t.spend.costUsd} · ${Math.round((t.spend.inputTokens + t.spend.outputTokens) / 1000)}k tokens`,
+    spend: `$${t.spend.costUsd.toFixed(2)} ·${Math.round((t.spend.inputTokens + t.spend.outputTokens) / 1000)}k tokens`,
     lines: [
       `Decision ${decided.decision.id}: after discounts, by you`,
       'Assumption S-2 challenged: one threshold for every region',
