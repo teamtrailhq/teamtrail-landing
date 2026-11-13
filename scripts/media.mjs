@@ -402,7 +402,7 @@ await frameMap({ keys: ['#5', '#9', '#10', '#11', '#12', '#15', '#13'], added: t
 await mapShot('lookout-reroute-map');
 await page.setViewportSize(size);
 await wait(800);
-await page.locator('.reroute-banner button').first().click();
+await page.locator('.reroute-banner').getByRole('button', { name: 'Review' }).click();
 await page.locator('.reroute-dialog').waitFor();
 await wait(600);
 await zoom('lookout-reroute', ['.reroute-dialog'], { aspect: 16 / 10, pad: 24 });
