@@ -142,7 +142,9 @@ await stage('hide');
 // tab still counts as away, which is what opens the briefing later.
 await page.evaluate(() => setInterval(() => window.dispatchEvent(new Event('pointermove')), 1500));
 await setVisible(true);
+// The briefing, if it opened: its own Dismiss, not the plan banner's.
 await page
+  .getByRole('dialog', { name: 'While you were away' })
   .getByRole('button', { name: 'Dismiss' })
   .click({ timeout: 3000 })
   .catch(() => {});
@@ -180,6 +182,7 @@ await setVisible(true);
 await caption('Existing project · briefing', 'Back after a break? Scout briefs you on what’s done and what needs you.');
 await wait(4500);
 await page
+  .getByRole('dialog', { name: 'While you were away' })
   .getByRole('button', { name: 'Dismiss' })
   .click({ timeout: 5000 })
   .catch((e) => {
