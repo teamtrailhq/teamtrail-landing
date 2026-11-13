@@ -116,6 +116,18 @@ export async function realProject({ agents = 2 } = {}) {
       await page.getByRole('button', { name: 'Sign in this browser' }).click();
       await page.waitForFunction(() => !!localStorage.getItem('teamtrail.session'));
       await reloaded;
+      // A first run on this machine: the repo's committed files are approved together, as Settings → Approvals'
+      // "Approve all committed" does, so nothing waits in the queue that a person would have cleared on day one.
+      const left = await page.evaluate(async (api) => {
+        const { secret } = JSON.parse(localStorage.getItem('teamtrail.session') || '{}');
+        const headers = { 'X-Teamtrail-Session': secret, 'Content-Type': 'application/json' };
+        const { items } = await (await fetch(`${api}trust`, { headers })).json();
+        if (!items.length) return 0;
+        const body = JSON.stringify({ items: items.map((i) => ({ key: i.key, hash: i.hash })) });
+        await fetch(`${api}trust/approve`, { method: 'POST', headers, body });
+        return (await (await fetch(`${api}trust`, { headers })).json()).items.length;
+      }, new URL('__teamtrail/', url).href);
+      if (left) console.log(`approvals: ${left} not committed, left waiting`);
     },
     /** Agent output so far, for waiting on a step ("asking:", "closed #7"). */
     agentLog: () => log,

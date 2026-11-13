@@ -38,7 +38,8 @@ const wordmark = readFileSync(join(root, 'partials/sprite.html'), 'utf8').match(
 )[1];
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? '/usr/local/bin/google-chrome' });
-const page = await (await browser.newContext({ viewport: size, colorScheme })).newPage();
+// The overlay injects its own <style>, which the Lookout's Content-Security-Policy (style-src 'self') would block.
+const page = await (await browser.newContext({ viewport: size, colorScheme, bypassCSP: true })).newPage();
 page.on('pageerror', (e) => console.log('pageerror:', e.message));
 await page.addInitScript(installStage, { scout, wordmark, night });
 const wait = (ms) => page.waitForTimeout(ms);
