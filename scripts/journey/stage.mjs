@@ -72,14 +72,17 @@ export function installStage({ scout, wordmark, night }) {
       ensure();
       ov.classList.add('off');
     },
-    card(kind) {
+    /** `copy` replaces the cards' English lines (the Polish deck demo): `tagline` on the title, `works` on the end. */
+    card(kind, copy = {}) {
       ensure();
       const word = `<h1><svg viewBox="-4.40 -77.20 414.70 83.00" role="img" aria-label="teamtrail.">${wordmark}</svg></h1>`;
+      const tagline = copy.tagline ?? 'The trail map for your AI coding agents.';
+      const works = copy.works ?? 'Works with Claude Code, Codex and any MCP agent';
       ov.innerHTML =
         kind === 'title'
-          ? `<div class="st-card">${word}<p>The trail map for your AI coding agents.</p></div>`
+          ? `<div class="st-card">${word}<p>${tagline}</p></div>`
           : `<div class="st-card">${word}<code><span>$</span> npx teamtrail</code>
-             <small>Works with Claude Code, Codex and any MCP agent</small><small>teamtrail.app</small></div>`;
+             <small>${works}</small><small>teamtrail.app</small></div>`;
       ov.classList.remove('off');
     },
     /** lines: [{ t, cls?, type?, pause? }]; `type` lines are typed after a prompt, the rest appear at once. */
