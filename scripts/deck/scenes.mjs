@@ -1,3 +1,5 @@
+import { connectLines } from '../lib/connectLines.mjs';
+
 // What the deck demo says: the chapter labels and Polish captions, scene by scene, and its terminal and Claude Code
 // lines. The talk's speaker notes follow this order.
 export const CAPTIONS = {
@@ -31,20 +33,7 @@ export const IDEA = 'Free shipping on orders over $50';
 export const ANSWER = 'After discounts: what the customer actually pays has to reach $50.';
 
 /** `teamtrail connect claude`, as it prints for the published package. */
-export const CONNECT = (version) => [
-  { t: 'npx teamtrail connect claude', type: true },
-  { t: '' },
-  { t: '  Teamtrail · connect Claude Code', cls: 'acc' },
-  { t: '' },
-  { t: "  Project         acme-shop · listed in the Lookout's All projects" },
-  { t: '  /scout command  added · .claude/commands/scout.md' },
-  { t: `  MCP server      registered · claude mcp add teamtrail -- npx -y teamtrail@${version} mcp` },
-  { t: '  Usage hook      added · .claude/settings.local.json (tokens and cost from the session transcript)' },
-  { t: `  Version         pinned to teamtrail@${version}: agents start exactly this version`, cls: 'dim' },
-  { t: '  Config folder   protected · Claude Code’s own file tools can’t read or change it', cls: 'dim' },
-  { t: '' },
-  { t: '  In Claude Code: /scout new "<idea>", /scout resume, /scout status, /scout inbox', cls: 'dim', pause: 1800 },
-];
+export const CONNECT = (version) => connectLines({ version, project: 'acme-shop' });
 
 /** Claude Code, the moment the agent charts the trail. `trail` is start_trail's result. */
 export const NEW_TRAIL = (trail) => [

@@ -10,7 +10,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
-import { AGAIN, CHECK_IN, FRAME, RESUME, SETUP } from './journey/scenes.mjs';
+import { AGAIN, CHECK_IN, FRAME, RESUME, SETUP, START } from './journey/scenes.mjs';
 import { installStage } from './journey/stage.mjs';
 import { clippedCards, frameMap } from './lib/frameMap.mjs';
 import { realProject } from './lib/realProject.mjs';
@@ -25,6 +25,7 @@ const framesDir = join(root, 'capture-frames');
 const size = { width: 1680, height: 945 };
 // Three agents, so the map has work in flight while one of them waits on you.
 const project = await realProject({ agents: 3 });
+const version = project.started.match(/Teamtrail (\S+) ·/)?.[1] ?? '';
 process.on('exit', () => project.stop());
 /** Waits until the agents' output shows `text` `times` times. */
 const agentStep = async (text, times = 1) => {
@@ -99,7 +100,7 @@ await page.getByRole('button', { name: 'Get started' }).click();
 await page.locator('.node').first().waitFor({ timeout: 15000 });
 await setVisible(false);
 // No title card: the video opens on the first scene, so it reads as a video from the first frame.
-await caption('Setup once', 'Install once. One command connects Claude Code or Codex.');
+await caption('Setup once', 'One command connects Claude Code or Codex. Another starts the Lookout.');
 await stage('term', 'fieldnote-app — zsh', []);
 
 rmSync(framesDir, { recursive: true, force: true });
@@ -126,7 +127,18 @@ const resume = async () => {
   await cdp.send('Page.startScreencast', screencast);
 };
 
-await term('fieldnote-app — zsh', SETUP, 'Setup once', 'Install once. One command connects Claude Code or Codex.');
+await term(
+  'fieldnote-app — zsh',
+  SETUP({ version }),
+  'Setup once',
+  'One command connects Claude Code or Codex. Another starts the Lookout.',
+);
+await term(
+  'fieldnote-app — zsh',
+  START({ started: project.started }),
+  'Setup once',
+  'One command connects Claude Code or Codex. Another starts the Lookout.',
+);
 await term(
   'fieldnote-app — claude',
   FRAME,
@@ -172,7 +184,7 @@ await setVisible(false);
 
 await term(
   'fieldnote-app — zsh',
-  AGAIN,
+  AGAIN({ started: project.started }),
   'Existing project · same command',
   'Come back later and run the same command.',
 );

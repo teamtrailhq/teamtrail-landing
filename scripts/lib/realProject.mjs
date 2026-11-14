@@ -90,13 +90,13 @@ export async function realProject({ agents = 2 } = {}) {
 
   const server = spawn(process.execPath, [cli, '--no-open', '--port', '0', '--dir', data], { cwd: dir, env });
   // The Lookout signs browsers in with the one-time link it prints under its address (`#pair=…`).
+  let out = '';
   const { url, signInLink } = await new Promise((resolve, reject) => {
-    let out = '';
     server.stdout.on('data', (c) => {
       out += c;
       const lookout = out.match(/Lookout\s+(http:\S+)/);
       const link = out.match(/Sign in\s+(http:\S+#pair=\S+)/);
-      if (lookout && link) resolve({ url: lookout[1], signInLink: link[1] });
+      if (lookout && link && /Press Ctrl\+C/.test(out)) resolve({ url: lookout[1], signInLink: link[1] });
     });
     server.on('exit', (code) => reject(new Error(`teamtrail exited ${code}: ${out}`)));
   });
@@ -108,6 +108,8 @@ export async function realProject({ agents = 2 } = {}) {
 
   return {
     url,
+    /** What the server printed when it started: its real version, address and sign-in link. */
+    started: out,
     /** Signs `page`'s browser in with the printed link, once per capture: the session stays in the page's storage. */
     async signIn(page) {
       await page.goto(signInLink);
