@@ -120,4 +120,4 @@ The canonical address is `https://www.teamtrail.app` (`$SITE_URL` overrides it).
 
 ## License
 
-[FSL-1.1-ALv2](LICENSE). The Teamtrail and Scout names and artwork are trademarks and aren't covered by the license.
+[MIT](LICENSE). The Teamtrail and Scout names and artwork are trademarks and aren't covered by the license.
