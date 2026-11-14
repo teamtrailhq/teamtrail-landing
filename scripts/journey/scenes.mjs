@@ -1,23 +1,17 @@
 // Terminal and Claude Code scenes for the journey video. `type` lines are typed after the prompt.
+import { connectLines, startLines } from '../lib/connectLines.mjs';
+
 const CC = '> ';
 
-export const SETUP = [
-  { t: 'npm i -g teamtrail', type: true },
-  { t: 'added 1 package in 2s', cls: 'dim' },
-  { t: 'cd fieldnote-app', type: true },
-  { t: 'npx teamtrail connect claude', type: true },
+/** Setup once: connect Claude Code. `version` is the capture's server's. */
+export const SETUP = ({ version }) => connectLines({ version, project: 'fieldnote-app' });
+
+/** Then start Teamtrail: what the capture's server printed (`started`), so its version and address are real. */
+export const START = ({ started }) => [
+  { t: 'npx teamtrail', type: true },
   { t: '' },
-  { t: 'Teamtrail · connect Claude Code', cls: 'acc' },
-  { t: '  /scout command   added        .claude/commands/scout.md' },
-  { t: '  MCP server      registered   claude mcp add teamtrail -- npx -y teamtrail mcp' },
-  { t: '  In Claude Code: /scout new "&lt;idea&gt;", /scout resume, /scout status, /scout inbox', cls: 'dim' },
-  { t: '' },
-  { t: 'teamtrail', type: true },
-  { t: '' },
-  { t: '  Teamtrail 0.24.2 · Scout online', cls: 'ok' },
-  { t: '  Lookout  http://localhost:7420/' },
-  { t: '  Tracker         .teamtrail/' },
-  { t: '  Press Ctrl+C to stop.', cls: 'dim', pause: 1600 },
+  ...startLines(started),
+  { t: '', pause: 1600 },
 ];
 
 export const FRAME = [
@@ -37,13 +31,8 @@ export const FRAME = [
   { t: '● Trail #18 is mapped. One decision is waiting on you.', cls: 'scout', pause: 1600 },
 ];
 
-export const AGAIN = [
-  { t: 'teamtrail', type: true },
-  { t: '' },
-  { t: '  Teamtrail 0.24.2 · Scout online', cls: 'ok' },
-  { t: '  Lookout  http://localhost:7420/' },
-  { t: '  Last trail    #18 Ship team workspaces', cls: 'dim', pause: 1300 },
-];
+/** Coming back: the same command, the same start. */
+export const AGAIN = START;
 
 export const RESUME = [
   { t: '✻ Welcome back to Claude Code', cls: 'acc box' },

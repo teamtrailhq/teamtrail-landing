@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { CHANGES, makeAcmeShop, writeFiles } from './deck/acmeShop.mjs';
 import { connectAgent } from './deck/agents.mjs';
+import { startLines } from './lib/connectLines.mjs';
 import { ANSWER, CAPTIONS, CONNECT, END, NEW_TRAIL, STATUS } from './deck/scenes.mjs';
 import { installStage } from './journey/stage.mjs';
 
@@ -127,10 +128,7 @@ await page.getByRole('button', { name: 'Sign in this browser' }).waitFor({ timeo
 await page.evaluate(() => document.fonts.ready);
 await record();
 await caption(CAPTIONS.start);
-const printed = serverOut
-  .split('\n')
-  .filter((l) => l.trim())
-  .map((l) => ({ t: l.replace(/#pair=\S+/, '#pair=••••••••'), cls: /Scout online/.test(l) ? 'ok' : '' }));
+const printed = startLines(serverOut);
 await term('acme-shop — zsh', [{ t: 'npx teamtrail', type: true }, { t: '' }, ...printed], '~/acme-shop $ ');
 await wait(1800);
 await page.screenshot({ path: path.join(framesDir, 'poster.png') });
