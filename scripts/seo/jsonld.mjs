@@ -3,7 +3,7 @@
 const GITHUB = 'https://github.com/teamtrailhq/teamtrail';
 const NPM = 'https://www.npmjs.com/package/teamtrail';
 const DESCRIPTION =
-  'A local trail map for big work done by AI coding agents. Claude Code, Codex or any MCP agent maps the work as decision tickets, asks you only the calls that need your judgment, and records every decision with evidence.';
+  "The control layer for AI coding agents. Claude Code, Codex or any MCP agent breaks big work into decision tickets; Teamtrail sends you only the calls that are yours, records every decision, and won't let an agent call anything done without evidence. Runs on your machine.";
 
 const strip = (html) =>
   html
