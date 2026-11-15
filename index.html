@@ -11,17 +11,17 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teamtrail: the trail map for AI coding agents like Claude Code and Codex</title>
+    <title>Teamtrail: the control layer for AI coding agents like Claude Code and Codex</title>
     <meta
       name="description"
-      content="Plan big work with Claude Code, Codex or any MCP agent. Teamtrail maps it as a trail, keeps every agent briefed and brings you only the calls that need your judgment. Free, and runs on your machine."
+      content="Agents do the work. You make the calls. Teamtrail breaks big work into decisions, sends you only the calls that are yours, and won't let an agent call anything done without evidence. Works with Claude Code, Codex or any MCP agent. Free, and runs on your machine."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Teamtrail" />
-    <meta property="og:title" content="Teamtrail: the trail map for AI coding agents" />
+    <meta property="og:title" content="Teamtrail: the control layer for AI coding agents" />
     <meta
       property="og:description"
-      content="You run the trail. Scout runs the party. One map for Claude Code, Codex and any MCP agent, on your machine."
+      content="Agents do the work. You make the calls. Teamtrail makes sure both happen, with evidence. For Claude Code, Codex and any MCP agent, on your machine."
     />
     <meta property="og:url" content="%SITE_URL%/" />
     <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
@@ -71,14 +71,15 @@
       <section class="hero" aria-labelledby="hero-title">
         <canvas class="field" data-field="hero" aria-hidden="true"></canvas>
         <div class="wrap hero__inner">
-          <span class="hero__badge" data-scramble>The trail map for AI coding agents</span>
+          <span class="hero__badge" data-scramble>The control layer for AI coding agents</span>
           <h1 id="hero-title" class="hero__title">
-            <span class="line">You pick the destination.</span>
-            <span class="line">Your agents walk the trail.</span>
+            <span class="line">Agents do the work.</span>
+            <span class="line">You make the calls.</span>
           </h1>
           <p class="hero__lede">
-            Big work is a long trail, and agents get lost on long trails. <span class="mark">Scout</span> keeps the
-            whole party on one map, together, and only calls you back for the turns that are yours to make.
+            <span class="mark">Teamtrail</span> breaks big work into decisions, sends you only the calls that are yours,
+            and won't let an agent call anything done without evidence. It runs on your machine, alongside Claude Code,
+            Codex or any MCP agent.
           </p>
           <div class="hero__actions" id="install">
             <!-- @include cmd -->
@@ -355,45 +356,45 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">What makes it different</span>
-              <h2 id="next-title">Built for trails that take weeks.</h2>
+              <h2 id="next-title">Your calls and your proof, kept in code.</h2>
             </div>
             <p>
-              Your agents can already write the code. <span class="mark">Teamtrail</span> is what lets you send them on
-              the long route and still sleep at night.
+              Your agents can already write the code. <span class="mark">Teamtrail</span> decides what's theirs to
+              decide, checks what they claim, and keeps the reasons. The rules live in code, not in a prompt an agent
+              can forget.
             </p>
           </header>
           <div class="cards">
             <article class="card reveal">
-              <div class="card__top"><span class="card__n">01 · Plans that adapt</span></div>
-              <h3>Reroute when the ground changes</h3>
+              <div class="card__top"><span class="card__n">01 · Proof</span></div>
+              <h3>Done means proven, not claimed</h3>
               <p>
-                Agents write down what they assume. When something turns out wrong, they propose a new route, and
-                they'll even tell you when you're climbing the wrong mountain. Nothing changes until you say yes.
+                Agree on what done means before anyone starts. <span class="mark">Teamtrail</span> runs your tests
+                itself, every point needs proof, and a second agent reviews the work, never its author.
               </p>
             </article>
             <article class="card reveal">
-              <div class="card__top"><span class="card__n">02 · Your attention</span></div>
-              <h3>Only the turns that need you, in order</h3>
+              <div class="card__top"><span class="card__n">02 · Your calls</span></div>
+              <h3>The big turns are yours, by rule</h3>
               <p>
-                Every question, approval and stuck task in one list, most important first, with the reason it matters.
-                Only urgent calls interrupt, and you decide which calls are always yours.
+                Choose what always comes to you: database changes, logins, billing, deleting data. Agents can't record
+                those calls themselves, and everything that needs you waits in one list, most important first.
               </p>
             </article>
             <article class="card reveal">
-              <div class="card__top"><span class="card__n">03 · Proof</span></div>
-              <h3>Arrived means proven, not claimed</h3>
+              <div class="card__top"><span class="card__n">03 · The record</span></div>
+              <h3>Every call, with its reasons</h3>
               <p>
-                Agree on what done means before anyone sets off. Every point needs proof: your tests, your sign-off or a
-                second agent. Claude and Codex check each other's work.
+                Each decision keeps the question, your words, the alternatives and who made it. It's still there long
+                after the agent's session is gone.
               </p>
             </article>
             <article class="card reveal">
-              <div class="card__top"><span class="card__n">04 · A real party</span></div>
-              <h3>Many agents, many repos, nobody lost</h3>
+              <div class="card__top"><span class="card__n">04 · Plans that adapt</span></div>
+              <h3>Reroute only with your yes</h3>
               <p>
-                Each agent works in its own copy of your project, and <span class="mark">Scout</span> warns you before
-                two of them touch the same files. Watch every repo from one Lookout, and give each agent the work that
-                suits its model. Nothing is merged for you.
+                Agents write down what they assume. When one turns out wrong, they bring the evidence and propose a new
+                route. Nothing changes until you approve it.
               </p>
             </article>
           </div>
@@ -409,11 +410,12 @@
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">What it isn't</span>
-              <h2 id="not-title">Not another agent orchestrator.</h2>
+              <h2 id="not-title">Not another agent runner.</h2>
             </div>
             <p>
-              Orchestrators help agents do more work. <span class="mark">Teamtrail</span> helps you trust more work with
-              less of your attention.
+              Running agents side by side is solved: your terminal and plenty of tools already do it.
+              <span class="mark">Teamtrail</span> works with whichever you use and adds what they don't: your calls kept
+              yours, and done meaning proven.
             </p>
           </header>
           <div class="cards">
@@ -540,8 +542,10 @@
                 <span class="q">What is <span class="mark">Teamtrail</span>?</span>
               </summary>
               <div>
-                A trail map for planning and finishing big projects with AI coding agents. It runs on your computer and
-                shows every trail, ticket, agent and open question in one window, across all your repos.
+                The control layer for AI coding agents. It breaks big work into decision tickets, sends you only the
+                calls that are yours, and won't let an agent call anything done without evidence. It runs on your
+                computer, alongside Claude Code, Codex or any MCP agent, and shows every trail, agent and open question
+                in one window, across all your repos.
               </div>
             </details>
             <details>

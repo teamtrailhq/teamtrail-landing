@@ -10,7 +10,7 @@ import { lastmod } from '../seo/lastmod.mjs';
 import { docsPage, mdUrl, pageUrl } from './template.mjs';
 
 const SITE = 'Teamtrail';
-const TAGLINE = 'A local trail map for big work done by AI coding agents.';
+const TAGLINE = 'The control layer for AI coding agents.';
 
 const placeholder = (title) =>
   `# ${title}\n\nThis page is being written. In the meantime, see the [README on GitHub](https://github.com/teamtrailhq/teamtrail).\n`;
