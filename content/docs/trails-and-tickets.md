@@ -17,6 +17,16 @@ Every trail has a **destination** (what done looks like) and these sections, sto
 
 A trail runs in one of two modes: `plan+execute` (default) or `plan-only`, which disables `execute` tickets.
 
+## Archive and Start over
+
+The trail lead can put a trail away from the trail menu (the trail title in the Lookout's header):
+
+- **Archive** keeps the trail as history. It gives agents no more work, but anything from it that already waits on you stays in [Waiting on you](/docs/waiting-on-you/). Agents can still read it by name.
+- **Start over** archives the trail and opens **New trail** with its idea filled in, for when the map went wrong. The old trail's tickets and decisions don't carry over.
+- **Restore** makes an archived trail active again.
+
+An archived trail has `archived: true` in its [`map.md`](/docs/file-formats/#trail-trailmapmd), or the `teamtrail:archived` label on GitHub and Linear.
+
 ## Ticket types
 
 | Type        | Used for                                                                 | Needs you?  |
@@ -53,7 +63,7 @@ A claim lasts 15 minutes, and every tool call from the claiming agent renews it,
 
 ## Decisions
 
-Closing a ticket records a **decision record**: the question, the decision, a summary, the alternatives, the rationale, who decided and, for HITL tickets, the transcript. Agents can also keep other decisions with `record_decision`. Every decision shows in the **Logbook** (Records → Logbook) and in the briefing, marked as made by you or by an agent, and a later decision can supersede an earlier one. **By area** groups them by the folder or risk category they're about, the most cited first. Before an agent asks you something you already decided, Teamtrail gives it your earlier decision instead. See [File formats](/docs/file-formats/).
+Closing a ticket records a **decision record**: the question, the decision, a summary, the alternatives, the rationale, who decided and, for HITL tickets, the transcript. Agents can also keep other decisions with `record_decision`. Every decision shows in the **Logbook** (Records → Logbook) and in the briefing, marked as made by you or by an agent, and a later decision can supersede an earlier one. A call you made shows your name: from git's `user.name` on your machine, or the person signed in to a hosted Lookout. **By area** groups them by the folder or risk category they're about, the most cited first. Before an agent asks you something you already decided, Teamtrail gives it your earlier decision instead: see [Decision memory](/docs/decision-memory/). For the record format, see [File formats](/docs/file-formats/).
 
 ## Where it's stored
 

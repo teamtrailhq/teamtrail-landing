@@ -56,7 +56,7 @@ Teamtrail's [config folder](/docs/personal-settings/) holds this machine's key, 
 
 **Claude Code.** `connect claude` adds deny rules to Claude Code's user settings (`~/.claude/settings.json`): `Read` and `Edit` rules for the folder in `permissions.deny`, and the folder in `sandbox.filesystem.denyRead` and `denyWrite` for sandboxed commands. It keeps what's already there, adds nothing twice, and prints what it added and how to remove it.
 
-The rules are best effort unless Claude Code's sandbox is on. Without it, they stop Claude's own file tools, but a shell command such as `cat` can still read the folder.
+The rules are best effort unless Claude Code's sandbox is on. Without it, they stop Claude's own file tools, but a shell command such as `cat` can still read the folder. So `connect claude` offers to turn the sandbox on in the project's `.claude/settings.local.json`: it asks in a terminal, yes by default, and `--sandbox` or `--no-sandbox` answer without asking. See [CLI commands](/docs/cli/#teamtrail-connect-claude-codex).
 
 **Codex.** Codex can deny a folder only through a default permissions profile, which changes how it sandboxes every folder. That's your call, so `connect codex` only prints the profile to add to `~/.codex/config.toml`:
 

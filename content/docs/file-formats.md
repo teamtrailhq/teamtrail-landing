@@ -43,12 +43,13 @@ Current sync is request/response over REST.
 
 `mode` is `plan+execute` or `plan-only`. Optional keys:
 
-| Key              |                                                                                             |
-| ---------------- | ------------------------------------------------------------------------------------------- |
-| `verification`   | The trail's [verification level](/docs/verification/).                                      |
-| `guides`         | The trail's team: the [guide](/docs/guides/) ids its tickets use, such as `[reviewer, qa]`. |
-| `model-matching` | `on` or `off`: [model matching](/docs/model-matching/) for this trail.                      |
-| `model-tiers`    | Tier per ticket type where it differs from the default, such as `[research=balanced]`.      |
+| Key              |                                                                                                    |
+| ---------------- | -------------------------------------------------------------------------------------------------- |
+| `verification`   | The trail's [verification level](/docs/verification/).                                             |
+| `guides`         | The trail's team: the [guide](/docs/guides/) ids its tickets use, such as `[reviewer, qa]`.        |
+| `model-matching` | `on` or `off`: [model matching](/docs/model-matching/) for this trail.                             |
+| `model-tiers`    | Tier per ticket type where it differs from the default, such as `[research=balanced]`.             |
+| `archived`       | `true` when the trail lead [archived](/docs/trails-and-tickets/#archive-and-start-over) the trail. |
 
 The body format is the same on GitHub and Linear, where these settings travel with the trail issue.
 

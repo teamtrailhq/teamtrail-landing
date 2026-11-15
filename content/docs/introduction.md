@@ -30,6 +30,7 @@ Teamtrail is the control layer for AI coding agents: it breaks big work into dec
 | Install and run it          | [Install](/docs/install/), [Connect your agent](/docs/connect-your-agent/), [Your first trail](/docs/first-trail/)                                                   |
 | Understand the model        | [Trails and tickets](/docs/trails-and-tickets/), [The .teamtrail folder](/docs/teamtrail-folder/)                                                                    |
 | Shape how agents work       | [Guides](/docs/guides/), [Model matching](/docs/model-matching/), [Parallel work](/docs/parallel-work/)                                                              |
+| Run agents in the cloud     | [Teamtrail Cloud](/cloud/), the hosted version, in early access                                                                                                      |
 | Supervise several repos     | [All projects](/docs/all-projects/)                                                                                                                                  |
 | Know what's protected       | [Sign in to the Lookout](/docs/sign-in/), [Approvals and security](/docs/security/)                                                                                  |
 | Configure it without the UI | [verification.json](/docs/verification-json/), [policy.json](/docs/policy-json/), [attention.json](/docs/attention-json/), [workspaces.json](/docs/workspaces-json/) |

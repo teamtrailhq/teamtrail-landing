@@ -636,8 +636,8 @@
               <h2 id="f-verify">“Done” is a claim. <span class="mark">Scout</span> checks it.</h2>
             </div>
             <p>
-              You agree on what done means before work starts, and nothing counts as done without proof. The checks come
-              from your repo, so no agent can change what judges its own work.
+              You agree on what done means before work starts, and nothing counts as done without proof. The checks that
+              run are the ones you approved on your machine, and a changed command waits for your approval.
             </p>
           </header>
           <div class="runs">
@@ -695,6 +695,21 @@
               </p>
             </article>
           </div>
+          <div class="cards cards--1 cards--joined">
+            <article class="card reveal">
+              <div class="card__top"><span class="card__n">Verified by Teamtrail</span></div>
+              <h3>A signed proof on every pull request</h3>
+              <p>
+                Each finished ticket gets a proof report on its pull request: the checks that ran, the review and the
+                decisions behind it, signed with your machine's key, with a commit status next to it.
+              </p>
+              <ul class="ticks">
+                <li data-n="01">Anyone can check a report with <code>teamtrail proof verify</code></li>
+                <li data-n="02">A GitHub Action checks every proof on a pull request, and can be a required check</li>
+                <li data-n="03"><a href="/docs/verification/">How proofs work</a></li>
+              </ul>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -724,11 +739,12 @@
                 <h3>The logbook</h3>
                 <p>
                   Every call across your trails: the question, the answer, the options considered, the reasoning, who
-                  decided and the full conversation.
+                  decided, by name, and the full conversation.
                 </p>
                 <ul class="ticks">
                   <li data-n="01">Filter, search and supersede</li>
-                  <li data-n="02">Export to markdown to share with your team</li>
+                  <li data-n="02">By area: decisions grouped by folder or risk, the most cited first</li>
+                  <li data-n="03">Export to markdown to share with your team</li>
                 </ul>
               </div>
             </article>
@@ -777,6 +793,24 @@
               <p>Small screens open on the inbox. Map, ticket, activity and plan are one tap away.</p>
             </article>
           </div>
+          <div class="cards cards--joined">
+            <article class="card reveal">
+              <span class="card__n">Decision memory</span>
+              <h3>You don't get asked twice</h3>
+              <p>
+                Before an agent asks something you already decided, it gets your earlier decision back. Finished work
+                that touches files one of your decisions covers comes to you.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Scorecard</span>
+              <h3>Which agents do well on your repo</h3>
+              <p>
+                In Trail stats: verified first time, rework and cost per verified ticket, by model, agent and vendor,
+                from your own tickets. Small samples are marked too few.
+              </p>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -785,22 +819,38 @@
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">Coming next</span>
+              <span class="eyebrow">Now in early access, and next</span>
               <h2 id="f-next">Less herding, not less judgment.</h2>
             </div>
             <p>
               Cloud keeps you in charge too: <span class="mark">Teamtrail</span> proposes and ranks, and you decide.
             </p>
           </header>
-          <div class="cards cards--1">
+          <div class="cards cards--3">
             <article class="card reveal">
-              <div class="card__top"><span class="card__n">Cloud</span><span class="tag tag--soon">Coming</span></div>
+              <div class="card__top">
+                <span class="card__n">Cloud</span><span class="tag tag--soon">Early access</span>
+              </div>
               <h3>Agents that keep working when you close the laptop</h3>
-              <p>Your agents run in the cloud, and you steer them from the same Lookout, on any screen.</p>
+              <p>
+                Turn on Run my agents for a trail, and Cloud runs Claude Code or Codex on its ready work, two of yours
+                at a time, each in a sandbox of its own. Every ticket gets a pull request, and your checks run on the
+                commit the agent pushed, with a Verified by Teamtrail proof.
+              </p>
               <ul class="ticks">
                 <li data-n="01">Local stays free</li>
                 <li data-n="02"><a href="/cloud/">More about Cloud</a></li>
               </ul>
+            </article>
+            <article class="card reveal">
+              <div class="card__top"><span class="card__n">Phone</span><span class="tag tag--soon">Coming</span></div>
+              <h3>The Lookout on your home screen</h3>
+              <p>An app on your phone, with a notification only for the calls that need you now.</p>
+            </article>
+            <article class="card reveal">
+              <div class="card__top"><span class="card__n">Plans</span><span class="tag tag--soon">Coming</span></div>
+              <h3>Plans and billing for Cloud</h3>
+              <p>A seat per person with a shared pool of agent hours, and a free trial with no card.</p>
             </article>
           </div>
         </div>

@@ -14,14 +14,14 @@
     <title>Privacy policy | Teamtrail</title>
     <meta
       name="description"
-      content="What Teamtrail collects on its website and through Scout, its Slack app, why, how long it keeps it, and how to have it deleted."
+      content="What Teamtrail collects on its website, through Scout, its Slack app, and in Teamtrail Cloud, why, how long it keeps it, and how to have it deleted."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Teamtrail" />
     <meta property="og:title" content="Privacy policy | Teamtrail" />
     <meta
       property="og:description"
-      content="What Teamtrail collects on its website and through Scout, its Slack app, and how to have it deleted."
+      content="What Teamtrail collects on its website, through Scout, its Slack app, and in Teamtrail Cloud, and how to have it deleted."
     />
     <meta property="og:url" content="%SITE_URL%/privacy/" />
     <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
@@ -65,8 +65,9 @@
           <span class="hero__badge">Privacy</span>
           <h1 id="page-title">Privacy policy.</h1>
           <p class="hero__lede">
-            What we collect on this website and through <span class="mark">Scout</span>, our Slack app, why, how long we
-            keep it, and how to have it deleted. Last updated 12 November 2026.
+            What we collect on this website, through <span class="mark">Scout</span>, our Slack app, and in
+            <span class="mark">Teamtrail Cloud</span>, why, how long we keep it, and how to have it deleted. Last
+            updated 15 November 2026.
           </p>
         </div>
       </section>
@@ -74,10 +75,15 @@
       <section class="section section--flush">
         <div class="wrap legal">
           <h2>The short version</h2>
+          <p>
+            This part describes <span class="mark">Teamtrail Local</span> and <span class="mark">Scout</span>.
+            <span class="mark">Teamtrail Cloud</span>, our hosted version in early access, has
+            <a href="#cloud">its own section</a>.
+          </p>
           <ul>
             <li>
-              <span class="mark">Teamtrail</span> runs on your own machine. Your trails, tickets, decisions, code and
-              agents' work stay there, or in the GitHub or Linear tracker you connect. We never receive them.
+              <span class="mark">Teamtrail Local</span> runs on your own machine. Your trails, tickets, decisions, code
+              and agents' work stay there, or in the GitHub or Linear tracker you connect. We never receive them.
             </li>
             <li>
               If you connect <span class="mark">Scout</span> to Slack, messages between Slack and your machine pass
@@ -175,12 +181,59 @@
             <li>To have anything else deleted, write to <a href="mailto:kontakt@gomoveo.pl">kontakt@gomoveo.pl</a>.</li>
           </ul>
 
-          <h2>The Teamtrail software</h2>
+          <h2>Teamtrail Local</h2>
           <p>
             The <code>teamtrail</code> command and the Lookout run on your machine and don't send us your project data
             or usage. They talk to the trackers you connect (GitHub, Linear), the guide catalogs you use, and, only if
             you connect Slack, the Scout service.
           </p>
+
+          <h2 id="cloud">Teamtrail Cloud (early access)</h2>
+          <p>
+            <span class="mark">Teamtrail Cloud</span> runs <span class="mark">Teamtrail</span> for you, with your
+            agents. Unlike Local, it holds your trails on our side. This is what it keeps and who handles it.
+          </p>
+          <h3>What Cloud stores</h3>
+          <ul>
+            <li>
+              <strong>Sign-in and roles:</strong> you sign in with GitHub, and we keep your GitHub account id, login and
+              name. Sessions are kept as hashes, never as the session itself. We keep your workspaces, their members and
+              invites, and each member's role.
+            </li>
+            <li>
+              <strong>API keys:</strong> the Anthropic and OpenAI keys you add for yourself, or an owner adds for a
+              workspace, encrypted at rest (AES-256-GCM). A key is used only to run that person's or that workspace's
+              agents and is never shown again: the page shows its last 4 characters only.
+            </li>
+            <li>
+              <strong>Workspace data:</strong> each workspace's trails, tickets and decisions live in its own engine's
+              storage, with daily and weekly backups, in the EU (Railway).
+            </li>
+            <li>
+              <strong>GitHub App:</strong> which installations and repositories a workspace connected. Short-lived
+              tokens are made per repository when an agent needs one, and never stored.
+            </li>
+            <li>
+              <strong>Agent runs:</strong> each run happens in a Daytona sandbox in the EU, one per run, closed when the
+              run ends. We keep a run's last lines of output (with your keys removed) and its timing for 90 days.
+            </li>
+          </ul>
+          <h3>Who processes it</h3>
+          <ul>
+            <li>Railway, for hosting and the database.</li>
+            <li>Daytona, for the sandboxes agents run in.</li>
+            <li>GitHub, for sign-in and your repositories.</li>
+            <li>
+              The model provider whose key you use (Anthropic or OpenAI). Your agents call it directly, and it bills the
+              key's owner directly.
+            </li>
+          </ul>
+          <h3>Your control</h3>
+          <ul>
+            <li>Owners can export a workspace as a zip of plain files at any time.</li>
+            <li>Deleting a workspace deletes its data and its backups.</li>
+            <li>We don't sell this data, show ads, or use it to train AI models.</li>
+          </ul>
 
           <h2>Your rights</h2>
           <p>
