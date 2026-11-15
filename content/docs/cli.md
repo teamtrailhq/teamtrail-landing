@@ -18,6 +18,7 @@ teamtrail connect slack [options]
 teamtrail knowledge import <file.md> [--dir <path>]
 teamtrail approve [--hash <hash>]… [--dir <path>]
 teamtrail pair [--dir <path>] [--no-open]
+teamtrail proof <ticket> [--trail <name>] [--json] [--dir <path>]
 teamtrail guides list|search|add|new|update|remove|lint … [--dir <path>]
 ```
 
@@ -101,6 +102,14 @@ teamtrail pair
 ```
 
 Opens a browser tab ready to sign in to the Lookout running for this folder, and prints a new one-time link for another browser. The link works once, for 10 minutes; the tab's own code, within a minute. It first checks that the server at the Lookout's address really is that Lookout. `--no-open` only prints the link. Phones and other computers pair from the Lookout instead: **Settings → You → Browsers & devices**. See [Sign in to the Lookout](/docs/sign-in/).
+
+## teamtrail proof
+
+```bash
+teamtrail proof '#8'
+```
+
+Prints a ticket's [Verified by Teamtrail](/docs/verification/#verified-by-teamtrail) report as Markdown, ready for a pull request. It covers the checks Teamtrail ran, the acceptance criteria verified or only claimed, the git range, the review and the decisions the work relies on, all as this machine recorded them. Name the ticket by key (`#8` or `8`); add `--trail <name>` when more than one trail has that key. `--json` prints the structure instead. Exits 0 when the ticket is verified and 1 when it isn't, so scripts can rely on it.
 
 ## teamtrail knowledge import
 
