@@ -53,9 +53,44 @@ Every completed ticket can carry a report of what Teamtrail recorded, for the pu
 
 The report opens with a badge, **Teamtrail verified** or **Teamtrail not verified**. A ticket is verified when its latest attempt passed everything its [level](#verification-levels) asks: the checks passed, no criterion is missing or failed and the criteria were confirmed, plus an independent review at `checks+review`, plus your approval at `checks+review+human`. Otherwise the report lists what's missing, one line each. A completion from a [remote agent](/docs/remote-agents/) is never verified here, because no check ran on this machine.
 
-**Getting the report.** Run [`teamtrail proof <ticket>`](/docs/cli/#teamtrail-proof), or let the agent call [`proof_report`](/docs/mcp-tools/#working-and-completing): agents are told to put it in the pull request description unchanged when they open one. Nothing is posted for you yet: posting it as a PR comment automatically, off by default with a switch in Settings, comes next.
+**Getting the report.** Run [`teamtrail proof <ticket>`](/docs/cli/#teamtrail-proof), or let the agent call [`proof_report`](/docs/mcp-tools/#working-and-completing): agents are told to put it in the pull request description unchanged when they open one. The ticket inspector in the Lookout shows it too, with **Copy for PR**.
 
-**What it is, and isn't.** The report is built from records kept on your machine, and nothing about your project goes anywhere: the badge is a fixed image that GitHub fetches from teamtrail.app through its own image proxy. A hidden marker carries a digest of the report, and checking that digest against a signature from your machine comes later, so for now a pasted report is only as trustworthy as whoever pasted it. It records what ran on your machine; it doesn't judge the code.
+**Posted for you.** Switch on **Settings → Project → Proof on pull requests** and, when a ticket is done and its pull request is open, Teamtrail posts the report as one comment on the PR (updated in place, never repeated) and sets a **Teamtrail proof** check next to CI. The check passes only when the ticket is verified at the PR's latest commit. It's off by default and set per machine: each person's Lookout posts with their own GitHub token, to the repo Teamtrail syncs pull requests with (`github` in [verification.json](/docs/verification-json/)). A post that fails (offline, a rate limit) is tried again on the next sync.
+
+**Signed, and checkable by anyone.** Every report is signed with a key made for your machine, which never leaves it. The first time Teamtrail signs one, it writes the public half to `.teamtrail/proof-keys/<id>.pub`: commit it, and anyone can check a report:
+
+```bash
+teamtrail proof verify report.md            # a report saved to a file (or stdin)
+teamtrail proof verify --pr 42 --repo o/r   # every report on a pull request, at its latest commit
+```
+
+A report verifies when it is signed by a key committed in the repo, unchanged since Teamtrail wrote it, verified, and (for a pull request) made at the PR's head. Keys are read from a commit, never from your working copy, so a key someone adds in a pull request counts only once it's merged.
+
+**As a required check.** The Verified by Teamtrail GitHub Action runs the same check with the default branch's keys and records it as the `Teamtrail proof verified` status:
+
+```yaml
+# .github/workflows/teamtrail-proof.yml
+name: Teamtrail proof
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  issue_comment:
+    types: [created, edited]
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+jobs:
+  proof:
+    if: github.event_name == 'pull_request' || github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - uses: teamtrailhq/teamtrail/actions/proof@main
+```
+
+Add `Teamtrail proof verified` to the branch's required checks, with GitHub Actions as its source, and a pull request without a valid proof can't merge.
+
+**What it is, and isn't.** The report is built from records kept on your machine, and nothing about your project goes anywhere else: the badge is a fixed image that GitHub fetches from teamtrail.app through its own image proxy, and the comment is posted with your token. A signature proves the report came from a Teamtrail on a machine whose key your repo lists, and that nothing in it changed since. It doesn't judge the code, and anyone who can read that machine's key file could sign a report.
 
 ## Acceptance criteria
 

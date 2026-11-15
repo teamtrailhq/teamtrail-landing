@@ -75,6 +75,10 @@ With matching on, `claim_ticket` and `next_ticket` without a ticket offer the be
 
 An agent can always claim any ticket by key.
 
+## Suggestions from your scorecard
+
+When the [scorecard](/docs/trail-stats/#scorecard) has at least 10 tickets of one type from two models, and one passes clearly more of them first time, Settings suggests that model's tier for the type, with the numbers ("gpt-5.2-codex passes 80% of your task tickets first time (10 tickets); claude-haiku-5-5 passes 60%…"). Nothing changes until you click **Use**.
+
 ## Waiting for a stronger model
 
 When a ready ticket is set for a stronger tier than any connected agent runs, it waits. It shows on the map as needing that tier, and as a `model` item in [Waiting on you](/docs/waiting-on-you/): connect an agent on a stronger model, or have one claim the ticket by key. Nothing waits while matching is off or no agent is connected.

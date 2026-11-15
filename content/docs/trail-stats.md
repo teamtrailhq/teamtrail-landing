@@ -24,6 +24,22 @@ Plain notes from your own numbers, such as one vendor's findings being upheld mo
 
 They're information for you. Teamtrail doesn't route work from them. The same numbers per ticket type show next to the tiers in **Settings → Model matching**, to help you set them; see [Model matching](/docs/model-matching/).
 
+## Scorecard
+
+How each model, agent and vendor does on your own tickets, measured from the checks Teamtrail ran, by ticket type and model, by model, by vendor and by agent:
+
+| Number              | What it counts                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Verified first time | Tickets whose first completion passed everything, out of all tickets the group made a completion for.            |
+| Rework              | Tickets that needed more than one attempt.                                                                       |
+| Attempts each       | Attempts per verified ticket.                                                                                    |
+| Cost per verified   | The group's spend over its verified tickets. Each session's spend is split evenly over the tickets it submitted. |
+| Review findings     | Errors and warnings reviewers raised on the group's work.                                                        |
+
+A ticket counts for whoever made its first completion, with the model that session ran on. Groups under 10 tickets show as **too few** and are never compared. **Copy as Markdown** puts the scorecard on your clipboard, to share with your team.
+
+When two models with enough tickets differ on a ticket type, **Settings → Model matching** suggests a tier for it, with the numbers; see [Model matching](/docs/model-matching/#suggestions-from-your-scorecard).
+
 ## Where the data comes from
 
 Trail stats reads your trails and the journal in `.teamtrail/.events/`, on your machine. The journal isn't committed, so stats only cover trails worked on from this clone.

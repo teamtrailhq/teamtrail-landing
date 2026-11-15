@@ -19,6 +19,7 @@ teamtrail knowledge import <file.md> [--dir <path>]
 teamtrail approve [--hash <hash>]… [--dir <path>]
 teamtrail pair [--dir <path>] [--no-open]
 teamtrail proof <ticket> [--trail <name>] [--json] [--dir <path>]
+teamtrail proof verify [file] | --pr <n> [--repo <owner/name>] [--set-status] [--keys-ref <ref>] [--dir <path>]
 teamtrail guides list|search|add|new|update|remove|lint … [--dir <path>]
 ```
 
@@ -110,6 +111,15 @@ teamtrail proof '#8'
 ```
 
 Prints a ticket's [Verified by Teamtrail](/docs/verification/#verified-by-teamtrail) report as Markdown, ready for a pull request. It covers the checks Teamtrail ran, the acceptance criteria verified or only claimed, the git range, the review and the decisions the work relies on, all as this machine recorded them. Name the ticket by key (`#8` or `8`); add `--trail <name>` when more than one trail has that key. `--json` prints the structure instead. Exits 0 when the ticket is verified and 1 when it isn't, so scripts can rely on it.
+
+## teamtrail proof verify
+
+```bash
+teamtrail proof verify report.md
+teamtrail proof verify --pr 42 --repo owner/name
+```
+
+Checks a Verified by Teamtrail report: signed by a key committed in `.teamtrail/proof-keys/` at `--keys-ref` (default `HEAD`), unchanged since Teamtrail wrote it, and verified. A file or stdin holds one report; `--pr` checks every report on a pull request (its description and comments) at its latest commit, with `GITHUB_TOKEN` or `GH_TOKEN`, and `--set-status` records the result as the `Teamtrail proof verified` commit status. Exits 0 when everything verifies, 1 otherwise. See [Verified by Teamtrail](/docs/verification/#verified-by-teamtrail).
 
 ## teamtrail knowledge import
 

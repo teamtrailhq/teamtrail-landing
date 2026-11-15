@@ -37,6 +37,10 @@ Opening a project loads it in the same Lookout. A project another running `teamt
 
 Projects on GitHub Issues or Linear show only the counts their local files give until you open them once.
 
+## Sharing decisions
+
+In **Settings → Projects**, **Share decisions** lets a project's decisions show up when agents in your other projects look for precedents (`find_precedent` with `allProjects`). They come as suggestions only: another repo's call never answers a question here. Off by default; the setting lives in your config folder, never in a repo.
+
 ## From the chat
 
 `projects_status` is a read-only [MCP tool](/docs/mcp-tools/) that summarizes your other registered projects: agents running, questions waiting, what needs you, blocked work, stalled claims. Agents use it to tell you where else you're needed, and `/scout status` adds a line when another project has something waiting. An agent can't claim, close or change anything in another project.
