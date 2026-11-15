@@ -6,6 +6,10 @@ Static marketing site for [teamtrail.app](https://www.teamtrail.app): Vite + Typ
 - `features/index.html`: everything that ships today, and the upcoming directions in detail.
 - `guides/index.html`: guides, with one card per guide in the public catalog (see [Guide cards](#guide-cards)); each card opens its details in a dialog (`src/guideDialog.ts`).
 - `cloud/index.html`: Teamtrail Cloud (early access): what it offers today and what's next, with Scout on a pixel cloud (`src/cloudScene.ts`) and its own waitlist.
+- `slack/index.html`: Scout in Slack, Teamtrail's Slack app: what it does in Slack, what stays on your machine, and Add Scout to Slack (`src/slackScene.ts`).
+- `scout/index.html`: Adopt a Scout: sponsor Teamtrail on GitHub, and at the Scout tier a handmade Scout plush comes home with you.
+- `privacy/index.html`: the privacy policy for the site, Scout and Teamtrail Cloud.
+- `/docs/`: the docs, written as Markdown in `content/docs` (order and sections in `content/docs/nav.json`) and built into `docs/<slug>/index.html` pages by `scripts/docs/generate.mjs` (see [Search and LLMs](#search-and-llms)).
 
 Shared markup lives in `partials/` (`sprite`, `nav`, `footer`) and is pasted in at build time by `<!-- @include name -->` (see `vite.config.ts`). The sprite holds the brand marks, coloured per theme by `--tt-wordmark-*` and `--tt-logo-*` in `src/styles.css`: `#tt-wordmark` (`teamtrail.`) for spaces wider than tall, like the nav and footer, and `#tt-logo` (`t.`) for square ones. Never both side by side.
 
@@ -93,7 +97,7 @@ The video is a scroll-through recording of Home and needs `ffmpeg` on `PATH`.
 
 ## Deploy
 
-Production is https://www.teamtrail.app (Vercel project `teamtrail`; the bare teamtrail.app redirects there). Pushes to `main` deploy it through `.github/workflows/deploy.yml` once the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets are set. Only `main` deploys production: PRs from branches in this repo, and manual runs on other branches, get a preview. The workflow pins its actions to commit SHAs and the Vercel CLI to one version (`VERCEL_CLI`); bump them on purpose. By hand: by hand: `npx vercel build --prod && npx vercel deploy --prebuilt --prod`.
+Production is https://www.teamtrail.app (Vercel project `teamtrail`; the bare teamtrail.app redirects there). Pushes to `main` deploy it through `.github/workflows/deploy.yml` once the `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` secrets are set. Only `main` deploys production: PRs from branches in this repo, and manual runs on other branches, get a preview. The workflow pins its actions to commit SHAs and the Vercel CLI to one version (`VERCEL_CLI`); bump them on purpose. By hand: `npx vercel build --prod && npx vercel deploy --prebuilt --prod`.
 
 ## Security headers
 
