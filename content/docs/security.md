@@ -127,7 +127,7 @@ See [Guides](/docs/guides/).
 
 Your config folder holds this machine's key, which signs your answers, approvals and trail state, plus your tracker credentials. [`teamtrail connect`](/docs/connect-your-agent/#keep-agents-out-of-the-config-folder) keeps the agents it registers out of it:
 
-- **Claude Code:** deny rules in `~/.claude/settings.json`. Without Claude Code's sandbox they stop its own file tools, but a shell command can still read the folder.
+- **Claude Code:** deny rules in `~/.claude/settings.json`. Without Claude Code's sandbox they stop its own file tools, but a shell command can still read the folder. `connect claude` offers to turn that sandbox on for the project, so its shell commands are kept out too.
 - **Codex:** it prints a permissions profile to add. Until you add it, Codex's commands can read the folder, the machine key included.
 
 ## Slack

@@ -12,6 +12,7 @@ teamtrail [options]
 teamtrail mcp [--dir <path>] [--agent <trail name>] [--lease-minutes <n>] [--no-register]
 teamtrail mcp --http [--port <n>] [--host <addr>] [--allow-host <name>] [--dir <path>]
 teamtrail connect claude|codex [--dir <path>] [--no-register] [--no-protect-config]
+teamtrail connect claude [--sandbox | --no-sandbox] [--dir <path>] [--no-register]
 teamtrail connect claude|codex --url <http(s)://host:port/mcp> [--token-stdin | --token <token>] [--allow-http] [--no-protect-config]
 teamtrail projects add [path] | list | remove <id|path>
 teamtrail connect slack [options]
@@ -64,6 +65,15 @@ Serves the same MCP tools over streamable HTTP, for agents on other machines or 
 Registers the MCP server with Claude Code or Codex and installs the [`/scout` command](/docs/scout-commands/). It registers this exact version (`npx -y teamtrail@<version> mcp`), so agents never start a newer one by surprise; run `connect` again from a newer version to update. For Claude Code it also adds a `SessionStart` hook, so usage comes from the session transcript. Takes `--dir <path>` and `--no-register`.
 
 It also keeps the agent out of Teamtrail's config folder: deny rules in Claude Code's user settings, or, for Codex, a permissions profile it prints for you to add. `--no-protect-config` skips that. See [Keep agents out of the config folder](/docs/connect-your-agent/#keep-agents-out-of-the-config-folder).
+
+`connect claude` also offers to turn on Claude Code's sandbox in the project's `.claude/settings.local.json`, so the agent's shell commands are kept out of the config folder too, not only its own file tools. In a terminal it asks, yes by default; without a terminal, nothing changes.
+
+| Option         |                                             |
+| -------------- | ------------------------------------------- |
+| `--sandbox`    | Turn the sandbox on without asking.         |
+| `--no-sandbox` | Leave the sandbox as it is, without asking. |
+
+Both are for `connect claude` only, and can't be combined with each other, `--no-protect-config` or `--url`.
 
 Like `mcp`, it adds the repo to [All projects](/docs/all-projects/) unless `--no-register` or `$TEAMTRAIL_NO_REGISTER` is set, or auto-register is off in **Settings → Projects**.
 

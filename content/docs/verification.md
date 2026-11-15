@@ -49,7 +49,7 @@ Every completed ticket can carry a report of what Teamtrail recorded, for the pu
 - each acceptance criterion and its evidence: verified by Teamtrail (`check:` evidence) or only claimed by the agent;
 - the git range (base → head, files changed) and any flags;
 - the review: who reviewed it, their verdict, and whether the reviewer was independent of the author;
-- the decisions the work relies on, on the ticket and on the tickets it was blocked by, each with who made the call.
+- the decisions the work relies on, on the ticket and on the tickets it was blocked by, each with who made the call, by name: git's `user.name` on the machine where you decided, or the person signed in to a hosted Lookout.
 
 The report opens with a badge, **Teamtrail verified** or **Teamtrail not verified**. A ticket is verified when its latest attempt passed everything its [level](#verification-levels) asks: the checks passed, no criterion is missing or failed and the criteria were confirmed, plus an independent review at `checks+review`, plus your approval at `checks+review+human`. Otherwise the report lists what's missing, one line each. A completion from a [remote agent](/docs/remote-agents/) is never verified here, because no check ran on this machine.
 
