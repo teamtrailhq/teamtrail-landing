@@ -53,7 +53,7 @@ A claim lasts 15 minutes, and every tool call from the claiming agent renews it,
 
 ## Decisions
 
-Closing a ticket records a **decision record**: the question, the decision, a summary, the alternatives, the rationale, who decided and, for HITL tickets, the transcript. Agents can also keep other decisions with `record_decision`. Every decision shows in the **Logbook** (Records → Logbook) and in the briefing, marked as made by you or by an agent, and a later decision can supersede an earlier one. See [File formats](/docs/file-formats/).
+Closing a ticket records a **decision record**: the question, the decision, a summary, the alternatives, the rationale, who decided and, for HITL tickets, the transcript. Agents can also keep other decisions with `record_decision`. Every decision shows in the **Logbook** (Records → Logbook) and in the briefing, marked as made by you or by an agent, and a later decision can supersede an earlier one. **By area** groups them by the folder or risk category they're about, the most cited first. Before an agent asks you something you already decided, Teamtrail gives it your earlier decision instead. See [File formats](/docs/file-formats/).
 
 ## Where it's stored
 
