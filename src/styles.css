@@ -824,6 +824,26 @@ code {
 .trio p {
   color: var(--dim);
 }
+/* A figure in place of a heading: the review section's numbers from the study. */
+.trio .stat {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: var(--fs-h2);
+  line-height: 1;
+  color: var(--text-hi);
+}
+.trio .stat--up {
+  color: var(--copper);
+}
+/* Where the numbers come from, under the figures. */
+.source {
+  margin-top: 16px;
+  font-size: var(--fs-small);
+  color: var(--dim);
+}
+.source + .cards {
+  margin-top: 40px;
+}
 
 /* ---------- cast ---------- */
 

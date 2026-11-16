@@ -2,7 +2,7 @@
 
 The checks that run when an agent claims a ticket is done, committed in `.teamtrail/verification.json`.
 
-Without this file, nothing is verified. Teamtrail only writes to it when you approve a check a [guide](/docs/guides/) proposes.
+Without this file, nothing is verified. Teamtrail writes to it when you set the checks or the scope in **Settings → Verification** (approved as you save), and when you approve a check a [guide](/docs/guides/) proposes.
 
 **Its commands run only once you approve them on your machine.** An agent can edit this file and a teammate can push it, so a new or changed command waits in **Settings → Project → Approvals** (or `teamtrail approve`). Until then completions that need checks end with `waiting-approval`, and the work is kept. See [Approvals and security](/docs/security/#check-commands).
 
@@ -22,19 +22,20 @@ Without this file, nothing is verified. Teamtrail only writes to it when you app
 
 ## Keys
 
-| Key               | Type                     | Default               |                                                                                                                  |
-| ----------------- | ------------------------ | --------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `v`               | `1`                      | required              | File format version.                                                                                             |
-| `default`         | level                    | `"checks"`            | Level new trails start at: `off`, `checks`, `checks+review`, `checks+review+human`. Existing trails keep theirs. |
-| `appliesTo`       | ticket types             | `["execute", "task"]` | Ticket types the trail level applies to: `research`, `prototype`, `junction`, `task`, `execute`.                 |
-| `checks`          | object                   | `{}`                  | Named checks (below).                                                                                            |
-| `run`             | check names              | `[]`                  | Checks to run, in order. Each must be defined in `checks`. A ticket can list its own instead.                    |
-| `failFast`        | boolean                  | `true`                | Stop at the first failing check.                                                                                 |
-| `maxAttempts`     | positive integer         | `3`                   | Failed attempts before the ticket waits for you (`blocked`).                                                     |
-| `totalTimeoutSec` | positive integer         | `1800`                | Time limit for all checks of one attempt.                                                                        |
-| `noChanges`       | object                   | see below             | What a completion with no code changes means.                                                                    |
-| `stale`           | `"reverify"` \| `"flag"` | `"reverify"`          | When the code or this file changed since the checks ran: run them again, or flag the result.                     |
-| `github`          | object                   | see below             | Pull request and CI tracking.                                                                                    |
+| Key               | Type                              | Default               |                                                                                                                                                                                                                             |
+| ----------------- | --------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `v`               | `1`                               | required              | File format version.                                                                                                                                                                                                        |
+| `default`         | level                             | `"checks"`            | Level new trails start at: `off`, `checks`, `checks+review`, `checks+review+human`. Existing trails keep theirs.                                                                                                            |
+| `appliesTo`       | ticket types                      | `["execute", "task"]` | Ticket types the trail level applies to: `research`, `prototype`, `junction`, `task`, `execute`.                                                                                                                            |
+| `checks`          | object                            | `{}`                  | Named checks (below).                                                                                                                                                                                                       |
+| `run`             | check names                       | `[]`                  | Checks to run, in order. Each must be defined in `checks`. A ticket can list its own instead.                                                                                                                               |
+| `failFast`        | boolean                           | `true`                | Stop at the first failing check.                                                                                                                                                                                            |
+| `maxAttempts`     | positive integer                  | `3`                   | Failed attempts before the ticket waits for you (`blocked`).                                                                                                                                                                |
+| `totalTimeoutSec` | positive integer                  | `1800`                | Time limit for all checks of one attempt.                                                                                                                                                                                   |
+| `noChanges`       | object                            | see below             | What a completion with no code changes means.                                                                                                                                                                               |
+| `scope`           | `"flag"` \| `"fail"` \| `"human"` | `"flag"`              | Files changed outside the ones the agent declared at its claim (`touches`): show them to the reviewer, `fail` the attempt (rework), or send it to a `human`. See [Review capacity](/docs/review-capacity/#the-scope-check). |
+| `stale`           | `"reverify"` \| `"flag"`          | `"reverify"`          | When the code or this file changed since the checks ran: run them again, or flag the result.                                                                                                                                |
+| `github`          | object                            | see below             | Pull request and CI tracking.                                                                                                                                                                                               |
 
 ### A check
 
@@ -76,6 +77,7 @@ The file is validated as a whole and every problem is listed in **Settings → V
 ```text
 "run" names unknown check "lint"
 checks.test.run must be an argv array, not a shell string
+"scope" must be flag, fail or human
 "github.pollSec" must be an integer of at least 15
 ```
 

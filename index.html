@@ -79,7 +79,8 @@
           <p class="hero__lede">
             <span class="mark">Teamtrail</span> breaks big work into decisions and sends you only the calls that are
             yours. Nothing counts as done until it's verified: your checks, run by Teamtrail, a second agent's review
-            and a signed proof. It runs on your machine, alongside Claude Code, Codex or any MCP agent.
+            and a signed proof. Set how much finished work may wait for your review, and agents start nothing new past
+            it. It runs on your machine, alongside Claude Code, Codex or any MCP agent.
           </p>
           <div class="hero__actions" id="install">
             <!-- @include cmd -->
@@ -146,6 +147,66 @@
               </p>
             </li>
           </ul>
+        </div>
+      </section>
+
+      <!-- REVIEW -->
+      <section class="section" id="review" aria-labelledby="review-title">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">Paced to your review</span>
+              <h2 id="review-title">Agents write more code. Review is where it waits.</h2>
+            </div>
+            <p>
+              A Harvard study of 655 companies found that after teams adopted coding agents, pull requests went up by a
+              third, while finished issues barely moved. The code waited for someone to review it.
+            </p>
+          </header>
+          <ul class="trio reveal" role="list">
+            <li>
+              <span class="stat stat--up">+36%</span>
+              <h3>Pull requests opened</h3>
+              <p>Agents made writing code cheap. The volume went up right away.</p>
+            </li>
+            <li>
+              <span class="stat">+14%</span>
+              <h3>Issues resolved</h3>
+              <p>What actually shipped grew far less, and not by a statistically significant amount.</p>
+            </li>
+            <li>
+              <span class="stat stat--up">+56%</span>
+              <h3>Time to approval</h3>
+              <p>Code waited longer for a reviewer, and took longer to review once it got one.</p>
+            </li>
+          </ul>
+          <p class="source reveal">
+            Chen and Stratton, <em>Artificial Intelligence in the Firm: Bottlenecks in Software Production</em>,
+            Harvard, November 2026. Effects 12 months after firms adopted AI coding agents.
+          </p>
+          <div class="cards reveal">
+            <article class="card">
+              <div class="card__top"><span class="card__n">01 · Review limit</span></div>
+              <h3>New work waits for your review</h3>
+              <p>
+                Set how many finished tickets may wait for you. Once they do, agents start no new work: they fix what
+                came back and keep researching until you've reviewed some. Waiting on you opens the one waiting longest.
+              </p>
+            </article>
+            <article class="card">
+              <div class="card__top"><span class="card__n">02 · Scope check</span></div>
+              <h3>See the code nobody asked for</h3>
+              <p>
+                Agents say which files they'll change when they take a ticket. Anything they change beyond that is
+                listed first for the reviewer and on the proof, or sent back, as you choose.
+              </p>
+            </article>
+          </div>
+          <div class="more reveal">
+            <a class="btn" href="/docs/review-capacity/"
+              >How it works <span class="arrow" aria-hidden="true">→</span></a
+            >
+          </div>
         </div>
       </section>
 
@@ -547,6 +608,17 @@
                 sends you only the calls that are yours, and counts nothing as done until your checks, a second agent's
                 review and a signed proof say so. It runs on your computer, alongside Claude Code, Codex or any MCP
                 agent, and shows every trail, agent and open question in one window, across all your repos.
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="q">Won't agents just give me more code to review?</span>
+              </summary>
+              <div>
+                Not more than you can take. Set a review limit, and once that many finished tickets wait for you, agents
+                start no new work until you've reviewed some; they fix what came back and keep researching meanwhile.
+                Agents also say which files they'll change, and anything beyond that is listed first for the reviewer
+                and on the proof. See <a href="/docs/review-capacity/">Review capacity</a>.
               </div>
             </details>
             <details>
