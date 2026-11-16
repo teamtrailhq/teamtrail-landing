@@ -64,8 +64,8 @@ The public catalog is [teamtrailhq/teamtrail-guides](https://github.com/teamtrai
 From the CLI:
 
 ```bash
-npx teamtrail@next guides search accessibility
-npx teamtrail@next guides add a11y
+npx teamtrail guides search accessibility
+npx teamtrail guides add a11y
 ```
 
 In the Lookout: **Settings → Guides → Browse guides**. It shows only Verified guides by default (turn off **Verified only** to see all). Each guide shows its author, review history, checklist, the commands it proposes and its full instructions before you add it.
@@ -91,7 +91,7 @@ Adding a guide fetches the file, checks its sha256 against the catalog's index, 
 Start a guide for your team with:
 
 ```bash
-npx teamtrail@next guides new perf
+npx teamtrail guides new perf
 ```
 
 It writes `.teamtrail/guides/perf.md` from a template that already passes the safety lint, signed with your git name (`--author <name>` to sign it otherwise). Replace the placeholders with your instructions and checklist:

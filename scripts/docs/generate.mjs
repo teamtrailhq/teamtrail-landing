@@ -46,7 +46,7 @@ function readPages(root, nav) {
 const ABOUT = [
   'Teamtrail works with Claude Code, Codex and any MCP client. A human describes a trail; agents chart it as a map of decision tickets (research, prototype, junction, task, execute, review) with blocking edges, claim tickets over MCP, ask the human questions and record decisions with evidence. The human steers in the Lookout, a web app served on their machine by the `teamtrail` CLI. Scout is the voice of Teamtrail: briefings, questions and status.',
   '',
-  "Install: run `npx teamtrail@next` in a project folder (Node.js 20 or newer; until launch the CLI is published under the `next` tag), then connect an agent with `npx teamtrail@next connect claude` or `npx teamtrail@next connect codex`. State is plain files in the repo's `.teamtrail/` folder, or in GitHub Issues or Linear. Teamtrail never calls a model itself and never starts agents on your machine.",
+  "Install: run `npx teamtrail` in a project folder (Node.js 20 or newer), then connect an agent with `npx teamtrail connect claude` or `npx teamtrail connect codex`. State is plain files in the repo's `.teamtrail/` folder, or in GitHub Issues or Linear. Teamtrail never calls a model itself and never starts agents on your machine.",
 ];
 
 /** /llms.txt in the llmstxt.org format: H1, summary, details, then sections of links with one line each. */

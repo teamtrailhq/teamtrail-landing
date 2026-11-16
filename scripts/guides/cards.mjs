@@ -40,7 +40,7 @@ function checks(list) {
 
 function install(g) {
   if (g.builtin) return `<p class="gcard__builtin">Built in, nothing to add</p>`;
-  const cmd = `npx teamtrail@next guides add ${g.id}`;
+  const cmd = `npx teamtrail guides add ${g.id}`;
   return `<div class="cmd cmd--static"><span class="cmd__line"><span class="prompt" aria-hidden="true">$</span> <span class="cmd__text">${esc(cmd)}</span></span><button class="copy" type="button" data-copy="${esc(cmd)}" aria-label="Copy the command to add ${esc(g.name)}">${COPY_ICONS}</button></div>`;
 }
 
