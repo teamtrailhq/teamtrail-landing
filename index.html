@@ -77,10 +77,8 @@
             <span class="line">You know it's done.</span>
           </h1>
           <p class="hero__lede">
-            <span class="mark">Teamtrail</span> breaks big work into decisions and sends you only the calls that are
-            yours. Nothing counts as done until it's verified: your checks, run by Teamtrail, a second agent's review
-            and a signed proof. Set how much finished work may wait for your review, and agents start nothing new past
-            it. It runs on your machine, alongside Claude Code, Codex or any MCP agent.
+            <span class="mark">Teamtrail</span> sends you only the calls that are yours, and counts nothing as done
+            until it's verified. On your machine, alongside Claude Code, Codex or any MCP agent.
           </p>
           <div class="hero__actions" id="install">
             <!-- @include cmd -->
@@ -159,8 +157,9 @@
               <h2 id="review-title">Agents write more code. Review is where it waits.</h2>
             </div>
             <p>
-              A Harvard study of 655 companies found that after teams adopted coding agents, pull requests went up by a
-              third, while finished issues barely moved. The code waited for someone to review it.
+              A Harvard study<a class="fn" href="#study" aria-label="Source">*</a> of 655 companies found that after
+              teams adopted coding agents, pull requests went up by a third, while finished issues barely moved. The
+              code waited for someone to review it.
             </p>
           </header>
           <ul class="trio reveal" role="list">
@@ -180,10 +179,6 @@
               <p>Code waited longer for a reviewer, and took longer to review once it got one.</p>
             </li>
           </ul>
-          <p class="source reveal">
-            Chen and Stratton, <em>Artificial Intelligence in the Firm: Bottlenecks in Software Production</em>,
-            Harvard, November 2026. Effects 12 months after firms adopted AI coding agents.
-          </p>
           <div class="cards reveal">
             <article class="card">
               <div class="card__top"><span class="card__n">01 · Review limit</span></div>
@@ -766,6 +761,13 @@
           <!-- @include cmd -->
         </div>
       </section>
+
+      <div class="wrap">
+        <p class="footnote" id="study">
+          * Chen and Stratton, <em>Artificial Intelligence in the Firm: Bottlenecks in Software Production</em>,
+          Harvard, November 2026. Effects 12 months after firms adopted AI coding agents.
+        </p>
+      </div>
     </main>
 
     <!-- @include footer -->

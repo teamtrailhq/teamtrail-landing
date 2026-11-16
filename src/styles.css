@@ -835,14 +835,19 @@ code {
 .trio .stat--up {
   color: var(--copper);
 }
-/* Where the numbers come from, under the figures. */
-.source {
-  margin-top: 16px;
+/* The study's cards follow its figures. */
+.trio + .cards {
+  margin-top: 40px;
+}
+/* A footnote mark in running text, and the note it points to at the bottom of the page. */
+.fn {
+  color: inherit;
+  text-decoration: none;
+}
+.footnote {
+  padding: 24px 0 8px;
   font-size: var(--fs-small);
   color: var(--dim);
-}
-.source + .cards {
-  margin-top: 40px;
 }
 
 /* ---------- cast ---------- */
