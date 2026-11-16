@@ -38,6 +38,7 @@ A ticket's guide can add checks from `verification.json` to the ones its complet
 ## Evidence from git and pull requests
 
 - **Git:** what changed since the claim. A completion with no changes is flagged, unless the ticket type is allowed none (`noChanges`) or the agent gives a `noCodeReason`.
+- **Scope:** files changed outside the ones the agent declared at its claim (`touches`) are flagged `outside-scope` and listed first for the reviewer; `scope` in `verification.json` can instead send the work back or to you. See [the scope check](/docs/review-capacity/#the-scope-check).
 - **Pull requests:** pass `pr` with the completion and Teamtrail tracks the PR and its CI on GitHub (`github` in `verification.json`), flagging results that don't match the claim.
 - **Staleness:** if the code or `verification.json` changed since the checks ran, the result is re-verified or flagged (`stale`).
 
@@ -48,6 +49,7 @@ Every completed ticket can carry a report of what Teamtrail recorded, for the pu
 - the checks Teamtrail ran itself (command, exit code, duration), not what the agent says it ran;
 - each acceptance criterion and its evidence: verified by Teamtrail (`check:` evidence) or only claimed by the agent;
 - the git range (base → head, files changed) and any flags;
+- the scope: whether every change stayed inside the files the agent declared, or which didn't;
 - the review: who reviewed it, their verdict, and whether the reviewer was independent of the author;
 - the decisions the work relies on, on the ticket and on the tickets it was blocked by, each with who made the call, by name: git's `user.name` on the machine where you decided, or the person signed in to a hosted Lookout.
 

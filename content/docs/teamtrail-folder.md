@@ -21,7 +21,7 @@ Pass `--dir <path>` or set `$TEAMTRAIL_DIR` to use another folder. On GitHub Iss
 ├── models.json                 your own models and their tiers
 ├── verification.json           checks run on completion
 ├── policy.json                 what always needs you
-├── attention.json              how the ranked list interrupts you
+├── attention.json              how the ranked list interrupts you, and the review limit
 ├── workspaces.json             a git worktree per claim, on or off
 ├── trackers.json               which tracker the project uses (no secrets)
 ├── .events/<trail>.jsonl     the lifecycle journal

@@ -17,7 +17,7 @@ Outside a git repo, or in a repo with no commits, the claim still succeeds and t
 
 ## Overlap warnings
 
-An agent can declare the files it expects to change with `claim_ticket` `touches` (path globs, up to 50). If another live claim declared overlapping files, the claim result has a `warnings` entry naming the other ticket, agent and paths, and an `overlap` item appears in [Waiting on you](/docs/waiting-on-you/).
+An agent can declare the files it expects to change with `claim_ticket` `touches` (path globs, up to 50). If another live claim declared overlapping files, the claim result has a `warnings` entry naming the other ticket, agent and paths, and an `overlap` item appears in [Waiting on you](/docs/waiting-on-you/). The same `touches` are the ticket's scope: on completion, files changed outside them are flagged for the reviewer (see [the scope check](/docs/review-capacity/#the-scope-check)).
 
 Overlap errs on the side of warning:
 

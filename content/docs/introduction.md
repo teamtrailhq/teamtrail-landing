@@ -21,6 +21,7 @@ Teamtrail gives you verified work from AI coding agents: it breaks big work into
 - **No model calls.** Teamtrail never calls a model. Agents write briefs, knowledge and criteria; Teamtrail gives them structure and enforces the gates in code.
 - **Deterministic.** Lifecycle, gates, ranking and selection are code, not prompts. The same inputs give the same result, and every automated choice comes with a reason.
 - **You decide.** Teamtrail never answers a question or approves anything on your behalf. Agents may make small calls themselves when your [risk policy](/docs/policy-json/) allows it, and every one is recorded for you to review.
+- **Paced to your review.** Agents write code faster than anyone reviews it. The [review limit](/docs/review-capacity/) stops new work while finished work waits for you, and the scope check shows the reviewer what changed beyond what the agent said it would change.
 - **Not an executor.** The local product doesn't start or schedule agents. It can prepare [git worktrees](/docs/parallel-work/) for agents that ask.
 
 ## Where to go next
@@ -29,7 +30,7 @@ Teamtrail gives you verified work from AI coding agents: it breaks big work into
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Install and run it          | [Install](/docs/install/), [Connect your agent](/docs/connect-your-agent/), [Your first trail](/docs/first-trail/)                                                   |
 | Understand the model        | [Trails and tickets](/docs/trails-and-tickets/), [The .teamtrail folder](/docs/teamtrail-folder/)                                                                    |
-| Shape how agents work       | [Guides](/docs/guides/), [Model matching](/docs/model-matching/), [Parallel work](/docs/parallel-work/)                                                              |
+| Shape how agents work       | [Guides](/docs/guides/), [Model matching](/docs/model-matching/), [Parallel work](/docs/parallel-work/), [Review capacity](/docs/review-capacity/)                   |
 | Run agents in the cloud     | [Teamtrail Cloud](/cloud/), the hosted version, in early access                                                                                                      |
 | Supervise several repos     | [All projects](/docs/all-projects/)                                                                                                                                  |
 | Know what's protected       | [Sign in to the Lookout](/docs/sign-in/), [Approvals and security](/docs/security/)                                                                                  |
