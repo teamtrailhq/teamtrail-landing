@@ -1,6 +1,6 @@
 ---
 title: Teamtrail docs: the control layer for AI coding agents
-description: How Teamtrail works: you describe a trail, Claude Code, Codex or any MCP agent maps and does the work, and you make the calls that matter. Start here.
+description: How Teamtrail works: your agents map and do big work, you make the calls that matter, and nothing counts as done without evidence. Start here.
 ---
 
 # Introduction
