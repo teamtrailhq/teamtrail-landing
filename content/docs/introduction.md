@@ -1,11 +1,11 @@
 ---
-title: Teamtrail docs: the control layer for AI coding agents
-description: How Teamtrail works: your agents map and do big work, you make the calls that matter, and nothing counts as done without evidence. Start here.
+title: Teamtrail docs: verified work from AI coding agents
+description: How Teamtrail works: your agents map and do big work, you make the calls that matter, and nothing counts as done until it's verified. Start here.
 ---
 
 # Introduction
 
-Teamtrail is the control layer for AI coding agents: it breaks big work into decisions, sends you only the calls that are yours, and won't let an agent call anything done without evidence. It runs on your machine, alongside Claude Code, Codex or any MCP agent: you describe a trail, your agents map and do the work, and you make the calls that matter.
+Teamtrail gives you verified work from AI coding agents: it breaks big work into decisions, sends you only the calls that are yours, and counts nothing as done until it's verified, by your checks (run by Teamtrail, never the agent's word), a second agent's review and a signed proof for every finished ticket. It runs on your machine, alongside Claude Code, Codex or any MCP agent: you describe a trail, your agents map and do the work, and you make the calls that matter.
 
 ## How it works
 
