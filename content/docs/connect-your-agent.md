@@ -14,7 +14,7 @@ The `teamtrail` package ships an MCP server, `teamtrail mcp`, that your agent st
 The quickest way:
 
 ```bash
-npx teamtrail@next connect claude
+npx teamtrail connect claude
 ```
 
 This does four things:
@@ -33,7 +33,7 @@ claude mcp add teamtrail -- npx -y teamtrail mcp
 ## Codex
 
 ```bash
-npx teamtrail@next connect codex
+npx teamtrail connect codex
 ```
 
 It installs the command as a Codex prompt (`~/.codex/prompts/scout.md`, used as `/prompts:scout …`) and registers the server, or prints the config to add by hand to `~/.codex/config.toml`:
@@ -94,7 +94,7 @@ npx -y teamtrail mcp
 An agent on another machine or in a cloud sandbox can't start the server next to your repo. It connects over HTTP instead, with a token you create in the Lookout:
 
 ```bash
-npx -y teamtrail@next connect claude --url https://trail.example.com/mcp
+npx -y teamtrail connect claude --url https://trail.example.com/mcp
 ```
 
 See [Remote agents](/docs/remote-agents/) for the setup and what to put in front of it.

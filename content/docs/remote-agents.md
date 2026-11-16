@@ -24,7 +24,7 @@ Until a token exists the endpoint is closed, and every request gets a 401.
 In the repo:
 
 ```bash
-npx teamtrail@next mcp --http
+npx teamtrail mcp --http
 ```
 
 This serves the agent tools at `http://127.0.0.1:7421/mcp` and nothing else on that port: no Lookout and no API. It prints the endpoint and how many tokens can connect, and runs until you press Ctrl+C.
@@ -45,7 +45,7 @@ On the agent's machine, in its checkout of the repo:
 
 ```bash
 read -rs TEAMTRAIL_TOKEN && export TEAMTRAIL_TOKEN
-npx -y teamtrail@next connect claude --url https://trail.example.com/mcp
+npx -y teamtrail connect claude --url https://trail.example.com/mcp
 ```
 
 The first line waits for the token: paste it and press Enter. It isn't shown, and it stays out of your shell history. For Codex, use `connect codex --url …`. After you create a token, Settings shows these commands ready to copy.
@@ -91,14 +91,14 @@ trail.example.com {
 ```
 
 ```bash
-npx teamtrail@next mcp --http --allow-host trail.example.com
+npx teamtrail mcp --http --allow-host trail.example.com
 ```
 
 A tunnel, here a Cloudflare quick tunnel. Start it first, because it prints the host name:
 
 ```bash
 cloudflared tunnel --url http://127.0.0.1:7421
-npx teamtrail@next mcp --http --allow-host <name>.trycloudflare.com
+npx teamtrail mcp --http --allow-host <name>.trycloudflare.com
 ```
 
 Agents then connect to `https://<name>.trycloudflare.com/mcp`.

@@ -15,14 +15,11 @@ Install the `teamtrail` command and open the Lookout for a repo.
 ## Run it
 
 ```bash
-npm i -g teamtrail@next   # or, without installing: npx teamtrail@next
 cd your-repo
-teamtrail
+npx teamtrail   # or install it once: npm i -g teamtrail, then run `teamtrail`
 ```
 
 `teamtrail` starts a local server at `http://127.0.0.1:7420/`, opens your browser on the Lookout's sign-in page (one click signs in) and keeps trails as plain files in `./.teamtrail/` in the current folder. For another browser, it prints a one-time **Sign in** link in the terminal: see [Sign in to the Lookout](/docs/sign-in/). Agents and people can edit those files directly, and changes show up live. The same Lookout can show your other repos too: see [All projects](/docs/all-projects/).
-
-> Until launch, the real CLI is published under the `next` tag. `teamtrail@latest` is a placeholder that only prints a short message.
 
 ## Options
 
@@ -39,8 +36,8 @@ See [CLI commands](/docs/cli/) for every command.
 
 ## Updating
 
-- With `npx teamtrail@next`, you always get the current `next` version. npx caches package metadata for a few minutes, so a release can take a moment to show up.
-- With a global install, run `npm i -g teamtrail@next` again. There's no need to uninstall first.
+- With `npx teamtrail`, you always get the latest release. npx caches package metadata for a few minutes, so a release can take a moment to show up.
+- With a global install, run `npm i -g teamtrail` again. There's no need to uninstall first.
 
 ## Commit `.teamtrail/` or not
 
