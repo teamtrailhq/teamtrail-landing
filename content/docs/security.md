@@ -92,7 +92,7 @@ If an agent or a teammate edits these fields in the files directly, the edit has
 
 The ticket is held, the signed values apply, and **Settings → Approvals** shows what changed (old → new) with **Accept this change** and **Revert**. **Revert** writes the signed values back into the file. A ticket added by copying a file in is held until you accept it, or delete it after confirming the file by name.
 
-- **Text edits are marked, not held.** Titles, bodies and comments can be edited freely; the ticket inspector says **Text edited outside Teamtrail**.
+- **Text edits are marked, not held.** Titles, bodies and comments can be edited freely; the ticket's **Full ticket** says **Text edited outside Teamtrail**.
 - **Decisions read from text show as Unverified.** A resolution comment or a line in Decisions so far was written by whoever could edit the files, so the Logbook never shows it as your call.
 - **Teammates.** A teammate's pushed change shows as changed outside Teamtrail on every other machine until it's accepted there. On a fresh clone, a new machine or the upgrade, existing trails are adopted with the [first run](#the-first-run).
 

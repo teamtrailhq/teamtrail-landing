@@ -13,11 +13,11 @@ The claim result returns `workspace: { path, branch, base }`, and the agent edit
 
 Outside a git repo, or in a repo with no commits, the claim still succeeds and the result explains why there's no workspace (`workspaceNote`).
 
-**Removing a finished workspace:** in **Settings → Workspaces** (which lists every worktree as active or finished) or on a closed ticket in the inspector, choose **Remove workspace**. It runs `git worktree remove` and keeps the branch. It refuses while the ticket is still claimed and never touches your main checkout; if the worktree has uncommitted changes it asks first. Over HTTP: `POST /workspaces/remove { mapId, ticketId, force? }`.
+**Removing a finished workspace:** in **Settings → Workspaces** (which lists every worktree as active or finished) or in a closed ticket's **Full ticket**, choose **Remove workspace**. It runs `git worktree remove` and keeps the branch. It refuses while the ticket is still claimed and never touches your main checkout; if the worktree has uncommitted changes it asks first. Over HTTP: `POST /workspaces/remove { mapId, ticketId, force? }`.
 
 ## Overlap warnings
 
-An agent can declare the files it expects to change with `claim_ticket` `touches` (path globs, up to 50). If another live claim declared overlapping files, the claim result has a `warnings` entry naming the other ticket, agent and paths, and an `overlap` item appears in [Waiting on you](/docs/waiting-on-you/). The same `touches` are the ticket's scope: on completion, files changed outside them are flagged for the reviewer (see [the scope check](/docs/review-capacity/#the-scope-check)).
+An agent can declare the files it expects to change with `claim_ticket` `touches` (path globs, up to 50). If another live claim declared overlapping files, the claim result has a `warnings` entry naming the other ticket, agent and paths, and an `overlap` item appears in [Waiting on you](/docs/waiting-on-you/) (the trail bar's **More**, under the map). The same `touches` are the ticket's scope: on completion, files changed outside them are flagged for the reviewer (see [the scope check](/docs/review-capacity/#the-scope-check)).
 
 Overlap errs on the side of warning:
 
@@ -25,7 +25,7 @@ Overlap errs on the side of warning:
 - a plain path overlaps a glob that matches it;
 - two globs overlap when one's fixed prefix lies inside the other's (`src/**` and `src/app/*.ts`).
 
-The ticket inspector shows the declared files and the branch. To hold one of the claims, open it and use **Release to queue**.
+A ticket's **Full ticket** shows the declared files and the branch. To hold one of the claims, click its card on the map and use **Release to queue** in its bubble.
 
 ## Integration check
 

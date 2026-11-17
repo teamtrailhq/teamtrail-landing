@@ -23,7 +23,7 @@ A file in `.teamtrail/guides/` with a built-in's id replaces it once you approve
 Every ticket takes the guides of its type on its trail. A new trail starts with the defaults above, so a research ticket gets the architect, a task gets QA and security, and a review gets the reviewer, without anyone picking them.
 
 - **Per trail.** **Settings → This trail → Guides by type** has a row per ticket type and a toggle per approved guide, your team's own guides included. Only you change it; agents can't. **Back to defaults** puts the defaults back.
-- **Per ticket.** The ticket inspector's **Guides** shows a chip per guide, marked **by type**, **added** or **removed**. Remove one from that ticket alone, put it back, or **Add a guide** that only that ticket gets. You can add any approved guide to any ticket type.
+- **Per ticket.** **Guides** in the ticket's **Full ticket** (open its card on the map) shows a chip per guide, marked **by type**, **added** or **removed**. Remove one from that ticket alone, put it back, or **Add a guide** that only that ticket gets. You can add any approved guide to any ticket type.
 - **Agents add, never remove.** An agent can give a ticket it charts one guide more than its type gets (`guide` on `add_ticket` or each `start_trail` ticket), when the guide is made for the ticket's type. It can't remove a guide or change a trail's guides by type. `start_trail`'s old `team` is ignored, and the result says so.
 - **Agents can pick by guide.** `claim_ticket` and `next_ticket` take `guides` (for example `["qa"]`) to take only tickets with one of those guides. Tickets without a guide are left out.
 
@@ -66,7 +66,7 @@ When the ticket's guides have checklists, `close_ticket`, `report_completion` an
 
 `guide` names the guide the answer is for; it's needed when the ticket has several. `item` is the item's text (case and spacing don't matter) or its number. Every item needs an answer; `done: false` with a note counts. Teamtrail checks that each item is answered, not that the answer is true. A missing or unknown item refuses the completion with the list of what's missing.
 
-The answers are kept in `.teamtrail/.evidence/<trail>/<ticket>/checklist.json`, and the ticket inspector shows them per guide. A ticket's [proof](/docs/verification/) lists its guides and how much of each checklist got an answer.
+The answers are kept in `.teamtrail/.evidence/<trail>/<ticket>/checklist.json`, and the ticket's **Full ticket** shows them per guide. A ticket's [proof](/docs/verification/) lists its guides and how much of each checklist got an answer.
 
 ## Adding guides from the catalog
 

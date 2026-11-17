@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { AGAIN, CHECK_IN, FRAME, RESUME, SETUP, START } from './journey/scenes.mjs';
 import { installStage } from './journey/stage.mjs';
-import { clippedCards, frameMap } from './lib/frameMap.mjs';
+import { frameMap } from './lib/frameMap.mjs';
 import { realProject } from './lib/realProject.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -50,23 +50,50 @@ const term = async (title, lines, label, text) => {
   await caption(label, text);
   await stage('term', title, lines);
 };
-const chip = () => page.locator('.comms .suggest .chip').first();
-/**
- * Frames the map so no card is cut at its edges: the first four columns of the trail when they fit whole, else the
- * first five, else all of it.
- */
-const frameHero = async () => {
-  const first = ['#2', '#3', '#8', '#21', '#22', '#4', '#6', '#7', '#5', '#9', '#10', '#11'];
-  const picks = [
-    { keys: first, added: true },
-    { keys: [...first, '#12', '#15'], added: true },
-    { keys: [...first, '#12', '#15', '#13'], added: true, destination: true },
-  ];
-  for (const pick of picks) {
-    await frameMap(page, pick, 0.96);
-    if (!(await clippedCards(page)).length) return;
+/** The agent's question at the top of the open bubble. */
+const bubbleQuestion = () => page.locator('.bubble .open-q');
+/** Closes the bubble with Esc, as a person would, when one is open. */
+const closeBubble = async () => {
+  if (!(await page.locator('.bubble').count())) return;
+  await page.keyboard.press('Escape');
+  await page.locator('.bubble').waitFor({ state: 'detached', timeout: 5000 });
+  await wait(400);
+};
+/** Closes whatever dialog opened over the page, with Esc (a bubble behind it can take the first one). */
+const closeDialogs = async () => {
+  for (let i = 0; i < 4 && (await page.locator('.scrim').count()); i++) {
+    await page.keyboard.press('Escape');
+    await wait(500);
   }
-  throw new Error(`the hero map cuts through: ${(await clippedCards(page)).join(', ')}`);
+};
+/** Opens a ticket's bubble by its title: Fit the trail, then click its card. */
+const openTicket = async (title) => {
+  await closeBubble();
+  await page.locator('.map-zone').getByRole('button', { name: 'Fit' }).click();
+  await wait(700);
+  await page.locator('.map-zone .node', { hasText: title }).first().click();
+  await page.locator('.bubble').waitFor({ timeout: 15000 });
+  await wait(800);
+};
+/** A view tab in the header: Map, Plan, Activity or Logbook. */
+const view = async (name) => {
+  await closeDialogs();
+  await page.locator('.view-tabs').getByRole('button', { name, exact: true }).click();
+};
+/** The trail bar's More (the lists under it) or Less. */
+const trailBarMore = async (more) => {
+  const button = page.locator('.trail-bar').getByRole('button', { name: more ? 'More' : 'Less', exact: true });
+  if (await button.count()) await button.click();
+  await page.locator('.trail-lists').waitFor({ state: more ? 'visible' : 'detached', timeout: 10000 });
+};
+/** Switches trails from the trail menu under the title. */
+const switchTrail = async (name) => {
+  await closeDialogs();
+  await page.locator('.trail-btn').click();
+  // No hover tip over the open menu.
+  await page.mouse.move(size.width / 2, size.height - 4);
+  await wait(1400);
+  await page.getByRole('menuitem').filter({ hasText: name }).first().click();
 };
 const setVisible = (v) =>
   page.evaluate((v) => {
@@ -146,9 +173,9 @@ await term(
   'Type your idea in Claude Code. Scout asks a few questions to frame the trail.',
 );
 
-// The trail Scout charted, live: agents working, one waiting on you. The recording pauses while the map is framed
-// so every card is whole (the first question selects its ticket and glides the map to it first), and for the
-// poster, which is this frame without the caption over it.
+// The trail Scout charted, live: agents working, one waiting on you. The recording pauses while the side question is
+// answered and "N need you" opens the junction's question in its bubble (the map glides to it), and for the poster,
+// which is this frame without the caption over it.
 await pause();
 await stage('hide');
 // The away threshold is seconds long here: keep the trail lead "present" while the tab is visible. Hiding the
@@ -162,23 +189,41 @@ await page
   .click({ timeout: 3000 })
   .catch(() => {});
 await agentStep('asking:');
-await wait(2000);
-await frameHero();
+// The junction's agent asked a side question first (fyi): answered off camera, so its bubble shows the call that
+// blocks the trail.
+await openTicket('silent auto-merge');
+if (await bubbleQuestion().filter({ hasText: 'While on' }).count()) {
+  await page.locator('.bubble .suggest .chip', { hasText: 'Yes, show names' }).click();
+}
+await bubbleQuestion().filter({ hasText: 'Is silent auto-merge acceptable' }).waitFor({ timeout: 20000 });
+await closeBubble();
+await page.locator('.needs-btn').click();
+await bubbleQuestion().filter({ hasText: 'Is silent auto-merge acceptable' }).waitFor({ timeout: 20000 });
+await wait(2500);
 await caption('New project · trail map', 'Scout maps the trail. Agents pick up every ticket that isn’t blocked.');
 await page.mouse.move(size.width - 2, size.height - 2);
+await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur());
 await wait(800);
 await page.screenshot({ path: join(framesDir, 'poster.png'), style: '#stage-cap { visibility: hidden !important; }' });
 await resume();
 await wait(5000);
 
-// An agent asks; answer in the inbox.
-await caption('During the day · an agent asks', 'Everything that needs you, most important first. Answer in a click.');
-await page.locator('.att-item.k-question:not(.u-fyi) > button').first().click({ timeout: 20000 });
-await chip().waitFor({ timeout: 20000 });
-await wait(2600);
-await chip().click();
+// An agent asks: the question waits in a bubble beside its ticket; answer it there.
+await caption('During the day · an agent asks', 'What needs you opens beside its ticket. Answer in a click.');
+await wait(3000);
+await page.locator('.bubble .suggest .chip').first().click();
 await caption('Running', 'The agent records the decision and moves on to the next ticket.');
-await wait(1200);
+await agentStep('answered:');
+await wait(1500);
+await closeBubble();
+await wait(1500);
+
+// Under the map, the trail bar: the trail at a glance, then More for who's working on which model and what's next.
+await caption('The trail bar', 'What’s done, who’s working on which model, and what needs you, under the map.');
+await wait(2200);
+await trailBarMore(true);
+await wait(3800);
+await trailBarMore(false);
 // Away now, so the next scene's briefing covers what the agents do meanwhile.
 await setVisible(false);
 
@@ -207,30 +252,36 @@ await page.evaluate(() => {
   const prefs = JSON.parse(localStorage.getItem('teamtrail.prefs') || '{}');
   localStorage.setItem('teamtrail.prefs', JSON.stringify({ ...prefs, briefing: { enabled: false, awayMinutes: 15 } }));
 });
-await page.getByRole('button', { name: /^Records/ }).click();
-await page.locator('.decisions-btn').click();
+await closeBubble();
+await view('Logbook');
 await page.locator('.dv-row button').first().click();
-await caption('Existing project · decisions', 'Every answer is logged with its reasoning.');
+await caption('Existing project · decisions', 'Every answer is logged in the Logbook, with its reasoning.');
 await wait(3400);
-await page.getByRole('button', { name: /^Records/ }).click();
-await page.locator('.decisions-btn').click();
-
-await page.getByRole('button', { name: /^Records/ }).click();
-await page.locator('.stats-btn').click();
-await page.locator('.perf-recs li').first().waitFor({ timeout: 10000 });
-await caption('Across every trail', 'See how each agent delivers, with plain notes from your own numbers.');
-await wait(3600);
-await page.keyboard.press('Escape');
+await view('Map');
 
 // A finding broke an assumption: the agent proposes a new plan, previewed on the map, and you approve it.
 await caption('When the facts change', 'An agent proposes a new plan. See it on the map before anything moves.');
 await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
+await closeBubble();
 await wait(3200);
 await page.locator('.reroute-banner').getByRole('button', { name: 'Review' }).click();
 await page.locator('.reroute-dialog').waitFor();
 await caption('When the facts change', 'Why, the evidence and every change. Nothing happens until you approve.');
 await wait(4500);
 await page.locator('.reroute-dialog button', { hasText: 'Close' }).click();
+
+// Another trail's research is done: its brief waits for you, and nothing gets built until you approve it.
+await caption('Approve', 'Research is done. Approve the brief, and building can start.');
+await switchTrail('Team workspaces');
+const ready = page.locator('.scrim .dialog.brief-ready');
+await ready.waitFor({ timeout: 15000 });
+await wait(2400);
+await ready.getByRole('button', { name: 'Review brief' }).click();
+await page.locator('.brief-dialog').waitFor();
+await wait(2600);
+await page.getByRole('button', { name: 'Accept brief' }).click();
+await page.locator('.brief-dialog').waitFor({ state: 'detached', timeout: 15000 });
+await wait(2000);
 
 await term(
   'fieldnote-app — claude',
@@ -240,27 +291,39 @@ await term(
 );
 await term('fieldnote-app — claude', CHECK_IN, 'From Claude Code', 'Or check in with /scout status and /scout inbox.');
 await stage('hide');
-await caption('Every trail', 'Running several trails? Switch in one click.');
-await wait(700);
-await page.keyboard.press('Escape');
-await page.locator('.trail-btn').click({ force: true });
-// No hover tip over the open menu.
-await page.mouse.move(size.width / 2, size.height - 4);
-await wait(2600);
-await page.keyboard.press('Escape');
 // Every repo: All projects, with this repo and billing-service (lib/realProject.mjs) in one Needs you list.
 await caption('Every repo', 'More than one repo? One list of what needs you across all of them.');
-// Nothing left open over the header (a dialog that opened late would take the click).
-await page
-  .locator('.scrim')
-  .waitFor({ state: 'detached', timeout: 2000 })
-  .catch(() => page.keyboard.press('Escape'));
+await closeDialogs();
 await page.locator('.project-btn').click();
 await wait(900);
 await page.locator('.trail-item.all-projects').click();
 await page.locator('.projects-view .pj-item').first().waitFor({ timeout: 10000 });
 await wait(3000);
 await page.keyboard.press('Escape');
+await page.locator('.projects-view').waitFor({ state: 'detached', timeout: 10000 });
+await wait(800);
+
+// The seed's finished trail: every ticket done, the trail bar full, a flag at the destination.
+await caption('Destination reached', 'Every ticket done: the trail bar fills and the flag goes up.');
+await switchTrail('Search across notes');
+const reached = page.locator('.scrim [aria-label="Destination reached"]');
+await reached.waitFor({ timeout: 15000 });
+await wait(2600);
+await reached.getByRole('button', { name: 'Close' }).click();
+await reached.waitFor({ state: 'detached' });
+await closeBubble();
+// The trail's last stretch and the flag: the cards nearest the destination, framed as a person zooms in on them.
+const last = await page.evaluate(() => {
+  const flag = document.querySelector('.map-zone .destination').getBoundingClientRect();
+  return [...document.querySelectorAll('.map-zone .node:not(.main-mark)')]
+    .map((n) => ({ key: n.querySelector('.key')?.textContent?.trim(), r: n.getBoundingClientRect() }))
+    .sort((a, b) => Math.hypot(a.r.x - flag.x, a.r.y - flag.y) - Math.hypot(b.r.x - flag.x, b.r.y - flag.y))
+    .slice(0, 4)
+    .map((n) => n.key);
+});
+await frameMap(page, { keys: last, destination: true }, 0.7);
+await page.mouse.move(size.width / 2, size.height - 4);
+await wait(4000);
 await caption('', '');
 await stage('card', 'end');
 await wait(3200);

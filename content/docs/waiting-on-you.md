@@ -2,6 +2,13 @@
 
 One deterministic, ranked list of everything that needs you, with the reason each item ranks where it does.
 
+## Where you see it
+
+- **On the map.** A ticket that needs you is a red card. Click it, and its bubble starts with what it needs from you, with the actions in place: answer the agent's question, approve, unblock or resolve.
+- **In the header.** **N need you** counts this trail's items. Click it to open the most urgent one.
+- **Under the map.** The trail bar has a chip for each item. **More** opens the whole list, **Needs you**: this trail's items ranked, then the ones on your other trails, each naming its trail. Items that aren't a ticket (a brief, a reroute, an approval on this machine) open their own dialog or page.
+- **Across repos.** [All projects](/docs/all-projects/) ranks them in one list.
+
 ## What lands in the list
 
 | Kind                | Comes from                                                                                                                                                                                                                   |

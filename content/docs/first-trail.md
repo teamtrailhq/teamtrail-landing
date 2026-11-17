@@ -46,7 +46,7 @@ Each agent claims the next ready ticket, agrees on [acceptance criteria](/docs/v
 
 ## 5. Steer
 
-- **Waiting on you** ranks everything that needs you. See [Waiting on you](/docs/waiting-on-you/).
+- **N need you** in the header opens the most urgent thing in a bubble on the map, where you answer or approve it. **More** in the trail bar under the map lists everything that needs you, ranked. See [The Lookout](/docs/the-lookout/) and [Waiting on you](/docs/waiting-on-you/).
 - `/scout status` and `/scout inbox` do the same from the chat. See [/scout commands](/docs/scout-commands/).
 - When the facts change, agents propose a reroute for you to approve. See [Assumptions and reroutes](/docs/adaptive-trails/).
 

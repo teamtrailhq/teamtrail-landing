@@ -7,7 +7,7 @@ import { mkdirSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
-import { clippedCards, frameMap as frame } from './lib/frameMap.mjs';
+import { clippedCards, frameMap as frame, mapFrame } from './lib/frameMap.mjs';
 import { realProject } from './lib/realProject.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,7 +31,6 @@ const page = await ctx.newPage();
 page.on('pageerror', (e) => console.log('pageerror:', e.message));
 
 const wait = (ms, p = page) => p.waitForTimeout(ms);
-const chip = () => page.locator('.comms .suggest .chip').first();
 // The one-time dialogs a trail opens with (Research is done, Destination reached) close with Escape, as a person would.
 const closeOneTime = async () => {
   const d = page.locator('.scrim .dialog.brief-ready, .scrim [aria-label="Destination reached"]').first();
@@ -41,9 +40,58 @@ const closeOneTime = async () => {
       () => false,
     )
   ) {
-    await page.keyboard.press('Escape');
+    // A bubble open behind it can take the first Esc.
+    for (let i = 0; i < 4 && (await d.count()); i++) {
+      await page.keyboard.press('Escape');
+      await wait(600);
+    }
     await d.waitFor({ state: 'detached' });
   }
+};
+
+/** A view tab in the header: Map, Plan, Activity or Logbook. A dialog that opened meanwhile closes first, with Esc. */
+const view = async (name) => {
+  for (let i = 0; i < 3 && (await page.locator('.scrim').count()); i++) {
+    await page.keyboard.press('Escape');
+    await wait(500);
+  }
+  await page.locator('.view-tabs').getByRole('button', { name, exact: true }).click();
+};
+/** The agent's question at the top of the open bubble. */
+const bubbleQuestion = () => page.locator('.bubble .open-q');
+/** Closes the bubble with Esc, as a person would, when one is open. */
+const closeBubble = async () => {
+  if (!(await page.locator('.bubble').count())) return;
+  await page.keyboard.press('Escape');
+  await page.locator('.bubble').waitFor({ state: 'detached', timeout: 5000 });
+  await wait(400);
+};
+/** Opens a ticket's bubble by its title: Fit the trail, then click its card. */
+const openTicket = async (title) => {
+  await closeBubble();
+  await page.locator('.map-zone').getByRole('button', { name: 'Fit' }).click();
+  await wait(700);
+  await page.locator('.map-zone .node', { hasText: title }).first().click();
+  await page.locator('.bubble').waitFor({ timeout: 15000 });
+  await wait(800);
+};
+/** The full ticket: the bubble's "Full ticket" opens the inspector as a drawer over the map. */
+const fullTicket = async () => {
+  await page.locator('.bubble').getByRole('button', { name: 'Full ticket' }).click();
+  await page.locator('.ticket-drawer').waitFor({ timeout: 15000 });
+  await wait(800);
+};
+/** Back from the full ticket to its bubble. */
+const closeDrawer = async () => {
+  await page.locator('.ticket-drawer .bubble-close').click();
+  await page.locator('.ticket-drawer').waitFor({ state: 'detached', timeout: 5000 });
+};
+/** The trail bar's More (the lists under it) or Less; the choice stays in this browser. */
+const trailBarMore = async (more) => {
+  const button = page.locator('.trail-bar').getByRole('button', { name: more ? 'More' : 'Less', exact: true });
+  if (await button.count()) await button.click();
+  await page.locator('.trail-lists').waitFor({ state: more ? 'visible' : 'detached', timeout: 10000 });
+  await wait(600);
 };
 
 const setVisible = (v) =>
@@ -130,12 +178,33 @@ const zoom = async (name, sels, { aspect = 4 / 3, pad = 16, top = pad, bottom = 
   return clip;
 };
 
-/** A map close-up: the map zone, refused when the crop cuts a card or a button covers one. */
-const mapShot = async (name) => {
-  await settleMap();
-  const clip = await zoom(name, ['.map-zone'], { aspect: 16 / 10, pad: 0, width: 1960 });
-  const cut = await clippedCards(page, clip);
-  if (cut.length) throw new Error(`${name} cuts through or covers: ${cut.join(', ')}`);
+/** The shape of the map close-ups. */
+const MAP_ASPECT = 16 / 10;
+
+/**
+ * A map close-up of the `pick`ed cards (see lib/frameMap.mjs): the middle of the map's own area at 16:10 (or
+ * `aspect`), with no bubble open, refused when the crop cuts a card or a button covers one. Saved 1960 pixels wide.
+ * A question that comes in meanwhile opens its bubble and glides the map to it, so the frame is made again then.
+ */
+const mapShot = async (name, pick, { fill = 0.94, aspect = MAP_ASPECT } = {}) => {
+  let cut = [];
+  for (let attempt = 0; attempt < 4; attempt++) {
+    await closeBubble();
+    await frameMap(pick, fill, aspect);
+    await settleMap();
+    await clearUi();
+    if (await page.locator('.bubble').count()) continue;
+    const f = await mapFrame(page, aspect);
+    const clip = { x: Math.round(f.x), y: Math.round(f.y), width: Math.round(f.width), height: Math.round(f.height) };
+    cut = await clippedCards(page, clip);
+    if (cut.length) continue;
+    const file = join(media, `${name}.png`);
+    await page.screenshot({ path: file, clip });
+    fit(file, 1960);
+    console.log('saved', `${name}.png`, '1960w');
+    return;
+  }
+  throw new Error(`${name} cuts through or covers: ${cut.join(', ') || 'a bubble kept opening'}`);
 };
 
 /**
@@ -171,7 +240,7 @@ const closeSettings = async () => {
 const settleMap = async () => {
   const snap = () =>
     page.evaluate(() =>
-      [...document.querySelectorAll('.map-zone .node')]
+      [...document.querySelectorAll('.map-zone .node:not(.main-mark)')]
         .map((n) => {
           // The card's title, not the whole card: a working card's ring pulses and changes the card's box.
           const r = (n.querySelector('.title') ?? n).getBoundingClientRect();
@@ -181,7 +250,7 @@ const settleMap = async () => {
     );
   const blank = () =>
     page.evaluate(() =>
-      [...document.querySelectorAll('.map-zone .node')].some(
+      [...document.querySelectorAll('.map-zone .node:not(.main-mark)')].some(
         (n) => !n.querySelector('.title')?.textContent?.trim() || !n.querySelector('.key')?.textContent?.trim(),
       ),
     );
@@ -197,11 +266,11 @@ const settleMap = async () => {
  * Frames the map (lib/frameMap.mjs) and refuses a frame that cuts a card in half. A card an agent creates while the
  * map is being framed shifts it, so a cut frame is tried again once the map holds still.
  */
-const frameMap = async (pick, fill) => {
+const frameMap = async (pick, fill, aspect) => {
   let cut = [];
   for (let attempt = 0; attempt < 3; attempt++) {
-    await frame(page, pick, fill);
-    cut = await clippedCards(page);
+    await frame(page, pick, fill, aspect);
+    cut = await clippedCards(page, aspect && (await mapFrame(page, aspect)));
     if (!cut.length) return;
     await settleMap();
   }
@@ -261,34 +330,51 @@ await page.evaluate(() => {
   const prefs = JSON.parse(localStorage.getItem('teamtrail.prefs') || '{}');
   localStorage.setItem('teamtrail.prefs', JSON.stringify({ ...prefs, briefing: { enabled: true, awayMinutes: 15 } }));
 });
+
+// The junction's agent asked a side question first (fyi): answer it in #6's bubble, so the bubble shows the call
+// that blocks the trail.
+await openTicket('silent auto-merge');
+if (await bubbleQuestion().filter({ hasText: 'While on' }).count()) {
+  await page.locator('.bubble .suggest .chip', { hasText: 'Yes, show names' }).click();
+}
+await bubbleQuestion().filter({ hasText: 'Is silent auto-merge acceptable' }).waitFor({ timeout: 20000 });
+// The Lookout as it opens: the map centred on what needs you, its bubble open beside the ticket, the trail bar under it.
 await page.reload();
 await page.locator('.node').first().waitFor({ timeout: 15000 });
-await wait(1500);
-
-await page.locator('.node', { hasText: 'silent auto-merge' }).first().click();
-await wait(1500);
-// The whole app, with nothing open over it, the map framed so no card is cut at its edges.
-await frameMap(
-  { keys: ['#2', '#3', '#8', '#21', '#22', '#4', '#6', '#7', '#5', '#9', '#10', '#11'], added: true },
-  0.96,
-);
+await bubbleQuestion().filter({ hasText: 'Is silent auto-merge acceptable' }).waitFor({ timeout: 20000 });
 await settleMap();
 await shot('lookout-overview');
+// The question in its bubble beside the card: who asks, what it decides, the suggested replies and an answer box.
+await zoom('lookout-bubble-question', ['.map-zone .node.sel', '.bubble'], { aspect: null, pad: 20 });
 
-// The map close-up: most of the trail, done research on the left, the junction waiting on you, prototypes in
-// progress, the decisions they unblock and the new plan drawn in.
+// The trail bar's More: under the map, everything that needs you, ranked, the agents at work with their models, and
+// what's up next.
+await trailBarMore(true);
+await page.locator('.trail-lists .needs-list li.att-item').nth(3).waitFor({ timeout: 20000 });
+await settleMap();
+await shot('lookout-trail-bar-more');
+await trailBarMore(false);
+
+// Answer in the bubble, with a suggested reply; the agent records the decision and moves on.
+await page.locator('.bubble .suggest .chip').first().click();
+await agentStep('answered:');
+await closeBubble();
+
+// The map close-up (no bubble open): most of the trail, done research on the left, prototypes in progress, the decisions they unblock
+// and the new plan drawn in.
 await page.setViewportSize(mapSize);
 await wait(800);
-await frameMap(
+// Wider than the other close-ups: the whole trail is long and low.
+await mapShot(
+  'flow-06-first-tickets',
   {
-    // #14 is the out-of-scope card below the trail: in the frame whole, clear of the Summary button.
+    // #14 is the out-of-scope card below the trail: in the frame whole, clear of the Legend button.
     keys: ['#2', '#3', '#8', '#21', '#22', '#4', '#6', '#7', '#5', '#9', '#10', '#11', '#12', '#15', '#13', '#14'],
     added: true,
     destination: true,
   },
-  0.9,
+  { fill: 0.9, aspect: 2 },
 );
-await mapShot('flow-06-first-tickets');
 await page.setViewportSize(size);
 await wait(800);
 
@@ -311,39 +397,9 @@ await zoom('flow-05-new-trail', ['.dialog'], { aspect: 16 / 10 });
 await page.keyboard.press('Escape');
 await wait(600);
 
-// Everything that needs you, ranked: questions, the new plan, the brief, a risky change, knowledge to review.
-// A taller window shows more of the list.
-await page.locator('.attention-queue .att-item.k-question').first().waitFor({ timeout: 20000 });
-await page.setViewportSize({ ...size, height: 1100 });
-await wait(1200);
-await zoom('lookout-queue', ['.inbox-part'], { aspect: null, pad: 0 });
-await page.setViewportSize(size);
-await wait(600);
-
-await page.locator('.att-item.k-question:not(.u-fyi) > button').first().click();
-await chip().waitFor({ timeout: 20000 });
-await wait(1500);
-await zoom('flow-07-waiting-on-you', ['.inbox .comms'], { aspect: 16 / 10 });
-await chip().click();
-await agentStep('asking:', 2);
-await page.locator('.att-item.k-question:not(.u-fyi) > button').first().click();
-await chip().waitFor({ timeout: 20000 });
-await wait(1500);
-// A taller window shows the whole conversation: the question, the suggested replies and the answer box.
-await page.setViewportSize({ ...size, height: 1200 });
-await wait(800);
-await zoom('lookout-hitl-conversation', ['.comms .msg.open-q', '.comms .comms-input'], {
-  aspect: null,
-  pad: 10,
-  top: 14,
-  bottom: 14,
-});
-await page.setViewportSize(size);
-await wait(500);
-
-// The Logbook: a decision with its reasoning, the facts behind it and the options it ruled out.
-await page.getByRole('button', { name: /^Records/ }).click();
-await page.locator('.decisions-btn').click();
+// The Logbook, a page from the header's tabs: a decision with its reasoning, the facts behind it and the options it
+// ruled out.
+await view('Logbook');
 await page.locator('.dv-row').first().waitFor({ timeout: 10000 });
 await page.locator('.dv-row button', { hasText: 'CRDT vs last-write-wins' }).first().click();
 await wait(1500);
@@ -353,9 +409,8 @@ await zoom('lookout-decisions', ['.dv-detail .d-head', '.dv-detail .actions'], {
   top: 10,
   bottom: 12,
 });
-await page.getByRole('button', { name: /^Records/ }).click();
-await page.locator('.decisions-btn').click();
-await wait(1500);
+await view('Map');
+await wait(1000);
 
 // Trail stats: the seed's finished trail gives it results from two vendors.
 await page.getByRole('button', { name: /^Records/ }).click();
@@ -366,21 +421,21 @@ await zoom('lookout-trail-stats', ['.perf-section >> nth=0', '.perf-section >> n
 await page.keyboard.press('Escape');
 await wait(500);
 
-// Discovery: the plan-only trail has a brief waiting for review. A ticket is open behind it, as you'd have it.
+// Discovery: the plan-only trail has a brief waiting for review.
 await page.locator('.trail-btn').click();
 await page.getByRole('menuitem').filter({ hasText: 'Team workspaces' }).first().click();
 await closeOneTime();
-await page.locator('.node', { hasText: 'Which roles' }).first().click({ timeout: 15000 });
-await wait(800);
-await page.getByRole('button', { name: 'Review brief' }).click({ timeout: 15000 });
+await page.getByRole('button', { name: 'Review brief' }).first().click({ timeout: 15000 });
 await page.locator('.brief-dialog').waitFor();
 await wait(800);
 await zoom('lookout-discovery', ['.brief-dialog'], { aspect: 16 / 10, pad: 24 });
 await page.keyboard.press('Escape');
+await closeBubble();
 await page.locator('.trail-btn').click();
 await page.getByRole('menuitem').filter({ hasText: 'Offline-first' }).first().click();
 await closeOneTime();
 await wait(1200);
+await closeBubble();
 
 // Knowledge: everything on record, with a suggestion from a dead end open for review. A shorter window, so the
 // field guide is about as tall as its list.
@@ -396,15 +451,35 @@ await page.keyboard.press('Escape');
 await page.setViewportSize(size);
 await wait(500);
 
-// Acceptance criteria on a ticket, with the knowledge it brings.
-await page.locator('.node', { hasText: 'Instrument current' }).first().click();
-await page.locator('.criteria-section').waitFor({ timeout: 15000 });
-// A taller window, so the ticket shows whole down to its criteria (they sit under the description and the guide).
+// Acceptance criteria on a ticket, with the knowledge it brings: its bubble's Full ticket, a drawer over the map.
+// A taller window, so the ticket shows whole down to its criteria and guides.
 await page.setViewportSize({ ...size, height: 1500 });
+await openTicket('Instrument current');
+await fullTicket();
+await page.locator('.ticket-drawer .criteria-section').waitFor({ timeout: 15000 });
 await wait(1000);
-await zoom('lookout-criteria', ['.inspector .zone-title', '.inspector .criteria-section'], { aspect: null, pad: 0 });
-// The same ticket's guides (QA and security, by its type) and the agent's checklist answers, under its title.
-await zoom('lookout-ticket-guide', ['.inspector .zone-title', '.inspector .ticket-guides'], { aspect: null, pad: 0 });
+await zoom('lookout-criteria', ['.ticket-drawer .ticket-head', '.ticket-drawer .criteria-section'], {
+  aspect: null,
+  pad: 0,
+  top: 12,
+  bottom: 12,
+});
+await closeDrawer();
+// A finished task's guides (QA, by its type) and the agent's answers to their checklists, from its completion.
+await openTicket('Add a sync_failures table');
+await fullTicket();
+await page.locator('.ticket-drawer .ticket-progress').waitFor({ timeout: 15000 });
+// The attempt's Details hold the checklist answers.
+await page.locator('.ticket-drawer .ticket-progress').getByRole('button', { name: 'Details' }).first().click();
+await wait(1000);
+await zoom('lookout-ticket-guide', ['.ticket-drawer .ticket-how', '.ticket-drawer .ticket-progress'], {
+  aspect: null,
+  pad: 0,
+  top: 12,
+  bottom: 12,
+});
+await closeDrawer();
+await closeBubble();
 await page.setViewportSize(size);
 await wait(600);
 
@@ -413,8 +488,11 @@ await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
 await page.locator('.node.mark-added').first().waitFor({ timeout: 15000 });
 await page.setViewportSize(mapSize);
 await wait(800);
-await frameMap({ keys: ['#5', '#9', '#10', '#11', '#12', '#15', '#13'], added: true, destination: true });
-await mapShot('lookout-reroute-map');
+await mapShot('lookout-reroute-map', {
+  keys: ['#5', '#9', '#10', '#11', '#12', '#15', '#13'],
+  added: true,
+  destination: true,
+});
 await page.setViewportSize(size);
 await wait(800);
 await page.locator('.reroute-banner').getByRole('button', { name: 'Review' }).click();
@@ -430,7 +508,7 @@ await zoom('lookout-risk', ['#settings-policy'], { aspect: 4 / 3, pad: 16 });
 // Settings → This trail → Model matching: the tier per ticket type, with hints from Trail stats. Switched on here (it
 // starts off so the scripted agents can take every ticket, see lib/realProject.mjs).
 // A taller window: the section is the group's last but one, so it can't scroll up to the top of a normal one.
-await page.setViewportSize({ ...size, height: 1250 });
+await page.setViewportSize({ ...size, height: 1700 });
 await openSettings('models');
 await page.locator('.model-matching-toggle').click();
 await page.locator('.tier-grid .tier-row').first().waitFor({ timeout: 10000 });
@@ -456,31 +534,43 @@ await zoom('lookout-guide-catalog', ['.catalog-dialog'], { aspect: 16 / 10, pad:
 await page.locator('.catalog-dialog').getByRole('button', { name: 'Close' }).click();
 await wait(400);
 await closeSettings();
+await closeBubble();
 
-// Parallel work: the overlap warning in the queue, then the ticket with the files its agent expects to change.
-// A tall window, so the warning and the items around it show whole, without scrolling the list.
+// Parallel work: the overlap warning in Needs you (the trail bar's More), then the ticket with the files its agent
+// expects to change. A tall window, so the warning and the items around it show whole.
 await page.setViewportSize({ ...size, height: 1500 });
-const overlap = page.locator('.att-item.k-overlap').first();
+await trailBarMore(true);
+const overlap = page.locator('.needs-list .att-item.k-overlap').first();
 await overlap.waitFor({ timeout: 20000 });
 await overlap.evaluate((el) => el.scrollIntoView({ block: 'center' }));
 await wait(800);
-// The warning between its neighbours in Waiting on you.
+// The warning between its neighbours in Needs you.
 await page.evaluate(() => {
-  const items = [...document.querySelectorAll('.att-item')];
+  const items = [...document.querySelectorAll('.needs-list .att-item')];
   const i = items.findIndex((el) => el.classList.contains('k-overlap'));
   items[i - 1]?.setAttribute('data-shot', 'before');
   items[i + 1]?.setAttribute('data-shot', 'after');
 });
-await zoom('lookout-overlap', ['[data-shot="before"]', '.att-item.k-overlap', '[data-shot="after"]'], {
+await zoom('lookout-overlap', ['[data-shot="before"]', '.needs-list .att-item.k-overlap', '[data-shot="after"]'], {
   aspect: null,
   pad: 0,
 });
+await trailBarMore(false);
 await page.setViewportSize(size);
 await wait(600);
-await page.locator('.node', { hasText: 'Show sync status' }).first().dispatchEvent('click');
-await page.locator('.inspector', { hasText: 'Expects to change' }).waitFor({ timeout: 15000 });
+await openTicket('Show sync status');
+await fullTicket();
+// Its Progress: the agent's claim, its own branch and the files it said it would change.
+await page.locator('.ticket-drawer .ticket-progress', { hasText: 'Changes' }).waitFor({ timeout: 15000 });
 await wait(600);
-await zoom('lookout-parallel-ticket', ['.inspector'], { aspect: 4 / 5, pad: 0 });
+await zoom('lookout-parallel-ticket', ['.ticket-drawer .ticket-head', '.ticket-drawer .ticket-progress'], {
+  aspect: null,
+  pad: 0,
+  top: 12,
+  bottom: 12,
+});
+await closeDrawer();
+await closeBubble();
 
 // Settings → Project → Workspaces: a worktree and branch for each claimed ticket (on in lib/realProject.mjs).
 await page.setViewportSize({ ...size, height: 1100 });
@@ -491,6 +581,7 @@ await wait(900);
 await zoom('lookout-workspaces', ['#settings-workspaces'], { aspect: null, pad: 16 });
 await page.setViewportSize(size);
 await closeSettings();
+await closeBubble();
 
 // All projects: this repo and billing-service (lib/realProject.mjs), with one Needs you list across them.
 // 1440 wide is the smallest window that shows the list and the projects side by side.
@@ -502,18 +593,19 @@ await wait(1500);
 await zoom('lookout-all-projects', ['.projects-view'], { aspect: null, pad: 0 });
 await page.keyboard.press('Escape');
 await page.setViewportSize(size);
+await wait(800);
+await closeBubble();
 // No hover tip or focus ring left over for the phone shot.
 await clearUi();
 
-// Phone view of the same project.
+// Phone view of the same project: the header, the map and the tab bar.
 const cdp = await ctx.newCDPSession(page);
 await cdp.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
 await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true });
 await wait(2500);
-// Top half only: the header and the Waiting on you inbox.
 const { data } = await cdp.send('Page.captureScreenshot', {
   format: 'png',
-  clip: { x: 0, y: 0, width: 390, height: 430, scale: 1 },
+  clip: { x: 0, y: 0, width: 390, height: 844, scale: 1 },
 });
 writeFileSync(join(media, 'lookout-phone.png'), Buffer.from(data, 'base64'));
 console.log('saved lookout-phone.png');
