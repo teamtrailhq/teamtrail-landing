@@ -32,6 +32,19 @@ page.on('pageerror', (e) => console.log('pageerror:', e.message));
 
 const wait = (ms, p = page) => p.waitForTimeout(ms);
 const chip = () => page.locator('.comms .suggest .chip').first();
+// The one-time dialogs a trail opens with (Research is done, Destination reached) close with Escape, as a person would.
+const closeOneTime = async () => {
+  const d = page.locator('.scrim .dialog.brief-ready, .scrim [aria-label="Destination reached"]').first();
+  if (
+    await d.waitFor({ timeout: 2500 }).then(
+      () => true,
+      () => false,
+    )
+  ) {
+    await page.keyboard.press('Escape');
+    await d.waitFor({ state: 'detached' });
+  }
+};
 
 const setVisible = (v) =>
   page.evaluate((v) => {
@@ -356,6 +369,7 @@ await wait(500);
 // Discovery: the plan-only trail has a brief waiting for review. A ticket is open behind it, as you'd have it.
 await page.locator('.trail-btn').click();
 await page.getByRole('menuitem').filter({ hasText: 'Team workspaces' }).first().click();
+await closeOneTime();
 await page.locator('.node', { hasText: 'Which roles' }).first().click({ timeout: 15000 });
 await wait(800);
 await page.getByRole('button', { name: 'Review brief' }).click({ timeout: 15000 });
@@ -365,6 +379,7 @@ await zoom('lookout-discovery', ['.brief-dialog'], { aspect: 16 / 10, pad: 24 })
 await page.keyboard.press('Escape');
 await page.locator('.trail-btn').click();
 await page.getByRole('menuitem').filter({ hasText: 'Offline-first' }).first().click();
+await closeOneTime();
 await wait(1200);
 
 // Knowledge: everything on record, with a suggestion from a dead end open for review. A shorter window, so the
@@ -388,8 +403,8 @@ await page.locator('.criteria-section').waitFor({ timeout: 15000 });
 await page.setViewportSize({ ...size, height: 1500 });
 await wait(1000);
 await zoom('lookout-criteria', ['.inspector .zone-title', '.inspector .criteria-section'], { aspect: null, pad: 0 });
-// The same ticket asks for the QA guide: the guide and the agent's checklist answers, under the ticket's title.
-await zoom('lookout-ticket-guide', ['.inspector .zone-title', '.inspector .ticket-guide'], { aspect: null, pad: 0 });
+// The same ticket's guides (QA and security, by its type) and the agent's checklist answers, under its title.
+await zoom('lookout-ticket-guide', ['.inspector .zone-title', '.inspector .ticket-guides'], { aspect: null, pad: 0 });
 await page.setViewportSize(size);
 await wait(600);
 
