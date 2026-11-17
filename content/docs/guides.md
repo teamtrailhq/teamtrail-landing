@@ -8,54 +8,65 @@ A guide is data, never code: instructions, a checklist and the checks it require
 
 Five guides ship with Teamtrail and need nothing installed:
 
-| Id          | Name      | For ticket types                            | What it does                                                                  |
-| ----------- | --------- | ------------------------------------------- | ----------------------------------------------------------------------------- |
-| `reviewer`  | Reviewer  | `review`                                    | Independent review of another agent's finished work before it counts as done. |
-| `qa`        | QA        | `task`, `execute`, `prototype`              | Tests the change like a user would and makes sure the tests cover it.         |
-| `security`  | Security  | `research`, `task`, `execute`, `review`     | Looks at the change as an attacker would before it ships.                     |
-| `docs`      | Docs      | `research`, `task`, `execute`               | Keeps the docs, examples and changelog true to what the code does.            |
-| `architect` | Architect | `research`, `junction`, `prototype`, `task` | Shapes how the change fits the system before and while it is built.           |
+| Id          | Name      | On by default for                   | Made for                                    | What it does                                                                  |
+| ----------- | --------- | ----------------------------------- | ------------------------------------------- | ----------------------------------------------------------------------------- |
+| `architect` | Architect | `research`, `junction`, `prototype` | `research`, `junction`, `prototype`, `task` | Shapes how the change fits the system before and while it is built.           |
+| `qa`        | QA        | `task`, `execute`                   | `task`, `execute`, `prototype`              | Tests the change like a user would and makes sure the tests cover it.         |
+| `security`  | Security  | `task`, `execute`                   | `research`, `task`, `execute`, `review`     | Looks at the change as an attacker would before it ships.                     |
+| `reviewer`  | Reviewer  | `review`                            | `review`                                    | Independent review of another agent's finished work before it counts as done. |
+| `docs`      | Docs      | Off                                 | `research`, `task`, `execute`               | Keeps the docs, examples and changelog true to what the code does.            |
 
 A file in `.teamtrail/guides/` with a built-in's id replaces it once you approve it. Removing that file brings the built-in back.
 
-## Giving a ticket a guide
+## Guides by ticket type
 
-- **A ticket asks for a guide.** Each ticket has an optional `guide`. Agents set it with `add_ticket` or `start_trail` (`guide` on each ticket); you set it in the Lookout's ticket inspector (**Guide**). The guide must be installed and active, and made for the ticket's type.
-- **A trail lists its team.** A trail's team is the guides its tickets use. Agents name it once with `start_trail` (`team`); after that only you change it, in **Settings → Team of #n**. With `reviewer` on the team, the `review` tickets Teamtrail creates at `checks+review` get the reviewer guide.
+Every ticket takes the guides of its type on its trail. A new trail starts with the defaults above, so a research ticket gets the architect, a task gets QA and security, and a review gets the reviewer, without anyone picking them.
+
+- **Per trail.** **Settings → This trail → Guides by type** has a row per ticket type and a toggle per approved guide, your team's own guides included. Only you change it; agents can't. **Back to defaults** puts the defaults back.
+- **Per ticket.** The ticket inspector's **Guides** shows a chip per guide, marked **by type**, **added** or **removed**. Remove one from that ticket alone, put it back, or **Add a guide** that only that ticket gets. You can add any approved guide to any ticket type.
+- **Agents add, never remove.** An agent can give a ticket it charts one guide more than its type gets (`guide` on `add_ticket` or each `start_trail` ticket), when the guide is made for the ticket's type. It can't remove a guide or change a trail's guides by type. `start_trail`'s old `team` is ignored, and the result says so.
 - **Agents can pick by guide.** `claim_ticket` and `next_ticket` take `guides` (for example `["qa"]`) to take only tickets with one of those guides. Tickets without a guide are left out.
+
+A trail from before guides came by type keeps its team: its tickets get the defaults only for guides that were on its team, so no ticket gets a guide you hadn't put on the trail. Your first change in **Guides by type** replaces the team with the trail's own setting. A ticket's old single `guide` counts as added to it.
 
 `list_guides` shows agents the guides they can use. Installing, approving and removing guides is yours, in the Lookout or the CLI.
 
 ## What the claiming agent gets
 
-When a ticket has an active guide, the claim result has `guide`:
+When a ticket has active guides, the claim result has `guides`, one entry per guide, in order:
 
-| Field                   |                                                                  |
-| ----------------------- | ---------------------------------------------------------------- |
-| `id`, `name`, `version` | Which guide.                                                     |
-| `instructions`          | The guide's body: the role to take on.                           |
-| `checklist`             | The items to answer when completing.                             |
-| `requiredChecks`        | Checks from `verification.json` this guide adds to the ticket.   |
-| `preferredAgent`        | Optional and advisory. Teamtrail never picks or starts an agent. |
+| Field                   |                                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------- |
+| `id`, `name`, `version` | Which guide.                                                                                        |
+| `via`                   | `type` when the ticket got it from its type on the trail, `ticket` when it was added to the ticket. |
+| `instructions`          | The guide's body: the role to take on.                                                              |
+| `checklist`             | The items to answer when completing.                                                                |
+| `requiredChecks`        | Checks from `verification.json` this guide adds to the ticket.                                      |
+| `preferredAgent`        | Optional and advisory. Teamtrail never picks or starts an agent.                                    |
 
-When the ticket asks for a guide that can't be used now (not installed, not approved, edited after approval or failing the lint), the claim has a `guideWarning` instead. The agent works the ticket without guide instructions, and you see the guide in [Waiting on you](/docs/waiting-on-you/).
+A claim carries up to 32 KB of guide instructions in all. A guide past that comes with `instructionsOmitted` and the claim with a `guidesNote`; its checklist and checks still apply.
+
+When a ticket takes a guide that can't be used now (not installed, not approved, edited after approval or failing the lint), the claim has a line for it in `guideWarnings`. The agent works the ticket without that guide's instructions, its last approved checks still run, and you see the guide in [Waiting on you](/docs/waiting-on-you/).
+
+When you add or remove a guide on a ticket an agent is working, its next `report_progress` returns `guidesChanged`, and a refused completion hands it over too. The agent works in the added guide; a removed guide no longer needs its checklist.
 
 Guide text never overrides Teamtrail's rules: an agent still never reviews its own work, never answers or approves for you, and never edits verification or guide files.
 
 ## The checklist
 
-When the guide has a checklist, `close_ticket`, `report_completion` and `submit_review` need `checklist`: one answer per item.
+When the ticket's guides have checklists, `close_ticket`, `report_completion` and `submit_review` need `checklist`: one answer per item of every guide.
 
 ```json
 "checklist": [
-  { "item": "1", "done": true },
-  { "item": "Listed what you did not test, and why", "done": false, "note": "No device lab for Android 9" }
+  { "guide": "qa", "item": "1", "done": true },
+  { "guide": "qa", "item": "Listed what you did not test, and why", "done": false, "note": "No device lab for Android 9" },
+  { "guide": "security", "item": "1", "done": true }
 ]
 ```
 
-`item` is the item's text (case and spacing don't matter) or its number. Every item needs an answer; `done: false` with a note counts. Teamtrail checks that each item is answered, not that the answer is true. A missing or unknown item refuses the completion with the list of what's missing.
+`guide` names the guide the answer is for; it's needed when the ticket has several. `item` is the item's text (case and spacing don't matter) or its number. Every item needs an answer; `done: false` with a note counts. Teamtrail checks that each item is answered, not that the answer is true. A missing or unknown item refuses the completion with the list of what's missing.
 
-The answers are kept in `.teamtrail/.evidence/<trail>/<ticket>/checklist.json`, and the ticket inspector shows them.
+The answers are kept in `.teamtrail/.evidence/<trail>/<ticket>/checklist.json`, and the ticket inspector shows them per guide. A ticket's [proof](/docs/verification/) lists its guides and how much of each checklist got an answer.
 
 ## Adding guides from the catalog
 
@@ -116,7 +127,7 @@ Measure the change on the slowest device you support, before and after, and writ
 
 Check it with `teamtrail guides lint`. Without a path it lints your project's own guides.
 
-Then approve it in the Lookout: **Settings → Guides → Write your own** lists the guides your team wrote, each as **Not approved yet** or **Approved**. Agents can't use a guide until the trail lead approves it, and again after every edit. Once it's approved, give tickets the guide `perf` or put it on a trail's team.
+Then approve it in the Lookout: **Settings → Guides → Write your own** lists the guides your team wrote, each as **Not approved yet** or **Approved**. Agents can't use a guide until the trail lead approves it, and again after every edit. Once it's approved, turn it on for a ticket type in **Guides by type**, or add it to single tickets.
 
 `guides add ./perf.md` adds a guide file from elsewhere: it runs the same lint, copies the file into `.teamtrail/guides/` and pins it.
 
@@ -178,7 +189,7 @@ proposedChecks:
 - **Checks only after you approve them.** A guide's proposed check never runs until you approve it, from the prompt in `guides add`, with `--approve-checks`, or in **Settings → Guides**. Approving writes it to `verification.json`, the only place Teamtrail runs commands from, and records its argv's hash in the lock. If a later version changes the command, you're asked again. Without a terminal, `guides add` approves nothing unless you pass `--approve-checks`.
 - **Unknown programs need your acknowledgement.** A proposed check that runs a program Teamtrail doesn't know says so, and its button reads **I know what it runs: approve check `<name>`**. The CLI asks about it only at a terminal; `--approve-checks` never approves one. A command line that itself carries or downloads code is refused.
 - **Approved per machine.** What you approved is kept in your [config folder](/docs/personal-settings/), outside the repo. A guide a teammate added shows as approved elsewhere until you approve it on your machine, and a repo moved to another folder is asked again.
-- **Pinned by hash.** `guides.lock.json` records each guide's version, sha256, source and who added it. A guide file edited after you approved it is switched off until you look at it again (**Approve**). The same happens when its lock entry changes outside Teamtrail, for example an agent editing the file or a teammate's change pulled with git. Its tickets get a `guideWarning`, and the guide shows in Waiting on you.
+- **Pinned by hash.** `guides.lock.json` records each guide's version, sha256, source and who added it. A guide file edited after you approved it is switched off until you look at it again (**Approve**). The same happens when its lock entry changes outside Teamtrail, for example an agent editing the file or a teammate's change pulled with git. Its tickets get a line in `guideWarnings`, and the guide shows in Waiting on you.
 - **Guides only add.** A guide can add checks and a checklist. It can't lower the verification level, drop or reorder a check, change who decides, or let an agent review its own work. A switched-off guide keeps adding the checks its approved version required.
 - **Removing a guide** deletes its file and lock entry. Checks you approved stay in `verification.json`; edit that file to drop them.
 
