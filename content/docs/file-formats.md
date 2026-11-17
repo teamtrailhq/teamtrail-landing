@@ -265,7 +265,7 @@ Optional; committed. Catalogs to search besides the official one, in order, each
 
 ## Checklist answers: `.evidence/<trail>/<ticket>/checklist.json`
 
-The latest answers to a ticket's guide checklist: `guide` (`id`, `version`), `answers` (`item`, `done`, `note`), `by` and `at`. Local.
+The latest answers to a ticket's guide checklists: `v: 2`, `guides` (one entry per guide: `guide` with `id` and `version`, and its `answers`, each `item`, `done`, `note`), `by` and `at`. A `v: 1` file, one guide's `guide` and `answers`, still reads. Local.
 
 ## Models: `models.json`
 
