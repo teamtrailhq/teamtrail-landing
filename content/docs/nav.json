@@ -3,54 +3,168 @@
     {
       "title": "Getting started",
       "pages": [
-        { "slug": "introduction", "title": "Introduction" },
-        { "slug": "install", "title": "Install" },
-        { "slug": "sign-in", "title": "Sign in to the Lookout" },
-        { "slug": "connect-your-agent", "title": "Connect your agent" },
-        { "slug": "first-trail", "title": "Your first trail" },
-        { "slug": "remote-agents", "title": "Remote agents" }
+        {
+          "slug": "introduction",
+          "title": "Introduction"
+        },
+        {
+          "slug": "install",
+          "title": "Install"
+        },
+        {
+          "slug": "sign-in",
+          "title": "Sign in to the Lookout"
+        },
+        {
+          "slug": "connect-your-agent",
+          "title": "Connect your agent"
+        },
+        {
+          "slug": "first-trail",
+          "title": "Your first trail"
+        }
       ]
     },
     {
-      "title": "Concepts",
+      "title": "Trails",
       "pages": [
-        { "slug": "trails-and-tickets", "title": "Trails and tickets" },
-        { "slug": "the-lookout", "title": "The Lookout" },
-        { "slug": "security", "title": "Approvals and security" },
-        { "slug": "teamtrail-folder", "title": "The .teamtrail folder" },
-        { "slug": "discovery-and-knowledge", "title": "Discovery and knowledge" },
-        { "slug": "waiting-on-you", "title": "Waiting on you" },
-        { "slug": "verification", "title": "Verification and criteria" },
-        { "slug": "adaptive-trails", "title": "Assumptions and reroutes" },
-        { "slug": "parallel-work", "title": "Parallel work" },
-        { "slug": "review-capacity", "title": "Review capacity" },
-        { "slug": "guides", "title": "Guides" },
-        { "slug": "model-matching", "title": "Model matching" },
-        { "slug": "trail-stats", "title": "Trail stats" },
-        { "slug": "decision-memory", "title": "Decision memory" },
-        { "slug": "all-projects", "title": "All projects" }
+        {
+          "slug": "trails-and-tickets",
+          "title": "Trails and tickets"
+        },
+        {
+          "slug": "the-lookout",
+          "title": "The Lookout"
+        },
+        {
+          "slug": "waiting-on-you",
+          "title": "Waiting on you"
+        },
+        {
+          "slug": "discovery-and-knowledge",
+          "title": "Discovery and knowledge"
+        },
+        {
+          "slug": "adaptive-trails",
+          "title": "Assumptions and reroutes"
+        },
+        {
+          "slug": "all-projects",
+          "title": "All projects"
+        }
+      ]
+    },
+    {
+      "title": "Agents",
+      "pages": [
+        {
+          "slug": "guides",
+          "title": "Guides"
+        },
+        {
+          "slug": "model-matching",
+          "title": "Model matching"
+        },
+        {
+          "slug": "parallel-work",
+          "title": "Parallel work"
+        },
+        {
+          "slug": "remote-agents",
+          "title": "Remote agents"
+        }
+      ]
+    },
+    {
+      "title": "Proof and review",
+      "pages": [
+        {
+          "slug": "verification",
+          "title": "Verification and criteria"
+        },
+        {
+          "slug": "review-capacity",
+          "title": "Review capacity"
+        },
+        {
+          "slug": "decision-memory",
+          "title": "Decision memory"
+        },
+        {
+          "slug": "trail-stats",
+          "title": "Trail stats"
+        }
+      ]
+    },
+    {
+      "title": "Security and data",
+      "pages": [
+        {
+          "slug": "security",
+          "title": "Approvals and security"
+        },
+        {
+          "slug": "teamtrail-folder",
+          "title": "The .teamtrail folder"
+        }
       ]
     },
     {
       "title": "Configuration",
       "pages": [
-        { "slug": "verification-json", "title": "verification.json" },
-        { "slug": "policy-json", "title": "policy.json" },
-        { "slug": "attention-json", "title": "attention.json" },
-        { "slug": "workspaces-json", "title": "workspaces.json" },
-        { "slug": "personal-settings", "title": "Personal settings" },
-        { "slug": "trackers", "title": "GitHub Issues and Linear" },
-        { "slug": "slack", "title": "Slack" }
+        {
+          "slug": "verification-json",
+          "title": "verification.json"
+        },
+        {
+          "slug": "policy-json",
+          "title": "policy.json"
+        },
+        {
+          "slug": "attention-json",
+          "title": "attention.json"
+        },
+        {
+          "slug": "workspaces-json",
+          "title": "workspaces.json"
+        },
+        {
+          "slug": "personal-settings",
+          "title": "Personal settings"
+        },
+        {
+          "slug": "trackers",
+          "title": "GitHub Issues and Linear"
+        },
+        {
+          "slug": "slack",
+          "title": "Slack"
+        }
       ]
     },
     {
       "title": "Reference",
       "pages": [
-        { "slug": "cli", "title": "CLI commands" },
-        { "slug": "scout-commands", "title": "/scout commands" },
-        { "slug": "mcp-tools", "title": "MCP tools" },
-        { "slug": "file-formats", "title": "File formats" },
-        { "slug": "environment-variables", "title": "Environment variables" }
+        {
+          "slug": "cli",
+          "title": "CLI commands"
+        },
+        {
+          "slug": "scout-commands",
+          "title": "/scout commands"
+        },
+        {
+          "slug": "mcp-tools",
+          "title": "MCP tools"
+        },
+        {
+          "slug": "file-formats",
+          "title": "File formats"
+        },
+        {
+          "slug": "environment-variables",
+          "title": "Environment variables"
+        }
       ]
     }
   ]
