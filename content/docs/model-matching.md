@@ -81,6 +81,6 @@ When the [scorecard](/docs/trail-stats/#scorecard) has at least 10 tickets of on
 
 ## Waiting for a stronger model
 
-When a ready ticket is set for a stronger tier than any connected agent runs, it waits. It shows on the map as needing that tier, and as a `model` item in [Waiting on you](/docs/waiting-on-you/): connect an agent on a stronger model, or have one claim the ticket by key. Nothing waits while matching is off or no agent is connected.
+When a ready ticket is set for a stronger tier than any connected agent runs, it waits. Its card on the map says it needs that tier, and as a `model` item in [Waiting on you](/docs/waiting-on-you/): connect an agent on a stronger model, or have one claim the ticket by key. Nothing waits while matching is off or no agent is connected.
 
-The Lookout also shows each session's tier next to its name in **Current trail step**, and **Settings → Model matching** lists the agents connected now with their tiers.
+The Lookout shows the model each agent runs on: on its card on the map (when the card has room), in the ticket's bubble and in **Agents at work** under the map. The **Activity** page adds each session's tier next to its name, and **Settings → Model matching** lists the agents connected now with their tiers.

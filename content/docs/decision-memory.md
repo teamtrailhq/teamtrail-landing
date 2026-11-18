@@ -27,7 +27,7 @@ When verified work changes files one of your earlier decisions covers, a `preced
 
 ## By area
 
-The **Logbook** (Records → Logbook) has a **By area** view. It groups decisions by the folder they're about, or by risk category when they cover no files, with the most cited first: the decisions later ones lean on most. Each decision shows who made the call, by name.
+The **Logbook** (a tab in the Lookout's header) has a **By area** view. It groups decisions by the folder they're about, or by risk category when they cover no files, with the most cited first: the decisions later ones lean on most. Each decision shows who made the call, by name.
 
 ## Across projects
 

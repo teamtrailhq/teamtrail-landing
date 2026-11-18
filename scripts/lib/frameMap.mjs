@@ -2,7 +2,7 @@
 // cards and drag the map until they sit in the middle of the map zone. Shared by media.mjs and journey.mjs.
 
 /**
- * The cards `pick` chooses: by key (`#6`), plus with `added` the plan's new cards among those columns, plus with
+ * The cards `pick` chooses: by key (`#6`, and `main` with `#2`, the first column), plus with `added` the plan's new cards among those columns, plus with
  * `destination` the destination mark. Returns their bounding box on the page.
  */
 const union = (page, pick) =>
@@ -18,6 +18,9 @@ const union = (page, pick) =>
     };
     const picked = [...keyed, ...(pick.added ? nodes.filter(isAdded) : [])];
     if (pick.destination) picked.push(document.querySelector('.map-zone .destination'));
+    // `main`, the checks on the main branch, sits at the start of the trail: in the frame with the first column.
+    const main = document.querySelector('.map-zone .node.main-mark');
+    if (main && pick.keys.includes('#2')) picked.push(main);
     const rects = picked.map((n) => n.getBoundingClientRect());
     const x0 = Math.min(...rects.map((r) => r.left));
     const y0 = Math.min(...rects.map((r) => r.top));
@@ -26,13 +29,25 @@ const union = (page, pick) =>
     return { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
   }, pick);
 
-/** The map's own area: below the zone header and the reroute banner. */
+/** The map's own area: below the command bar and the trail's banners, above the trail bar. */
 const mapArea = (page) =>
   page.evaluate(() => {
     const zone = document.querySelector('.map-zone').getBoundingClientRect();
     const svg = document.querySelector('.map-zone svg.graph').getBoundingClientRect();
-    return { x: zone.x, y: svg.y, width: zone.width, height: zone.bottom - svg.y };
+    const bottom = Math.min(zone.bottom, svg.bottom);
+    return { x: zone.x, y: svg.y, width: zone.width, height: bottom - svg.y };
   });
+
+/**
+ * The part of the map a close-up shows: the map's own area, narrowed around its middle to `aspect` (w/h) when it's
+ * wider than that. The whole area without `aspect`.
+ */
+export async function mapFrame(page, aspect) {
+  const a = await mapArea(page);
+  if (!aspect || a.width / a.height <= aspect) return a;
+  const width = a.height * aspect;
+  return { x: a.x + (a.width - width) / 2, y: a.y, width, height: a.height };
+}
 
 /** Drags the map so the picked cards sit in the middle of the area, grabbing it where no card or button is. */
 async function centre(page, pick, area) {
@@ -42,13 +57,13 @@ async function centre(page, pick, area) {
       for (let fx = 0.1; fx < 1; fx += 0.1) {
         const p = { x: a.x + a.width * fx, y: a.y + a.height * fy };
         const el = document.elementFromPoint(p.x, p.y);
-        if (el?.closest('.map-zone svg.graph') && !el.closest('.node, button, a')) return p;
+        if (el?.closest('.map-zone svg.graph') && !el.closest('.node, button, a, .bubble')) return p;
       }
     return { x: a.x + a.width / 2, y: a.y + a.height / 2 };
   }, area);
   const dx = area.x + area.width / 2 - (u.x + u.width / 2);
   const dy = area.y + area.height / 2 - (u.y + u.height / 2);
-  // A press and release without a move is a click on the map, which clears the selected ticket.
+  // A press and release without a move is a click on the map, which clears the selected ticket and closes its bubble.
   if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
   await page.mouse.move(from.x, from.y);
   await page.mouse.down();
@@ -66,7 +81,7 @@ async function centre(page, pick, area) {
 async function wholeCards(page) {
   for (let t = 0; t < 40; t++) {
     const blank = await page.evaluate(() =>
-      [...document.querySelectorAll('.map-zone .node')].some(
+      [...document.querySelectorAll('.map-zone .node:not(.main-mark)')].some(
         (n) => !n.querySelector('.title')?.textContent?.trim() || !/\d|\+/.test(n.querySelector('.key')?.textContent),
       ),
     );
@@ -75,12 +90,12 @@ async function wholeCards(page) {
   }
 }
 
-/** Frames the picked cards so they fill `fill` of the map area. */
-export async function frameMap(page, pick, fill = 0.94) {
+/** Frames the picked cards so they fill `fill` of the map area (narrowed to `aspect`, see mapFrame). */
+export async function frameMap(page, pick, fill = 0.94, aspect) {
   await wholeCards(page);
   await page.locator('.map-zone').getByRole('button', { name: 'Fit' }).click();
   await page.waitForTimeout(900);
-  const area = await mapArea(page);
+  const area = await mapFrame(page, aspect);
   // Zoom towards the size that fills the area, then centre; twice, since the map eases its zoom.
   for (let pass = 0; pass < 2; pass++) {
     await centre(page, pick, area);
@@ -101,7 +116,8 @@ export async function frameMap(page, pick, fill = 0.94) {
 
 /**
  * Titles of the cards a capture would spoil: those the map area (or `clip`, the part of the page being captured)
- * cuts through, and those a button over the map (Summary, Fit) covers. A capture refuses a frame that has any.
+ * cuts through, and those a button over the map (Legend, Fit) covers. A capture refuses a frame that has any. The
+ * bubble is left out: it opens over the map on purpose.
  */
 export async function clippedCards(page, clip) {
   const area = await mapArea(page);
@@ -112,7 +128,7 @@ export async function clippedCards(page, clip) {
       const x1 = Math.min(a.x + a.width, c ? c.x + c.width : Infinity);
       const y1 = Math.min(a.y + a.height, c ? c.y + c.height : Infinity);
       const buttons = [...document.querySelectorAll('.map-zone button')]
-        .filter((b) => !b.closest('.zone-title, header, .reroute-banner'))
+        .filter((b) => !b.closest('.zone-title, header, .reroute-banner, .discovery-banner, .command-bar, .bubble'))
         .map((b) => b.getBoundingClientRect())
         .filter((b) => b.top >= a.y);
       const covered = (r) =>
@@ -121,7 +137,7 @@ export async function clippedCards(page, clip) {
         .map((n) => ({ n, r: n.getBoundingClientRect() }))
         .filter(({ r }) => r.right > x0 && r.left < x1 && r.bottom > y0 && r.top < y1)
         .filter(({ r }) => r.left < x0 || r.right > x1 || r.top < y0 || r.bottom > y1 || covered(r))
-        .map(({ n }) => n.querySelector('.title')?.textContent?.trim() ?? '?');
+        .map(({ n }) => n.querySelector('.title')?.textContent?.trim() ?? 'main');
     },
     [area, clip ?? null],
   );

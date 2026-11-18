@@ -105,6 +105,8 @@ const wait = (ms) => page.waitForTimeout(ms);
 const stage = (fn, ...args) => page.evaluate(([f, a]) => window.__stage[f](...a), [fn, args]);
 const caption = ([label, text]) => stage('caption', label, text);
 const term = async (title, lines, prompt) => stage('term', title, lines, prompt);
+/** A view tab in the header: Map, Plan, Activity or Logbook. */
+const view = (name) => page.locator('.view-tabs').getByRole('button', { name, exact: true }).click();
 
 fs.rmSync(framesDir, { recursive: true, force: true });
 fs.mkdirSync(framesDir, { recursive: true });
@@ -264,10 +266,13 @@ for (const key of [K.setting, K.checkout]) {
   await wait(500);
   await page.locator('.node', { hasText: key }).first().click();
   await wait(1600);
-  await page.locator('.inspector').getByRole('button', { name: 'Confirm criteria' }).click({ timeout: 15000 });
+  // The bubble's Full ticket: the criteria with Confirm criteria.
+  await page.locator('.bubble').getByRole('button', { name: 'Full ticket' }).click();
+  await page.locator('.ticket-drawer').getByRole('button', { name: 'Confirm criteria' }).click({ timeout: 15000 });
   await wait(1800);
+  await page.keyboard.press('Escape');
+  await page.keyboard.press('Escape');
 }
-await page.keyboard.press('Escape');
 
 // 9. A second agent, on another model; each takes an unblocked ticket.
 await caption(CAPTIONS.agents);
@@ -293,17 +298,19 @@ const asked = claude.call(
   },
   { turns: 2 },
 );
-const item = page.locator('.inbox-list li button').first();
+// "N need you" in the header opens the question in its bubble beside the ticket.
+const item = page.locator('.needs-btn');
 await item.waitFor({ timeout: 15000 });
 await wait(2500);
 await item.click();
+await page.locator('.bubble .open-q').waitFor({ timeout: 15000 });
 await wait(2500);
 
 // 11. Your answer, in your own words.
 await caption(CAPTIONS.answer);
-await page.locator('.comms-input textarea').pressSequentially(ANSWER, { delay: 38 });
+await page.locator('.bubble .comms-input textarea').pressSequentially(ANSWER, { delay: 38 });
 await wait(600);
-await page.locator('.comms-input textarea').press('Enter');
+await page.locator('.bubble .comms-input textarea').press('Enter');
 await asked;
 const decided = await claude.call(
   'close_ticket',
@@ -319,8 +326,7 @@ await wait(1500);
 
 // 12. The decision, recorded with your words.
 await caption(CAPTIONS.decision);
-await page.getByRole('button', { name: /Records/ }).click();
-await page.getByRole('menuitem', { name: /Logbook/ }).click();
+await view('Logbook');
 // The Logbook opens on the newest decision; select it by its question only if it isn't already shown.
 await page
   .locator('.decisions-view')
@@ -329,7 +335,7 @@ await page
   .click({ timeout: 3000 })
   .catch(() => {});
 await wait(4500);
-await page.keyboard.press('Escape');
+await view('Map');
 await wait(800);
 
 // 13. An assumption challenged, with evidence.
@@ -350,7 +356,8 @@ await sonnet.call(
   },
   { turns: 2 },
 );
-// The trail plan shows the assumptions, S-2 marked challenged.
+// The Plan page shows the assumptions, S-2 marked challenged.
+await view('Plan');
 await page.locator('.sections-tabs').getByRole('combobox', { name: 'Plan section' }).click();
 await page
   .getByRole('option', { name: /^Assumptions/ })
@@ -358,6 +365,7 @@ await page
   .first()
   .click({ timeout: 5000 });
 await wait(4500);
+await view('Map');
 
 // 14. The work, verified by the repo's tests.
 await caption(CAPTIONS.verify);

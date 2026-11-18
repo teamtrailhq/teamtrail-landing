@@ -2,37 +2,74 @@
 
 The web app `teamtrail` serves on your machine, at `http://127.0.0.1:7420/`, where you steer your trails. It opens only in browsers you've paired; `teamtrail` opens yours ready to sign in: see [Sign in to the Lookout](/docs/sign-in/). It opens on the repo you started it in, and can supervise your other repos too ([All projects](/docs/all-projects/)). This is what's in it and where to find it.
 
-## The zones
+## The map
 
-| Zone               | What it's for                                                                                                                                                                                                                                      |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Communication      | **Waiting on you**, the [ranked list](/docs/waiting-on-you/) of what needs you, and the conversation with the agent asking. Up next shows the tickets ready to pick up.                                                                            |
-| Trail map          | Every ticket as a card on the trail (its status, title, type, guide and who has it), joined to what it blocks, and whether it waits for a stronger model. **Fit** shows the whole map, and the **Summary** tab at the bottom slides up the counts. |
-| Trail step         | The selected ticket: type, who has it, what blocks it, its [guide](/docs/guides/) (pick one under **Guide**) and checklist answers, its criteria and the knowledge its agent gets.                                                                 |
-| Current trail step | What each agent is doing right now, step by step. With [model matching](/docs/model-matching/) on, each session shows its model's tier.                                                                                                            |
-| Activity log       | Everything that happened, newest first.                                                                                                                                                                                                            |
-| Trail plan         | The plan's tabs: Not yet specified, Assumptions, Decisions, Out of scope, Notes and Report.                                                                                                                                                        |
+The trail map fills the page, between the header and the trail bar. Every ticket is a card on the trail, joined to what it blocks. A `main` marker at the start shows the checks on your main branch. Drag to pan, scroll or pinch to zoom, and **Fit** shows the whole trail. **Legend** explains the cards.
+
+The Lookout opens on what needs you, most urgent first, with its bubble already open. A discovery brief or a proposed reroute shows as a banner over the map.
+
+A card shows how its ticket stands, live:
+
+| Card                   | What it means                                                                                                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Waiting for an agent   | Ready, and nobody has claimed it yet. A dashed border moves slowly round it, and it says how long it has waited.                                                   |
+| An agent is on it      | The agent's name and the model it runs on (when the card has room), with its step out of five. A dot pulses and a thin bar along the top fills as the steps go by. |
+| Needs you              | Red, with a slow halo: a question, an approval or something else only you can do.                                                                                  |
+| Waits on #22, #8       | Blocked by those tickets. "Waits on your #6" means one that needs you holds it up.                                                                                 |
+| Done                   | Done and verified, or done and not verified. Ruled-out tickets are struck through.                                                                                 |
+| Needs a stronger model | With [model matching](/docs/model-matching/) on, no connected agent runs a model strong enough for it.                                                             |
+
+Nothing moves when your system asks for reduced motion.
+
+## The bubble
+
+Click a card, or `main`, and a bubble opens beside it. It starts with what the ticket needs from you, with the actions right there: answer the agent's question (its suggested replies or your own words), approve finished work, unblock it, release it to the queue, resolve it. **The whole conversation** opens the agent's chat on the Activity page. On `main`, the bubble offers **Fix main first**, **Drop** or **Start anyway** when its checks fail.
+
+Under that is the ticket: its key and type, where it stands, the agent with its model and step, what it is about and its [acceptance criteria](/docs/verification/#acceptance-criteria). **Full ticket** opens everything else in a drawer: comments, attempts, the proof, its [guides](/docs/guides/) and checklist answers, checks, the workspace and history, and editing.
+
+**×**, **Esc** or a click on the empty map closes the bubble.
+
+## The trail bar
+
+Under the map, one line sums up the trail: a segment per ticket (click one to open it), the counts in words, such as **5 of 13 done · 2 working · 3 need you · 1 waiting for an agent**, and a chip for each thing that needs you.
+
+**More** opens three lists under it, and the Lookout remembers your choice in this browser:
+
+| List           | What's in it                                                                                                                                                                                                   |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Needs you      | This trail's [ranked list](/docs/waiting-on-you/), with **Later** to snooze, then what waits on your other trails. Items that aren't a ticket (a brief, a reroute, an approval) open their own dialog or page. |
+| Agents at work | Each agent with its model, its ticket, its step and a short step bar, and **Chat**.                                                                                                                            |
+| Up next        | The tickets waiting for an agent, longest waiting first, then those that wait on something of yours.                                                                                                           |
+
+**Less** folds them away.
 
 ## The header
 
-| Control        | What it does                                                                                                                                                                                           |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Repo name      | With more than one project, switch projects or open **All projects**. A badge counts what interrupts in your other projects.                                                                           |
-| Trail title    | Switch trails, or start a new one. Its menu also starts the trail over, archives it, or restores an archived one: see [Archive and Start over](/docs/trails-and-tickets/#archive-and-start-over).      |
-| Focus          | Whether focus is on (**Focus on · until 12:00**, **Focus paused** or **Focus off**). Click it to focus for a while or end it. See [Focus in the header](/docs/personal-settings/#focus-in-the-header). |
-| Plan + execute | The trail's mode: plan only, or plan and build.                                                                                                                                                        |
-| Records        | The views below.                                                                                                                                                                                       |
-| Settings       | Opens the Settings page. See [Settings](#settings) below.                                                                                                                                              |
-| Sun or moon    | Switch between the day and night themes.                                                                                                                                                               |
+| Control                         | What it does                                                                                                                                                                                                                                        |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Repo name                       | With more than one project, switch projects or open **All projects**. A badge counts what interrupts in your other projects.                                                                                                                        |
+| Trail title                     | Switch trails, or start a new one. Its menu also switches the trail between plan only and plan and build, starts it over, archives it, or restores an archived one: see [Archive and Start over](/docs/trails-and-tickets/#archive-and-start-over). |
+| Spent                           | The trail's model spend and tokens, on a wide window. It's also on the Activity page and in [Trail stats](/docs/trail-stats/).                                                                                                                      |
+| Map · Plan · Activity · Logbook | The views. Plan, Activity and the Logbook are pages over the map; the browser's Back returns to the map. See [The pages](#the-pages).                                                                                                               |
+| Focus                           | Whether focus is on (**Focus on · until 12:00**, **Focus paused** or **Focus off**). Click it to focus for a while or end it. See [Focus in the header](/docs/personal-settings/#focus-in-the-header).                                              |
+| N need you                      | How many things on this trail need you. Click it to open the most urgent. When things wait only on other trails, it says **On other trails** instead.                                                                                               |
+| Records                         | **Trip report** (Scout's summary of what happened while you were away), **Field guide** (what agents know about your code and product: see [Discovery and knowledge](/docs/discovery-and-knowledge/)) and **[Trail stats](/docs/trail-stats/)**.    |
+| Settings                        | Opens the Settings page. See [Settings](#settings) below.                                                                                                                                                                                           |
+| Sun or moon                     | Switch between the day and night themes.                                                                                                                                                                                                            |
 
-## Records
+## The pages
 
-| View                              | What it's for                                                                                                                                                                                                   |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Trip report                       | Scout's summary of what happened while you were away.                                                                                                                                                           |
-| Field guide                       | What agents know about your code and product. See [Discovery and knowledge](/docs/discovery-and-knowledge/).                                                                                                    |
-| Logbook                           | Every decision across your trails, with its reasoning and who made each call, by name. **By area** groups them by folder or risk category, the most cited first. See [Decision memory](/docs/decision-memory/). |
-| [Trail stats](/docs/trail-stats/) | How your agents deliver across trails.                                                                                                                                                                          |
+| Page     | What it's for                                                                                                                                                                                                                                           |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Plan     | The plan's tabs (Not yet specified, Assumptions, Decisions, Out of scope, Notes and Report) beside the trail at a glance: its phase, the checks on main, what waits on you, the agents and what's ready next, and the mix of statuses and ticket types. |
+| Activity | What each agent is doing, step by step, with its model (and its tier, with [model matching](/docs/model-matching/) on), everything that happened on the trail, newest first, and the conversation with an agent.                                        |
+| Logbook  | Every decision across your trails, with its reasoning and who made each call, by name. **By area** groups them by folder or risk category, the most cited first. See [Decision memory](/docs/decision-memory/).                                         |
+
+Each page has its own address (`?view=plan`, `?view=activity`, `?view=logbook`).
+
+## On a phone
+
+The same layout, narrower: the map, the bubble as a sheet under it, and the trail bar with its lists. The tab bar at the bottom holds Map, Plan, Activity and Logbook.
 
 ## All projects
 
@@ -61,4 +98,4 @@ A paired device can read, answer questions and approve finished work. It never c
 
 ## On a trail's report
 
-The **Report** tab in Trail plan shows one trail's results: lead time, how often you stepped in, rework, reviews and cost per verified ticket. **Export markdown** downloads it.
+The **Report** tab on the Plan page shows one trail's results: lead time, how often you stepped in, rework, reviews and cost per verified ticket. **Export markdown** downloads it.
