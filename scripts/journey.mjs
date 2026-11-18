@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { AGAIN, CHECK_IN, FRAME, RESUME, SETUP, START } from './journey/scenes.mjs';
 import { installStage } from './journey/stage.mjs';
-import { frameMap } from './lib/frameMap.mjs';
+import { GUARDED, TRAIL, setUpVerifiedTrail } from './journey/verifiedTrail.mjs';
 import { realProject } from './lib/realProject.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -95,6 +95,26 @@ const switchTrail = async (name) => {
   await wait(1400);
   await page.getByRole('menuitem').filter({ hasText: name }).first().click();
 };
+/** Opens the Settings page at a section by its deep link (`?settings=<section>`), as the app's own links do. */
+const openSettings = async (section) => {
+  await page.evaluate((s) => {
+    const url = new URL(location.href);
+    url.searchParams.set('settings', s);
+    history.pushState({ settingsPage: true }, '', url);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  }, section);
+  await page.locator(`#settings-${section}`).waitFor({ timeout: 10000 });
+  await page.locator(`#settings-${section}`).evaluate((el) => el.scrollIntoView({ block: 'start' }));
+};
+/** An action on the ticket open in its bubble: the bar's button when it's on show, else from its "⋯" menu. */
+const ticketAction = async (name) => {
+  const bar = page.locator('.bubble .action-bar');
+  const button = bar.getByRole('button', { name, exact: true });
+  if (await button.isVisible()) return button.click();
+  await bar.getByRole('button', { name: 'More ticket actions' }).click();
+  await wait(500);
+  await bar.getByRole('menuitem', { name, exact: true }).click();
+};
 const setVisible = (v) =>
   page.evaluate((v) => {
     Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => (v ? 'visible' : 'hidden') });
@@ -121,9 +141,15 @@ await page.addInitScript(() => {
   localStorage.setItem(key, JSON.stringify({ ...prefs, briefing: { enabled: true, awayMinutes: 0.05 } }));
 });
 await project.signIn(page);
+// The verification beats' trail, worked by a scripted agent before anything is recorded: one pass held by the check
+// guard, waiting for the trail lead (journey/verifiedTrail.mjs).
+const verified = await setUpVerifiedTrail({ project, page });
 await page.goto(project.url);
 await page.locator('.dialog.onboarding').waitFor({ timeout: 20000 });
 await page.getByRole('button', { name: 'Get started' }).click();
+await page.locator('.node').first().waitFor({ timeout: 15000 });
+// The story opens on the seed's trail mid-flight, whichever trail the Lookout chose.
+await switchTrail('Offline-first');
 await page.locator('.node').first().waitFor({ timeout: 15000 });
 await setVisible(false);
 // No title card: the video opens on the first scene, so it reads as a video from the first frame.
@@ -220,9 +246,9 @@ await wait(1500);
 
 // Under the map, the trail bar: the trail at a glance, then More for who's working on which model and what's next.
 await caption('The trail bar', 'What’s done, who’s working on which model, and what needs you, under the map.');
-await wait(2200);
+await wait(1600);
 await trailBarMore(true);
-await wait(3800);
+await wait(3000);
 await trailBarMore(false);
 // Away now, so the next scene's briefing covers what the agents do meanwhile.
 await setVisible(false);
@@ -238,7 +264,7 @@ await agentStep('asking:', 2);
 await wait(1500);
 await setVisible(true);
 await caption('Existing project · briefing', 'Back after a break? Scout briefs you on what’s done and what needs you.');
-await wait(4500);
+await wait(3600);
 await page
   .getByRole('dialog', { name: 'While you were away' })
   .getByRole('button', { name: 'Dismiss' })
@@ -256,18 +282,18 @@ await closeBubble();
 await view('Logbook');
 await page.locator('.dv-row button').first().click();
 await caption('Existing project · decisions', 'Every answer is logged in the Logbook, with its reasoning.');
-await wait(3400);
+await wait(2800);
 await view('Map');
 
 // A finding broke an assumption: the agent proposes a new plan, previewed on the map, and you approve it.
 await caption('When the facts change', 'An agent proposes a new plan. See it on the map before anything moves.');
 await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
 await closeBubble();
-await wait(3200);
+await wait(2600);
 await page.locator('.reroute-banner').getByRole('button', { name: 'Review' }).click();
 await page.locator('.reroute-dialog').waitFor();
 await caption('When the facts change', 'Why, the evidence and every change. Nothing happens until you approve.');
-await wait(4500);
+await wait(3600);
 await page.locator('.reroute-dialog button', { hasText: 'Close' }).click();
 
 // Another trail's research is done: its brief waits for you, and nothing gets built until you approve it.
@@ -275,13 +301,13 @@ await caption('Approve', 'Research is done. Approve the brief, and building can 
 await switchTrail('Team workspaces');
 const ready = page.locator('.scrim .dialog.brief-ready');
 await ready.waitFor({ timeout: 15000 });
-await wait(2400);
+await wait(1800);
 await ready.getByRole('button', { name: 'Review brief' }).click();
 await page.locator('.brief-dialog').waitFor();
-await wait(2600);
+await wait(2200);
 await page.getByRole('button', { name: 'Accept brief' }).click();
 await page.locator('.brief-dialog').waitFor({ state: 'detached', timeout: 15000 });
-await wait(2000);
+await wait(1400);
 
 await term(
   'fieldnote-app — claude',
@@ -298,32 +324,68 @@ await page.locator('.project-btn').click();
 await wait(900);
 await page.locator('.trail-item.all-projects').click();
 await page.locator('.projects-view .pj-item').first().waitFor({ timeout: 10000 });
-await wait(3000);
+await wait(2400);
 await page.keyboard.press('Escape');
 await page.locator('.projects-view').waitFor({ state: 'detached', timeout: 10000 });
 await wait(800);
 
-// The seed's finished trail: every ticket done, the trail bar full, a flag at the destination.
-await caption('Destination reached', 'Every ticket done: the trail bar fills and the flag goes up.');
-await switchTrail('Search across notes');
-const reached = page.locator('.scrim [aria-label="Destination reached"]');
-await reached.waitFor({ timeout: 15000 });
-await wait(2600);
-await reached.getByRole('button', { name: 'Close' }).click();
-await reached.waitFor({ state: 'detached' });
+// Verified, not claimed: the checks passed, but the work changed what they run (package.json's `test` script), so the
+// check guard holds the pass for you. Accept it with a reason, or send it back.
+await caption('Verified, not claimed', 'Checks passed, but the work changed what they run. The pass waits for you.');
+await switchTrail(TRAIL);
+await page.locator('.map-zone .node', { hasText: GUARDED }).first().waitFor({ timeout: 15000 });
+await wait(600);
+await openTicket(GUARDED);
+await page.locator('.bubble .bubble-need', { hasText: 'changed what they run' }).waitFor({ timeout: 15000 });
+await wait(3000);
+await ticketAction('Accept the pass…');
+const why = page.locator('.inline-form', { hasText: 'Why accept' });
+await why.waitFor({ timeout: 10000 });
+await caption('Verified, not claimed', 'Accept the pass with a reason, or send it to rework. The proof says which.');
+await why.getByLabel('Why accept').pressSequentially('Same suite; the old script never ran on Windows', { delay: 22 });
+await wait(500);
+await why.getByRole('button', { name: 'Accept anyway' }).click();
+await wait(400);
+
+// Gates: off, observe or enforce, each with what it held lately. The accepted ticket finishes the trail, and its done
+// dialog (the work isn't on main yet) closes off camera first.
+await pause();
+await page.locator('.bubble .bubble-state', { hasText: 'Done' }).waitFor({ timeout: 20000 });
+await page
+  .locator('.dialog.trail-done')
+  .waitFor({ timeout: 15000 })
+  .catch(() => {});
+await closeDialogs();
 await closeBubble();
-// The trail's last stretch and the flag: the cards nearest the destination, framed as a person zooms in on them.
-const last = await page.evaluate(() => {
-  const flag = document.querySelector('.map-zone .destination').getBoundingClientRect();
-  return [...document.querySelectorAll('.map-zone .node:not(.main-mark)')]
-    .map((n) => ({ key: n.querySelector('.key')?.textContent?.trim(), r: n.getBoundingClientRect() }))
-    .sort((a, b) => Math.hypot(a.r.x - flag.x, a.r.y - flag.y) - Math.hypot(b.r.x - flag.x, b.r.y - flag.y))
-    .slice(0, 4)
-    .map((n) => n.key);
-});
-await frameMap(page, { keys: last, destination: true }, 0.7);
+await openSettings('gates');
+await page.locator('.gate-row', { hasText: 'Held 1 ticket' }).first().waitFor({ timeout: 15000 });
+await page.mouse.move(size.width - 2, size.height - 2);
+await caption('Gates you choose', 'Each gate is off, observe or enforce, and shows what it held lately.');
+await wait(600);
+await resume();
+await wait(3800);
+
+// Merged: Teamtrail runs the approved checks on main by itself, and the whole trail is verified together. The merge
+// and the run happen off camera.
+await pause();
+await caption('', '');
+await page.locator('.settings-page .back').click();
+await page.locator('.settings-page').waitFor({ state: 'detached', timeout: 10000 });
+const head = verified.merge();
+const together = page.locator('.dialog.trail-done', { hasText: `verified together on main at ${head}` });
+await together.waitFor({ timeout: 120000 });
+await caption('Verified together', 'Merged, the checks run again on main: the whole trail, verified together.');
+await wait(600);
+await resume();
+await wait(3000);
+await together.getByRole('button', { name: 'Close' }).click();
+await together.waitFor({ state: 'detached' });
+await page.locator('g.destination').click();
+await page
+  .locator('.bubble .trail-checks', { hasText: `Verified together on main at ${head}` })
+  .waitFor({ timeout: 15000 });
 await page.mouse.move(size.width / 2, size.height - 4);
-await wait(4000);
+await wait(3600);
 await caption('', '');
 await stage('card', 'end');
 await wait(3200);
