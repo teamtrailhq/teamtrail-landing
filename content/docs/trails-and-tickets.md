@@ -8,8 +8,8 @@ Every trail has a **destination** (what done looks like) and these sections, sto
 
 | Section           | What it holds                                                                                             |
 | ----------------- | --------------------------------------------------------------------------------------------------------- |
-| Destination       | One or two sentences: what done looks like.                                                               |
-| Notes             | Context worth keeping.                                                                                    |
+| Destination       | What done looks like, in markdown (up to 10,000 characters). Its first sentence is the header's summary.  |
+| Notes             | Context worth keeping: a spec or design doc, in markdown (up to 50,000 characters).                       |
 | Assumptions       | What the plan relies on and could turn out wrong. See [Assumptions and reroutes](/docs/adaptive-trails/). |
 | Decisions so far  | One line per decision, added as tickets close.                                                            |
 | Not yet specified | Known unknowns. A line can be promoted to a ticket later.                                                 |

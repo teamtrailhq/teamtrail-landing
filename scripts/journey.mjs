@@ -78,7 +78,7 @@ const openTicket = async (title) => {
 /** A view tab in the header: Map, Plan, Activity or Logbook. */
 const view = async (name) => {
   await closeDialogs();
-  await page.locator('.view-tabs').getByRole('button', { name, exact: true }).click();
+  await page.locator('.view-bar').getByRole('button', { name, exact: true }).click();
 };
 /** The trail bar's More (the lists under it) or Less. */
 const trailBarMore = async (more) => {
@@ -115,6 +115,29 @@ const ticketAction = async (name) => {
   await wait(500);
   await bar.getByRole('menuitem', { name, exact: true }).click();
 };
+/** Hands-off or Hands-on, from the switch in the header. */
+const mode = async (name) => {
+  await page.locator('.mode-switch').first().getByRole('button', { name, exact: true }).click();
+  await page.locator(name === 'Hands-off' ? '.hands-off-home' : '.map-zone').waitFor({ timeout: 15000 });
+};
+/** A row of Hands-off's Needs you, by its text, opened (one is open at a time). */
+const openNeed = async (text) => {
+  const row = page.locator('.home-needs .home-need', { hasText: text }).first();
+  if (!(await row.count())) {
+    const more = page.locator('.home-needs .home-more', { hasText: 'more' });
+    if (await more.count()) await more.click();
+  }
+  await row.waitFor({ timeout: 30000 });
+  if (!(await row.evaluate((el) => el.classList.contains('open')))) await row.locator('.ds-row-main').click();
+  await page.locator('.home-needs .home-need.open', { hasText: text }).waitFor({ timeout: 10000 });
+  return page.locator('.home-needs .home-need.open');
+};
+/** Scrolls Hands-off's home so `sel` sits near the top, smoothly, as a person would. */
+const homeTo = (sel) =>
+  page
+    .locator(sel)
+    .first()
+    .evaluate((el) => el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
 const setVisible = (v) =>
   page.evaluate((v) => {
     Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => (v ? 'visible' : 'hidden') });
@@ -147,10 +170,12 @@ const verified = await setUpVerifiedTrail({ project, page });
 await page.goto(project.url);
 await page.locator('.dialog.onboarding').waitFor({ timeout: 20000 });
 await page.getByRole('button', { name: 'Get started' }).click();
-await page.locator('.node').first().waitFor({ timeout: 15000 });
-// The story opens on the seed's trail mid-flight, whichever trail the Lookout chose.
+// Hands-off is everyone's default: the story opens on its home, on the seed's trail mid-flight.
+await page.locator('.hands-off-home').waitFor({ timeout: 15000 });
 await switchTrail('Offline-first');
-await page.locator('.node').first().waitFor({ timeout: 15000 });
+await page.locator('.hands-off-home').waitFor({ timeout: 15000 });
+// Room under the home's last section, so "Since you were away" can scroll up clear of the captions.
+await page.addStyleTag({ content: '.hands-off-home .home-column { padding-bottom: 320px; }' });
 await setVisible(false);
 // No title card: the video opens on the first scene, so it reads as a video from the first frame.
 await caption('Setup once', 'One command connects Claude Code or Codex. Another starts the Lookout.');
@@ -199,59 +224,69 @@ await term(
   'Type your idea in Claude Code. Scout asks a few questions to frame the trail.',
 );
 
-// The trail Scout charted, live: agents working, one waiting on you. The recording pauses while the side question is
-// answered and "N need you" opens the junction's question in its bubble (the map glides to it), and for the poster,
-// which is this frame without the caption over it.
+// Hands-off, the home everyone starts on: only what needs you, most urgent first, while agents keep going. The
+// recording pauses while the side question is answered off camera, so the open row is the call that blocks the
+// trail, and for the poster, which is this frame without the caption over it.
 await pause();
 await stage('hide');
 // The away threshold is seconds long here: keep the trail lead "present" while the tab is visible. Hiding the
-// tab still counts as away, which is what opens the briefing later.
+// tab still counts as away, which is what "Since you were away" counts from later.
 await page.evaluate(() => setInterval(() => window.dispatchEvent(new Event('pointermove')), 1500));
 await setVisible(true);
-// The briefing, if it opened: its own Dismiss, not the plan banner's.
-await page
-  .getByRole('dialog', { name: 'While you were away' })
-  .getByRole('button', { name: 'Dismiss' })
-  .click({ timeout: 3000 })
-  .catch(() => {});
 await agentStep('asking:');
-// The junction's agent asked a side question first (fyi): answered off camera, so its bubble shows the call that
-// blocks the trail.
-await openTicket('silent auto-merge');
-if (await bubbleQuestion().filter({ hasText: 'While on' }).count()) {
-  await page.locator('.bubble .suggest .chip', { hasText: 'Yes, show names' }).click();
+await page
+  .locator('.home-needs .home-need', { hasText: 'Is silent auto-merge acceptable' })
+  .waitFor({ timeout: 60000 });
+// The junction's agent asked a side question first (fyi): answered off camera.
+const side = page.locator('.home-needs .home-need', { hasText: 'While on' });
+if (await side.count()) {
+  const row = await openNeed('While on');
+  await row.locator('.suggest .chip', { hasText: 'Yes, show names' }).click();
+  await side.waitFor({ state: 'detached', timeout: 20000 });
 }
-await bubbleQuestion().filter({ hasText: 'Is silent auto-merge acceptable' }).waitFor({ timeout: 20000 });
-await closeBubble();
-await page.locator('.needs-btn').click();
-await bubbleQuestion().filter({ hasText: 'Is silent auto-merge acceptable' }).waitFor({ timeout: 20000 });
-await wait(2500);
-await caption('New project · trail map', 'Scout maps the trail. Agents pick up every ticket that isn’t blocked.');
+await openNeed('Is silent auto-merge acceptable');
+await homeTo('.home-needs');
+await wait(1500);
+await caption('Hands-off · what needs you', 'Only what needs you, most urgent first. Agents keep going.');
 await page.mouse.move(size.width - 2, size.height - 2);
 await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur());
 await wait(800);
 await page.screenshot({ path: join(framesDir, 'poster.png'), style: '#stage-cap { visibility: hidden !important; }' });
 await resume();
-await wait(5000);
+await wait(4200);
 
-// An agent asks: the question waits in a bubble beside its ticket; answer it there.
-await caption('During the day · an agent asks', 'What needs you opens beside its ticket. Answer in a click.');
-await wait(3000);
-await page.locator('.bubble .suggest .chip').first().click();
-await caption('Running', 'The agent records the decision and moves on to the next ticket.');
+// An agent asks: answer it right in the list.
+await caption(
+  'Hands-off · answer in place',
+  'Answer the agent’s question in the list. It logs the decision and moves on.',
+);
+await wait(2600);
+await page.locator('.home-need.open .suggest .chip').first().click();
 await agentStep('answered:');
-await wait(1500);
-await closeBubble();
-await wait(1500);
-
-// Under the map, the trail bar: the trail at a glance, then More for who's working on which model and what's next.
-await caption('The trail bar', 'What’s done, who’s working on which model, and what needs you, under the map.');
 await wait(1600);
-await trailBarMore(true);
-await wait(3000);
-await trailBarMore(false);
-// Away now, so the next scene's briefing covers what the agents do meanwhile.
-await setVisible(false);
+
+// Research on another trail is done: its plan waits as one row, the brief and every ticket's criteria on the page.
+await caption(
+  'Hands-off · approve the plan',
+  'Research is done: approve the brief and every ticket’s criteria in one step.',
+);
+const plan = await openNeed('Approve the plan');
+await plan.locator('.plan-approval').waitFor({ timeout: 15000 });
+await homeTo('.home-need.open');
+await wait(2200);
+await plan
+  .locator('.plan-approval-ticket')
+  .first()
+  .evaluate((el) => el.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+await wait(2400);
+await plan.getByRole('button', { name: 'Approve the plan', exact: true }).click();
+await page.locator('.home-need', { hasText: 'Approve the plan' }).waitFor({ state: 'detached', timeout: 15000 });
+await wait(1200);
+
+// Under it, how far the trail is and who's at work.
+await caption('Hands-off · progress', 'How far the trail is, and every agent at work. Nothing to herd.');
+await homeTo('.home-progress');
+await wait(3200);
 
 await term(
   'fieldnote-app — zsh',
@@ -260,28 +295,36 @@ await term(
   'Come back later and run the same command.',
 );
 await stage('hide');
-await agentStep('asking:', 2);
+// The tab stays present through the terminal scene, so the home still counts from the visit before the morning's
+// work: what the agents decided and finished while you were away.
+await agentStep('closed #6');
 await wait(1500);
-await setVisible(true);
-await caption('Existing project · briefing', 'Back after a break? Scout briefs you on what’s done and what needs you.');
-await wait(3600);
+await caption('Since you were away', 'Back after a break? What agents decided, what changed and what was verified.');
+await homeTo('.home-since');
+await wait(3800);
+
+// The map, when you want it: Hands-on, one click.
+await caption('Hands-on · the whole map', 'Want the map? Hands-on is one click away.');
+await homeTo('.home-needs');
+await wait(900);
+await mode('Hands-on');
+await page.locator('.map-zone .node').first().waitFor({ timeout: 15000 });
+// The trip report is Hands-on's: closed, and kept closed for the rest of the run.
 await page
   .getByRole('dialog', { name: 'While you were away' })
   .getByRole('button', { name: 'Dismiss' })
-  .click({ timeout: 5000 })
-  .catch((e) => {
-    console.log(project.agentLog());
-    throw e;
-  });
-// Keep the briefing closed for the rest of the run.
+  .click({ timeout: 2500 })
+  .catch(() => {});
 await page.evaluate(() => {
   const prefs = JSON.parse(localStorage.getItem('teamtrail.prefs') || '{}');
   localStorage.setItem('teamtrail.prefs', JSON.stringify({ ...prefs, briefing: { enabled: false, awayMinutes: 15 } }));
 });
+await closeDialogs();
 await closeBubble();
+await wait(2600);
 await view('Logbook');
 await page.locator('.dv-row button').first().click();
-await caption('Existing project · decisions', 'Every answer is logged in the Logbook, with its reasoning.');
+await caption('Every call, kept', 'Every answer is logged in the Logbook, with its reasoning.');
 await wait(2800);
 await view('Map');
 
@@ -295,19 +338,6 @@ await page.locator('.reroute-dialog').waitFor();
 await caption('When the facts change', 'Why, the evidence and every change. Nothing happens until you approve.');
 await wait(3600);
 await page.locator('.reroute-dialog button', { hasText: 'Close' }).click();
-
-// Another trail's research is done: its brief waits for you, and nothing gets built until you approve it.
-await caption('Approve', 'Research is done. Approve the brief, and building can start.');
-await switchTrail('Team workspaces');
-const ready = page.locator('.scrim .dialog.brief-ready');
-await ready.waitFor({ timeout: 15000 });
-await wait(1800);
-await ready.getByRole('button', { name: 'Review brief' }).click();
-await page.locator('.brief-dialog').waitFor();
-await wait(2200);
-await page.getByRole('button', { name: 'Accept brief' }).click();
-await page.locator('.brief-dialog').waitFor({ state: 'detached', timeout: 15000 });
-await wait(1400);
 
 await term(
   'fieldnote-app — claude',

@@ -5,6 +5,7 @@ Agents agree on what done means before they start, and every claim of done is ch
 On this page:
 
 - [Verification levels](#verification-levels) and [what happens on completion](#what-happens-on-completion)
+- [Done means verified](#done-means-verified): gaps that close themselves, and the few that are yours
 - [Gates: off, observe, enforce](#gates-off-observe-enforce)
 - [Check guard](#check-guard), [flaky checks](#flaky-checks) and [diff rules](#diff-rules)
 - [Independent review](#independent-review)
@@ -41,6 +42,31 @@ New trails start at the `default` level from `verification.json`; the level appl
 Checks run with argv arrays (no shell), only once you've [approved the commands](/docs/security/#check-commands) on this machine, with an allowlisted environment and token-shaped output redacted. Results, output and git evidence are stored per attempt in `.teamtrail/.evidence/`.
 
 A pass that a [gate](#gates-off-observe-enforce) holds back doesn't close the ticket: it waits for you in [Waiting on you](/docs/waiting-on-you/), with the reason and a way past it.
+
+## Done means verified
+
+A ticket is done when its work is verified, not when an agent says so. Whatever stands between a completion and a verified proof is a **gap**, and most gaps close without you: only your calls come to you.
+
+**Criteria before work.** Criteria an agent charts with a ticket wait for you to confirm them before any agent is offered the ticket or may claim it; until then it's a `criteria` item in [Waiting on you](/docs/waiting-on-you/). On a trail with a discovery brief, [Approve the plan](/docs/hands-off/#approve-the-plan) confirms every ticket's criteria together with the brief. Tickets charted without criteria get them from their agent at the claim, as before.
+
+**A pass against criteria nobody confirmed waits.** If the work passes against criteria you never confirmed (a ticket started before you looked at them), it doesn't close: it waits in `verifying`, as a `criteria` item. **Confirm criteria** and Teamtrail checks the work again by itself, on the same commit: a new attempt graded against the criteria you confirmed, with the [flaky gate](#flaky-checks) and the [check guard](#check-guard) as on any run. If the code moved on since, or more than a regrade would be needed, it says so and the ticket goes back to its agent instead. A ticket an older version closed that way can be confirmed and **verified again** from its proof.
+
+**Every gap says who closes it.** The ticket's **Proof** lists each gap with who is on it, and when it's yours, the button that closes it (the first one is also the ticket's main action):
+
+| Gap                                                     | Who closes it                                                                                                                                                   |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A check failed, evidence is missing, a criterion failed | The agent: the work goes back for rework, with the reason. If agents can't close it after `maxAttempts`, it's yours: **Send to rework**, or accept it as it is. |
+| No independent review yet                               | An agent: a review opens by itself once the checks pass, first for an agent on another model.                                                                   |
+| A failed review                                         | The agent, in rework.                                                                                                                                           |
+| Criteria not confirmed                                  | You: **Confirm criteria** (the work is checked again by itself), or **Confirm criteria and verify again** on a done ticket.                                     |
+| A pass held by the check guard or the flaky gate        | You: **Accept the pass…** with a reason, or **Send to rework** to fix the cause.                                                                                |
+| Your approval, at `checks+review+human`                 | You: **Approve**, or **Send to rework**.                                                                                                                        |
+| A diff rule's question unanswered                       | The agent, when you send it back.                                                                                                                               |
+| A check that fails on main too                          | Main: a completion after main is fixed proves it. **Open checks on main** shows them.                                                                           |
+| A check you waived                                      | Accepted already. **Run test again** (named for the check) undoes it and sends the ticket back to the queue.                                                    |
+| Closed without a completion, or with verification off   | Nobody: a past attempt is never rewritten. Only a new completion can prove it.                                                                                  |
+
+The ticket's pull request sits at the top of the ticket and on its map card: its state, its checks, and whether it is (or was merged) at the commit the proof covers or a newer one. A done ticket that isn't verified offers **Merge anyway** where Teamtrail merges pull requests ([Teamtrail Cloud](/docs/cloud/#auto-merge)): it names the gaps, asks once, and keeps your answer as your decision. Verified work there merges by itself.
 
 ## Gates: off, observe, enforce
 
@@ -142,7 +168,7 @@ A ticket's guide can add checks from `verification.json` to the ones its complet
 
 ## Trail verified together
 
-Every ticket can pass on its own branch and the trail still break once they're merged together. So when every ticket in a trail is done and its work is on the default branch (the pull request's merge commit, or the verified commit when there was no pull request), Teamtrail runs the approved checks once more, automatically, on that commit (in [Cloud](/cloud/), on its runner). It uses your local default branch, or `origin/<branch>`, and fetches nothing.
+Every ticket can pass on its own branch and the trail still break once they're merged together. So when every ticket in a trail is done and its work is on the default branch (the pull request's merge commit, or the verified commit when there was no pull request), Teamtrail runs the approved checks once more, automatically, on that commit (in [Cloud](/docs/cloud/), on its runner). It uses your local default branch, or `origin/<branch>`, and fetches nothing.
 
 A trail is **verified** only when every ticket's proof is and that combined run passed. Otherwise it says why, for example:
 
@@ -174,7 +200,7 @@ Every completed ticket can carry a report of what Teamtrail recorded, for the pu
 - what the [gates](#gates-off-observe-enforce) found: a change to what the checks run or a pass on retry, and who accepted it; the diff rules that applied, their checks and the answers (shown as claimed);
 - the decisions the work relies on, on the ticket and on the tickets it was blocked by, each with who made the call, by name: git's `user.name` on the machine where you decided, or the person signed in to a hosted Lookout.
 
-The report opens with a badge, **Teamtrail verified** or **Teamtrail not verified**. A ticket is verified when its latest attempt passed everything its [level](#verification-levels) asks: the checks passed, no criterion is missing or failed and the criteria were confirmed, plus an independent review at `checks+review`, plus your approval at `checks+review+human`, and no enforced gate holds it. A pass you accepted past the check guard or the flaky gate counts, and the report says who accepted it; a same-model review under an enforced `independent-review` never does. Otherwise the report lists what's missing, one line each. A completion from a [remote agent](/docs/remote-agents/) is never verified here, because no check ran on this machine.
+The report opens with a badge, **Teamtrail verified** or **Teamtrail not verified**. A ticket is verified when its latest attempt passed everything its [level](#verification-levels) asks: the checks passed, no criterion is missing or failed and you confirmed the criteria, plus an independent review at `checks+review`, plus your approval at `checks+review+human`, and no enforced gate holds it. A pass you accepted past the check guard or the flaky gate counts, and the report says who accepted it; a same-model review under an enforced `independent-review` never does. Otherwise the report lists what's missing, one line each, and the Lookout says who closes each: see [Done means verified](#done-means-verified). A completion from a [remote agent](/docs/remote-agents/) is never verified here, because no check ran on this machine.
 
 **Getting the report.** Run [`teamtrail proof <ticket>`](/docs/cli/#teamtrail-proof), or let the agent call [`proof_report`](/docs/mcp-tools/#working-and-completing): agents are told to put it in the pull request description unchanged when they open one. In the Lookout, the ticket's **Full ticket** shows it too, with **Copy for PR**.
 
@@ -217,7 +243,9 @@ Add `Teamtrail proof verified` to the branch's required checks, with GitHub Acti
 
 ## Acceptance criteria
 
-Before working a `task`, `execute` or `prototype` ticket, the agent calls `set_criteria`: numbered points (`AC-1`, `AC-2`, …), each with a kind (`unit`, `integration`, `e2e`, `regression`, `business-rule`, `security`, `manual`) and optionally the knowledge entry it comes from. Criteria are required on trails with a discovery brief, unless verification is `off`. Business rules from [project knowledge](/docs/discovery-and-knowledge/) are suggested as criteria, and the ticket's bubble on the map shows rules no criterion covers yet. You can confirm a ticket's criteria in its **Full ticket**.
+Before working a `task`, `execute` or `prototype` ticket, the agent calls `set_criteria`: numbered points (`AC-1`, `AC-2`, …), each with a kind (`unit`, `integration`, `e2e`, `regression`, `business-rule`, `security`, `manual`) and optionally the knowledge entry it comes from. Criteria are required on trails with a discovery brief, unless verification is `off`. Business rules from [project knowledge](/docs/discovery-and-knowledge/) are suggested as criteria, and the ticket's bubble on the map shows rules no criterion covers yet.
+
+You confirm a ticket's criteria in its **Full ticket**, from its row in Hands-off's **Needs you**, or all of a trail's at once with [Approve the plan](/docs/hands-off/#approve-the-plan). Confirming is bound to the criteria as the page showed them. Criteria charted with a ticket are confirmed before any agent starts it; once confirmed, an agent's change is only a proposal until you take it, and its completion is checked against the confirmed ones. See [Done means verified](#done-means-verified).
 
 When completing, the agent gives evidence for each criterion:
 

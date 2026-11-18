@@ -55,7 +55,7 @@ const view = async (name) => {
     await page.keyboard.press('Escape');
     await wait(500);
   }
-  await page.locator('.view-tabs').getByRole('button', { name, exact: true }).click();
+  await page.locator('.view-bar').getByRole('button', { name, exact: true }).click();
 };
 /** The agent's question at the top of the open bubble. */
 const bubbleQuestion = () => page.locator('.bubble .open-q');
@@ -415,6 +415,54 @@ const agentStep = async (text, times = 1) => {
   throw new Error(`agents never reached "${text}"\n${project.agentLog()}`);
 };
 
+/** Hands-off or Hands-on, from the switch in the header (saved for this person, as a click there does). */
+const mode = async (name) => {
+  await page.locator('.mode-switch').first().getByRole('button', { name, exact: true }).click();
+  await page.locator(name === 'Hands-off' ? '.hands-off-home' : '.map-zone').waitFor({ timeout: 15000 });
+  await wait(1200);
+};
+
+/** A row of Hands-off's Needs you, by its text, opened (one is open at a time). */
+const openNeed = async (text) => {
+  const row = page.locator('.home-needs .home-need', { hasText: text }).first();
+  if (!(await row.count())) {
+    const more = page.locator('.home-needs .home-more');
+    if (await more.count()) await more.click();
+  }
+  await row.waitFor({ timeout: 30000 });
+  if (!(await row.evaluate((el) => el.classList.contains('open')))) await row.locator('.ds-row-main').click();
+  await page.locator('.home-needs .home-need.open', { hasText: text }).waitFor({ timeout: 10000 });
+  await wait(900);
+  return row;
+};
+
+/**
+ * Hands-off, the home everyone starts on: the whole window, Needs you with the agent's question open in place, and
+ * the plan to approve in one step (opened, not approved: the brief's own shots come later).
+ */
+const handsOffShots = async () => {
+  await openNeed('Is silent auto-merge acceptable');
+  await shot('lookout-hands-off');
+  await zoom('lookout-needs-you', ['.home-needs'], { aspect: null });
+  // Progress and Since you were away, under it. A taller window holds them whole.
+  await page.setViewportSize({ ...size, height: 1700 });
+  await wait(900);
+  await zoom('lookout-since-away', ['.home-progress', '.home-since'], { aspect: null });
+  // The plan: the brief and every ticket's criteria, approved in one step. Tall: it shows everything it approves.
+  await page.setViewportSize({ ...size, height: 2600 });
+  await openNeed('Approve the plan');
+  await page.locator('.home-need.open .plan-approval').waitFor({ timeout: 15000 });
+  // The brief and the tickets scroll in one box: show where the brief ends and the tickets' criteria begin.
+  await page.locator('.home-need.open .plan-approval-items').evaluate((el) => {
+    const t = el.querySelector('.plan-approval-ticket');
+    if (t) el.scrollTop += t.getBoundingClientRect().top - el.getBoundingClientRect().top - 90;
+  });
+  await wait(900);
+  await zoom('lookout-plan-approval', ['.home-need.open'], { aspect: null });
+  await page.setViewportSize(size);
+  await openNeed('Is silent auto-merge acceptable');
+};
+
 // A briefing needs time away: a short away threshold, then the tab hidden while the agents work.
 // The app defaults to night, so ask for the theme this capture is for.
 await page.addInitScript(
@@ -437,21 +485,27 @@ await page.goto(project.url);
 await page.locator('.dialog.onboarding').waitFor({ timeout: 20000 });
 await wait(800);
 await page.getByRole('button', { name: 'Get started' }).click();
-await page.locator('.node').first().waitFor({ timeout: 15000 });
+// Hands-off is everyone's default; the briefing that opens on coming back is Hands-on's, so this capture starts there.
+await page.locator('.hands-off-home').waitFor({ timeout: 15000 });
+await mode('Hands-on');
+await page.locator('.map-zone .node').first().waitFor({ timeout: 15000 });
 // Away for a while: an agent asks, the others finish research, so the briefing has a morning's news to tell.
 await setVisible(false);
 await agentStep('asking:');
 await agentStep('closed #', 2);
 await wait(100000);
-
 await setVisible(true);
-await page.locator('.bf-tile').first().waitFor({ timeout: 10000 });
+await page.locator('.bf-tile').first().waitFor({ timeout: 20000 });
 await wait(2500);
 // Scout's summary, the stat tiles and the first lines of each list.
 await zoom('lookout-briefing', ['.dialog.briefing h2', '.dialog.briefing .bf-tiles'], {
   aspect: null,
 });
 await page.getByRole('dialog', { name: 'While you were away' }).getByRole('button', { name: 'Dismiss' }).click();
+// Hands-off, with the same news on its home: Since you were away counts from the same visit.
+await mode('Hands-off');
+await handsOffShots();
+await mode('Hands-on');
 // Back to the normal away threshold, so the briefing stays closed for the rest of the run.
 await page.evaluate(() => {
   const prefs = JSON.parse(localStorage.getItem('teamtrail.prefs') || '{}');
@@ -517,16 +571,26 @@ await wait(1200);
 // The menu under the title it opens from, project name included.
 await zoom('lookout-trails', ['.h-title', '.trail-menu'], { aspect: 16 / 10 });
 await page.getByRole('menuitem', { name: '+ New trail' }).click();
-await page.locator('.dialog').waitFor();
-const fields = page.locator('.dialog input, .dialog textarea');
-await fields.nth(0).fill('Ship team workspaces');
-await fields.nth(1).fill('Teams share notebooks with roles, and admins manage members without contacting support.');
-await fields
-  .nth(2)
-  .pressSequentially('Admins asked for this in the Q3 survey. Must work with existing SSO.', { delay: 18 });
-await wait(600);
-await zoom('flow-05-new-trail', ['.dialog'], { aspect: 16 / 10 });
-await page.keyboard.press('Escape');
+// New trail is a document editor: a markdown destination, assumptions one per line, and notes loaded from a spec.
+await page.locator('.dialog.new-trail').waitFor();
+const newTrail = page.locator('.dialog.new-trail');
+await newTrail.locator('.new-trail-title input').fill('Ship team workspaces');
+await newTrail
+  .locator('.doc-destination textarea')
+  .fill(
+    'Teams share notebooks with roles, and admins manage members without contacting support.\n\n' +
+      '- Owners, editors and viewers per notebook\n- Admins invite and remove members themselves',
+  );
+await newTrail.locator('.doc-assumptions textarea').fill('Existing SSO covers every team\nNo billing changes for v1');
+await newTrail
+  .locator('.doc-notes input[type="file"]')
+  .setInputFiles(join(root, 'scripts/assets/team-workspaces-spec.md'));
+await newTrail.locator('.doc-notes textarea').waitFor();
+await page.waitForFunction(() => document.querySelector('.doc-notes textarea')?.value.includes('Survey'));
+await wait(800);
+await zoom('flow-05-new-trail', ['.dialog.new-trail'], { aspect: 16 / 10 });
+await newTrail.getByRole('button', { name: 'Close', exact: true }).click();
+await page.locator('.dialog.new-trail').waitFor({ state: 'detached', timeout: 5000 });
 await wait(600);
 
 // The Logbook, a page from the header's tabs: a decision with its reasoning, the facts behind it and the options it
@@ -712,17 +776,26 @@ await closeBubble();
 // No hover tip or focus ring left over for the phone shot.
 await clearUi();
 
-// Phone view of the same project: the header, the map and the tab bar.
+// Phone view of the same project: the header, the map and the tab bar (Hands-on), then Hands-off's home.
 const cdp = await ctx.newCDPSession(page);
-await cdp.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
-await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true });
-await wait(2500);
-const { data } = await cdp.send('Page.captureScreenshot', {
-  format: 'png',
-  clip: { x: 0, y: 0, width: 390, height: 844, scale: 1 },
-});
-writeFileSync(join(media, 'lookout-phone.png'), Buffer.from(data, 'base64'));
-console.log('saved lookout-phone.png');
+const phone = async (name) => {
+  await cdp.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
+  await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true });
+  await wait(2500);
+  const { data } = await cdp.send('Page.captureScreenshot', {
+    format: 'png',
+    clip: { x: 0, y: 0, width: 390, height: 844, scale: 1 },
+  });
+  writeFileSync(join(media, `${name}.png`), Buffer.from(data, 'base64'));
+  console.log('saved', `${name}.png`);
+  await cdp.send('Emulation.clearDeviceMetricsOverride');
+  await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: false });
+  await wait(1200);
+};
+await phone('lookout-phone');
+await mode('Hands-off');
+await clearUi();
+await phone('lookout-phone-hands-off');
 await ctx.close();
 await browser.close();
 process.exit(0);

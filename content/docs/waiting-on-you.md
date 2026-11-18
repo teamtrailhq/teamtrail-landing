@@ -1,10 +1,11 @@
 # Waiting on you
 
-One deterministic, ranked list of everything that needs you, with the reason each item ranks where it does.
+One deterministic, ranked list of everything that needs you, with the reason each item ranks where it does. Only your calls land here: missing evidence and failed checks go back to the agent, and missing reviews open by themselves (see [Done means verified](/docs/verification/#done-means-verified)).
 
 ## Where you see it
 
-- **On the map.** A ticket that needs you is a red card. Click it, and its bubble starts with what it needs from you, with the actions in place: answer the agent's question, approve, unblock or resolve.
+- **On the Hands-off home.** [Hands-off](/docs/hands-off/), everyone's default, opens on **Needs you**: the list as compact rows, most urgent first, across your trails. One row is open at a time, with the decision in place: answer an agent's question, approve, confirm criteria, approve a whole plan in one step, or act on the checks on main. **Open ticket** opens the full ticket. With nothing waiting, Scout says agents keep going.
+- **On the map (Hands-on).** A ticket that needs you is a red card. Click it, and its bubble starts with what it needs from you, with the actions in place: answer the agent's question, approve, unblock or resolve.
 - **In the header.** **N need you** counts this trail's items. Click it to open the most urgent one.
 - **Under the map.** The trail bar has a chip for each item. **More** opens the whole list, **Needs you**: this trail's items ranked, then the ones on your other trails, each naming its trail. Items that aren't a ticket (a brief, a reroute, an approval on this machine) open their own dialog or page.
 - **Across repos.** [All projects](/docs/all-projects/) ranks them in one list.
@@ -16,7 +17,8 @@ One deterministic, ranked list of everything that needs you, with the reason eac
 | `question`          | An agent asked with `ask_human`.                                                                                                                                                                                             |
 | `blocked`           | A ticket waits on you: failed too often, or its checks couldn't run.                                                                                                                                                         |
 | `approval`          | Verified work waiting for your sign-off, or a criterion only you can confirm.                                                                                                                                                |
-| `brief`             | A discovery brief waiting for review.                                                                                                                                                                                        |
+| `brief`             | A discovery brief waiting for review. When its tickets carry criteria, Hands-off shows it as **Approve the plan**: the brief and every ticket's criteria, approved in one step.                                              |
+| `criteria`          | A ticket's criteria wait for you to confirm them: charted with the ticket (no agent may start it until you do), or a pass against criteria nobody confirmed (checked again by itself once you confirm).                      |
 | `reroute`           | A pending reroute proposal. The tickets it touches are frozen. Also an agent's request to skip discovery or change a trail's mode or destination, to **Approve** or **Decline**.                                             |
 | `reroute-suggested` | A sign the plan may need to change (for example a ticket blocked after its last attempt).                                                                                                                                    |
 | `policy`            | Finished work changed high-risk files without asking you. See [policy.json](/docs/policy-json/).                                                                                                                             |
