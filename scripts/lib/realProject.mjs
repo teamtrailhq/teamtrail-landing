@@ -20,7 +20,16 @@ const MARKER = '.teamtrail-capture';
 
 /** The app's own files, so the repo looks like Fieldnote and each claim gets a worktree to work in. */
 const SOURCES = {
-  'package.json': '{\n  "name": "fieldnote-app",\n  "private": true\n}\n',
+  // The checks verification.json names (npm run typecheck, npm test) run for real on completions and on main.
+  'package.json': `${JSON.stringify(
+    {
+      name: 'fieldnote-app',
+      private: true,
+      scripts: { typecheck: 'node -e "process.exit(0)"', test: 'node -e "process.exit(0)"' },
+    },
+    null,
+    2,
+  )}\n`,
   'README.md': '# Fieldnote\n\nNotes for field researchers, online or off.\n',
   'src/sync/client.ts': 'export async function pushEdits() {}\n',
   'src/storage/notes.ts': 'export function saveNote() {}\n',
@@ -149,6 +158,33 @@ export async function realProject({ agents = 2 } = {}) {
         }
       }, new URL('__teamtrail/', url).href);
       if (left) console.log(`approvals: ${left} still waiting`);
+    },
+    /** The repo the capture works in, on main (`<CODE>/fieldnote-app`), for a scripted agent's commits and merges. */
+    dir,
+    /**
+     * A scripted MCP agent of the built CLI, the way `dev-agent.mjs` connects one, for a step the video needs exactly
+     * (a held pass, a merge). `call(tool, args)` returns the tool's JSON and answers its guides' checklists.
+     */
+    async mcpAgent(name = 'claude-code') {
+      const sdk = path.join(repo, 'node_modules/@modelcontextprotocol/sdk/dist/esm/client');
+      const { Client } = await import(path.join(sdk, 'index.js'));
+      const { StdioClientTransport } = await import(path.join(sdk, 'stdio.js'));
+      const { answeringChecklists } = await import(path.join(repo, 'scripts/e2eHelpers.mjs'));
+      const transport = new StdioClientTransport({
+        command: process.execPath,
+        args: [cli, 'mcp'],
+        cwd: dir,
+        stderr: 'pipe',
+        env: { ...env, TEAMTRAIL_NO_REGISTER: '1' },
+      });
+      const client = new Client({ name, version: '2.1.0' });
+      await client.connect(transport);
+      const raw = async (tool, args = {}) => {
+        const r = await client.callTool({ name: tool, arguments: args });
+        if (r.isError) throw new Error(`${tool}: ${r.content[0].text}`);
+        return JSON.parse(r.content[0].text);
+      };
+      return { call: answeringChecklists(raw), close: () => client.close() };
     },
     /** Agent output so far, for waiting on a step ("asking:", "closed #7"). */
     agentLog: () => log,
