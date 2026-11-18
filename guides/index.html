@@ -66,7 +66,7 @@
     <!-- @include sprite -->
     <!-- @include nav -->
 
-    <main id="main">
+    <main id="main" class="compact">
       <section class="hero hero--page" aria-labelledby="page-title">
         <canvas class="field" data-field="hero" data-intensity="0.7" aria-hidden="true"></canvas>
         <div class="hero__party" aria-hidden="true">
@@ -82,9 +82,8 @@
           <span class="hero__badge" data-scramble>Guides · Available now</span>
           <h1 id="page-title">Bring a guide for the hard stretches.</h1>
           <p class="hero__lede">
-            Every ticket comes with its guides: an architect on research, a QA lead and a security expert on the build,
-            a reviewer on the review. Whichever agent takes it works to their roles, and can't finish until every
-            checklist is answered.
+            Every ticket comes with its guides: an architect on research, QA and security on the build, a reviewer on
+            the review. Any agent that takes it can't finish until every checklist is answered.
           </p>
           <div class="hero__actions">
             <div class="cmd cmd--wide">
@@ -115,55 +114,30 @@
         </div>
       </section>
 
-      <!-- WHY -->
-      <section class="section" aria-labelledby="s-why">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">Why guides</span>
-              <h2 id="s-why">A general-purpose agent is a generalist. Your trail isn't.</h2>
-            </div>
-            <p>
-              The same agent that writes the code shouldn't be the one that signs it off, and a security pass needs a
-              different eye than a docs pass. Guides give each kind of work its own instructions and its own bar.
-            </p>
-          </header>
-        </div>
-      </section>
-
       <!-- HOW -->
-      <section class="section section--flush" id="how" aria-labelledby="s-how">
+      <section class="section" id="how" aria-labelledby="s-how">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">How it works</span>
-              <h2 id="s-how">Every ticket type gets its guides, and the work meets their checklists.</h2>
+              <h2 id="s-how">Guides come with the ticket.</h2>
             </div>
           </header>
           <ul class="trio reveal" role="list">
             <li>
               <span class="n">01</span>
               <h3>Pick a guide</h3>
-              <p>
-                Five come built in. Add more from a reviewed catalog, or write your own: a short file with instructions,
-                a checklist and the checks it needs.
-              </p>
+              <p>Five come built in. Add more from a reviewed catalog, or write your own.</p>
             </li>
             <li>
               <span class="n">02</span>
               <h3>It comes with the ticket</h3>
-              <p>
-                Guides come with the ticket type: the architect on research, QA and security on tasks, the reviewer on
-                reviews. Change them per trail, or add and remove one on a single ticket, in the Lookout.
-              </p>
+              <p>Set by ticket type. Change them per trail, or on a single ticket in the Lookout.</p>
             </li>
             <li>
               <span class="n">03</span>
               <h3>The work meets the checklist</h3>
-              <p>
-                The agent that takes the ticket gets every guide's instructions and checklist, and can't finish until it
-                has answered every item. A guide you add mid-work reaches it at its next report.
-              </p>
+              <p>Any agent, any model, gets the instructions and can't finish until every item is answered.</p>
             </li>
           </ul>
           <div class="runs runs--spaced">
@@ -171,18 +145,18 @@
               <figure class="shot">
                 <img
                   src="/media/lookout-ticket-guide.png"
-                  width="820"
-                  height="838"
+                  width="880"
+                  height="1028"
                   loading="lazy"
                   decoding="async"
                   alt="A finished task's full ticket: its guides, QA and Security by its type, and its attempt with the checks that passed."
                 />
               </figure>
               <div class="run__copy">
-                <h3>Every answer, on the ticket</h3>
+                <h3>Guides and results, on the ticket</h3>
                 <p>
-                  The checklist answers stay with the ticket: who answered, when, and a note on anything not done. You
-                  see them in the Lookout next to the work.
+                  The full ticket shows its guides, here QA and Security by its type, and each attempt with the checks
+                  that passed.
                 </p>
               </div>
             </article>
@@ -199,9 +173,8 @@
               <h2 id="s-catalog">Every guide you can bring today.</h2>
             </div>
             <p>
-              The five built-in guides are already in your project. Others come from the catalog, where every guide is
-              read by a maintainer before it's marked Verified. In the Lookout, open Settings, then Guides, then Browse
-              guides.
+              The five built-in guides are already in your project. A maintainer reads each catalog guide before it's
+              marked Verified.
             </p>
           </header>
           <!-- @guide-cards -->
@@ -221,50 +194,26 @@
               <span class="eyebrow">Safe by design</span>
               <h2 id="s-safe">A guide can raise the bar. Never lower it.</h2>
             </div>
-            <p>
-              Bringing someone in from a catalog has to be safe by default. These rules are enforced by
-              <span class="mark">Teamtrail</span>, not by the guide.
-            </p>
+            <p>Enforced by <span class="mark">Teamtrail</span>, not by the guide.</p>
           </header>
           <ul class="facts reveal" role="list">
             <li>
               <h3>No code in a guide</h3>
-              <p>Guides are instructions and checklists. No scripts, no hooks, nothing that runs when you add one.</p>
+              <p>Instructions and checklists only. Nothing runs when you add one.</p>
             </li>
             <li>
               <h3>You approve every check</h3>
-              <p>A command a guide proposes runs only after you approve it, and it goes into your repo's config.</p>
+              <p>A command a guide proposes runs only after you approve it.</p>
             </li>
             <li>
               <h3>Pinned and verified</h3>
-              <p>
-                Each guide you add is pinned to a version and fingerprint. A file that changes is switched off until you
-                look.
-              </p>
+              <p>A guide that changes after you approved it is switched off until you look.</p>
             </li>
             <li>
               <h3>Guides only add rules</h3>
-              <p>
-                A guide can add checks and checklist items. It can't skip review, lower verification or decide for you.
-              </p>
+              <p>It can add checks, never skip review, lower verification or decide for you.</p>
             </li>
           </ul>
-        </div>
-      </section>
-
-      <!-- ANY AGENT -->
-      <section class="section" aria-labelledby="s-agent">
-        <div class="wrap">
-          <header class="head head--center reveal">
-            <div class="head__title">
-              <span class="eyebrow">Any agent, any model</span>
-              <h2 id="s-agent">Guides aren't tied to a model.</h2>
-            </div>
-            <p>
-              A guide is plain text that travels with the ticket. Claude Code, Codex or any agent you connect picks it
-              up when it takes the work. No vendor lock-in, no hosted agents, and still all on your machine.
-            </p>
-          </header>
         </div>
       </section>
 
@@ -276,37 +225,29 @@
               <span class="eyebrow">Write your own</span>
               <h2 id="s-write">Your team's know-how, in one short file.</h2>
             </div>
-            <p>
-              A guide is a markdown file: a few lines about it, a checklist, and plain steps for the agent. One command
-              starts it from a template, and you make it yours.
-            </p>
+            <p>A markdown file: a checklist and plain steps for the agent, started from a template.</p>
           </header>
           <ul class="trio reveal" role="list">
             <li>
               <span class="n">01</span>
               <h3>Write it</h3>
               <p>
-                <code>teamtrail guides new <span class="nowrap">&lt;id&gt;</span></code> writes a template that already
-                passes the lint. Change the name, the checklist and the steps. The <a href="/docs/guides/">docs</a> list
-                every field.
+                <code>teamtrail guides new <span class="nowrap">&lt;id&gt;</span></code> writes a template. The
+                <a href="/docs/guides/">docs</a> list every field.
               </p>
             </li>
             <li>
               <span class="n">02</span>
               <h3>Check it</h3>
-              <p>
-                <code>teamtrail guides lint</code> checks your project's guides and refuses anything that would steer an
-                agent around you. Every finding names its line.
-              </p>
+              <p><code>teamtrail guides lint</code> refuses anything that would steer an agent around you.</p>
             </li>
             <li>
               <span class="n">03</span>
               <h3>Approve it, or share it</h3>
               <p>
-                Approve it in Settings → Guides → Write your own. Agents use it only after you do, and again after every
-                edit. To share it with everyone, send it to the catalog:
+                Approve it in Settings → Guides, after every edit too. Or
                 <a href="https://github.com/teamtrailhq/teamtrail-guides/blob/main/CONTRIBUTING.md"
-                  >how to contribute a guide</a
+                  >send it to the catalog</a
                 >.
               </p>
             </li>
@@ -319,10 +260,7 @@
         <canvas class="field" data-field="final" data-intensity="0.55" aria-hidden="true"></canvas>
         <div class="wrap final__inner reveal">
           <h2 id="s-start">Bring your first guide.</h2>
-          <p>
-            The five built-in guides are already in your project. One command adds one more from the catalog, and you
-            approve anything it wants to run.
-          </p>
+          <p>One command adds one from the catalog, and you approve anything it wants to run.</p>
           <div class="hero__actions">
             <div class="cmd cmd--wide">
               <span class="cmd__label">Add the accessibility guide</span>

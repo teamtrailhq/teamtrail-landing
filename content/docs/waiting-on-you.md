@@ -35,6 +35,18 @@ One deterministic, ranked list of everything that needs you, with the reason eac
 | `delivery`          | Slack messages keep failing to get through.                                                                                                                                                                                  |
 | `review-limit`      | The team's review limit is reached: finished work waits for your review, and agents start no new implementation work until you review some. Opens the ticket waiting longest. See [Review capacity](/docs/review-capacity/). |
 
+### From verification
+
+Verification adds work to the list when a pass hasn't earned it yet. Each item says why, and has a way past it:
+
+- **Check guard:** "Checks passed, but the work changed what they run: package.json scripts.test changed". **Accept the pass…** or **Send to rework**. See [Check guard](/docs/verification/#check-guard).
+- **Flaky check:** "Passed only on retry: test failed in A-1, then passed on c2201be with no change". **Send to rework** or **Accept the pass…**. See [Flaky checks](/docs/verification/#flaky-checks).
+- **Same-model review:** with the `independent-review` gate enforced, "Review #12 waits for an agent on another model than claude-opus-5-5". See [Independent review](/docs/verification/#independent-review).
+- **Trail verified together:** "Trail checks fail on main after merging #2, #3", with **Add a fix ticket** and **Run again** on the destination flag. See [Trail verified together](/docs/verification/#trail-verified-together).
+- **Came back:** "#7 was verified, then reverted: add a rule?" opens the diff rules editor filled in. See [What came back](/docs/verification/#what-came-back).
+
+Gates in `observe` add nothing here; they only record what they would have held. See [Gates](/docs/verification/#gates-off-observe-enforce).
+
 ## How items are ranked
 
 Each item gets a score from fixed rules, added in a fixed order so the reasons always read the same way:

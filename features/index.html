@@ -14,7 +14,7 @@
     <title>Teamtrail features: decisions, evidence and proof for your AI coding agents</title>
     <meta
       name="description"
-      content="Everything in the Teamtrail Lookout: the trail map, what needs you, checks and review, a signed proof for every finished ticket, guides, every repo in one view, work matched to each model, the logbook, Trail stats, and GitHub Issues and Linear sync."
+      content="Everything in the Teamtrail Lookout: the trail map, agents in parallel, what needs you, verification your agents can't game (check guard, the whole trail verified together, reviews by another model, rules from past mistakes, flaky checks caught) and a signed proof for every finished ticket."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Teamtrail" />
@@ -66,782 +66,297 @@
     <!-- @include sprite -->
     <!-- @include nav -->
 
-    <main id="main">
+    <main id="main" class="compact">
       <section class="hero hero--page" aria-labelledby="page-title">
         <canvas class="field" data-field="hero" data-intensity="0.6" aria-hidden="true"></canvas>
         <div class="wrap hero__inner">
           <span class="hero__badge" data-scramble>Features</span>
           <h1 id="page-title">Everything the Lookout does.</h1>
           <p class="hero__lede">
-            What you can use today, and where <span class="mark">Teamtrail</span> is going next. Every screenshot is the
-            real app, running a real trail.
+            Many agents on one big project, and every piece verified. Each screenshot is the real app; the details are
+            in the <a href="/docs/">docs</a>.
           </p>
         </div>
       </section>
 
-      <!-- TRAILS -->
-      <section class="section" aria-labelledby="f-trails">
+      <!-- CHART -->
+      <section class="section" id="chart" aria-labelledby="f-chart">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">Trails</span>
-              <h2 id="f-trails">Plan big work as a map, not a to-do list.</h2>
+              <span class="eyebrow">Chart the trail</span>
+              <h2 id="f-chart">Big work, mapped as decisions.</h2>
             </div>
-            <p>
-              A trail leads to a destination. Tickets are the decisions and work along the way, with what blocks what.
-            </p>
+            <p>A trail leads to a destination. Tickets are the research, calls and building on the way.</p>
           </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-overview.png"
-                  width="1680"
-                  height="945"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The Lookout: the trail map filling the page, an agent's question open in a bubble beside its ticket, and the trail bar under the map."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">01</span>
-                <h3>A live trail map</h3>
-                <p>
-                  The map fills the screen and moves as the work does: who's working, what waits for an agent and what
-                  needs you. Click a ticket and a bubble opens beside it.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Research, junction, prototype, task and execute tickets</li>
-                  <li data-n="02">Each agent's name, model and step on its card</li>
-                  <li data-n="03">The trail bar counts what's done, working and waiting</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-trails.png"
-                  width="1424"
-                  height="890"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The trail menu: three trails with their progress and what needs you, New trail, and the trail's mode, Start over and Archive."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">02</span>
-                <h3>Several trails at once</h3>
-                <p>
-                  Switch from the title. What needs you on other trails stays tagged with its trail, one click away.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Plan only, or plan and execute, per trail</li>
-                  <li data-n="02">Destination, notes, decisions so far and out of scope</li>
-                </ul>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- UNDERSTANDING -->
-      <section class="section" aria-labelledby="f-understand">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">Understanding</span>
-              <h2 id="f-understand">It learns the terrain before anyone sets off.</h2>
-            </div>
-            <p>Your agents start from what you already have, and they remember what they learn.</p>
-          </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-discovery.png"
-                  width="2754"
-                  height="1722"
-                  loading="lazy"
-                  decoding="async"
-                  alt="A discovery brief with what exists, the product rules that apply, risks and assumptions."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">03</span>
-                <h3>A brief before anything is built</h3>
-                <p>
-                  An agent studies what exists and writes it up: the parts involved, the rules your product follows,
-                  what could break and what it's assuming. You approve it, or ask for changes.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Building waits for your approval</li>
-                  <li data-n="02">It asks about your product, not just your code</li>
-                  <li data-n="03">Start a trail here, no terminal needed</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-knowledge.png"
-                  width="2200"
-                  height="1188"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The Knowledge view: confirmed rules and facts, an assumption and suggestions waiting for review."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">04</span>
+          <div class="theme-row">
+            <figure class="shot reveal">
+              <img
+                src="/media/lookout-discovery.png"
+                width="2754"
+                height="1674"
+                loading="lazy"
+                decoding="async"
+                alt="A discovery brief waiting for review: what exists, the product rules that apply, risks and assumptions."
+              />
+            </figure>
+            <ul class="points reveal" role="list">
+              <li>
+                <h3>A live map</h3>
+                <p>Who's working, what's blocked and what needs you, on one screen. Several trails at once.</p>
+              </li>
+              <li>
+                <h3>A brief before building</h3>
+                <p>An agent studies what exists and what could break. Building waits for your approval.</p>
+              </li>
+              <li>
                 <h3>A field guide that remembers</h3>
-                <p>
-                  Rules, habits, pitfalls and dead ends go in your project's field guide. Each agent gets what matters
-                  for its task, with the reason why.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Agents suggest, you confirm</li>
-                  <li data-n="02">Flagged for a second look when the code changes</li>
-                  <li data-n="03">Save any decision to the field guide in one click</li>
-                </ul>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- HUMAN IN THE LOOP -->
-      <section class="section" aria-labelledby="f-hitl">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">Waiting on you</span>
-              <h2 id="f-hitl">Only the turns that need you, in the right order.</h2>
-            </div>
-            <p>
-              Agents ask, you decide, and the decision is written down. You choose which calls are always yours, and
-              only urgent ones interrupt you.
-            </p>
-          </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-trail-bar-more.png"
-                  width="1680"
-                  height="945"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The trail bar opened under the map: Waiting on you, ranked, with a blocking question first and the reason for each item; the agents at work with their models; and what's up next."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">05</span>
-                <h3>One list, most important first</h3>
-                <p>
-                  Questions, approvals, stuck work, failing builds and new plans in one list under the map, ranked by
-                  what they hold up and how long agents have waited.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">A reason on every item: “blocks 4 tickets”</li>
-                  <li data-n="02">Related questions grouped to answer together</li>
-                  <li data-n="03">Only urgent ones interrupt; focus mode and “later” for the rest</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-risk.png"
-                  width="1508"
-                  height="1132"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The risk policy in Settings: a level for each kind of change, and files that always need you."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">06</span>
-                <h3>You decide what's always yours</h3>
-                <p>
-                  Database changes, logins, billing, deleting data, new dependencies: set what always needs you. Agents
-                  can't make those calls on their own; they ask.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Small calls are made for you and labelled by risk</li>
-                  <li data-n="02">Risky changes made without asking come to you to check</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-bubble-question.png"
-                  width="608"
-                  height="726"
-                  loading="lazy"
-                  decoding="async"
-                  alt="An agent's question in a bubble beside its ticket on the map: what it decides, the suggested replies and an answer box, then the ticket."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">07</span>
-                <h3>Answer in a click</h3>
-                <p>
-                  Click what needs you and the question opens beside its ticket, with the agent's suggested answers and
-                  a box for your own.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Reply on the map, in Slack or with /scout inbox</li>
-                  <li data-n="02">A summary or the full transcript goes on the ticket</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-briefing.png"
-                  width="1524"
-                  height="542"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The While you were away briefing: Scout's summary, then tickets done, blocked, waiting on you, agent decisions and spend."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">08</span>
-                <h3>While you were away</h3>
-                <p>
-                  Come back after a break and <span class="mark">Scout</span> tells you what changed: work done, work
-                  now blocked, what agents decided and what it cost.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">One click to the first answer you owe</li>
-                </ul>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- ADAPTIVE TRAILS -->
-      <section class="section" aria-labelledby="f-adapt">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">Adaptive trails</span>
-              <h2 id="f-adapt">Reroute when the ground changes.</h2>
-            </div>
-            <p>
-              Every trail writes down what it assumes. When something turns out wrong, an agent proposes a reroute
-              instead of pushing on. Nothing changes until you approve it.
-            </p>
-          </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-reroute.png"
-                  width="2754"
-                  height="1722"
-                  loading="lazy"
-                  decoding="async"
-                  alt="A proposed new plan: why, the evidence, the assumption that broke, and each change, with Approve and Reject."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">09</span>
+                <p>Rules, pitfalls and dead ends are kept, and each agent gets what matters for its task.</p>
+              </li>
+              <li>
                 <h3>Reroutes you approve</h3>
                 <p>
-                  The agent explains what it found, which assumption broke and exactly what it wants to change. Approve
-                  it, or send it back with a note.
+                  When an assumption breaks, an agent proposes a new route, drawn on the map.
+                  <a href="/docs/adaptive-trails/">Read more</a>
                 </p>
-                <ul class="ticks">
-                  <li data-n="01">Affected work pauses while you decide</li>
-                  <li data-n="02">What turned out wrong is remembered, so no one tries it again</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-reroute-map.png"
-                  width="1960"
-                  height="1225"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The trail map previewing a new plan: new tickets drawn as outlines, a cancelled one crossed out, paused ones marked."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">10</span>
-                <h3>See the change before it happens</h3>
-                <p>New work, cancelled work and paused work are drawn right on the map, before anything moves.</p>
-                <ul class="ticks">
-                  <li data-n="01">Agents can also say “this already exists” or “wrong mountain”</li>
-                  <li data-n="02">They suggest a better goal, with the evidence</li>
-                </ul>
-              </div>
-            </article>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <!-- PARALLEL WORK -->
-      <section class="section" aria-labelledby="f-parallel">
+      <!-- PARALLEL -->
+      <section class="section" id="parallel" aria-labelledby="f-parallel">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">Parallel work</span>
+              <span class="eyebrow">Agents work in parallel</span>
               <h2 id="f-parallel">Many agents, nobody lost.</h2>
             </div>
             <p>
-              Run several agents at once. Each can work in its own copy of your project, and you hear about it before
-              two of them change the same thing. <span class="mark">Teamtrail</span> never merges for you.
+              Claude Code, Codex or any MCP agent take the ready work. <span class="mark">Teamtrail</span> never merges.
             </p>
           </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot shot--natural">
-                <img
-                  src="/media/lookout-overlap.png"
-                  width="1214"
-                  height="550"
-                  loading="lazy"
-                  decoding="async"
-                  alt="A warning in Waiting on you, under the map: two agents may change the same files, with the files named."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">11</span>
+          <div class="theme-row theme-row--flip">
+            <figure class="shot reveal">
+              <img
+                src="/media/lookout-workspaces.png"
+                width="1540"
+                height="1288"
+                loading="lazy"
+                decoding="async"
+                alt="The Workspaces setting, switched on: a worktree and branch for every ticket an agent takes, active and finished."
+              />
+            </figure>
+            <ul class="points reveal" role="list">
+              <li>
+                <h3>Its own worktree per ticket</h3>
+                <p>A branch per task; nothing is merged, pushed or deleted for you.</p>
+              </li>
+              <li>
                 <h3>A warning before paths cross</h3>
-                <p>
-                  Agents say which files they expect to change. If two overlap, you see it in your list right away, and
-                  you can put one back in line.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">The files each agent expects to change, on its ticket</li>
-                  <li data-n="02">
-                    When two really changed the same files, a ticket to bring the work together, in one click
-                  </li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-workspaces.png"
-                  width="1508"
-                  height="1274"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The Workspaces setting, switched on: a worktree and branch for every ticket an agent takes, active and finished."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">12</span>
-                <h3>Its own copy for every task</h3>
-                <p>
-                  Turn it on once, and every task gets a separate copy of your repo on its own branch. Agents never
-                  share a checkout, and you review each branch when the work is done.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Nothing is merged, pushed or deleted for you</li>
-                </ul>
-              </div>
-            </article>
-          </div>
-          <div class="cards cards--joined">
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Remote agents</span></div>
-              <h3>Agents on other machines join the same trail</h3>
-              <p>
-                An agent on another machine or in a cloud sandbox connects over HTTP. It shares the tickets, claims and
-                inbox of the agents on your machine, and you steer them all from one Lookout.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Access</span></div>
-              <h3>One token per agent, yours to revoke</h3>
-              <p>
-                You create each token in Settings and can revoke it at any time. A remote agent never answers for you,
-                and on trails with checks its finished work comes to you to review.
-                <a href="/docs/remote-agents/">How to set it up</a>.
-              </p>
-            </article>
-          </div>
-          <div class="cards cards--joined">
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Sign-in</span></div>
-              <h3>The Lookout opens only in browsers you paired</h3>
-              <p>
-                The first time, you open the link the terminal prints. A phone pairs with a short code or a QR code. An
-                agent with curl can't approve its own work through the Lookout.
-                <a href="/docs/sign-in/">How sign-in works</a>.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Approvals</span></div>
-              <h3>Editing files never opens a gate</h3>
-              <p>
-                Check commands, accepted briefs, lowered policies and tickets changed in the files wait for you on your
-                machine. Approvals live there, not in the repo. <a href="/docs/security/">What it protects</a>.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- EVERY REPO, EVERY MODEL -->
-      <section class="section" id="projects" aria-labelledby="f-projects">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">All projects</span>
-              <h2 id="f-projects">Every repo in one view. The right work for every model.</h2>
-            </div>
-            <p>
-              Watch all your projects from one Lookout, and let each agent pick up the work that suits the model it runs
-              on. You still decide what matters.
-            </p>
-          </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-all-projects.png"
-                  width="2832"
-                  height="1316"
-                  loading="lazy"
-                  decoding="async"
-                  alt="All projects: one Needs you list across two repos, and the projects with what needs you in each."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">13</span>
-                <h3>Every repo you look after, in one place</h3>
-                <p>
-                  One list of what needs you across all your repos, most important first, and what changed in each while
-                  you were away. Answer an agent from there, or open the item in its own project.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Switch projects from the header</li>
-                  <li data-n="02">Your agents add their repo when they connect</li>
-                  <li data-n="03">Kept on your machine, never in a repo</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-model-matching.png"
-                  width="1550"
-                  height="968"
-                  loading="lazy"
-                  decoding="async"
-                  alt="Settings, Model matching: switched on for a trail, a model level for each kind of ticket, with hints from Trail stats."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">14</span>
+                <p>Agents say which files they'll change. Overlaps reach you before the conflict.</p>
+              </li>
+              <li>
                 <h3>The right model for each job</h3>
                 <p>
-                  Turn it on for a trail and each agent gets the tickets that fit its model: quick research on fast
-                  models, the big calls on the strongest. You choose the level for each kind of work.
+                  Research on fast models, the big calls on the strongest.
+                  <a href="/docs/model-matching/">Model matching</a>
                 </p>
-                <ul class="ticks">
-                  <li data-n="01">Hints from your own Trail stats</li>
-                  <li data-n="02">Teamtrail never switches your model</li>
-                  <li data-n="03">Work no agent is strong enough for waits for you</li>
-                </ul>
-              </div>
-            </article>
+              </li>
+              <li>
+                <h3>Guides for the hard stretches</h3>
+                <p>Reviewer, QA, security and more, with checklists. <a href="/guides/">Browse the guides</a></p>
+              </li>
+              <li>
+                <h3>Every repo, any machine</h3>
+                <p>
+                  All your projects in one view, and agents elsewhere over HTTP.
+                  <a href="/docs/remote-agents/">Remote agents</a>
+                </p>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <!-- GUIDES -->
-      <section class="section" id="guides" aria-labelledby="f-guides">
+      <!-- YOU DECIDE -->
+      <section class="section" id="decide" aria-labelledby="f-decide">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">Guides</span>
-              <h2 id="f-guides">A reviewer, QA or security lead for any ticket.</h2>
+              <span class="eyebrow">You decide what matters</span>
+              <h2 id="f-decide">Only the turns that need you.</h2>
             </div>
-            <p>
-              Every ticket comes with the guides of its type, and whichever agent takes it gets their know-how and
-              checklists it has to answer before the work counts as done.
-            </p>
+            <p>Agents ask, you decide, and the decision is written down.</p>
           </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-ticket-guide.png"
-                  width="820"
-                  height="838"
-                  loading="lazy"
-                  decoding="async"
-                  alt="A finished task's full ticket: its guides, QA and Security by its type, and its attempt with the checks that passed."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">15</span>
-                <h3>Five guides ready to go</h3>
+          <div class="theme-row">
+            <figure class="shot reveal">
+              <img
+                src="/media/lookout-trail-bar-more.png"
+                width="1680"
+                height="945"
+                loading="lazy"
+                decoding="async"
+                alt="The trail bar opened under the map: Waiting on you, ranked, with a blocking question first and the reason for each item; the agents at work with their models; and what's up next."
+              />
+            </figure>
+            <ul class="points reveal" role="list">
+              <li>
+                <h3>One list, most important first</h3>
+                <p>Each item says why it ranks there. Only urgent ones interrupt you.</p>
+              </li>
+              <li>
+                <h3>Answer in a click</h3>
+                <p>Beside the ticket on the map, in Slack, or with <code>/scout inbox</code>.</p>
+              </li>
+              <li>
+                <h3>Risky calls are yours by rule</h3>
+                <p>Data, logins, billing: agents can't make those calls themselves.</p>
+              </li>
+              <li>
+                <h3>Paced to your review</h3>
                 <p>
-                  Reviewer, QA, Security, Docs and Architect, on by ticket type: the architect on research, QA and
-                  security on tasks, the reviewer on reviews. Change them per trail or per ticket, and see every
-                  checklist answer on the ticket.
+                  New work waits when reviews pile up; code nobody asked for is flagged.
+                  <a href="/docs/review-capacity/">Review capacity</a>
                 </p>
-                <ul class="ticks">
-                  <li data-n="01">A guide can add checks, never remove one</li>
-                  <li data-n="02">Its commands run only after you approve them</li>
-                  <li data-n="03">A guide changed after you approved it is switched off</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-guides.png"
-                  width="1508"
-                  height="946"
-                  loading="lazy"
-                  decoding="async"
-                  alt="Settings → Guides: Browse guides for the catalog, and Write your own, with a team's own guide waiting for approval."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">16</span>
-                <h3>Add more, or write your own</h3>
-                <p>
-                  Browse reviewed guides from the community in Settings, or add one with a single command. Write your
-                  own with <code>teamtrail guides new</code>: a short markdown file that agents use once you approve it
-                  in Settings → Guides.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01"><a href="/guides/">Browse the guides</a></li>
-                  <li data-n="02"><a href="/docs/guides/">How guides work</a></li>
-                </ul>
-              </div>
-            </article>
+              </li>
+              <li>
+                <h3>While you were away</h3>
+                <p><span class="mark">Scout</span> tells you what changed, and what it cost.</p>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <!-- TRUST THE OUTCOME -->
-      <section class="section" aria-labelledby="f-verify">
+      <!-- VERIFIED -->
+      <section class="section" id="verified" aria-labelledby="f-verify">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">Verification</span>
+              <span class="eyebrow">Verified, not claimed</span>
               <h2 id="f-verify">“Done” is a claim. <span class="mark">Scout</span> checks it.</h2>
             </div>
             <p>
-              You agree on what done means before work starts, and nothing counts as done without proof. The checks that
-              run are the ones you approved on your machine, and a changed command waits for your approval.
+              You agree on done before work starts. Every gate can run in observe first, then hold work for you.
+              <a href="/docs/verification/">How verification works</a>.
             </p>
           </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-criteria.png"
-                  width="820"
-                  height="866"
-                  loading="lazy"
-                  decoding="async"
-                  alt="A ticket's acceptance criteria: a test, a business rule from your project and a point you sign off."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">17</span>
-                <h3>Agree on “done” before work starts</h3>
-                <p>
-                  Before building, an agent writes down what has to be true for the work to count, including your
-                  product's rules. When it finishes, every point needs proof.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Proof from your tests, or your sign-off</li>
-                  <li data-n="02">Your product's rules suggested as points to prove</li>
-                  <li data-n="03">Anything without proof goes back, with the reason</li>
-                </ul>
-              </div>
-            </article>
-          </div>
-          <div class="cards cards--joined">
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Checks</span></div>
-              <h3>Your tests run before work counts as done</h3>
-              <p>The checks you already use, from your repo. A failure goes back to the agent with what went wrong.</p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Review</span></div>
-              <h3>A different agent reviews the work</h3>
-              <p>
-                The agent that did the work never reviews it. When you run Claude and Codex, each reviews the other's
-                work first.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Approval</span></div>
-              <h3>You sign off when it matters</h3>
-              <p>For the work you care most about, the ticket closes only after you approve it in the Lookout.</p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Evidence</span></div>
-              <h3>Proof from your code, not just words</h3>
-              <p>
-                What actually changed, the pull request and its build, with a flag when they don't match what the agent
-                said.
-              </p>
-            </article>
-          </div>
-          <div class="cards cards--1 cards--joined">
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Verified by Teamtrail</span></div>
-              <h3>A signed proof for every finished ticket</h3>
-              <p>
-                Each finished ticket gets a proof report: the checks that ran, the review and the decisions behind it,
-                signed with your machine's key. Switch it on and Teamtrail posts it to the pull request, with a commit
-                status next to it.
-              </p>
-              <ul class="ticks">
-                <li data-n="01">Anyone can check a report with <code>teamtrail proof verify</code></li>
-                <li data-n="02">A GitHub Action checks every proof on a pull request, and can be a required check</li>
-                <li data-n="03"><a href="/docs/verification/">How proofs work</a></li>
-              </ul>
-            </article>
-          </div>
-          <div class="cards cards--joined">
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Review limit</span></div>
-              <h3>New work waits for your review</h3>
-              <p>
-                Agents write code faster than anyone reviews it. Set how many finished tickets may wait for you, and
-                once they do, agents start nothing new: they fix what came back and keep researching until you catch up.
-              </p>
-              <ul class="ticks">
-                <li data-n="01">Counts approvals in the Lookout and open pull requests</li>
-                <li data-n="02">Waiting on you opens the ticket waiting longest</li>
-              </ul>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Scope check</span></div>
-              <h3>Code nobody asked for, flagged first</h3>
-              <p>
-                Agents say which files they'll change when they take a ticket. Whatever they change beyond that is
-                listed first for the reviewer and on the proof, or sent back, as you choose.
-              </p>
-              <ul class="ticks">
-                <li data-n="01">Show it, send it back, or ask you</li>
-                <li data-n="02"><a href="/docs/review-capacity/">How review capacity works</a></li>
-              </ul>
-            </article>
+          <div class="theme-row theme-row--flip">
+            <figure class="shot reveal">
+              <img
+                src="/media/lookout-criteria.png"
+                width="880"
+                height="900"
+                loading="lazy"
+                decoding="async"
+                alt="A ticket's acceptance criteria: a test, a business rule from your project and a point you sign off."
+              />
+            </figure>
+            <ul class="points reveal" role="list">
+              <li>
+                <h3>Checks the work can't change</h3>
+                <p>A pass counts only if the work didn't edit what the check runs or weaken the tests.</p>
+              </li>
+              <li>
+                <h3>The whole trail, verified together</h3>
+                <p>Once its pull requests merge, the checks run again on main, all tickets together.</p>
+              </li>
+              <li>
+                <h3>Reviews by a different model</h3>
+                <p>The proof shows the author's and the reviewer's models.</p>
+              </li>
+              <li>
+                <h3>Rules from past mistakes</h3>
+                <p>Touch these files, run this check or answer this question, with the incident behind it.</p>
+              </li>
+              <li>
+                <h3>Flaky checks caught</h3>
+                <p>Failed, then passed on the same commit? Not verified until you say so.</p>
+              </li>
+              <li>
+                <h3>A signed proof on every pull request</h3>
+                <p>Checks, review and decisions, signed and checkable by anyone, as a required check.</p>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <!-- RECORD AND SPEND -->
-      <section class="section" aria-labelledby="f-record">
+      <!-- RECORD -->
+      <section class="section" id="record" aria-labelledby="f-record">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
               <span class="eyebrow">On the record</span>
-              <h2 id="f-record">Every decision and every result, in the logbook.</h2>
+              <h2 id="f-record">Every call and every result, kept.</h2>
             </div>
           </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-decisions.png"
-                  width="1268"
-                  height="966"
-                  loading="lazy"
-                  decoding="async"
-                  alt="A decision record with the decision, who made it, the alternatives considered and the rationale."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">18</span>
+          <div class="theme-row">
+            <figure class="shot reveal">
+              <img
+                src="/media/lookout-trail-stats.png"
+                width="1870"
+                height="1170"
+                loading="lazy"
+                decoding="async"
+                alt="Trail stats on a sample project: notes on what stands out, and delivery by vendor."
+              />
+            </figure>
+            <ul class="points reveal" role="list">
+              <li>
                 <h3>The logbook</h3>
+                <p>The question, your words, the alternatives and who decided, by name.</p>
+              </li>
+              <li>
+                <h3>You don't get asked twice</h3>
+                <p>An agent gets your earlier decision back instead of asking again.</p>
+              </li>
+              <li>
+                <h3>A scorecard for your agents</h3>
+                <p>Verified first time, rework and cost, by model and agent, from your own tickets.</p>
+              </li>
+              <li>
+                <h3>What came back</h3>
                 <p>
-                  Every call across your trails: the question, the answer, the options considered, the reasoning, who
-                  decided, by name, and the full conversation.
+                  Work verified and later reopened or reverted, counted, with a rule to add from it.
+                  <a href="/docs/trail-stats/">Trail stats</a>
                 </p>
-                <ul class="ticks">
-                  <li data-n="01">Filter, search and supersede</li>
-                  <li data-n="02">By area: decisions grouped by folder or risk, the most cited first</li>
-                  <li data-n="03">Export to markdown to share with your team</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-trail-stats.png"
-                  width="1870"
-                  height="1170"
-                  loading="lazy"
-                  decoding="async"
-                  alt="Trail stats on a sample project: notes on what stands out, and delivery by vendor."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">19</span>
-                <h3>Trail stats</h3>
-                <p>
-                  How your agents deliver across every trail, by vendor, agent and kind of work, with plain notes on
-                  what stands out. Shown here on a sample project.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">From your own numbers, on your machine</li>
-                  <li data-n="02">Information only: nothing is routed from it</li>
-                </ul>
-              </div>
-            </article>
+              </li>
+            </ul>
           </div>
-          <div class="cards cards--3 cards--joined">
-            <article class="card reveal">
-              <span class="card__n">Results</span>
-              <h3>A trip report on every trail</h3>
-              <p>
-                How long each trail took, how often you stepped in and what was redone. Trail stats compares it across
-                trails, by vendor, agent and kind of work.
-              </p>
-            </article>
-            <article class="card reveal">
-              <span class="card__n">Trackers</span>
-              <h3>Local files, GitHub Issues or Linear</h3>
-              <p>Trails sync both ways. Changes made offline wait and send in order when you're back.</p>
-            </article>
-            <article class="card reveal">
-              <span class="card__n">Any screen</span>
-              <h3>Answer from your phone</h3>
-              <p>
-                The map, a ticket in a sheet under it and the trail bar. Plan, Activity and the Logbook are one tap
-                away.
-              </p>
-            </article>
-          </div>
-          <div class="cards cards--joined">
-            <article class="card reveal">
-              <span class="card__n">Decision memory</span>
-              <h3>You don't get asked twice</h3>
-              <p>
-                Before an agent asks something you already decided, it gets your earlier decision back. Finished work
-                that touches files one of your decisions covers comes to you.
-              </p>
-            </article>
-            <article class="card reveal">
-              <span class="card__n">Scorecard</span>
-              <h3>Which agents do well on your repo</h3>
-              <p>
-                In Trail stats: verified first time, rework and cost per verified ticket, by model, agent and vendor,
-                from your own tickets. Small samples are marked too few.
-              </p>
-            </article>
-          </div>
+        </div>
+      </section>
+
+      <!-- LOCAL-FIRST -->
+      <section class="section" id="local" aria-labelledby="f-local">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">Local-first and safe</span>
+              <h2 id="f-local">On your machine, by your rules.</h2>
+            </div>
+            <p><a href="/docs/security/">What only you approve</a>, and what it protects against.</p>
+          </header>
+          <ul class="facts reveal" role="list">
+            <li>
+              <h3>Plain files or your tracker</h3>
+              <p>Markdown in your repo, or GitHub Issues and Linear, synced both ways.</p>
+            </li>
+            <li>
+              <h3>Approvals live with you</h3>
+              <p>Editing files never opens a gate: changes wait for you on your machine.</p>
+            </li>
+            <li>
+              <h3>Paired browsers only</h3>
+              <p>The Lookout opens only where you signed in. A phone pairs with a code.</p>
+            </li>
+            <li>
+              <h3>Never on your behalf</h3>
+              <p>It never answers, approves or starts agents for you.</p>
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -853,35 +368,27 @@
               <span class="eyebrow">Now in early access, and next</span>
               <h2 id="f-next">Less herding, not less judgment.</h2>
             </div>
-            <p>
-              Cloud keeps you in charge too: <span class="mark">Teamtrail</span> proposes and ranks, and you decide.
-            </p>
           </header>
           <div class="cards cards--3">
             <article class="card reveal">
               <div class="card__top">
                 <span class="card__n">Cloud</span><span class="tag tag--soon">Early access</span>
               </div>
-              <h3>Agents that keep working when you close the laptop</h3>
+              <h3>Agents that work while your laptop is closed</h3>
               <p>
-                Turn on Run my agents for a trail, and Cloud runs Claude Code or Codex on its ready work, two of yours
-                at a time, each in a sandbox of its own. Every ticket gets a pull request, and your checks run on the
-                commit the agent pushed, with a Verified by Teamtrail proof.
+                Claude Code or Codex on your trails, each in its own sandbox, a pull request per ticket.
+                <a href="/cloud/">More about Cloud</a>
               </p>
-              <ul class="ticks">
-                <li data-n="01">Local stays free</li>
-                <li data-n="02"><a href="/cloud/">More about Cloud</a></li>
-              </ul>
             </article>
             <article class="card reveal">
               <div class="card__top"><span class="card__n">Phone</span><span class="tag tag--soon">Coming</span></div>
               <h3>The Lookout on your home screen</h3>
-              <p>An app on your phone, with a notification only for the calls that need you now.</p>
+              <p>A notification only for the calls that need you now.</p>
             </article>
             <article class="card reveal">
               <div class="card__top"><span class="card__n">Plans</span><span class="tag tag--soon">Coming</span></div>
               <h3>Plans and billing for Cloud</h3>
-              <p>A seat per person with a shared pool of agent hours, and a free trial with no card.</p>
+              <p>A seat per person, a shared pool of agent hours, and a free trial.</p>
             </article>
           </div>
         </div>

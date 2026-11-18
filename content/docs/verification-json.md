@@ -2,7 +2,7 @@
 
 The checks that run when an agent claims a ticket is done, committed in `.teamtrail/verification.json`.
 
-Without this file, nothing is verified. Teamtrail writes to it when you set the checks or the scope in **Settings → Verification** (approved as you save), and when you approve a check a [guide](/docs/guides/) proposes.
+Without this file, nothing is verified. Teamtrail writes to it when you set the checks or the scope in **Settings → Verification**, or the gates and diff rules in **Settings → This trail** (approved as you save), and when you approve a check a [guide](/docs/guides/) proposes.
 
 **Its commands run only once you approve them on your machine.** An agent can edit this file and a teammate can push it, so a new or changed command waits in **Settings → Project → Approvals** (or `teamtrail approve`). Until then completions that need checks end with `waiting-approval`, and the work is kept. See [Approvals and security](/docs/security/#check-commands).
 
@@ -36,14 +36,17 @@ Without this file, nothing is verified. Teamtrail writes to it when you set the 
 | `scope`           | `"flag"` \| `"fail"` \| `"human"` | `"flag"`              | Files changed outside the ones the agent declared at its claim (`touches`): show them to the reviewer, `fail` the attempt (rework), or send it to a `human`. See [Review capacity](/docs/review-capacity/#the-scope-check). |
 | `stale`           | `"reverify"` \| `"flag"`          | `"reverify"`          | When the code or this file changed since the checks ran: run them again, or flag the result.                                                                                                                                |
 | `github`          | object                            | see below             | Pull request and CI tracking.                                                                                                                                                                                               |
+| `gates`           | object                            | see below             | The mode of each verification gate: `off`, `observe` or `enforce`.                                                                                                                                                          |
+| `rules`           | array                             | `[]`                  | Diff rules: a check or a question for changes that touch certain files (below).                                                                                                                                             |
 
 ### A check
 
-| Key          | Type             | Default   |                                                                                                    |
-| ------------ | ---------------- | --------- | -------------------------------------------------------------------------------------------------- |
-| `run`        | string array     | required  | The command as argv, for example `["npm", "test"]`. A shell string is an error: there is no shell. |
-| `timeoutSec` | positive integer | `600`     | Time limit for this check.                                                                         |
-| `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo.                        |
+| Key          | Type             | Default   |                                                                                                                                                            |
+| ------------ | ---------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `run`        | string array     | required  | The command as argv, for example `["npm", "test"]`. A shell string is an error: there is no shell.                                                         |
+| `timeoutSec` | positive integer | `600`     | Time limit for this check.                                                                                                                                 |
+| `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo.                                                                                |
+| `guards`     | glob array       | `[]`      | Globs the [check guard](/docs/verification/#check-guard) also watches for this check, beyond the scripts, tool config and files it finds from the command. |
 
 Checks run with an allowlisted environment: the shell, locale and toolchain basics, without tokens, keys or anything named like a secret. Name extra variables a check needs in `TEAMTRAIL_CHECK_ENV` on your machine, never in the repo:
 
@@ -61,6 +64,41 @@ Checks run as you, without a sandbox: they can read what your account can read. 
 | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `allow` | `["research", "junction", "prototype"]` | Ticket types that may complete without code changes.                                                                              |
 | `else`  | `"flag"`                                | Any other type with no changes: `flag` it, `fail` the attempt, or send it to a `human`. An agent can explain with `noCodeReason`. |
+
+### gates
+
+| Key                  | Default     |                                                                                               |
+| -------------------- | ----------- | --------------------------------------------------------------------------------------------- |
+| `check-guard`        | `"enforce"` | A pass where the work changed what its checks run, or weakened the tests.                     |
+| `flaky`              | `"enforce"` | A check that passed only on retry, with the same command, commit and uncommitted changes.     |
+| `diff-rules`         | `"enforce"` | A completion that touched a rule's files without passing its check or answering its question. |
+| `independent-review` | `"observe"` | A review by an agent on the same model as the work's author.                                  |
+
+Each is `"off"`, `"observe"` (record what it would hold, let the work through) or `"enforce"` (hold it for you). **Settings → This trail → Gates** writes this key and approves it in one step, on the machine Teamtrail runs on. A mode lowered in the file by hand waits for your approval, like a changed check command. See [Gates](/docs/verification/#gates-off-observe-enforce).
+
+```json
+"gates": { "check-guard": "enforce", "flaky": "enforce", "diff-rules": "enforce", "independent-review": "observe" }
+```
+
+### rules
+
+Up to 50 rules. Each:
+
+| Key     | Type       |                                                                                     |
+| ------- | ---------- | ----------------------------------------------------------------------------------- |
+| `id`    | string     | `R-<n>`. A rule added in Settings gets the next one.                                |
+| `when`  | glob array | Required, 1 to 20 globs. The rule applies only when the change touched one of them. |
+| `check` | check name | A check from `checks` to run. Give `check`, `ask` or both.                          |
+| `ask`   | string     | A question the agent answers in `ruleAnswers` on its completion.                    |
+| `why`   | string     | The incident behind the rule, shown to the agent and to you.                        |
+
+```json
+"rules": [
+  { "id": "R-1", "when": ["db/migrations/**"], "check": "migrate-roundtrip", "why": "A migration without a down step broke the rollback." }
+]
+```
+
+Manage them in **Settings → This trail → Diff rules**. See [Diff rules](/docs/verification/#diff-rules).
 
 ### github
 
