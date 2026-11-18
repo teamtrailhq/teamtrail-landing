@@ -1,6 +1,6 @@
 # Verification and criteria
 
-Agents agree on what done means before they start, and every claim of done is checked against your repo's own checks, a review by an agent on another model or your sign-off. Gates make a pass earn it: the work can't change what its checks run, a flaky pass doesn't count, rules from past mistakes apply to the files they cover, and the whole trail is verified together on your default branch once it's merged.
+Agents agree on what done means before they start, and every claim of done is checked against your repo's own checks, a review by an agent on another model or your sign-off. Gates make a pass earn it: the work can't change what its checks run or weaken the tests, a pass on retry doesn't count, rules from past mistakes apply to the files they cover, reviews go to another model, and the whole trail is verified together on your default branch once it's merged.
 
 On this page:
 
@@ -46,55 +46,67 @@ A pass that a [gate](#gates-off-observe-enforce) holds back doesn't close the ti
 
 A gate is a rule a pass has to meet before it counts. Each gate has a mode:
 
-| Mode      | What it does                                                                                                                                     |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `off`     | Nothing.                                                                                                                                         |
-| `observe` | Records what the gate would have held back, and lets the work through. Use it to see what a gate would do on your project before you rely on it. |
-| `enforce` | Holds the work for you. There is always a way past it: you can accept the pass anyway or send the work back.                                     |
+| Mode      | What it does                                                                                                                                                            |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `off`     | Nothing.                                                                                                                                                                |
+| `observe` | Records what the gate would have held back and lets the work through, shown to the reviewer and on the proof. Use it to see what a gate would do on your project first. |
+| `enforce` | Holds the work for you. There is always a way past it.                                                                                                                  |
 
-| Gate                 | Default   | Holds back                                                                      |
-| -------------------- | --------- | ------------------------------------------------------------------------------- |
-| `check-guard`        | `enforce` | A pass where the work changed what its checks run, or skipped or removed tests. |
-| `flaky`              | `enforce` | A check that failed and then passed on the same commit.                         |
-| `diff-rules`         | `enforce` | A change that touched a rule's files without running its check or answering it. |
-| `independent-review` | `observe` | A review by an agent on the same model as the work's author.                    |
+| Gate                 | Default   | What it looks at                                                                          |
+| -------------------- | --------- | ----------------------------------------------------------------------------------------- |
+| `check-guard`        | `enforce` | A pass where the work changed what its checks run, or weakened the tests.                 |
+| `flaky`              | `enforce` | A check that passed only on retry, with nothing changed.                                  |
+| `diff-rules`         | `enforce` | A change that touched a rule's files without passing its check or answering its question. |
+| `independent-review` | `observe` | A review by an agent on the same model as the work's author.                              |
 
-Set the modes in **Settings → Verification → Gates**. They're stored in `gates` in [verification.json](/docs/verification-json/#gates), and approved like the check commands: a mode lowered in the file (for example from `enforce` to `observe`, or to `off`) doesn't apply until you approve it on this machine. The page also shows, per gate, what it held back lately, or would have held back in observe.
+Set them in **Settings → This trail → Gates** (`?settings=gates`): one row per gate with **Off**, **Observe** and **Enforce**, and what it did lately, such as "Held 2 tickets in the last 14 days" or, in observe, "Would have held 3 tickets in the last 14 days". Expand a row to see those tickets; click one to open it on the map.
+
+The modes are stored in `gates` in [verification.json](/docs/verification-json/#gates). Changing a mode in Settings writes the file and approves it in one step, on the machine Teamtrail runs on only; anywhere else the page is read-only ("Set on the machine Teamtrail runs on."). A mode lowered in the file by hand (an agent's edit, a teammate's push) waits for your approval like a changed check command, and the approved mode holds meanwhile.
 
 ## Check guard
 
-A check proves something only if the work didn't change the check. The check guard (gate `check-guard`, enforced by default) counts a pass only when the work's changes left alone:
+A check proves something only if the work didn't change the check. The check guard (gate `check-guard`, enforced by default) looks at the change against what the checks run:
 
-- what the check runs: the `package.json` scripts it calls, the test runner's config, and the scripts the check's command runs;
-- any files a check names in its own `guards` (globs, in [verification.json](/docs/verification-json/#a-check)), for what Teamtrail can't see from the command;
-- the tests themselves: a change that skips tests (`.skip`, `xit`, `@pytest.mark.skip` and the like) or removes them is held too.
+- the `package.json` scripts a check reaches, including nested `npm run`, `pre` and `post` scripts and workspace runs;
+- the config of the tools those scripts run (for `pyproject.toml`, `setup.cfg` and `tox.ini`, only that tool's section);
+- files the check commands name, and the makefile rules a `make` target reaches;
+- any files a check names in its own `guards` (globs, `checks.<name>.guards` in [verification.json](/docs/verification-json/#a-check)), for what Teamtrail can't see from the command.
 
-When the guard holds a pass, the ticket waits for you with what changed: **Accept the pass** if the change to the check was intended, or **Send it back**. The [proof](#verified-by-teamtrail) says which you chose: a pass you accepted over the guard is shown as accepted by you, not as a clean pass.
+It also looks for weakened tests: deleted test files, removed or commented-out tests, and added `.skip`, `xit`, `it.todo`, `@pytest.mark.skip`, `t.Skip(`, `#[ignore]`, `@Disabled` or `.only`. These are counted net, in files that existed before the work, so new, renamed or edited tests are fine.
 
-This narrows the limit in [Approvals and security](/docs/security/#check-commands): approving `npm run check` still approves only the command line, but an agent that edits the scripts behind it can no longer turn its own failure into a pass unnoticed.
+**Enforce.** The ticket waits for you, with what changed: "Checks passed, but the work changed what they run: package.json scripts.test changed". Choose **Accept the pass…** if the change was intended, or **Send to rework**, and the agent is told what to undo. Until you accept, the [proof](#verified-by-teamtrail) has a gap; after, it says "Changed what its checks run (accepted by …)".
+
+**Observe.** The pass counts, and what changed is shown to the reviewer and on the proof.
+
+Completions checked by a remote [check runner](/docs/remote-agents/) get the same rules. This narrows the limit in [Approvals and security](/docs/security/#check-commands): approving `npm run check` still approves only the command line, but work that edits the scripts behind it no longer passes unnoticed.
 
 ## Flaky checks
 
-A check that fails and then passes on the same commit tells you nothing about the code. With the `flaky` gate (enforced by default) such a pass doesn't count as verified until you accept it, and the ticket waits for you with both runs.
+A check that fails and then passes with nothing changed tells you nothing about the code. The `flaky` gate (enforced by default) catches a check that failed, timed out or couldn't start, then passed with the same command, on the same commit and with the same uncommitted changes.
 
-Agents are told never to rerun a check hoping for a pass, add sleeps or retries to make one pass, or skip a test that fails. **Settings → Verification** lists the checks that have been flaky, with how often, so you can fix the test rather than accept it every time.
+**Enforce.** The ticket waits for you: "Passed only on retry: test failed in A-1, then passed on c2201be with no change". Choose **Send to rework** or **Accept the pass…**; an accepted pass shows on the proof as "passed on retry · the trail lead accepted the pass".
+
+Agents are told never to rerun a check hoping for a pass, add sleeps or retries to make one pass, or skip a test that fails. **Trail stats → Flaky checks** lists each flaky check with its failing test (when the output names one), how often, the tickets it hit and when it was last seen, so you can fix the test rather than accept it every time.
 
 ## Diff rules
 
 Diff rules turn past mistakes into checks for the next change in the same place. Each rule in `rules` in [verification.json](/docs/verification-json/#rules) has:
 
-- `when`: file globs. The rule applies only when the change touched one of them.
-- a `check` to run (a check defined in `checks`), or a question to `ask` that the agent must answer on its completion;
+- `id`: `R-1`, `R-2`, …; a new rule gets the next one;
+- `when`: 1 to 20 file globs. The rule applies only when the change touched one of them;
+- a `check` to run (a check defined in `checks`), a question to `ask` the agent, or both;
 - `why`: the incident behind it, shown to the agent and to you.
 
 ```json
 "rules": [
   {
+    "id": "R-1",
     "when": ["db/migrations/**"],
     "check": "migrate-roundtrip",
     "why": "A migration without a down step broke the rollback on 3 March."
   },
   {
+    "id": "R-2",
     "when": ["src/billing/**"],
     "ask": "Does this change what a customer is charged? How did you check it?",
     "why": "A rounding change double-charged annual plans."
@@ -102,15 +114,22 @@ Diff rules turn past mistakes into checks for the next change in the same place.
 ]
 ```
 
-When an agent claims a ticket, it's told which rules are likely to apply, from the files it said it would change. At completion, only rules whose files the change actually touched apply. With the `diff-rules` gate enforced (the default), a completion that touched a rule's files without passing its check or answering its question waits for you; the answers go on the ticket and the proof.
+Up to 50 rules. When an agent claims a ticket with the files it will change (`touches`), it's told which rules are likely to apply. At completion only the rules whose files the change actually touched apply: their checks run, and the agent answers their questions in `ruleAnswers`. With the `diff-rules` gate enforced (the default), a completion that leaves a matched question unanswered is refused. A rule's check is verified like any check; answers are shown as claimed, on the ticket and the proof.
 
-Edit rules in **Settings → Verification → Rules**. A rule's `check` runs only once its command is approved, like any check. [What came back](#what-came-back) offers to add a rule from each ticket that was verified and later reopened.
+In a ticket's **Full ticket**, **Go without** waives a rule for that ticket only. It's a Lookout action, and it's journaled.
+
+Manage rules in **Settings → This trail → Diff rules** (`?settings=rules`): list, add, edit and remove them, with when each last matched. A rule's `check` runs only once its command is approved, like any check. [What came back](#what-came-back) offers to add a rule from each ticket that was verified and later came back.
 
 ## Independent review
 
-At `checks+review`, a `review` ticket is created for another agent. The agent that did the work can never review it, and review tickets go first to agents on a different model from the author's, so Claude's work is reviewed by Codex and the other way round when both are connected.
+At `checks+review`, a `review` ticket is created for another agent. The agent that did the work can never review it, and review tickets are offered first to agents on a different model from the author's.
 
-The `independent-review` gate decides what happens when the only reviewer is on the same model. In `observe` (the default) the review counts and is flagged as same-model, on the ticket and the proof. In `enforce` the review waits for an agent on another model; you can accept the same-model review anyway. The proof always shows the author's and the reviewer's models. The reviewer calls `submit_review` with `PASS`, `FAIL` (back for rework with findings) or `NEEDS_HUMAN`. With `reviewer` on the trail's team, review tickets come with the reviewer [guide](/docs/guides/), and the reviewer answers its checklist.
+Two agents are on the same model when their model ids match after dropping the date, the provider prefix and suffixes like `-latest`. Different versions are different models, and so are different sizes of one family (Opus and Sonnet). The `independent-review` gate decides what a same-model review is worth:
+
+- **Observe** (the default): the review counts, and the proof says it was reviewed by the same model.
+- **Enforce**: a same-model `PASS` doesn't count. A new review waits for an agent on another model ("Review #12 waits for an agent on another model than claude-opus-5-5"). You can **Approve** the work anyway, but its proof stays not verified.
+
+The proof and the Lookout name both: "Reviewed by claude-03 on claude-opus-5-5 · the same model as the author" when they match. The reviewer calls `submit_review` with `PASS`, `FAIL` (back for rework with findings) or `NEEDS_HUMAN`. With `reviewer` on the trail's team, review tickets come with the reviewer [guide](/docs/guides/), and the reviewer answers its checklist.
 
 A ticket's guide can add checks from `verification.json` to the ones its completion runs, never remove one or change the level.
 
@@ -123,17 +142,25 @@ A ticket's guide can add checks from `verification.json` to the ones its complet
 
 ## Trail verified together
 
-Every ticket can pass on its own branch and the trail still break once they're merged together. So once a trail's pull requests are merged, Teamtrail runs the approved checks again on your default branch, at a commit that contains all of the trail's tickets.
+Every ticket can pass on its own branch and the trail still break once they're merged together. So when every ticket in a trail is done and its work is on the default branch (the pull request's merge commit, or the verified commit when there was no pull request), Teamtrail runs the approved checks once more, automatically, on that commit (in [Cloud](/cloud/), on its runner). It uses your local default branch, or `origin/<branch>`, and fetches nothing.
 
-- The trail counts as **done and verified** only when that combined run passes. Until then it's done, not verified.
-- A failure becomes an item in [Waiting on you](/docs/waiting-on-you/) with the failing output, and offers to add a fix ticket to the trail.
-- **Run now** starts the combined run before everything is merged, on the default branch as it is, to catch trouble early.
+A trail is **verified** only when every ticket's proof is and that combined run passed. Otherwise it says why, for example:
 
-The trail's proof lists every ticket's proof and the combined run: the commit, the checks and their results.
+- "waiting for PR #5 to merge"
+- "#2 is reverted on main"
+- "test fails on main at abc1234 after merging"
+
+**When it fails**, an item lands in [Waiting on you](/docs/waiting-on-you/) ("Trail checks fail on main after merging #2, #3"), the destination flag on the map turns red, and Destination reached offers **See what fails**. The flag's bubble shows the output, with **Add a fix ticket** and **Run again**. **When it passes**, the trail says "Verified together on main at abc1234".
+
+Before everything is merged, **Run now on main as it is** in the flag bubble's ⋯ menu runs the checks on the default branch as it stands, to catch trouble early. That run never counts toward the trail being verified.
+
+The trail's proof lists every ticket's proof and the combined run: `teamtrail proof --trail <trail>`, or [`proof_report`](/docs/mcp-tools/#working-and-completing) with `wholeTrail: true`.
 
 ## What came back
 
-A ticket that was verified and later reopened, or whose change was reverted, came back. Teamtrail counts these and shows them on the [scorecard](/docs/trail-stats/#scorecard), by model, agent, ticket type and check, so you can see which checks let bad work through. Each one offers to add a [diff rule](#diff-rules) from it: the files it touched as `when`, and what went wrong as `why`.
+A ticket came back when its work was verified and later reopened (read from the journal) or reverted on the default branch (a `This reverts commit` commit, including merge commits and squashed or merged pull requests).
+
+The [scorecard](/docs/trail-stats/#scorecard) gives every row a came-back count and rate, with a **By type** view and a **Came back** view per check that passed, so you can see which checks let bad work through. Each ticket that came back is also an item in [Waiting on you](/docs/waiting-on-you/) ("#7 was verified, then reverted: add a rule?", chip **Came back**), which opens the [Diff rules](#diff-rules) editor filled in with the changed folders and the reason.
 
 ## Verified by Teamtrail
 
@@ -144,10 +171,10 @@ Every completed ticket can carry a report of what Teamtrail recorded, for the pu
 - the git range (base → head, files changed) and any flags;
 - the scope: whether every change stayed inside the files the agent declared, or which didn't;
 - the review: who reviewed it, their verdict, whether the reviewer was independent of the author, and the author's and the reviewer's models;
-- what the [gates](#gates-off-observe-enforce) found: a pass accepted over the check guard or as flaky, the diff rules that applied and their answers;
+- what the [gates](#gates-off-observe-enforce) found: a change to what the checks run or a pass on retry, and who accepted it; the diff rules that applied, their checks and the answers (shown as claimed);
 - the decisions the work relies on, on the ticket and on the tickets it was blocked by, each with who made the call, by name: git's `user.name` on the machine where you decided, or the person signed in to a hosted Lookout.
 
-The report opens with a badge, **Teamtrail verified** or **Teamtrail not verified**. A ticket is verified when its latest attempt passed everything its [level](#verification-levels) asks: the checks passed, no criterion is missing or failed and the criteria were confirmed, plus an independent review at `checks+review`, plus your approval at `checks+review+human`, and no enforced gate holds it (or you accepted it past the gate, which the report says). Otherwise the report lists what's missing, one line each. A completion from a [remote agent](/docs/remote-agents/) is never verified here, because no check ran on this machine.
+The report opens with a badge, **Teamtrail verified** or **Teamtrail not verified**. A ticket is verified when its latest attempt passed everything its [level](#verification-levels) asks: the checks passed, no criterion is missing or failed and the criteria were confirmed, plus an independent review at `checks+review`, plus your approval at `checks+review+human`, and no enforced gate holds it. A pass you accepted past the check guard or the flaky gate counts, and the report says who accepted it; a same-model review under an enforced `independent-review` never does. Otherwise the report lists what's missing, one line each. A completion from a [remote agent](/docs/remote-agents/) is never verified here, because no check ran on this machine.
 
 **Getting the report.** Run [`teamtrail proof <ticket>`](/docs/cli/#teamtrail-proof), or let the agent call [`proof_report`](/docs/mcp-tools/#working-and-completing): agents are told to put it in the pull request description unchanged when they open one. In the Lookout, the ticket's **Full ticket** shows it too, with **Copy for PR**.
 

@@ -2,7 +2,7 @@
 
 The checks that run when an agent claims a ticket is done, committed in `.teamtrail/verification.json`.
 
-Without this file, nothing is verified. Teamtrail writes to it when you set the checks, the scope, the gates or the rules in **Settings → Verification** (approved as you save), and when you approve a check a [guide](/docs/guides/) proposes.
+Without this file, nothing is verified. Teamtrail writes to it when you set the checks or the scope in **Settings → Verification**, or the gates and diff rules in **Settings → This trail** (approved as you save), and when you approve a check a [guide](/docs/guides/) proposes.
 
 **Its commands run only once you approve them on your machine.** An agent can edit this file and a teammate can push it, so a new or changed command waits in **Settings → Project → Approvals** (or `teamtrail approve`). Until then completions that need checks end with `waiting-approval`, and the work is kept. See [Approvals and security](/docs/security/#check-commands).
 
@@ -41,12 +41,12 @@ Without this file, nothing is verified. Teamtrail writes to it when you set the 
 
 ### A check
 
-| Key          | Type             | Default   |                                                                                                                               |
-| ------------ | ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `run`        | string array     | required  | The command as argv, for example `["npm", "test"]`. A shell string is an error: there is no shell.                            |
-| `timeoutSec` | positive integer | `600`     | Time limit for this check.                                                                                                    |
-| `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo.                                                   |
-| `guards`     | glob array       | `[]`      | Files the [check guard](/docs/verification/#check-guard) also protects for this check, beyond what it finds from the command. |
+| Key          | Type             | Default   |                                                                                                                                                            |
+| ------------ | ---------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `run`        | string array     | required  | The command as argv, for example `["npm", "test"]`. A shell string is an error: there is no shell.                                                         |
+| `timeoutSec` | positive integer | `600`     | Time limit for this check.                                                                                                                                 |
+| `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo.                                                                                |
+| `guards`     | glob array       | `[]`      | Globs the [check guard](/docs/verification/#check-guard) also watches for this check, beyond the scripts, tool config and files it finds from the command. |
 
 Checks run with an allowlisted environment: the shell, locale and toolchain basics, without tokens, keys or anything named like a secret. Name extra variables a check needs in `TEAMTRAIL_CHECK_ENV` on your machine, never in the repo:
 
@@ -67,14 +67,14 @@ Checks run as you, without a sandbox: they can read what your account can read. 
 
 ### gates
 
-| Key                  | Default     |                                                                                           |
-| -------------------- | ----------- | ----------------------------------------------------------------------------------------- |
-| `check-guard`        | `"enforce"` | A pass where the work changed what the check runs, or skipped or removed tests.           |
-| `flaky`              | `"enforce"` | A check that failed and then passed on the same commit.                                   |
-| `diff-rules`         | `"enforce"` | A change that touched a rule's files without passing its check or answering its question. |
-| `independent-review` | `"observe"` | A review by an agent on the same model as the work's author.                              |
+| Key                  | Default     |                                                                                               |
+| -------------------- | ----------- | --------------------------------------------------------------------------------------------- |
+| `check-guard`        | `"enforce"` | A pass where the work changed what its checks run, or weakened the tests.                     |
+| `flaky`              | `"enforce"` | A check that passed only on retry, with the same command, commit and uncommitted changes.     |
+| `diff-rules`         | `"enforce"` | A completion that touched a rule's files without passing its check or answering its question. |
+| `independent-review` | `"observe"` | A review by an agent on the same model as the work's author.                                  |
 
-`observe` records what the gate would hold back and lets the work through; `enforce` holds it for you, who can accept it anyway. A mode lowered in the file doesn't apply until you approve it on your machine, like a changed check command. See [Gates](/docs/verification/#gates-off-observe-enforce).
+Each is `"off"`, `"observe"` (record what it would hold, let the work through) or `"enforce"` (hold it for you). **Settings → This trail → Gates** writes this key and approves it in one step, on the machine Teamtrail runs on. A mode lowered in the file by hand waits for your approval, like a changed check command. See [Gates](/docs/verification/#gates-off-observe-enforce).
 
 ```json
 "gates": { "check-guard": "enforce", "flaky": "enforce", "diff-rules": "enforce", "independent-review": "observe" }
@@ -82,22 +82,23 @@ Checks run as you, without a sandbox: they can read what your account can read. 
 
 ### rules
 
-Each rule:
+Up to 50 rules. Each:
 
-| Key     | Type       |                                                                             |
-| ------- | ---------- | --------------------------------------------------------------------------- |
-| `when`  | glob array | Required. The rule applies only when the change touched one of these files. |
-| `check` | check name | A check from `checks` to run. Give `check` or `ask`.                        |
-| `ask`   | string     | A question the agent must answer on its completion. Give `check` or `ask`.  |
-| `why`   | string     | Required. The incident behind the rule, shown to the agent and to you.      |
+| Key     | Type       |                                                                                     |
+| ------- | ---------- | ----------------------------------------------------------------------------------- |
+| `id`    | string     | `R-<n>`. A rule added in Settings gets the next one.                                |
+| `when`  | glob array | Required, 1 to 20 globs. The rule applies only when the change touched one of them. |
+| `check` | check name | A check from `checks` to run. Give `check`, `ask` or both.                          |
+| `ask`   | string     | A question the agent answers in `ruleAnswers` on its completion.                    |
+| `why`   | string     | The incident behind the rule, shown to the agent and to you.                        |
 
 ```json
 "rules": [
-  { "when": ["db/migrations/**"], "check": "migrate-roundtrip", "why": "A migration without a down step broke the rollback." }
+  { "id": "R-1", "when": ["db/migrations/**"], "check": "migrate-roundtrip", "why": "A migration without a down step broke the rollback." }
 ]
 ```
 
-See [Diff rules](/docs/verification/#diff-rules).
+Manage them in **Settings → This trail → Diff rules**. See [Diff rules](/docs/verification/#diff-rules).
 
 ### github
 

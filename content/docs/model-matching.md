@@ -81,9 +81,9 @@ When the [scorecard](/docs/trail-stats/#scorecard) has at least 10 tickets of on
 
 ## Reviews by a different model
 
-Model matching decides who builds; review goes the other way. Review tickets are offered first to agents on a different model from the work's author, so a model doesn't grade its own kind of work. With the `independent-review` gate enforced, a review waits for an agent on another model (you can accept a same-model review anyway); in `observe`, the default, a same-model review counts and is flagged. The proof shows both models. See [Independent review](/docs/verification/#independent-review).
+Model matching decides who builds; review goes the other way. Review tickets are offered first to agents on a different model from the work's author. Models count as the same when their ids match after dropping the date, the provider prefix and suffixes like `-latest`; different versions, or Opus and Sonnet, are different models. With the `independent-review` gate enforced, a same-model `PASS` doesn't count and the review waits for another model; in `observe`, the default, it counts and the proof says so. See [Independent review](/docs/verification/#independent-review).
 
-The scorecard also counts [what came back](/docs/verification/#what-came-back) per model: work that was verified and later reopened or reverted.
+The [scorecard](/docs/trail-stats/#scorecard) also counts [what came back](/docs/verification/#what-came-back) per model: work that was verified and later reopened or reverted.
 
 ## Waiting for a stronger model
 
