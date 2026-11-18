@@ -37,6 +37,10 @@
           "title": "The Lookout"
         },
         {
+          "slug": "hands-off",
+          "title": "Hands-off and Hands-on"
+        },
+        {
           "slug": "waiting-on-you",
           "title": "Waiting on you"
         },
@@ -139,6 +143,15 @@
         {
           "slug": "slack",
           "title": "Slack"
+        }
+      ]
+    },
+    {
+      "title": "Teamtrail Cloud",
+      "pages": [
+        {
+          "slug": "cloud",
+          "title": "Teamtrail Cloud"
         }
       ]
     },

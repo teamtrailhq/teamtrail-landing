@@ -77,8 +77,8 @@
             <span class="line">Every piece verified.</span>
           </h1>
           <p class="hero__lede">
-            <span class="mark">Teamtrail</span> maps big work into tickets your agents take on side by side. You define
-            done, nothing counts until it's proven, and you review the evidence instead of every diff.
+            <span class="mark">Teamtrail</span> maps big work into tickets your agents take on side by side. You see
+            only what needs you while they keep going, and nothing counts until it's proven.
           </p>
           <div class="hero__actions" id="install">
             <!-- @include cmd -->
@@ -100,7 +100,7 @@
             loop
             playsinline
             preload="metadata"
-            aria-label="A day with Teamtrail: install it and connect Claude Code, describe an idea, Scout frames the trail, agents pick up the work, an agent's question opens beside its ticket and you answer it there, the trail bar shows who is working, Scout briefs you when you come back, every decision lands in the Logbook, an agent proposes a new plan, you approve a brief, a pass the check guard held because the work changed what its checks run waits for you and you accept it with a reason, Settings shows each gate set to off, observe or enforce with what it held, and once merged the whole trail is verified together on main."
+            aria-label="A day with Teamtrail: install it and connect Claude Code, describe an idea and Scout frames the trail. The Lookout opens Hands-off, on only what needs you: you answer an agent's question in the list and approve a plan, its brief and every ticket's criteria, in one step, while progress shows the agents at work. Back after a break, Since you were away shows what agents decided. Hands-on opens the full map: every decision lands in the Logbook, an agent proposes a new plan, every repo shares one list, a pass the check guard held because the work changed what its checks run waits for you and you accept it with a reason, Settings shows each gate set to off, observe or enforce, and once merged the whole trail is verified together on main."
           ></video>
         </figure>
       </div>
@@ -119,6 +119,25 @@
             <article class="theme reveal">
               <figure class="shot">
                 <img
+                  src="/media/lookout-hands-off.png"
+                  width="1680"
+                  height="945"
+                  loading="lazy"
+                  decoding="async"
+                  alt="Hands-off, the Lookout's home: Needs you, most urgent first, with an agent's question open and its suggested answers in place, then the trail's progress."
+                />
+              </figure>
+              <span class="kicker">Hands-off by default</span>
+              <h3>Only what needs you</h3>
+              <p>
+                One short list, most urgent first, answered in place. Risky calls are yours by rule; the map is a click
+                away.
+              </p>
+              <a class="read" href="/docs/hands-off/">Read more <span class="arrow" aria-hidden="true">→</span></a>
+            </article>
+            <article class="theme reveal">
+              <figure class="shot">
+                <img
                   src="/media/flow-06-first-tickets.png"
                   width="1960"
                   height="980"
@@ -130,8 +149,8 @@
               <span class="kicker">Chart the trail</span>
               <h3>Big work, mapped as decisions</h3>
               <p>
-                Describe the destination. An agent studies your code, you approve its brief, and the work becomes a map
-                of tickets.
+                Describe the destination. An agent studies your code, you approve its plan in one step, and the work
+                becomes a map of tickets.
               </p>
               <a class="read" href="/docs/trails-and-tickets/"
                 >Read more <span class="arrow" aria-hidden="true">→</span></a
@@ -156,25 +175,6 @@
               </p>
               <a class="read" href="/docs/parallel-work/">Read more <span class="arrow" aria-hidden="true">→</span></a>
             </article>
-            <article class="theme reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-trail-bar-more.png"
-                  width="1680"
-                  height="945"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The trail bar opened under the map: Waiting on you, ranked, with a blocking question first and the reason for each item; the agents at work with their models; and what's up next."
-                />
-              </figure>
-              <span class="kicker">You decide what matters</span>
-              <h3>Only the turns that need you</h3>
-              <p>
-                Questions wait in one ranked list. The risky calls are yours by rule, and every decision is kept with
-                its reasons.
-              </p>
-              <a class="read" href="/docs/waiting-on-you/">Read more <span class="arrow" aria-hidden="true">→</span></a>
-            </article>
           </div>
         </div>
       </section>
@@ -186,8 +186,8 @@
             <span class="eyebrow">Verified, not claimed</span>
             <h2 id="verified-title">Done means proven.</h2>
             <p>
-              You agree on done before work starts. <span class="mark">Teamtrail</span> runs your checks itself, and
-              each finished ticket gets a signed proof for its pull request.
+              You agree on done before work starts. <span class="mark">Teamtrail</span> runs your checks itself, sends
+              gaps back to agents, and signs a proof for every finished ticket.
             </p>
             <ul class="gates" role="list">
               <li>Checks the work can't change</li>
@@ -209,7 +209,7 @@
             <img
               src="/media/lookout-criteria.png"
               width="880"
-              height="900"
+              height="922"
               loading="lazy"
               decoding="async"
               alt="A ticket's acceptance criteria: a test, a business rule from your project and a point you sign off."
