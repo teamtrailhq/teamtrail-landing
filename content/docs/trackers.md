@@ -14,7 +14,7 @@ The map and tickets keep the same body format as the markdown files. Teamtrail a
 | Decision record              | A comment on its ticket ending in a `<!-- teamtrail:decision {…} -->` marker.                                               |
 | Comment author               | A `<!-- teamtrail:author <id> -->` first line (the API user posts every comment).                                           |
 
-Writes go through a local outbox, so they survive going offline and replay once the tracker is reachable. The journal, evidence and agent coordination stay in the local [`.teamtrail/` folder](/docs/teamtrail-folder/).
+Writes go through a local outbox, so they survive going offline and replay once the tracker is reachable (see [Staying in step](#staying-in-step)). The journal, evidence and agent coordination stay in the local [`.teamtrail/` folder](/docs/teamtrail-folder/).
 
 ## Connect
 
@@ -65,7 +65,18 @@ Anyone who can write to the tracker can write Teamtrail's markers into an issue.
 - **Teammates.** GitHub collaborators with write access, or Linear members who aren't guests or deactivated, can claim, move and close tickets. Their decisions show under their name (`@mona`, `Grace (@grace)`), never as yours.
 - **Anyone else.** Their markers are plain text, with no effect.
 
-An issue's settings (its verification level, checks, guide and model matching) count as written only when your account wrote them, or you accepted them on this machine. When someone else changes them, the settings you accepted stay in force and a `tracker-settings` item waits in [Waiting on you](/docs/waiting-on-you/): **Accept as is** or **Keep stricter**. On a new machine, where nothing has been accepted yet, the stricter of the issue's and the project's settings apply and completions wait until you settle them.
+An issue's settings (its verification level, checks, guide and model matching) count as written only when your account wrote them, or you accepted them on this machine. When someone else changes them, the settings you accepted stay in force and a `tracker-settings` item waits in [Waiting on you](/docs/waiting-on-you/): **Accept as is** or **Keep stricter**. On a new machine, where nothing has been accepted yet, the stricter of the issue's and the project's settings apply and completions wait until you settle them. Once you accept, waiting completions go on at once.
+
+## Staying in step
+
+Each Teamtrail process keeps a copy of the trails it read and asks the tracker what changed since it last looked (on GitHub, asking costs nothing while nothing changed). What it does to stay true to the tracker:
+
+- **Nothing missed.** Changes are read from where the last good read left off, so a poll that fails or a busy minute with many changes is caught up on the next one. A trail that can't be read is tried again until it is, without holding up the others.
+- **A full read every 5 minutes.** Every trail and the list of trails are read again, which is what shows an issue that was deleted, a teammate who lost access, and trails archived or renamed in the tracker.
+- **No overwriting a teammate.** A claim, a status change or an edit is laid over the issue as the tracker has it just before sending, never over Teamtrail's copy, so a teammate's edit in between is kept. Writes queued while offline are sent the same way.
+- **One claim winner.** A claim is checked against the tracker itself: it's refused when the issue already names someone else, and after a moment Teamtrail reads the issue again to see who won. Two agents can't both get a ticket.
+- **Refused writes stay visible.** When the tracker refuses a queued write for good (a deleted issue, a lost permission), the sync line in the Lookout says **N not sent**, with why when you hover it, and the trail is read again.
+- **Settings follow at once.** Change the repo, team or token in Settings and running agents use the new one without a restart.
 
 ## Tokens
 

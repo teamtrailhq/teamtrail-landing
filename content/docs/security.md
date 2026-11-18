@@ -32,6 +32,7 @@ In your [config folder](/docs/personal-settings/), under `projects/<project id>/
 - Each item shows exactly what it would approve: the commands, the lowered levels, the changed fields (old → new). Approving records what you saw. If the files change while you read, the page says so and asks you to **Review again**.
 - A repo moved to another folder is asked again.
 - Approvals are made on the machine Teamtrail runs on. A paired phone sees them but can't approve them.
+- An approval shows on every open page at once, wherever you made it: another tab, Settings → Approvals or `teamtrail approve`.
 
 ### The first run
 

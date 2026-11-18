@@ -65,8 +65,13 @@ A ticket is done when its work is verified, not when an agent says so. Whatever 
 | A check that fails on main too                          | Main: a completion after main is fixed proves it. **Open checks on main** shows them.                                                                           |
 | A check you waived                                      | Accepted already. **Run test again** (named for the check) undoes it and sends the ticket back to the queue.                                                    |
 | Closed without a completion, or with verification off   | Nobody: a past attempt is never rewritten. Only a new completion can prove it.                                                                                  |
+| Reopened after it was done                              | An agent: the last completion no longer counts ("The ticket isn't done any more"), and a new completion proves it.                                              |
 
-The ticket's pull request sits at the top of the ticket and on its map card: its state, its checks, and whether it is (or was merged) at the commit the proof covers or a newer one. A done ticket that isn't verified offers **Merge anyway** where Teamtrail merges pull requests ([Teamtrail Cloud](/docs/cloud/#auto-merge)): it names the gaps, asks once, and keeps your answer as your decision. Verified work there merges by itself.
+The ticket's pull request sits at the top of the ticket and on its map card: its state (**Open**, **Draft**, **Merged** or **Closed**), its checks, and whether it is (or was merged) at the commit the proof covers or a newer one. While it's open, it also says what stands in its way: changes requested, merge conflicts, failing or pending checks, or that it was approved.
+
+A done ticket that isn't verified offers **Merge anyway** where Teamtrail merges pull requests ([Teamtrail Cloud](/docs/cloud/#auto-merge)): it names the gaps, asks once, and keeps your answer as your decision. Verified work there merges by itself, or with **Approve and merge**. Neither is ever offered on a pull request that is already merged or closed. A merge Teamtrail makes shows as **Merged** on the ticket at once, on every open page; a merge on GitHub shows at the next [PR sync](/docs/verification-json/#github).
+
+When a pull request is closed without merging and a new one opens for the same ticket (on the same branch, or with the ticket's marker in its body), the ticket follows the new one. A link you set by hand stays as you set it.
 
 ## Gates: off, observe, enforce
 
@@ -163,18 +168,32 @@ A ticket's guide can add checks from `verification.json` to the ones its complet
 
 - **Git:** what changed since the claim. A completion with no changes is flagged, unless the ticket type is allowed none (`noChanges`) or the agent gives a `noCodeReason`.
 - **Scope:** files changed outside the ones the agent declared at its claim (`touches`) are flagged `outside-scope` and listed first for the reviewer; `scope` in `verification.json` can instead send the work back or to you. See [the scope check](/docs/review-capacity/#the-scope-check).
-- **Pull requests:** pass `pr` with the completion and Teamtrail tracks the PR and its CI on GitHub (`github` in `verification.json`), flagging results that don't match the claim.
+- **Pull requests:** pass `pr` with the completion and Teamtrail tracks the PR and its CI on GitHub (`github` in `verification.json`), flagging results that don't match the claim. Merged and closed pull requests, and branches with no pull request, are asked about at most once an hour, so PR sync asks GitHub less as your history grows. A deleted ticket's pull request is dropped.
 - **Staleness:** if the code or `verification.json` changed since the checks ran, the result is re-verified or flagged (`stale`).
+
+## Checks on main
+
+Before agents build on a trail, Teamtrail runs your approved checks once on the default branch's head, so a failure that was already there isn't blamed on the agents' work. They run in a separate worktree next to the repo, never in your working tree (in [Cloud](/docs/cloud/), in its check sandbox). The map shows them as `main` at the start of the trail.
+
+- **While the first run goes**, agents start no implementation work, unless you start without waiting. Research, junction and review tickets go on.
+- **When a check fails on main**, implementation waits for your choice, on `main`'s bubble or its row in [Waiting on you](/docs/waiting-on-you/): **Fix main first** (agents wait until main passes), **Drop** the check for this trail, or **Start anyway** (the failure is known; a completion that fails only as main does isn't blamed for it). Agents tell you in one line and [wait for work](/docs/mcp-tools/#waiting-for-work).
+- **When main moves after a failure**, the checks run again on the new head by themselves. Meanwhile `main` says "Main moved since the failing run: running again" and adds nothing to Waiting on you. A **Fix main first** or **Start anyway** you chose carries over to the new run.
+
+**Run checks on main** in **Settings → Verification** runs them again whenever you like.
+
+**Which commit.** Checks on main, the trail's combined run below and the revert check all read the same default-branch head: your local default branch, or `origin/<branch>` when it is ahead of it (as your clone last fetched it; Teamtrail fetches nothing). So the three never disagree about what main is.
 
 ## Trail verified together
 
-Every ticket can pass on its own branch and the trail still break once they're merged together. So when every ticket in a trail is done and its work is on the default branch (the pull request's merge commit, or the verified commit when there was no pull request), Teamtrail runs the approved checks once more, automatically, on that commit (in [Cloud](/docs/cloud/), on its runner). It uses your local default branch, or `origin/<branch>`, and fetches nothing.
+Every ticket can pass on its own branch and the trail still break once they're merged together. So when every ticket in a trail is done and its work is on the default branch (the pull request's merge commit, or the verified commit when there was no pull request), Teamtrail runs the approved checks once more, automatically, on that commit (in [Cloud](/docs/cloud/), on its runner). It uses the same default-branch head as [checks on main](#checks-on-main), and reads reverts in that commit's history.
 
 A trail is **verified** only when every ticket's proof is and that combined run passed. Otherwise it says why, for example:
 
 - "waiting for PR #5 to merge"
 - "#2 is reverted on main"
 - "test fails on main at abc1234 after merging"
+
+**Work that didn't land isn't the destination.** While a done ticket's pull request was closed without merging, or its work was reverted on the default branch, the trail isn't done: no flag at the destination and no Destination reached ("The work hasn't landed: #3 closed without merging"). It is done again once that work reaches the default branch, for example through a replacement pull request.
 
 **When it fails**, an item lands in [Waiting on you](/docs/waiting-on-you/) ("Trail checks fail on main after merging #2, #3"), the destination flag on the map turns red, and Destination reached offers **See what fails**. The flag's bubble shows the output, with **Add a fix ticket** and **Run again**. **When it passes**, the trail says "Verified together on main at abc1234".
 
@@ -205,6 +224,10 @@ The report opens with a badge, **Teamtrail verified** or **Teamtrail not verifie
 **Getting the report.** Run [`teamtrail proof <ticket>`](/docs/cli/#teamtrail-proof), or let the agent call [`proof_report`](/docs/mcp-tools/#working-and-completing): agents are told to put it in the pull request description unchanged when they open one. In the Lookout, the ticket's **Full ticket** shows it too, with **Copy for PR**.
 
 **Posted for you.** Switch on **Settings → Project → Proof on pull requests** and, when a ticket is done and its pull request is open, Teamtrail posts the report as one comment on the PR (updated in place, never repeated) and sets a **Teamtrail proof** check next to CI. The check passes only when the ticket is verified at the PR's latest commit. It's off by default and set per machine: each person's Lookout posts with their own GitHub token, to the repo Teamtrail syncs pull requests with (`github` in [verification.json](/docs/verification-json/)). A post that fails (offline, a rate limit) is tried again on the next sync.
+
+- A pull request that merged before PR sync ever saw it open still gets its proof, once.
+- A ticket reopened after its proof was posted takes the proof back: the comment is updated to **not verified** (the ticket isn't done any more) and the **Teamtrail proof** check turns to failure.
+- A proof that names no commit never passes: the check fails ("The proof names no commit"), and so does `teamtrail proof verify`.
 
 **Signed, and checkable by anyone.** Every report is signed with a key made for your machine, which never leaves it. The first time Teamtrail signs one, it writes the public half to `.teamtrail/proof-keys/<id>.pub`: commit it, and anyone can check a report:
 

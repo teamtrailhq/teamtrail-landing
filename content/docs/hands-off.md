@@ -36,6 +36,8 @@ One row is open at a time: the first, until you open or close another. An open r
 
 **Open ticket** opens the full ticket in a drawer over the home. Five rows show (three on a phone); **Show N more** shows the rest. With nothing waiting, Scout says so: _Nothing needs you. Agents keep going; you'll hear only if something does._
 
+A long reason folds behind **Read more**. A row leaves as soon as it's handled, wherever you handled it: another tab, your phone, Slack or `teamtrail approve`. Agents waiting on it [pick up the work](/docs/mcp-tools/#waiting-for-work) at once.
+
 ### Progress
 
 The trail at a glance: a segment per ticket, coloured as on the trail bar (the ones at work breathe), and the counts in words, such as **4 of 15 done · 2 verified · 1 at work · 3 need you · 6 not started**. **Show the map** draws a short version of the trail under it; the full map is Hands-on's. Under that, one row per agent at work: its ticket, its model and its step.

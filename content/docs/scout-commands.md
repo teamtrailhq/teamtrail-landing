@@ -12,7 +12,7 @@ The `/scout` command drives Teamtrail from your agent's chat.
 | Command                 | Does                                                                                                                                                                                               |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/scout new "<idea>"`   | Frames the idea with you, charts a trail, does discovery, then works it.                                                                                                                           |
-| `/scout resume [trail]` | Picks up the trail and works ready tickets until none is ready.                                                                                                                                    |
+| `/scout resume [trail]` | Picks up the trail and works ready tickets until the trail is done. When what's left waits on you, it says what in one line and waits, picking the work up the moment you act.                     |
 | `/scout status`         | Progress, running sessions, what's waiting on you and what interrupts, blocked and rework tickets, spend, and one line when another of your [projects](/docs/all-projects/) has something waiting. |
 | `/scout inbox`          | The ranked [Waiting on you](/docs/waiting-on-you/) list. Answer questions in the chat to guide the agent; calls that are yours to make, and everything else, are decided in the Lookout or Slack.  |
 
@@ -34,7 +34,8 @@ For each ticket, the agent:
 - agrees on acceptance criteria (`set_criteria`) before implementation work;
 - asks you only calls that are yours (by your [risk policy](/docs/policy-json/)), with honest urgency, and decides and records the rest;
 - challenges assumptions and proposes reroutes instead of working around them;
-- closes with a resolution, rationale, alternatives and evidence per criterion, and handles `rework` or `blocked` results.
+- closes with a resolution, rationale, alternatives and evidence per criterion, and handles `rework` or `blocked` results;
+- when nothing can be claimed because work waits on you (criteria to confirm, the plan to approve, the review limit, checks on main, a reroute), tells you in one line what waits, then [waits for work](/docs/mcp-tools/#waiting-for-work) with `next_ticket` and `wait: true` instead of ending or checking back later.
 
 ## In Codex
 
