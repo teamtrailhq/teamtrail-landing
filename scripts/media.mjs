@@ -135,13 +135,19 @@ const shot = async (name) => {
   console.log('saved', `${name}.png`);
 };
 
+/** The margin of surrounding page every close-up keeps on each side of the part it shows, in CSS pixels. */
+const MARGIN = 24;
+
 /**
- * Close-up of the part a landing section talks about: the union of `sels` plus padding,
- * widened or heightened to `aspect` (w/h) around its center (`aspect: null` keeps the union's own shape), kept
- * inside the viewport. Saved at 2x (or `width` pixels wide). `top` and `bottom` override the padding above and
- * below, to stop short of whatever sits right next to the part.
+ * Close-up of the part a landing section talks about: the union of `sels`, whole, plus an even MARGIN of the page
+ * around it on every side, widened or heightened to `aspect` (w/h) around its center (`aspect: null` keeps the
+ * union's own shape). Saved at 2x (or `width` pixels wide). The part counts as everything it draws (text, rows),
+ * not only its boxes. It never clips inside the part: when the part itself leaves the window it fails, so the
+ * capture is fixed (a bigger window, a scroll). Where the part meets the window's own edge (the header at the top,
+ * a drawer at the right), the margin is what the window has on that side: there is no page beyond it. `within`
+ * keeps the crop inside a panel.
  */
-const zoom = async (name, sels, { aspect = 4 / 3, pad = 16, top = pad, bottom = pad, width } = {}) => {
+const zoom = async (name, sels, { aspect = 4 / 3, width, within } = {}) => {
   await clearUi();
   // A selector that matches nothing (an optional neighbour) is left out of the union.
   const found = await Promise.all(
@@ -155,21 +161,144 @@ const zoom = async (name, sels, { aspect = 4 / 3, pad = 16, top = pad, bottom = 
   );
   const boxes = found.filter(Boolean);
   if (!boxes.length) throw new Error(`nothing to capture for ${name}: ${sels.join(', ')}`);
-  let x0 = Math.min(...boxes.map((b) => b.x)) - pad;
-  let y0 = Math.min(...boxes.map((b) => b.y)) - top;
-  let x1 = Math.max(...boxes.map((b) => b.x + b.width)) + pad;
-  let y1 = Math.max(...boxes.map((b) => b.y + b.height)) + bottom;
+  // The part's own extent: its boxes and everything drawn inside them (content can overflow its box).
+  const extent = (el) => {
+    const out = { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity };
+    for (const n of [el, ...el.querySelectorAll('*')]) {
+      if (getComputedStyle(n).visibility === 'hidden') continue;
+      let { left, top, right, bottom } = n.getBoundingClientRect();
+      // Only what shows: content a scrolling or clipping box (the part's own too) hides doesn't count.
+      for (let a = n.parentElement; a && a !== document.body; a = a.parentElement) {
+        if (getComputedStyle(a).overflow === 'visible') continue;
+        const c = a.getBoundingClientRect();
+        [left, top, right, bottom] = [
+          Math.max(left, c.left),
+          Math.max(top, c.top),
+          Math.min(right, c.right),
+          Math.min(bottom, c.bottom),
+        ];
+      }
+      // The part itself cut by a scrolling box around it (a bubble taller than the map): no crop can show it whole.
+      if (n === el) {
+        const r = n.getBoundingClientRect();
+        const sides = { left: left - r.left, top: top - r.top, right: r.right - right, bottom: r.bottom - bottom };
+        const over = Object.entries(sides).filter(([, v]) => v > 1);
+        if (over.length) out.cut = over.map(([k, v]) => `${k} ${Math.round(v)}px`).join(', ');
+      }
+      if (right - left < 1 || bottom - top < 1) continue;
+      out.x0 = Math.min(out.x0, left);
+      out.y0 = Math.min(out.y0, top);
+      out.x1 = Math.max(out.x1, right);
+      out.y1 = Math.max(out.y1, bottom);
+    }
+    return out;
+  };
+  // Playwright selectors (`>> nth=0`), so each part is found the way its box was.
+  const measure = () =>
+    Promise.all(
+      sels.map((sel) =>
+        page
+          .locator(sel)
+          .first()
+          .evaluate(extent, null, { timeout: 3000 })
+          .catch(() => null),
+      ),
+    );
+  let extents = await measure();
+  // A part a scrolling box cuts: scroll it to the middle of that box once, then measure again.
+  const first = sels.findIndex((_, i) => extents[i]?.cut);
+  if (first >= 0) {
+    await page
+      .locator(sels[first])
+      .first()
+      .evaluate((el) => el.scrollIntoView({ block: 'center' }));
+    await wait(700);
+    extents = await measure();
+    boxes.splice(
+      0,
+      boxes.length,
+      ...(
+        await Promise.all(
+          sels.map((s) =>
+            page
+              .locator(s)
+              .first()
+              .boundingBox()
+              .catch(() => null),
+          ),
+        )
+      ).filter(Boolean),
+    );
+  }
+  const cut = sels.map((sel, i) => extents[i]?.cut && `${sel} (${extents[i].cut})`).filter(Boolean);
+  if (cut.length) throw new Error(`${name}: the app itself cuts ${cut.join('; ')}; use a bigger window`);
+  const drawn = extents.filter(Boolean).reduce(
+    (a, e) => ({
+      x0: Math.min(a.x0, e.x0),
+      y0: Math.min(a.y0, e.y0),
+      x1: Math.max(a.x1, e.x1),
+      y1: Math.max(a.y1, e.y1),
+    }),
+    { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity },
+  );
+  const part = {
+    x0: Math.min(drawn.x0, ...boxes.map((b) => b.x)),
+    y0: Math.min(drawn.y0, ...boxes.map((b) => b.y)),
+    x1: Math.max(drawn.x1, ...boxes.map((b) => b.x + b.width)),
+    y1: Math.max(drawn.y1, ...boxes.map((b) => b.y + b.height)),
+  };
+  const vp = page.viewportSize();
+  if (part.x0 < -0.5 || part.y0 < -0.5 || part.x1 > vp.width + 0.5 || part.y1 > vp.height + 0.5) {
+    const at = [part.x0, part.y0, part.x1, part.y1].map(Math.round).join(', ');
+    throw new Error(`${name}: the part (${at}) doesn't fit the ${vp.width}x${vp.height} window`);
+  }
+  // `within`: a panel the part sits in (a drawer at the window's edge). The crop stays inside its box, so the
+  // margin is the panel's own padding rather than the page behind it.
+  const box = (within && (await page.locator(within).first().boundingBox())) || { x: 0, y: 0, ...vp };
+  const [bx0, by0, bx1, by1] = [
+    Math.max(0, box.x),
+    Math.max(0, box.y),
+    Math.min(vp.width, box.x + box.width),
+    Math.min(vp.height, box.y + box.height),
+  ];
+  let x0 = Math.max(bx0, part.x0 - MARGIN);
+  let y0 = Math.max(by0, part.y0 - MARGIN);
+  let x1 = Math.min(bx1, part.x1 + MARGIN);
+  let y1 = Math.min(by1, part.y1 + MARGIN);
   const grow = (a0, a1, len, max) => {
     const c = (a0 + a1) / 2;
     const lo = Math.min(Math.max(0, c - len / 2), max - len);
     return [Math.max(0, lo), Math.min(max, Math.max(0, lo) + len)];
   };
-  const vp = page.viewportSize();
   const ratio = (x1 - x0) / (y1 - y0);
-  if (aspect && ratio < aspect) [x0, x1] = grow(x0, x1, (y1 - y0) * aspect, vp.width);
-  else if (aspect) [y0, y1] = grow(y0, y1, (x1 - x0) / aspect, vp.height);
-  [x0, y0] = [Math.max(0, x0), Math.max(0, y0)];
-  [x1, y1] = [Math.min(vp.width, x1), Math.min(vp.height, y1)];
+  if (aspect && ratio < aspect) [x0, x1] = grow(x0 - bx0, x1 - bx0, (y1 - y0) * aspect, bx1 - bx0).map((v) => v + bx0);
+  else if (aspect) [y0, y1] = grow(y0 - by0, y1 - by0, (x1 - x0) / aspect, by1 - by0).map((v) => v + by0);
+  // The margin shows the page around the part, but never half a line of it: a top or bottom edge that would cut
+  // through a neighbour's text moves to just past that text, toward the part (never into it).
+  [x0, y0, x1, y1] = await page.evaluate(
+    ({ crop, part }) => {
+      let [x0, y0, x1, y1] = crop;
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const range = document.createRange();
+      for (let t = walker.nextNode(); t; t = walker.nextNode()) {
+        if (!t.textContent.trim()) continue;
+        range.selectNodeContents(t);
+        for (const r of range.getClientRects()) {
+          if (!r.width || !r.height) continue;
+          const inPart =
+            r.left >= part.x0 - 1 && r.right <= part.x1 + 1 && r.top >= part.y0 - 1 && r.bottom <= part.y1 + 1;
+          if (inPart) continue;
+          const overlaps = r.right > x0 && r.left < x1 && r.bottom > y0 && r.top < y1;
+          const inside = r.left >= x0 && r.right <= x1 && r.top >= y0 && r.bottom <= y1;
+          if (!overlaps || inside) continue;
+          if (r.top < y0 && r.bottom > y0) y0 = Math.min(r.bottom + 2, part.y0);
+          if (r.bottom > y1 && r.top < y1) y1 = Math.max(r.top - 2, part.y1);
+        }
+      }
+      return [x0, y0, x1, y1];
+    },
+    { crop: [x0, y0, x1, y1], part },
+  );
   const clip = { x: Math.round(x0), y: Math.round(y0), width: Math.round(x1 - x0), height: Math.round(y1 - y0) };
   const file = join(media, `${name}.png`);
   await page.screenshot({ path: file, clip });
@@ -321,8 +450,6 @@ await wait(2500);
 // Scout's summary, the stat tiles and the first lines of each list.
 await zoom('lookout-briefing', ['.dialog.briefing h2', '.dialog.briefing .bf-tiles'], {
   aspect: null,
-  pad: 24,
-  bottom: 12,
 });
 await page.getByRole('dialog', { name: 'While you were away' }).getByRole('button', { name: 'Dismiss' }).click();
 // Back to the normal away threshold, so the briefing stays closed for the rest of the run.
@@ -345,7 +472,12 @@ await bubbleQuestion().filter({ hasText: 'Is silent auto-merge acceptable' }).wa
 await settleMap();
 await shot('lookout-overview');
 // The question in its bubble beside the card: who asks, what it decides, the suggested replies and an answer box.
-await zoom('lookout-bubble-question', ['.map-zone .node.sel', '.bubble'], { aspect: null, pad: 20 });
+// A taller window, so the whole bubble shows beside its card.
+await page.setViewportSize({ ...size, height: 1400 });
+await wait(1200);
+await zoom('lookout-bubble-question', ['.map-zone .node.sel', '.bubble'], { aspect: null });
+await page.setViewportSize(size);
+await wait(800);
 
 // The trail bar's More: under the map, everything that needs you, ranked, the agents at work with their models, and
 // what's up next.
@@ -383,7 +515,7 @@ await page.locator('.trail-btn').click();
 await page.mouse.move(size.width / 2, size.height - 4);
 await wait(1200);
 // The menu under the title it opens from, project name included.
-await zoom('lookout-trails', ['.h-title', '.trail-menu'], { aspect: 16 / 10, pad: 20 });
+await zoom('lookout-trails', ['.h-title', '.trail-menu'], { aspect: 16 / 10 });
 await page.getByRole('menuitem', { name: '+ New trail' }).click();
 await page.locator('.dialog').waitFor();
 const fields = page.locator('.dialog input, .dialog textarea');
@@ -405,9 +537,6 @@ await page.locator('.dv-row button', { hasText: 'CRDT vs last-write-wins' }).fir
 await wait(1500);
 await zoom('lookout-decisions', ['.dv-detail .d-head', '.dv-detail .actions'], {
   aspect: null,
-  pad: 24,
-  top: 10,
-  bottom: 12,
 });
 await view('Map');
 await wait(1000);
@@ -417,7 +546,7 @@ await page.getByRole('button', { name: /^Records/ }).click();
 await page.locator('.stats-btn').click();
 await page.locator('.perf-recs li').first().waitFor({ timeout: 10000 });
 await wait(800);
-await zoom('lookout-trail-stats', ['.perf-section >> nth=0', '.perf-section >> nth=1'], { aspect: 16 / 10, pad: 24 });
+await zoom('lookout-trail-stats', ['.perf-section >> nth=0', '.perf-section >> nth=1'], { aspect: 16 / 10 });
 await page.keyboard.press('Escape');
 await wait(500);
 
@@ -428,7 +557,7 @@ await closeOneTime();
 await page.getByRole('button', { name: 'Review brief' }).first().click({ timeout: 15000 });
 await page.locator('.brief-dialog').waitFor();
 await wait(800);
-await zoom('lookout-discovery', ['.brief-dialog'], { aspect: 16 / 10, pad: 24 });
+await zoom('lookout-discovery', ['.brief-dialog'], { aspect: 16 / 10 });
 await page.keyboard.press('Escape');
 await closeBubble();
 await page.locator('.trail-btn').click();
@@ -446,23 +575,21 @@ await page.locator('.knowledge-view').waitFor();
 await page.locator('.kn-filters .chip', { hasText: 'All' }).click();
 await page.locator('.knowledge-view').getByText('Silent auto-merge of shared notebooks lost edits').first().click();
 await wait(800);
-await zoom('lookout-knowledge', ['.knowledge-view'], { aspect: null, pad: 0 });
+await zoom('lookout-knowledge', ['.knowledge-view'], { aspect: null });
 await page.keyboard.press('Escape');
 await page.setViewportSize(size);
 await wait(500);
 
 // Acceptance criteria on a ticket, with the knowledge it brings: its bubble's Full ticket, a drawer over the map.
 // A taller window, so the ticket shows whole down to its criteria and guides.
-await page.setViewportSize({ ...size, height: 1500 });
+await page.setViewportSize({ ...size, height: 1900 });
 await openTicket('Instrument current');
 await fullTicket();
 await page.locator('.ticket-drawer .criteria-section').waitFor({ timeout: 15000 });
 await wait(1000);
 await zoom('lookout-criteria', ['.ticket-drawer .ticket-head', '.ticket-drawer .criteria-section'], {
   aspect: null,
-  pad: 0,
-  top: 12,
-  bottom: 12,
+  within: '.ticket-drawer',
 });
 await closeDrawer();
 // A finished task's guides (QA, by its type) and the agent's answers to their checklists, from its completion.
@@ -474,9 +601,7 @@ await page.locator('.ticket-drawer .ticket-progress').getByRole('button', { name
 await wait(1000);
 await zoom('lookout-ticket-guide', ['.ticket-drawer .ticket-how', '.ticket-drawer .ticket-progress'], {
   aspect: null,
-  pad: 0,
-  top: 12,
-  bottom: 12,
+  within: '.ticket-drawer',
 });
 await closeDrawer();
 await closeBubble();
@@ -498,39 +623,37 @@ await wait(800);
 await page.locator('.reroute-banner').getByRole('button', { name: 'Review' }).click();
 await page.locator('.reroute-dialog').waitFor();
 await wait(600);
-await zoom('lookout-reroute', ['.reroute-dialog'], { aspect: 16 / 10, pad: 24 });
+await zoom('lookout-reroute', ['.reroute-dialog'], { aspect: 16 / 10 });
 await page.locator('.reroute-dialog button', { hasText: 'Close' }).click();
 
 // What always needs you: Settings → Project → Risk policy, opened by its deep link.
 await openSettings('policy');
-await zoom('lookout-risk', ['#settings-policy'], { aspect: 4 / 3, pad: 16 });
+await zoom('lookout-risk', ['#settings-policy'], { aspect: 4 / 3 });
 
 // Settings → This trail → Model matching: the tier per ticket type, with hints from Trail stats. Switched on here (it
 // starts off so the scripted agents can take every ticket, see lib/realProject.mjs).
 // A taller window: the section is the group's last but one, so it can't scroll up to the top of a normal one.
-await page.setViewportSize({ ...size, height: 1700 });
+await page.setViewportSize({ ...size, height: 2100 });
 await openSettings('models');
 await page.locator('.model-matching-toggle').click();
 await page.locator('.tier-grid .tier-row').first().waitFor({ timeout: 10000 });
 await wait(900);
-await zoom('lookout-model-matching', ['#settings-models'], { aspect: 16 / 10, pad: 16 });
+await zoom('lookout-model-matching', ['#settings-models'], { aspect: 16 / 10 });
 await page.setViewportSize(size);
 
 // Settings → Project → Guides: Browse guides for more, then Write your own, with a team's own guide waiting for
 // your approval. A taller window holds the whole section.
-await page.setViewportSize({ ...size, height: 1300 });
+await page.setViewportSize({ ...size, height: 1600 });
 await openSettings('guides');
 await zoom('lookout-guides', ['#settings-guides .guides-foot', '#settings-guides .sp-where'], {
   aspect: null,
-  pad: 16,
-  top: 6,
 });
 // Browse guides: the public catalog, live.
 await page.setViewportSize(size);
 await page.getByRole('button', { name: 'Browse guides' }).click();
 await page.locator('.catalog-dialog .catalog-list li').nth(2).waitFor({ timeout: 20000 });
 await wait(800);
-await zoom('lookout-guide-catalog', ['.catalog-dialog'], { aspect: 16 / 10, pad: 24 });
+await zoom('lookout-guide-catalog', ['.catalog-dialog'], { aspect: 16 / 10 });
 await page.locator('.catalog-dialog').getByRole('button', { name: 'Close' }).click();
 await wait(400);
 await closeSettings();
@@ -538,23 +661,16 @@ await closeBubble();
 
 // Parallel work: the overlap warning in Needs you (the trail bar's More), then the ticket with the files its agent
 // expects to change. A tall window, so the warning and the items around it show whole.
-await page.setViewportSize({ ...size, height: 1500 });
+await page.setViewportSize({ ...size, height: 1900 });
 await trailBarMore(true);
 const overlap = page.locator('.needs-list .att-item.k-overlap').first();
 await overlap.waitFor({ timeout: 20000 });
 await overlap.evaluate((el) => el.scrollIntoView({ block: 'center' }));
 await wait(800);
-// The warning between its neighbours in Needs you.
-await page.evaluate(() => {
-  const items = [...document.querySelectorAll('.needs-list .att-item')];
-  const i = items.findIndex((el) => el.classList.contains('k-overlap'));
-  items[i - 1]?.setAttribute('data-shot', 'before');
-  items[i + 1]?.setAttribute('data-shot', 'after');
-});
-await zoom('lookout-overlap', ['[data-shot="before"]', '.needs-list .att-item.k-overlap', '[data-shot="after"]'], {
-  aspect: null,
-  pad: 0,
-});
+// The warning in Needs you, whole: the list scrolls in a box too short for its neighbours as well.
+await overlap.evaluate((el) => el.scrollIntoView({ block: 'nearest' }));
+await wait(600);
+await zoom('lookout-overlap', ['.needs-list .att-item.k-overlap'], { aspect: null });
 await trailBarMore(false);
 await page.setViewportSize(size);
 await wait(600);
@@ -565,9 +681,7 @@ await page.locator('.ticket-drawer .ticket-progress', { hasText: 'Changes' }).wa
 await wait(600);
 await zoom('lookout-parallel-ticket', ['.ticket-drawer .ticket-head', '.ticket-drawer .ticket-progress'], {
   aspect: null,
-  pad: 0,
-  top: 12,
-  bottom: 12,
+  within: '.ticket-drawer',
 });
 await closeDrawer();
 await closeBubble();
@@ -578,7 +692,7 @@ await openSettings('workspaces', 'center');
 await page.locator('.worktrees-toggle[aria-pressed="true"]').waitFor();
 await page.locator('.ws-row').nth(1).waitFor({ timeout: 10000 });
 await wait(900);
-await zoom('lookout-workspaces', ['#settings-workspaces'], { aspect: null, pad: 16 });
+await zoom('lookout-workspaces', ['#settings-workspaces'], { aspect: null });
 await page.setViewportSize(size);
 await closeSettings();
 await closeBubble();
@@ -590,7 +704,7 @@ await page.locator('.project-btn').click();
 await page.locator('.trail-item.all-projects').click();
 await page.locator('.projects-view .pj-item').first().waitFor({ timeout: 15000 });
 await wait(1500);
-await zoom('lookout-all-projects', ['.projects-view'], { aspect: null, pad: 0 });
+await zoom('lookout-all-projects', ['.projects-view'], { aspect: null });
 await page.keyboard.press('Escape');
 await page.setViewportSize(size);
 await wait(800);

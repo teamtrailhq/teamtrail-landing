@@ -2486,8 +2486,10 @@ html:has(.gdlg[open]) {
 .section--flush.section--padded-top {
   padding-top: var(--section);
 }
-.cards.cards--joined {
-  margin-top: 1px;
+/* A grid never sits flush against the block before it (another grid, a screenshot's frame): one gap everywhere. */
+:is(.cards, .trio, .themes, .facts, .runs, .theme-row, .shot, .modes, .split)
+  + :is(.cards, .trio, .themes, .facts, .theme-row, .modes) {
+  margin-top: clamp(32px, 4vw, 56px);
 }
 .runs.runs--spaced {
   margin-top: clamp(40px, 6vw, 88px);

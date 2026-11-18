@@ -120,22 +120,33 @@ export async function realProject({ agents = 2 } = {}) {
       await reloaded;
       // A first run on this machine: the repo's committed files are approved together, as Settings → Approvals'
       // "Approve all committed" does, so nothing waits in the queue that a person would have cleared on day one.
-      const left = await page.evaluate(async (api) => {
-        const { secret } = JSON.parse(localStorage.getItem('teamtrail.session') || '{}');
-        const headers = { 'X-Teamtrail-Session': secret, 'Content-Type': 'application/json' };
-        const { items } = await (await fetch(`${api}trust`, { headers })).json();
-        if (!items.length) return 0;
-        const approve = (list) =>
-          fetch(`${api}trust/approve`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({ items: list.map((i) => ({ key: i.key, hash: i.hash })) }),
-          });
-        await approve(items);
-        // What isn't a committed file (a trail's settings, an outside change) is approved one at a time, as its own
-        // row in Settings → Approvals is.
-        for (const item of (await (await fetch(`${api}trust`, { headers })).json()).items) await approve([item]);
-        return (await (await fetch(`${api}trust`, { headers })).json()).items.length;
+      // Every project in the registry, billing-service too: its seeded trail is committed there, as this one's is.
+      const left = await page.evaluate(async (root) => {
+        const { secret: session } = JSON.parse(localStorage.getItem('teamtrail.session') || '{}');
+        const { projects = [] } = await (
+          await fetch(`${root}projects`, { headers: { 'X-Teamtrail-Session': session } })
+        ).json();
+        let waiting = 0;
+        for (const api of [root, ...projects.map((p) => `${root}p/${p.id}/`)])
+          waiting += await approveAll(api).catch(() => 0);
+        return waiting;
+        async function approveAll(api) {
+          const { secret } = JSON.parse(localStorage.getItem('teamtrail.session') || '{}');
+          const headers = { 'X-Teamtrail-Session': secret, 'Content-Type': 'application/json' };
+          const { items } = await (await fetch(`${api}trust`, { headers })).json();
+          if (!items.length) return 0;
+          const approve = (list) =>
+            fetch(`${api}trust/approve`, {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({ items: list.map((i) => ({ key: i.key, hash: i.hash })) }),
+            });
+          await approve(items);
+          // What isn't a committed file (a trail's settings, an outside change) is approved one at a time, as its own
+          // row in Settings → Approvals is.
+          for (const item of (await (await fetch(`${api}trust`, { headers })).json()).items) await approve([item]);
+          return (await (await fetch(`${api}trust`, { headers })).json()).items.length;
+        }
       }, new URL('__teamtrail/', url).href);
       if (left) console.log(`approvals: ${left} still waiting`);
     },
