@@ -79,6 +79,12 @@ An agent can always claim any ticket by key.
 
 When the [scorecard](/docs/trail-stats/#scorecard) has at least 10 tickets of one type from two models, and one passes clearly more of them first time, Settings suggests that model's tier for the type, with the numbers ("gpt-5.2-codex passes 80% of your task tickets first time (10 tickets); claude-haiku-5-5 passes 60%…"). Nothing changes until you click **Use**.
 
+## Reviews by a different model
+
+Model matching decides who builds; review goes the other way. Review tickets are offered first to agents on a different model from the work's author, so a model doesn't grade its own kind of work. With the `independent-review` gate enforced, a review waits for an agent on another model (you can accept a same-model review anyway); in `observe`, the default, a same-model review counts and is flagged. The proof shows both models. See [Independent review](/docs/verification/#independent-review).
+
+The scorecard also counts [what came back](/docs/verification/#what-came-back) per model: work that was verified and later reopened or reverted.
+
 ## Waiting for a stronger model
 
 When a ready ticket is set for a stronger tier than any connected agent runs, it waits. Its card on the map says it needs that tier, and as a `model` item in [Waiting on you](/docs/waiting-on-you/): connect an agent on a stronger model, or have one claim the ticket by key. Nothing waits while matching is off or no agent is connected.

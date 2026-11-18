@@ -14,7 +14,7 @@
     <title>Teamtrail: verified work from AI coding agents like Claude Code and Codex</title>
     <meta
       name="description"
-      content="Verified work from AI coding agents. Teamtrail breaks big work into decisions, sends you only the calls that are yours, and counts nothing as done until it's verified: your checks, run by Teamtrail, a second agent's review and a signed proof. Works with Claude Code, Codex or any MCP agent. Free, and runs on your machine."
+      content="Many AI coding agents, one big project, every piece verified. Teamtrail maps big work into tickets your agents take on side by side, sends you only the calls that are yours, and counts nothing as done until it's proven: checks the work can't change, a review by another model and a signed proof. Works with Claude Code, Codex or any MCP agent. Free, and runs on your machine."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Teamtrail" />
@@ -66,23 +66,23 @@
     <!-- @include sprite -->
     <!-- @include nav -->
 
-    <main id="main">
+    <main id="main" class="compact">
       <!-- HERO -->
-      <section class="hero" aria-labelledby="hero-title">
+      <section class="hero hero--home" aria-labelledby="hero-title">
         <canvas class="field" data-field="hero" aria-hidden="true"></canvas>
         <div class="wrap hero__inner">
-          <span class="hero__badge" data-scramble>Verified work from AI coding agents</span>
+          <span class="hero__badge" data-scramble>For Claude Code, Codex and any MCP agent</span>
           <h1 id="hero-title" class="hero__title">
-            <span class="line">Agents do the work.</span>
-            <span class="line">You know it's done.</span>
+            <span class="line">Many agents, one big project.</span>
+            <span class="line">Every piece verified.</span>
           </h1>
           <p class="hero__lede">
-            <span class="mark">Teamtrail</span> sends you only the calls that are yours, and counts nothing as done
-            until it's verified. On your machine, alongside Claude Code, Codex or any MCP agent.
+            <span class="mark">Teamtrail</span> maps big work into tickets your agents take on side by side. You define
+            done, nothing counts until it's proven, and you review the evidence instead of every diff.
           </p>
           <div class="hero__actions" id="install">
             <!-- @include cmd -->
-            <a class="btn" href="#how">See the route <span class="arrow" aria-hidden="true">↓</span></a>
+            <a class="btn" href="#how">How it works <span class="arrow" aria-hidden="true">↓</span></a>
           </div>
         </div>
       </section>
@@ -105,230 +105,18 @@
         </figure>
       </div>
 
-      <!-- PROBLEM -->
-      <section class="section section--flush section--padded-top" id="why" aria-labelledby="why-title">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow"
-                ><span>Why <span class="mark">Teamtrail</span></span></span
-              >
-              <h2 id="why-title">Big work gets lost in one chat.</h2>
-            </div>
-            <p>
-              One agent in one chat can manage a short walk. A real project is a long trail: dozens of decisions,
-              several agents and you, over days.
-            </p>
-          </header>
-          <ul class="trio reveal" role="list">
-            <li>
-              <span class="n">01</span>
-              <h3>The trail goes cold</h3>
-              <p>
-                Every new session starts from zero. What was tried, what was decided and why gets left behind between
-                chats.
-              </p>
-            </li>
-            <li>
-              <span class="n">02</span>
-              <h3>Agents stop at a fork, silently</h3>
-              <p>
-                An agent needs a call from you and stops. You find out an hour later, in a terminal you weren't
-                watching.
-              </p>
-            </li>
-            <li>
-              <span class="n">03</span>
-              <h3>Nobody knows how far you got</h3>
-              <p>
-                Agents say “done”. Without checks and a record, you walk the whole route again before you can trust it.
-              </p>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- REVIEW -->
-      <section class="section" id="review" aria-labelledby="review-title">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">Paced to your review</span>
-              <h2 id="review-title">Agents write more code. Review is where it waits.</h2>
-            </div>
-            <p>
-              A Harvard study<a class="fn" href="#study" aria-label="Source">*</a> of 655 companies found that after
-              teams adopted coding agents, pull requests went up by a third, while finished issues barely moved. The
-              code waited for someone to review it.
-            </p>
-          </header>
-          <ul class="trio reveal" role="list">
-            <li>
-              <span class="stat stat--up">+36%</span>
-              <h3>Pull requests opened</h3>
-              <p>Agents made writing code cheap. The volume went up right away.</p>
-            </li>
-            <li>
-              <span class="stat">+14%</span>
-              <h3>Issues resolved</h3>
-              <p>What actually shipped grew far less, and not by a statistically significant amount.</p>
-            </li>
-            <li>
-              <span class="stat stat--up">+56%</span>
-              <h3>Time to approval</h3>
-              <p>Code waited longer for a reviewer, and took longer to review once it got one.</p>
-            </li>
-          </ul>
-          <div class="cards reveal">
-            <article class="card">
-              <div class="card__top"><span class="card__n">01 · Review limit</span></div>
-              <h3>New work waits for your review</h3>
-              <p>
-                Set how many finished tickets may wait for you. Once they do, agents start no new work: they fix what
-                came back and keep researching until you've reviewed some. Waiting on you opens the one waiting longest.
-              </p>
-            </article>
-            <article class="card">
-              <div class="card__top"><span class="card__n">02 · Scope check</span></div>
-              <h3>See the code nobody asked for</h3>
-              <p>
-                Agents say which files they'll change when they take a ticket. Anything they change beyond that is
-                listed first for the reviewer and on the proof, or sent back, as you choose.
-              </p>
-            </article>
-          </div>
-          <div class="more reveal">
-            <a class="btn" href="/docs/review-capacity/"
-              >How it works <span class="arrow" aria-hidden="true">→</span></a
-            >
-          </div>
-        </div>
-      </section>
-
-      <!-- CAST -->
-      <section class="section" id="party" aria-labelledby="cast-title">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">The party</span>
-              <h2 id="cast-title">A trail, a party, and a scout who keeps them together.</h2>
-            </div>
-            <p>Every part of the work has a clear owner, so you steer the journey instead of herding chats.</p>
-          </header>
-          <div class="cast">
-            <article class="role reveal">
-              <div class="role__visual" aria-hidden="true">
-                <div class="mini-map">
-                  <i class="d"></i><i class="d"></i><i class="w"></i><i class="d"></i><i class="q"></i><i></i><i></i
-                  ><i></i><i></i>
-                </div>
-              </div>
-              <span class="role__kicker">The trail</span>
-              <h3>Big work, mapped as decisions</h3>
-              <p>
-                Describe an idea and it becomes a map of tickets: what to research, what to decide, what to build, and
-                what blocks what.
-              </p>
-            </article>
-            <article class="role reveal">
-              <div class="role__visual" aria-hidden="true">
-                <div class="chips"><span>Claude Code</span><span>Codex</span><span>Reviewer</span><span>QA</span></div>
-              </div>
-              <span class="role__kicker">Your agents</span>
-              <h3>Each on the right stretch</h3>
-              <p>
-                Claude Code, Codex or any agent you connect picks up whatever is unblocked, with the checklists of the
-                ticket's guides. A second agent reviews the work.
-              </p>
-            </article>
-            <article class="role reveal">
-              <div class="role__visual"><div data-scout aria-label="Scout"></div></div>
-              <span class="role__kicker"><span class="mark">Scout</span></span>
-              <h3>The scout who keeps everyone on the path</h3>
-              <p>
-                <span class="mark">Scout</span> hands out work, keeps each agent up to date, records every decision, and
-                tells you what happened when you get back.
-              </p>
-            </article>
-            <article class="role role--you reveal">
-              <div class="role__visual" aria-hidden="true">
-                <div class="mini-ask">
-                  <small>WAITING ON YOU</small>What outcome would make this a clear yes for you?
-                </div>
-              </div>
-              <span class="role__kicker">You, the trail lead</span>
-              <h3>Only the turns that need you</h3>
-              <p>
-                Questions from every agent wait for you on the map, with suggested answers. Decide, and the party moves
-                on.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <!-- HOW -->
-      <section class="section" id="how" aria-labelledby="how-title">
+      <section class="section section--flush section--padded-top" id="how" aria-labelledby="how-title">
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">How a trail runs</span>
-              <h2 id="how-title">From trailhead to destination.</h2>
+              <span class="eyebrow">How it works</span>
+              <h2 id="how-title">One map, many agents.</h2>
             </div>
-            <p>Five stages, on one map that runs next to your code.</p>
+            <p>For work that runs for days. You step in only at the junctions.</p>
           </header>
-          <div class="runs">
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/flow-05-new-trail.png"
-                  width="1772"
-                  height="1106"
-                  loading="lazy"
-                  decoding="async"
-                  alt="The New trail form with title, destination, notes and mode."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">01</span>
-                <h3>Mark the destination</h3>
-                <p>
-                  Say what you want to build and what done looks like. Start it in the Lookout or in your agent's chat.
-                  <span class="mark">Scout</span> asks a few questions, then draws the route.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Questions, decisions and building in one map</li>
-                  <li data-n="02">Plan only, or plan and build</li>
-                  <li data-n="03">Kept in your repo, or in GitHub Issues and Linear</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
-              <figure class="shot">
-                <img
-                  src="/media/lookout-discovery.png"
-                  width="2754"
-                  height="1722"
-                  loading="lazy"
-                  decoding="async"
-                  alt="A discovery brief waiting for review: what exists, the product rules that apply, risks and assumptions."
-                />
-              </figure>
-              <div class="run__copy">
-                <span class="run__n">02</span>
-                <h3>Learn the terrain first</h3>
-                <p>
-                  Before anyone sets off, an agent looks at what you already have and writes a short brief: what exists,
-                  what could break and what it's assuming. You approve it, or ask for changes.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Nothing gets built until you approve the brief</li>
-                  <li data-n="02">Your product's rules and users, not just the code</li>
-                  <li data-n="03">What it learns is kept for every task after</li>
-                </ul>
-              </div>
-            </article>
-            <article class="run reveal">
+          <div class="themes">
+            <article class="theme reveal">
               <figure class="shot">
                 <img
                   src="/media/flow-06-first-tickets.png"
@@ -339,216 +127,127 @@
                   alt="The whole trail map: done research, tickets that need you in red, agents at work and a proposed new plan drawn in."
                 />
               </figure>
-              <div class="run__copy">
-                <span class="run__n">03</span>
-                <h3>The party sets off</h3>
-                <p>
-                  Agents pick up the work that's ready and walk side by side. Each one carries what your project already
-                  knows and the checklists of the ticket's guides, so you never explain the same thing twice.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Each agent can work in its own copy of your project</li>
-                  <li data-n="02">If an agent goes quiet, its work goes back in line</li>
-                  <li data-n="03">When the ground changes, they propose a reroute for you to approve</li>
-                </ul>
-              </div>
+              <span class="kicker">Chart the trail</span>
+              <h3>Big work, mapped as decisions</h3>
+              <p>
+                Describe the destination. An agent studies your code, you approve its brief, and the work becomes a map
+                of tickets.
+              </p>
+              <a class="read" href="/docs/trails-and-tickets/"
+                >Read more <span class="arrow" aria-hidden="true">→</span></a
+              >
             </article>
-            <article class="run reveal">
+            <article class="theme reveal">
               <figure class="shot">
                 <img
-                  src="/media/lookout-bubble-question.png"
-                  width="608"
-                  height="726"
+                  src="/media/lookout-overview.png"
+                  width="1680"
+                  height="945"
                   loading="lazy"
                   decoding="async"
-                  alt="An agent's question in a bubble beside its ticket on the map, with suggested replies and an answer box."
+                  alt="The Lookout: the trail map filling the page, an agent's question open in a bubble beside its ticket, and the trail bar under the map."
                 />
               </figure>
-              <div class="run__copy">
-                <span class="run__n">04</span>
-                <h3>You call the junctions</h3>
-                <p>
-                  What needs you turns red on the map. Click it, and the question opens beside the ticket with suggested
-                  answers. Reply in a click, or from your agent's chat with /scout inbox.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Only urgent questions interrupt you</li>
-                  <li data-n="02">You decide which calls are always yours</li>
-                  <li data-n="03">Small ones are made and written down for you to review</li>
-                </ul>
-              </div>
+              <span class="kicker">Agents work in parallel</span>
+              <h3>Each on the right stretch</h3>
+              <p>
+                Agents take whatever is ready, each in its own worktree, matched to its model. You hear before two touch
+                the same files.
+              </p>
+              <a class="read" href="/docs/parallel-work/">Read more <span class="arrow" aria-hidden="true">→</span></a>
             </article>
-            <article class="run reveal">
+            <article class="theme reveal">
               <figure class="shot">
                 <img
-                  src="/media/lookout-decisions.png"
-                  width="1268"
-                  height="966"
+                  src="/media/lookout-trail-bar-more.png"
+                  width="1680"
+                  height="945"
                   loading="lazy"
                   decoding="async"
-                  alt="A decision record with the answer, who made it, the alternatives considered and the rationale."
+                  alt="The trail bar opened under the map: Waiting on you, ranked, with a blocking question first and the reason for each item; the agents at work with their models; and what's up next."
                 />
               </figure>
-              <div class="run__copy">
-                <span class="run__n">05</span>
-                <h3>Arrive with proof</h3>
-                <p>
-                  You agree on what done means before anyone sets off. Every point needs proof: your tests, a second
-                  agent's review, or your sign-off. Every decision goes in the logbook, with the reasoning.
-                </p>
-                <ul class="ticks">
-                  <li data-n="01">Your product's rules become points to prove</li>
-                  <li data-n="02">Claude and Codex review each other's work</li>
-                  <li data-n="03">A trip report: time, your input, rework and cost</li>
-                </ul>
-              </div>
+              <span class="kicker">You decide what matters</span>
+              <h3>Only the turns that need you</h3>
+              <p>
+                Questions wait in one ranked list. The risky calls are yours by rule, and every decision is kept with
+                its reasons.
+              </p>
+              <a class="read" href="/docs/waiting-on-you/">Read more <span class="arrow" aria-hidden="true">→</span></a>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- WHAT MAKES IT DIFFERENT -->
-      <section class="section" id="next" aria-labelledby="next-title">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">What makes it different</span>
-              <h2 id="next-title">Your calls and your proof, kept in code.</h2>
-            </div>
-            <p>
-              Your agents can already write the code. <span class="mark">Teamtrail</span> decides what's theirs to
-              decide, checks what they claim, and keeps the reasons. The rules live in code, not in a prompt an agent
-              can forget.
-            </p>
-          </header>
-          <div class="cards">
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">01 · Proof</span></div>
-              <h3>Done means proven, not claimed</h3>
-              <p>
-                Agree on what done means before anyone starts. <span class="mark">Teamtrail</span> runs your tests
-                itself, every point needs proof, and a second agent reviews the work, never its author. Each finished
-                ticket gets a signed Verified by Teamtrail report for its pull request, which anyone can check.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">02 · Your calls</span></div>
-              <h3>The big turns are yours, by rule</h3>
-              <p>
-                Choose what always comes to you: database changes, logins, billing, deleting data. Agents can't record
-                those calls themselves, and everything that needs you waits in one list, most important first.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">03 · The record</span></div>
-              <h3>Every call, with its reasons</h3>
-              <p>
-                Each decision keeps the question, your words, the alternatives and who made it, by name. When an agent
-                would ask the same thing again, it gets your earlier decision back instead.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">04 · Plans that adapt</span></div>
-              <h3>Reroute only with your yes</h3>
-              <p>
-                Agents write down what they assume. When one turns out wrong, they bring the evidence and propose a new
-                route. Nothing changes until you approve it.
-              </p>
-            </article>
-          </div>
-          <div class="more reveal">
-            <a class="btn" href="/features/">See every feature <span class="arrow" aria-hidden="true">→</span></a>
-          </div>
-        </div>
-      </section>
-
-      <!-- WHAT IT ISN'T -->
-      <section class="section" id="not" aria-labelledby="not-title">
-        <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">What it isn't</span>
-              <h2 id="not-title">Not another agent runner.</h2>
-            </div>
-            <p>
-              Running agents side by side is solved: your terminal and plenty of tools already do it.
-              <span class="mark">Teamtrail</span> works with whichever you use and adds what they don't: your calls kept
-              yours, and done meaning proven.
-            </p>
-          </header>
-          <div class="cards">
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Not for quick fixes</span></div>
-              <h3>A short walk doesn't need a map</h3>
-              <p>
-                A five-minute change? Just ask your agent. <span class="mark">Teamtrail</span> is for work that runs for
-                days, across many agents.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Not autopilot</span></div>
-              <h3>The big turns stay yours</h3>
-              <p>
-                Agents handle the small decisions and write each one down, so you can check or change it. Anything that
-                matters comes to you.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Not a runner</span></div>
-              <h3>It never starts agents on your machine</h3>
-              <p>
-                Your agents run where they always do, in your terminal. Agents that keep walking with your laptop closed
-                are what <a href="/cloud/">Cloud</a> is for.
-              </p>
-            </article>
-            <article class="card reveal">
-              <div class="card__top"><span class="card__n">Not a feed</span></div>
-              <h3>No play-by-play of every step</h3>
-              <p>You see what needs you, in order, and why. The rest is in the logbook when you want it.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- GUIDES -->
-      <section class="section" id="guides" aria-labelledby="spec-title">
+      <!-- VERIFIED -->
+      <section class="section" id="verified" aria-labelledby="verified-title">
         <div class="wrap split">
           <div class="split__copy reveal">
-            <div><span class="eyebrow">Guides</span> <span class="tag tag--now">Available now</span></div>
-            <h2 id="spec-title">Bring a guide for the hard stretches.</h2>
+            <span class="eyebrow">Verified, not claimed</span>
+            <h2 id="verified-title">Done means proven.</h2>
             <p>
-              Every ticket comes with its guides: an architect on research, a QA lead and a security expert on the
-              build, a reviewer on the review. Whichever agent picks it up gets their know-how and checklists it has to
-              answer before the work counts as done. Five come built in, and more are one command away.
+              You agree on done before work starts. <span class="mark">Teamtrail</span> runs your checks itself, and
+              each finished ticket gets a signed proof for its pull request.
             </p>
+            <ul class="gates" role="list">
+              <li>Checks the work can't change</li>
+              <li>The whole trail verified together on main</li>
+              <li>Reviews by a different model</li>
+              <li>Rules from past mistakes</li>
+              <li>Flaky checks caught</li>
+              <li>What came back after “verified”, measured</li>
+              <li>Gates you try in observe first</li>
+              <li>A signed proof anyone can check</li>
+            </ul>
             <div>
-              <a class="btn" href="/guides/">Browse the guides <span class="arrow" aria-hidden="true">→</span></a>
+              <a class="btn" href="/docs/verification/"
+                >How verification works <span class="arrow" aria-hidden="true">→</span></a
+              >
             </div>
           </div>
-          <ul class="roster reveal" role="list">
+          <figure class="shot reveal">
+            <img
+              src="/media/lookout-criteria.png"
+              width="820"
+              height="866"
+              loading="lazy"
+              decoding="async"
+              alt="A ticket's acceptance criteria: a test, a business rule from your project and a point you sign off."
+            />
+          </figure>
+        </div>
+      </section>
+
+      <!-- REVIEW -->
+      <section class="section" id="review" aria-labelledby="review-title">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">Paced to your review</span>
+              <h2 id="review-title">More code. Not more shipped.</h2>
+            </div>
+            <p>
+              After teams adopted coding agents, the code waited for review<a
+                class="fn"
+                href="#study"
+                aria-label="Source"
+                >*</a
+              >. <span class="mark">Teamtrail</span> holds new work when reviews pile up, and flags code nobody asked
+              for. <a href="/docs/review-capacity/">Read more</a>.
+            </p>
+          </header>
+          <ul class="trio reveal" role="list">
             <li>
-              <span class="spec spec--reviewer" data-spec="thinking" aria-hidden="true"></span><b>Reviewer</b
-              ><span>Checks the change against what was claimed</span>
+              <span class="stat stat--up">+36%</span>
+              <h3>Pull requests opened</h3>
             </li>
             <li>
-              <span class="spec spec--qa" data-spec="idle" aria-hidden="true"></span><b>QA</b
-              ><span>Tests the edges before it ships</span>
+              <span class="stat">+14%</span>
+              <h3>Issues resolved</h3>
             </li>
             <li>
-              <span class="spec spec--security" data-spec="alert" aria-hidden="true"></span><b>Security</b
-              ><span>Looks for what an attacker would</span>
-            </li>
-            <li>
-              <span class="spec spec--docs" data-spec="idle" aria-hidden="true"></span><b>Docs</b
-              ><span>Keeps the docs true to the code</span>
-            </li>
-            <li>
-              <span class="spec spec--architect" data-spec="thinking" aria-hidden="true"></span><b>Architect</b
-              ><span>Guards the shape of the system</span>
-            </li>
-            <li class="add">
-              <span class="spec spec--you" data-spec="idle" aria-hidden="true"></span><b>+ Your own</b
-              ><span>Write one for your team</span>
+              <span class="stat stat--up">+56%</span>
+              <h3>Time to approval</h3>
             </li>
           </ul>
         </div>
@@ -559,29 +258,29 @@
         <div class="wrap">
           <header class="head reveal">
             <div class="head__title">
-              <span class="eyebrow">Yours to run</span>
-              <h2 id="trust-title">Your map, on your machine, with your agents.</h2>
+              <span class="eyebrow">Local-first and safe</span>
+              <h2 id="trust-title">Your map, your machine, your agents.</h2>
             </div>
+            <p><a href="/docs/security/">What only you approve</a>, and what it protects against.</p>
           </header>
           <ul class="facts reveal" role="list">
             <li>
-              <h3>Local-first</h3>
-              <p>
-                <span class="mark">Teamtrail</span> runs on your computer. There is no
-                <span class="mark">Teamtrail</span> server and no account.
-              </p>
-            </li>
-            <li>
-              <h3>Plain files</h3>
-              <p>Trails and decisions are markdown in your repo, or issues in GitHub or Linear.</p>
+              <h3>No account</h3>
+              <p>Runs on your computer. Trails are files in your repo, or issues in GitHub or Linear.</p>
             </li>
             <li>
               <h3>Any agent</h3>
-              <p>Claude Code and Codex today, and any agent that connects over MCP.</p>
+              <p>
+                Claude Code, Codex and any agent that speaks MCP, with <a href="/guides/">guides</a> for the hard parts.
+              </p>
             </li>
             <li>
-              <h3>Evidence over claims</h3>
-              <p>Checks run in your repo and every verdict is kept, so “done” means done.</p>
+              <h3>Never on your behalf</h3>
+              <p>It never answers or approves for you, and never starts agents on your machine.</p>
+            </li>
+            <li>
+              <h3>Approved here</h3>
+              <p>Check commands and settings count only once you approve them on your machine.</p>
             </li>
           </ul>
         </div>
@@ -600,69 +299,22 @@
                 <span class="q">What is <span class="mark">Teamtrail</span>?</span>
               </summary>
               <div>
-                The control layer that makes AI coding agents' work verified. It breaks big work into decision tickets,
-                sends you only the calls that are yours, and counts nothing as done until your checks, a second agent's
-                review and a signed proof say so. It runs on your computer, alongside Claude Code, Codex or any MCP
-                agent, and shows every trail, agent and open question in one window, across all your repos.
+                A local trail map for big work done by many AI coding agents. It breaks the work into tickets, sends you
+                only the calls that are yours, and counts nothing as done until it's verified.
               </div>
             </details>
             <details>
-              <summary>
-                <span class="q">Won't agents just give me more code to review?</span>
-              </summary>
+              <summary><span class="q">How do I know the work is really done?</span></summary>
               <div>
-                Not more than you can take. Set a review limit, and once that many finished tickets wait for you, agents
-                start no new work until you've reviewed some; they fix what came back and keep researching meanwhile.
-                Agents also say which files they'll change, and anything beyond that is listed first for the reviewer
-                and on the proof. See <a href="/docs/review-capacity/">Review capacity</a>.
-              </div>
-            </details>
-            <details>
-              <summary>
-                <span class="q">Who is <span class="mark">Scout</span>?</span>
-              </summary>
-              <div>
-                <span class="mark">Scout</span> is your guide in the Lookout. It hands out work, relays agents'
-                questions to you and tells you where the trail stands. It never answers on your behalf.
+                Every point of done needs proof: checks <span class="mark">Teamtrail</span> runs itself, a review by an
+                agent on another model, or your sign-off. See <a href="/docs/verification/">Verification</a>.
               </div>
             </details>
             <details>
               <summary><span class="q">Which agents does it work with?</span></summary>
               <div>
-                Any AI coding agent that connects through MCP. Claude Code and Codex have first-class support: one
-                command connects them and adds the <code>/scout</code> command to their chat.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">Can I stay in my agent's chat?</span></summary>
-              <div>
-                Yes. <code>/scout new</code> turns an idea into a trail, <code>/scout resume</code> picks up the work,
-                <code>/scout status</code> tells you where things stand, and <code>/scout inbox</code> lets you answer
-                waiting questions in the chat. The Lookout shows it all live.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">Does my data leave my machine?</span></summary>
-              <div>
-                <span class="mark">Teamtrail</span> keeps your plans in your project folder. If you connect GitHub or
-                Linear, your computer talks to them directly and your keys stay on your computer. Your agents still use
-                their own AI services.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">Can I set it up without the Lookout?</span></summary>
-              <div>
-                Yes. Everything <span class="mark">Teamtrail</span> reads is a plain file in your repo or a command in
-                your terminal: checks, what's always yours, interruptions, workspaces and trackers. The
-                <a href="/docs/">docs</a> cover every setting, with examples.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">Can an agent make a decision for me?</span></summary>
-              <div>
-                Only small, everyday ones, and each is written down so you can review it or change your mind. You decide
-                what always comes to you: by default, anything that changes your data, security, billing or your public
-                API.
+                Any agent that connects over MCP. One command connects Claude Code or Codex and adds
+                <code>/scout</code> to their chat.
               </div>
             </details>
             <details>
@@ -670,68 +322,15 @@
                 <span class="q">Does <span class="mark">Teamtrail</span> run my agents for me?</span>
               </summary>
               <div>
-                <span class="mark">Teamtrail Local</span> never does. You start Claude Code or Codex as usual, and they
-                connect to <span class="mark">Teamtrail</span>. <a href="/cloud/">Teamtrail Cloud</a> does, today, in
-                early access: it runs Claude Code or Codex on your trails, each in a sandbox of its own, on your own API
-                keys, and opens a pull request for each ticket.
+                Locally, never: you start your agents as usual. <a href="/cloud/">Teamtrail Cloud</a>, in early access,
+                runs them in sandboxes and opens a pull request per ticket.
               </div>
             </details>
             <details>
-              <summary><span class="q">Can I watch several projects at once?</span></summary>
+              <summary><span class="q">Does my data leave my machine?</span></summary>
               <div>
-                Yes. All projects shows every repo you look after in one view, with one list of what needs you across
-                them, most important first. Answer from there, or switch projects from the header. Your agents add their
-                repo when they connect, and the list stays on your machine.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">What are guides?</span></summary>
-              <div>
-                Know-how for a kind of work, such as review, QA or security. Each ticket type comes with its guides, and
-                the agent that takes a ticket follows them and answers their checklists before finishing. A guide can
-                add checks but never remove one, and any command it brings runs only after you approve it.
-                <a href="/guides/">Browse the guides</a>.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">Does it pick which model does the work?</span></summary>
-              <div>
-                It can match the work to the model. Turn it on for a trail, and each agent gets the tickets that suit
-                the model it runs on: research on fast models, the big decisions on the strongest. You set the level per
-                kind of work. <span class="mark">Teamtrail</span> never switches your model, and an agent you point at a
-                ticket can always take it.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">Can several agents work at the same time?</span></summary>
-              <div>
-                Yes. Each one can get its own copy of your project on its own branch, and you hear about it before two
-                agents change the same files. If they do, <span class="mark">Teamtrail</span> suggests a ticket to bring
-                the work together. It never merges anything for you.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">What if the route turns out to be wrong?</span></summary>
-              <div>
-                An agent that finds a wrong assumption proposes a reroute, with the evidence and a before-and-after on
-                the map. The work it affects pauses, and nothing changes until you approve. If the work already exists
-                or the trail is on the wrong mountain, an agent can say so and suggest a better goal.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">Does it understand my project?</span></summary>
-              <div>
-                Yes, and it keeps learning. Before building, an agent studies your code and asks about your product,
-                then writes a brief you approve. What agents learn along the way is saved, so the next task starts where
-                the last one left off.
-              </div>
-            </details>
-            <details>
-              <summary><span class="q">How do I know the work is really done?</span></summary>
-              <div>
-                Before an agent starts, it writes down what has to be true, and you can confirm it. When it finishes,
-                every point needs proof from your tests, a review by another agent, or your own sign-off. Anything
-                without proof goes back.
+                No. Plans stay in your project folder, or in GitHub or Linear, which your computer talks to directly.
+                Your agents still use their own AI services.
               </div>
             </details>
             <details>

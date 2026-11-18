@@ -35,6 +35,19 @@ One deterministic, ranked list of everything that needs you, with the reason eac
 | `delivery`          | Slack messages keep failing to get through.                                                                                                                                                                                  |
 | `review-limit`      | The team's review limit is reached: finished work waits for your review, and agents start no new implementation work until you review some. Opens the ticket waiting longest. See [Review capacity](/docs/review-capacity/). |
 
+### From verification
+
+Verification adds work to the list when a pass hasn't earned it yet. Each item says why, and always has a way past it:
+
+- **Check guard:** the work changed what its checks run, or skipped or removed tests. **Accept the pass** or **Send it back**. See [Check guard](/docs/verification/#check-guard).
+- **Flaky check:** a check failed and then passed on the same commit. Accept it, or send the work back.
+- **Diff rule:** the change touched a rule's files without passing its check or answering its question.
+- **Same-model review:** with the `independent-review` gate enforced, a review waits for an agent on another model; you can accept the same-model review.
+- **Trail verified together:** the combined run on the default branch failed after a trail's pull requests merged, with an offer to add a fix ticket. See [Trail verified together](/docs/verification/#trail-verified-together).
+- **Came back:** a ticket verified earlier was reopened or reverted, with an offer to add a rule from it. See [What came back](/docs/verification/#what-came-back).
+
+Gates in `observe` add nothing here; they only record what they would have held. See [Gates](/docs/verification/#gates-off-observe-enforce).
+
 ## How items are ranked
 
 Each item gets a score from fixed rules, added in a fixed order so the reasons always read the same way:
