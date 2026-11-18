@@ -105,7 +105,7 @@ Starts the Lookout on **Settings → Slack**, to add Scout to Slack through Team
 teamtrail approve
 ```
 
-What the repo asks this machine to trust and you haven't approved here: check commands, a risk policy that lowers what needs you, lowered verification levels, accepted briefs, confirmed criteria and knowledge, guide catalogs, trails without discovery and trail files changed outside Teamtrail. It shows exactly what each item would approve and asks `y/N` for each, like **Settings → Project → Approvals**. Without a terminal it approves only what `--hash <hash>` names exactly (repeat it for more), and exits 1 when nothing waiting has that hash. See [Approvals and security](/docs/security/).
+What the repo asks this machine to trust and you haven't approved here: check commands, a risk policy that lowers what needs you, lowered verification levels, accepted briefs, confirmed criteria and knowledge, guide catalogs, trails without discovery and trail files changed outside Teamtrail. It shows exactly what each item would approve and asks `y/N` for each, like **Settings → Project → Approvals**. Without a terminal it approves only what `--hash <hash>` names exactly (repeat it for more), and exits 1 when nothing waiting has that hash. What you approve shows on every open Lookout page at once, and agents waiting on it pick up the work. See [Approvals and security](/docs/security/).
 
 ## teamtrail pair
 
@@ -136,7 +136,7 @@ teamtrail proof verify report.md
 teamtrail proof verify --pr 42 --repo owner/name
 ```
 
-Checks a Verified by Teamtrail report: signed by a key committed in `.teamtrail/proof-keys/` at `--keys-ref` (default `HEAD`), unchanged since Teamtrail wrote it, and verified. A file or stdin holds one report; `--pr` checks every report on a pull request (its description and comments) at its latest commit, with `GITHUB_TOKEN` or `GH_TOKEN`, and `--set-status` records the result as the `Teamtrail proof verified` commit status. Exits 0 when everything verifies, 1 otherwise. See [Verified by Teamtrail](/docs/verification/#verified-by-teamtrail).
+Checks a Verified by Teamtrail report: signed by a key committed in `.teamtrail/proof-keys/` at `--keys-ref` (default `HEAD`), unchanged since Teamtrail wrote it, and verified. A file or stdin holds one report; `--pr` checks every report on a pull request (its description and comments) at its latest commit (a report that names no commit never covers it), with `GITHUB_TOKEN` or `GH_TOKEN`, and `--set-status` records the result as the `Teamtrail proof verified` commit status. Exits 0 when everything verifies, 1 otherwise. See [Verified by Teamtrail](/docs/verification/#verified-by-teamtrail).
 
 ## teamtrail knowledge import
 

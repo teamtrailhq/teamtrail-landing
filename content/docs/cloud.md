@@ -36,6 +36,13 @@ An owner connects repositories through Teamtrail Cloud's GitHub App and picks wh
 
 Turn on **Run my agents** and Cloud runs Claude Code or Codex on the ready work, each agent in its own sandbox, on your own Anthropic or OpenAI key. Each ticket gets a branch and a pull request. The **Agents** page shows each run, its logs, its model and its hours. While the [review limit](/docs/review-capacity/#teamtrail-cloud) holds a trail back, no agent starts on it.
 
+What you see keeps up with the runs:
+
+- **Work starts within seconds.** When work becomes ready (you approve a plan, confirm criteria, free the review limit), an agent starts on it within seconds. **Pause** then **Start** starts again at once, and a trail that waits says why.
+- **Tickets go back at once.** A run that ends, fails or is lost returns the tickets its agent held to the queue straight away, and a sandbox that dies ends its run at once, so nothing sits claimed by an agent that's gone.
+- **Pull requests while a run goes.** Each run's pull requests and their proofs show every 2 minutes while it works, not only when it ends, however many pull requests the repository has open.
+- **Disconnecting a repository** stops its runs.
+
 ## Verified on the commit they pushed
 
 Cloud agents are [remote agents](/docs/remote-agents/): nothing runs on your machine. When one finishes, Cloud runs your approved checks in a fresh sandbox on the exact commit it pushed, and the proof names that commit and the runner. The checks on main and the trail's [combined run](/docs/verification/#trail-verified-together) run there too, on exactly the commit Teamtrail names on the default branch. Each done ticket's signed [proof](/docs/verification/#verified-by-teamtrail) is posted on its pull request, with the `Teamtrail proof` status, and Cloud opens one pull request per repository proposing the workspace's proof key.
@@ -50,7 +57,7 @@ Verified pull requests merge by themselves. Auto-merge is on by default for ever
 - the pull request isn't a draft and has no conflicts with its base branch;
 - GitHub says it can merge with **every check passed**, required or not. Auto-merge never merges past a failing check.
 
-It squash-merges at that head commit, as **Approve and merge** in the Lookout does, and leaves a comment on the pull request and on the ticket.
+It squash-merges at that head commit, as **Approve and merge** in the Lookout does, and leaves a comment on the pull request and on the ticket. A merge, or why one waits, is passed to your Lookout again on every round until it confirms, so the ticket always shows it; once merged, it shows as **Merged** and nothing offers to merge it again.
 
 Anything else waits for a person, and says why, on the ticket and on the **Repositories** page:
 

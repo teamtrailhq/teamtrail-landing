@@ -32,6 +32,11 @@ If you set up your own Slack app with an earlier version, Settings → Slack ask
 - **Questions:** an interrupting question becomes its own message with answer buttons and **Reply…** for your own words. Others go into the trail's digest as a line, to answer in Teamtrail. With channel `none`, everything goes to the digest.
 - **Digest:** everything that doesn't interrupt goes out as one message per trail every `digestMinutes` from [attention.json](/docs/attention-json/) (default 60; the first one for a trail goes out right away). `0` turns digest messages off; Waiting on you still has everything. See [Waiting on you](/docs/waiting-on-you/).
 - **Approvals:** sign off verified work with **Approve**, or send it back with **Rework…**.
+- **Cards follow what happens elsewhere:**
+  - A question answered anywhere (in Slack, the Lookout or another device) closes its card with that question's own answer, never another one's.
+  - An answer an agent passed on from its chat shows on the card as guidance that decided nothing, with **Open in Teamtrail** to answer there. See [Decisions the human made](/docs/mcp-tools/#decisions-the-human-made).
+  - Archiving a trail doesn't close the cards for what still waits on you from it.
+  - A card whose item becomes high risk switches to **Open in Lookout**, and one that stops being high risk gets its buttons back.
 - **Requests:** an agent's request to skip discovery or change a trail's mode or destination comes as a card. Approve it in the Lookout (**Open in Lookout**); **Decline** works in Slack too.
 - **Notifications:** to a DM or a channel, for the events you pick: `awaiting`, `blocked`, `trail.done` (default) and `resolved`, with full detail or titles only.
 - **Ask Scout:** mention @Scout in a channel, DM Scout, or use the `/scout` slash command, in a word or in your own words. Read-only answers; in a channel, only you see them (help is the one answer posted for everyone).
@@ -58,6 +63,8 @@ A Slack answer reaches your machine through the Scout service, so it never stand
 - A question asked with a category your [risk policy](/docs/policy-json/) rates **high**, or finished work that changed files a high-risk path rule matches, shows **Open in Lookout** in Slack instead of answer or approve buttons.
 - An answer given in Slack never backs a high-risk decision, and Save as decision can't settle a high-risk ticket. Teamtrail checks this itself, whatever arrives from Slack.
 - Approving an agent's request to change a trail's settings is done in the Lookout.
+
+This follows the item, not the moment the card was posted: when your risk policy or the files the work changed make it high risk later, the card switches to **Open in Lookout**.
 
 Everything else you answer or approve in Slack counts the same as in the Lookout.
 

@@ -103,7 +103,7 @@ npx teamtrail mcp --http --allow-host <name>.trycloudflare.com
 
 Agents then connect to `https://<name>.trycloudflare.com/mcp`.
 
-`ask_human` holds a request open while it waits for you, up to 10 minutes by default, so don't give the proxy a short timeout.
+`ask_human` holds a request open while it waits for you, up to 10 minutes by default, and `next_ticket` with `wait` while it [waits for work](/docs/mcp-tools/#waiting-for-work), 2 minutes by default and 10 at most, so don't give the proxy a short timeout.
 
 `--host` binds another IP address without a proxy. Use it only on a network you trust: the token crosses it unencrypted.
 
@@ -209,7 +209,7 @@ Then open the **Sign in** link the server printed in its terminal (`http://127.0
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Sessions per token  | 8. One more closes that token's longest-idle session. When all 8 are in the middle of a call, the new one is refused.                              |
 | Sessions per server | 200.                                                                                                                                               |
-| Idle sessions       | Closed after 60 minutes without a call. A call that is waiting on you counts as a call.                                                            |
+| Idle sessions       | Closed after 60 minutes without a call. A call that is waiting on you, or waiting for work, counts as a call.                                      |
 | Tokens per project  | 50, with names of up to 60 characters.                                                                                                             |
 | Single-line inputs  | 500 characters.                                                                                                                                    |
 | Free text           | 50,000 characters.                                                                                                                                 |

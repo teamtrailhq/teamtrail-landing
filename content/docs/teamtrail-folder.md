@@ -46,7 +46,7 @@ Tokens, personal preferences and the list of projects for [All projects](/docs/a
 
 ## Editing by hand
 
-Every file is meant to be readable and editable. The Lookout watches the folder and updates live when a file changes, whether an agent, a teammate's `git pull` or your editor changed it. Config files are validated on read; problems show in Settings, and the file's defaults apply until it's fixed.
+Every file is meant to be readable and editable. The Lookout watches the folder and updates live when a file changes, whether an agent, a teammate's `git pull` or your editor changed it. That includes evidence and decision files that change on their own: check marks, Destination reached and the decisions list follow them without a reload. Approvals live outside the repo, in your config folder, and the Lookout watches them too: one made in another tab or with `teamtrail approve` shows on every open page at once, other devices included. Config files are validated on read; problems show in Settings, and the file's defaults apply until it's fixed.
 
 What decides how work moves counts only once you approved it on your machine. A changed check command, a lowered policy or level, or a ticket retyped, closed or unblocked by editing its file waits in **Settings → Project → Approvals**. Titles, bodies and comments can be edited freely; the Lookout marks them as edited outside Teamtrail. See [Approvals and security](/docs/security/).
 

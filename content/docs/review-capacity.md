@@ -19,11 +19,11 @@ Set how many finished tickets may wait for review. Once that many wait, agents s
 **What counts as waiting**, across every trail of the project (one person reviews them all):
 
 - tickets waiting for your approval or sign-off in the Lookout (`approval` items in [Waiting on you](/docs/waiting-on-you/));
-- done tickets whose pull request is still open, when [PR tracking](/docs/verification-json/#github) is on.
+- done tickets whose pull request is still open, when [PR tracking](/docs/verification-json/#github) is on and running.
 
-Each ticket counts once.
+Each ticket counts once. A deleted ticket never counts, and while PR sync is stopped or overdue, open pull requests don't count, so a stale snapshot never holds agents back.
 
-**What waits** while the limit is reached: new `task`, `execute` and `prototype` tickets. `next_ticket`, `claim_ticket` and `resume_trail` don't offer them, and claiming one by key is refused with the reason. **What goes on:** rework (it finishes work already in the queue), and `research`, `junction` and `review` tickets, which add no code to review. Agents see `reviewLimit` in their results, with the tickets that wait, and tell you.
+**What waits** while the limit is reached: new `task`, `execute` and `prototype` tickets. `next_ticket`, `claim_ticket` and `resume_trail` don't offer them, and claiming one by key is refused with the reason. **What goes on:** rework (it finishes work already in the queue), and `research`, `junction` and `review` tickets, which add no code to review. Agents see `reviewLimit` in their results, with the tickets that wait, and tell you. An agent with nothing else to take [waits for work](/docs/mcp-tools/#waiting-for-work) and starts the moment your review frees the limit.
 
 **In Waiting on you**, a `review-limit` item says how much waits and how many ready tickets it holds back. It opens the ticket that has waited longest, the one to review first.
 

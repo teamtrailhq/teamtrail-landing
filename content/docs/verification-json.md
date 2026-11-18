@@ -108,6 +108,8 @@ Manage them in **Settings → This trail → Diff rules**. See [Diff rules](/doc
 | `requiredChecks` | `[]`     | CI check names that must pass.                                                |
 | `pollSec`        | `60`     | How often to poll, at least `15`.                                             |
 
+Merged and closed pull requests, and branches with no pull request, are asked about at most once an hour, so PR sync asks GitHub less as your history grows. A ticket follows the pull request that replaced one closed without merging, on the same branch or with the ticket's marker. See [Done means verified](/docs/verification/#done-means-verified).
+
 ## Errors
 
 The file is validated as a whole and every problem is listed in **Settings → Verification**. Until it's valid, a completion that needs checks ends with an error and waits for you: running no checks would let unchecked work through. Unknown keys are errors. Examples:
