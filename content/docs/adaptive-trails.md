@@ -55,4 +55,6 @@ Deterministic triggers raise `reroute-suggested` items in [Waiting on you](/docs
 - a cancelled ticket with open dependents;
 - a pull request closed without merging.
 
+There is nothing to review until an agent proposes a reroute: ask one to, or choose **Carry on** to set the suggestion aside.
+
 Proposals are stored in `.teamtrail/.reroutes/<trail>/R-<n>.json`. See [File formats](/docs/file-formats/).

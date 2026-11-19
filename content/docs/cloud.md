@@ -38,7 +38,7 @@ Turn on **Run my agents** and Cloud runs Claude Code or Codex on the ready work,
 
 What you see keeps up with the runs:
 
-- **Work starts within seconds.** When work becomes ready (you approve a plan, confirm criteria, free the review limit), an agent starts on it within seconds. **Pause** then **Start** starts again at once, and a trail that waits says why.
+- **Work starts within seconds.** When work becomes ready (you approve a plan, confirm criteria, free the review limit), an agent starts on it within seconds. **Pause** then **Start** starts again at once, and a trail that waits says why. After **Start**, the button shows **Starting…** until an agent is working; after **Pause**, **Stopping…** until the last run has ended. If Cloud can't be reached, or it takes more than two minutes, the Lookout says so.
 - **Tickets go back at once.** A run that ends, fails or is lost returns the tickets its agent held to the queue straight away, and a sandbox that dies ends its run at once, so nothing sits claimed by an agent that's gone.
 - **Pull requests while a run goes.** Each run's pull requests and their proofs show every 2 minutes while it works, not only when it ends, however many pull requests the repository has open.
 - **Disconnecting a repository** stops its runs.
