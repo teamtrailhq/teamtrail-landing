@@ -41,6 +41,8 @@ New trails start at the `default` level from `verification.json`; the level appl
 
 Checks run with argv arrays (no shell), only once you've [approved the commands](/docs/security/#check-commands) on this machine, with an allowlisted environment and token-shaped output redacted. Results, output and git evidence are stored per attempt in `.teamtrail/.evidence/`.
 
+Before anything runs, **Settings → Verification** reads the repo to say whether each check can run as written: the `package.json` script (in the workspace `-w` or `--filter` names), the project file its tool needs (`go.mod`, `Cargo.toml`, `build.gradle`, `pom.xml`, `Gemfile`, `pyproject.toml` and `uv.lock`, `composer.json`, `Package.swift`, `mix.exs`, `pubspec.yaml`…), a Gradle or Maven wrapper's own files, a turbo task. **Won't run** says why: "No `e2e` script in package.json" is the repo, while "`ng` isn't installed: no node_modules in `apps/web`; install the dependencies first (`npm ci` in `apps/web`)" is this machine, fixed by installing. Nothing runs to find out, and it's advice: you can keep a check anyway.
+
 A pass that a [gate](#gates-off-observe-enforce) holds back doesn't close the ticket: it waits for you in [Waiting on you](/docs/waiting-on-you/), with the reason and a way past it.
 
 ## Done means verified
@@ -102,12 +104,13 @@ The modes are stored in `gates` in [verification.json](/docs/verification-json/#
 
 A check proves something only if the work didn't change the check. The check guard (gate `check-guard`, enforced by default) looks at the change against what the checks run:
 
-- the `package.json` scripts a check reaches, including nested `npm run`, `pre` and `post` scripts and workspace runs;
-- the config of the tools those scripts run (for `pyproject.toml`, `setup.cfg` and `tox.ini`, only that tool's section);
+- the `package.json` scripts a check reaches, including nested `npm run`, `pre` and `post` scripts and workspace runs, `composer.json` scripts, the scripts `turbo run` runs in each package, and the Nx targets `nx test web` runs (their definition in `project.json` and the commands they run);
+- the tool behind `bundle exec`, `poetry run`, `uv run`, `pipenv run`, `composer exec`, `vendor/bin/…` or `.venv/bin/…`, and the build `./gradlew` or `./mvnw` runs;
+- the config of the tools those run, for every common stack: Gradle build scripts and the wrapper's distribution, `pom.xml` and `.mvn/`, .NET project files, `Directory.Build.props` and runsettings, `.cargo/config.toml`, RuboCop's todo file, PHPStan's and Psalm's baselines, a coverage threshold, `Package.swift`, `angular.json`… (for `pyproject.toml`, `setup.cfg`, `tox.ini` and `Cargo.toml`, only that tool's section, so a new dependency isn't a finding);
 - files the check commands name, and the makefile rules a `make` target reaches;
 - any files a check names in its own `guards` (globs, `checks.<name>.guards` in [verification.json](/docs/verification-json/#a-check)), for what Teamtrail can't see from the command.
 
-It also looks for weakened tests: deleted test files, removed or commented-out tests, and added `.skip`, `xit`, `it.todo`, `@pytest.mark.skip`, `t.Skip(`, `#[ignore]`, `@Disabled` or `.only`. These are counted net, in files that existed before the work, so new, renamed or edited tests are fine.
+It also looks for weakened tests: deleted test files, removed or commented-out tests, and added `.skip`, `xit`, `it.todo`, `@pytest.mark.skip`, `t.Skip(`, `#[ignore]`, `@Disabled`, xUnit's `Skip =`, `[Ignore]`, `markTestSkipped`, `XCTSkip`, `@tag :skip`, Dart's `skip:` or `.only`. These are counted net, in files that existed before the work, so new, renamed or edited tests are fine.
 
 **Enforce.** The ticket waits for you, with what changed: "Checks passed, but the work changed what they run: package.json scripts.test changed". Choose **Accept the pass…** if the change was intended, or **Send to rework**, and the agent is told what to undo. Until you accept, the [proof](#verified-by-teamtrail) has a gap; after, it says "Changed what its checks run (accepted by …)".
 
