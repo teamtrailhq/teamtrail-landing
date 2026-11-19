@@ -167,6 +167,10 @@ A decision is recorded as yours only when it rests on your answer to a question 
 
 See [Assumptions and reroutes](/docs/adaptive-trails/) for the change types, and [Verification and criteria](/docs/verification/) for completion results.
 
+## On any call
+
+On GitHub or Linear, a write made while the tracker can't be reached waits and is sent later. If the tracker then refuses it for good (a lost permission, a deleted issue), the agent's next result of any tool carries `trackerRefused`, once: the writes (`claim #12`, `close #12`), the tracker and its reason. They didn't happen in the tracker, so the agent looks at the trail again with `status` before going on. You retry or discard them in [Waiting on you](/docs/waiting-on-you/).
+
 ## Input limits
 
 Every string a tool takes is a single line unless it's free text. Titles, names, ids, keys, criteria, list items and paths are refused when they hold a line break or another control character. Free text may span lines: bodies, questions, answers, resolutions, rationales, the brief's sections, review summaries and evidence.
