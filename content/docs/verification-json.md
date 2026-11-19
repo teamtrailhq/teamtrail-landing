@@ -4,6 +4,8 @@ The checks that run when an agent claims a ticket is done, committed in `.teamtr
 
 Without this file, nothing is verified. Teamtrail writes to it when you set the checks or the scope in **Settings → Verification**, or the gates and diff rules in **Settings → This trail** (approved as you save), and when you approve a check a [guide](/docs/guides/) proposes.
 
+**Suggested checks.** **Settings → Verification** reads your repo's files and offers the checks it already runs, one click each: package.json scripts (npm, pnpm, yarn, bun), pytest, ruff and mypy, `go test` and `go vet`, `cargo test`, clippy and `cargo fmt --check`, Gradle and Maven (through their wrappers), PHPUnit and PHPStan, `dotnet test`, and Makefile targets. In a monorepo each comes with the folder of its package, so `npm test` for `apps/web` runs in `apps/web`. Nothing runs while it reads, and a suggestion only fills in a row: saving it is the approval, as for any check you type. Commands the check lint refuses today (`uv run`, `bundle exec`) aren't offered.
+
 **Its commands run only once you approve them on your machine.** An agent can edit this file and a teammate can push it, so a new or changed command waits in **Settings → Project → Approvals** (or `teamtrail approve`). Until then completions that need checks end with `waiting-approval`, and the work is kept. See [Approvals and security](/docs/security/#check-commands).
 
 ## Example
@@ -42,12 +44,12 @@ Without this file, nothing is verified. Teamtrail writes to it when you set the 
 
 ### A check
 
-| Key          | Type             | Default   |                                                                                                                                                            |
-| ------------ | ---------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `run`        | string array     | required  | The command as argv, for example `["npm", "test"]`. A shell string is an error: there is no shell.                                                         |
-| `timeoutSec` | positive integer | `600`     | Time limit for this check.                                                                                                                                 |
-| `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo.                                                                                |
-| `guards`     | glob array       | `[]`      | Globs the [check guard](/docs/verification/#check-guard) also watches for this check, beyond the scripts, tool config and files it finds from the command. |
+| Key          | Type             | Default   |                                                                                                                                                                                    |
+| ------------ | ---------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `run`        | string array     | required  | The command as argv, for example `["npm", "test"]`. A shell string is an error: there is no shell.                                                                                 |
+| `timeoutSec` | positive integer | `600`     | Time limit for this check.                                                                                                                                                         |
+| `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo. Set it in the check's **Folder** field; a folder set there must be a real folder, not a symbolic link. |
+| `guards`     | glob array       | `[]`      | Globs the [check guard](/docs/verification/#check-guard) also watches for this check, beyond the scripts, tool config and files it finds from the command.                         |
 
 Checks run with an allowlisted environment: the shell, locale and toolchain basics, without tokens, keys or anything named like a secret. Name extra variables a check needs in `TEAMTRAIL_CHECK_ENV` on your machine, never in the repo:
 
