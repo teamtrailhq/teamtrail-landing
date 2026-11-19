@@ -73,6 +73,10 @@ A done ticket that isn't verified offers **Merge anyway** where Teamtrail merges
 
 When a pull request is closed without merging and a new one opens for the same ticket (on the same branch, or with the ticket's marker in its body), the ticket follows the new one. A link you set by hand stays as you set it.
 
+To point a ticket at another pull request yourself, open the ticket and use **Link a different PR** in its pull request block. Pick one of the repo's pull requests (the ticket's own come first), or type its number or paste its link. Teamtrail checks with GitHub that the pull request exists, and the block shows it at once. **Unlink** removes the link, and Teamtrail won't link that pull request to the ticket again unless you do. A ticket without a pull request offers **Link a pull request** in the full ticket. Both are recorded in the trail's history and work only on the machine Teamtrail runs on, because they decide which pull request your machine posts the proof to.
+
+When a ticket is closed, reopened or removed, from the Lookout, by an agent or by a teammate, PR sync runs within seconds, so the review queue and the proof on its pull request follow at once.
+
 ## Gates: off, observe, enforce
 
 A gate is a rule a pass has to meet before it counts. Each gate has a mode:
@@ -227,6 +231,7 @@ The report opens with a badge, **Teamtrail verified** or **Teamtrail not verifie
 
 - A pull request that merged before PR sync ever saw it open still gets its proof, once.
 - A ticket reopened after its proof was posted takes the proof back: the comment is updated to **not verified** (the ticket isn't done any more) and the **Teamtrail proof** check turns to failure.
+- A ticket (or trail) removed after its proof was posted takes it back too, once: the check turns to failure ("The ticket this proof was for was removed") and the comment says it's no longer verified.
 - A proof that names no commit never passes: the check fails ("The proof names no commit"), and so does `teamtrail proof verify`.
 
 **Signed, and checkable by anyone.** Every report is signed with a key made for your machine, which never leaves it. The first time Teamtrail signs one, it writes the public half to `.teamtrail/proof-keys/<id>.pub`: commit it, and anyone can check a report:
