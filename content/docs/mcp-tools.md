@@ -119,6 +119,7 @@ A decision is recorded as yours only when it rests on your answer to a question 
 - `ask_human` returns a `questionId`. Once you answer, that answer can back a decision.
 - `record_decision` takes `questionId`. The record then keeps the question as asked and your answer word for word, with the agent's own wording as its reading of it. Without `questionId` the decision is recorded as the agent's.
 - `close_ticket` and `report_completion` use your latest unused answer to a question asked on that ticket, or the one `questionId` names.
+- **The first answer is the one used.** When a question is answered twice at once (in the Lookout and Slack, by two people, or also from a chat), the agent gets the first, and every record agrees. The later answer is kept in the conversation and the decision's transcript as "also answered, not used"; whoever gave it is told, and `answer_question` returns `delivered: false`.
 - **One answer, one decision.** An answer that already backs a decision is refused for a second one; the agent asks again.
 - **An answer covers what was asked.** To close a ticket, the question must have been asked on that ticket. The decision's `category` must be the one the question was asked with. A high-risk decision, or a ticket that's yours to decide, also needs a question that wasn't asked as `fyi`.
 - The question must be one the agent asked itself, on the connection it's still on.
