@@ -180,10 +180,11 @@ A ticket's guide can add checks from `verification.json` to the ones its complet
 
 ## Checks on main
 
-Before agents build on a trail, Teamtrail runs your approved checks once on the default branch's head, so a failure that was already there isn't blamed on the agents' work. They run in a separate worktree next to the repo, never in your working tree (in [Cloud](/docs/cloud/), in its check sandbox). The map shows them as `main` at the start of the trail.
+Before agents build on a trail, Teamtrail runs your approved checks once on the default branch's head, so a failure that was already there isn't blamed on the agents' work. They run in a separate worktree next to the repo, never in your working tree (in [Cloud](/docs/cloud/), in its check sandbox). Nothing of your checkout is used there, not even your `node_modules` or `.venv` (they can point at your uncommitted code): the worktree gets its dependencies from the [setup steps](/docs/verification-json/#setup) you approved. The map shows them as `main` at the start of the trail.
 
 - **While the first run goes**, agents start no implementation work, unless you start without waiting. Research, junction and review tickets go on.
 - **When a check fails on main**, implementation waits for your choice, on `main`'s bubble or its row in [Waiting on you](/docs/waiting-on-you/): **Fix main first** (agents wait until main passes), **Drop** the check for this trail, or **Start anyway** (the failure is known; a completion that fails only as main does isn't blamed for it). Agents tell you in one line and [wait for work](/docs/mcp-tools/#waiting-for-work).
+- **When they fail because of this machine**, not main's code (setup failed, a program or package isn't installed, a service isn't reachable), `main` says **Checks on main couldn't run on this machine** with the reason, and nothing waits for it. Fix the setup or install what's missing, then **Run again**.
 - **When main moves after a failure**, the checks run again on the new head by themselves. Meanwhile `main` says "Main moved since the failing run: running again" and adds nothing to Waiting on you. A **Fix main first** or **Start anyway** you chose carries over to the new run.
 
 **Run checks on main** in **Settings → Verification** runs them again whenever you like.
