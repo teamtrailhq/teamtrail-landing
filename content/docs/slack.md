@@ -35,7 +35,7 @@ If you set up your own Slack app with an earlier version, Settings → Slack ask
 - **Cards follow what happens elsewhere:**
   - A question answered anywhere (in Slack, the Lookout or another device) closes its card with that question's own answer, never another one's.
   - Answered twice at once (in Slack and the Lookout, or by two people), the first answer is the one used: the card shows it, and the other as "also answered, not used".
-  - An answer an agent passed on from its chat shows on the card as guidance that decided nothing, with **Open in Teamtrail** to answer there. See [Decisions the human made](/docs/mcp-tools/#decisions-the-human-made).
+  - An answer an agent passed on from its chat doesn't close the card: the question stays open for your answer in Slack or Teamtrail, which is the one used, and the card then shows the chat answer as guidance that decided nothing. See [Decisions the human made](/docs/mcp-tools/#decisions-the-human-made).
   - Archiving a trail doesn't close the cards for what still waits on you from it.
   - A card whose item becomes high risk switches to **Open in Lookout**, and one that stops being high risk gets its buttons back.
 - **Requests:** an agent's request to skip discovery or change a trail's mode or destination comes as a card. Approve it in the Lookout (**Open in Lookout**); **Decline** works in Slack too.
