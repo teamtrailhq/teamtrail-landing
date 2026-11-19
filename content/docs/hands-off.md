@@ -33,8 +33,9 @@ One row is open at a time: the first, until you open or close another. An open r
 | The plan            | **Approve the plan**: the brief and every ticket's criteria, shown in full and approved in one step. See [Approve the plan](#approve-the-plan). |
 | Checks on main      | **Fix main first**, **Drop** or **Start anyway** when main's checks fail.                                                                       |
 | A reroute           | **Review** opens the proposal, with its changes drawn on the map.                                                                               |
+| A suggested reroute | **Carry on** sets it aside; there is no proposal to review until an agent makes one.                                                            |
 
-**Open ticket** opens the full ticket in a drawer over the home. Five rows show (three on a phone); **Show N more** shows the rest. With nothing waiting, Scout says so: _Nothing needs you. Agents keep going; you'll hear only if something does._
+A row on a ticket acts on what the row asks, even when the ticket has other items waiting. **Open ticket** opens the full ticket in a drawer over the home. Five rows show (three on a phone); **Show N more** shows the rest. With nothing waiting, Scout says so: _Nothing needs you. Agents keep going; you'll hear only if something does._
 
 A long reason folds behind **Read more**. A row leaves as soon as it's handled, wherever you handled it: another tab, your phone, Slack or `teamtrail approve`. Agents waiting on it [pick up the work](/docs/mcp-tools/#waiting-for-work) at once.
 
@@ -66,8 +67,8 @@ Each approval is recorded on your machine, as accepting a brief and confirming c
 
 ## Hands-on
 
-Everything else is in Hands-on: the [map](/docs/the-lookout/#the-map) with a bubble beside each ticket, the trail bar, and Plan, Activity and the Logbook. Some things open from Hands-off too (the full ticket, Settings, Records), and a few are Hands-on's only: the map, the trail bar's lists and the dialog that says a trail's research is done.
+Everything else is in Hands-on: the [map](/docs/the-lookout/#the-map) with a bubble beside each ticket, the trail bar, and Plan, Activity and the Logbook. Some things open from Hands-off too (the full ticket, Settings, Records), and a few are Hands-on's only: the map, the trail bar's lists and the dialog that says a trail's research is done. A button that opens something on the map says **in Hands-on** and switches you there.
 
 ## On a phone
 
-Hands-off's home is the one view: the header, then Needs you, Progress and Since you were away, with no tab bar. Hands-on is the map with its tab bar, as before.
+Hands-off's home is the one view: the header, then Needs you, Progress and Since you were away, with no tab bar. Every row fits the screen, open or closed, and every button in it is big enough to tap. A long open row scrolls inside the screen, so its title stays in view. Hands-on is the map with its tab bar, as before.
