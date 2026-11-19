@@ -32,4 +32,4 @@ unknown key "branchPrefix"
 "dir" must be a folder path
 ```
 
-See [Parallel work](/docs/parallel-work/) for what happens on claim and completion.
+A new worktree gets the [setup steps](/docs/verification-json/#setup) you approved run in it, so its checks find their dependencies. See [Parallel work](/docs/parallel-work/) for what happens on claim and completion.

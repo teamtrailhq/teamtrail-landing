@@ -40,6 +40,7 @@ Without this file, nothing is verified. Teamtrail writes to it when you set the 
 | `github`          | object                            | see below             | Pull request and CI tracking.                                                                                                                                                                                               |
 | `gates`           | object                            | see below             | The mode of each verification gate: `off`, `observe` or `enforce`.                                                                                                                                                          |
 | `rules`           | array                             | `[]`                  | Diff rules: a check or a question for changes that touch certain files (below).                                                                                                                                             |
+| `setup`           | object                            | none                  | Named installs Teamtrail runs before the checks in the worktrees it prepares (below).                                                                                                                                       |
 
 ### A check
 
@@ -59,6 +60,27 @@ TEAMTRAIL_CHECK_ENV="DATABASE_URL, REDIS_URL, APP_*" teamtrail
 Token-shaped output is redacted. With [workspaces](/docs/parallel-work/) on, a ticket's checks run in its worktree.
 
 Checks run as you, without a sandbox: they can read what your account can read. Approval covers the command line, not what it runs (`npm run check` runs `package.json` scripts an agent can edit).
+
+### setup
+
+Installs from your lockfile, run before the checks in the worktrees Teamtrail prepares: the one [checks on main](/docs/verification/#checks-on-main) run in, and a claimed ticket's new [worktree](/docs/parallel-work/). Never in your own checkout. In a monorepo, give each folder with its own lockfile a step.
+
+```json
+"setup": {
+  "web": { "run": ["npm", "ci"], "cwd": "apps/web" },
+  "api": { "run": ["uv", "sync", "--frozen"], "cwd": "services/api" }
+}
+```
+
+| Key          | Type             | Default   |                                                                         |
+| ------------ | ---------------- | --------- | ----------------------------------------------------------------------- |
+| `run`        | string array     | required  | The install as argv. A shell string is an error.                        |
+| `cwd`        | path             | repo root | Where it runs, relative to the repo root. It must stay inside the repo. |
+| `timeoutSec` | positive integer | `900`     | Time limit for this step.                                               |
+
+Steps run in the order written, are approved with the checks (the approval shows each as `setup <name>` with its argv), and stop at the first that fails. Teamtrail runs only installs that can't change the lockfile or add a package, and only when the lockfile is in the step's folder on that commit: `npm ci`, `pnpm install --frozen-lockfile`, `yarn install --immutable` (or `--frozen-lockfile`), `bun install --frozen-lockfile`, `uv sync --frozen` (or `--locked`), `poetry install` or `poetry sync`, `bundle install --frozen`, `go mod download`, `cargo fetch --locked`, `composer install --no-interaction`, `dotnet restore --locked-mode`. Anything else (`npm install`, a package name, a URL, a shell) isn't run: the approval flags it, and the run says why.
+
+When a step fails, checks on main say **Checks on main couldn't run on this machine** and hold nothing; a ticket's agent is told to install in its worktree itself. Install output is logged next to the checks' and is never a check result.
 
 ### noChanges
 
