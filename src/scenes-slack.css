@@ -1,0 +1,367 @@
+/* ---------- /slack's scenes (partials/scene-slack-*.html, src/scenes/slack*Scene.ts) ----------
+ * Kit additions, used here first: a flat scene for page heroes (the page already draws the dot grid), a Slack-style
+ * channel panel, Scout's message card with its buttons and closing line, a private reply, and a relay of three
+ * squares that light in turn as something passes between two pieces. The Slack look is stylised: a channel name,
+ * messages and buttons, no Slack chrome. */
+
+/* A scene on a page hero: no second dot grid over the page's own. */
+.scene--flat .sk-stage::before {
+  display: none;
+}
+
+.sk-logo {
+  display: block;
+  flex: none;
+}
+.sk-slack__mark {
+  display: block;
+  flex: none;
+}
+.sk-slack__channel {
+  font-weight: 600;
+  color: var(--text-hi);
+}
+.sk-msg__avatar {
+  display: block;
+}
+span.sk-msg__avatar {
+  display: grid;
+  font-size: 11px;
+}
+.sk-msg__lines {
+  display: grid;
+  gap: 1px;
+  margin-top: 2px;
+  color: var(--text);
+}
+.sk-msg__lines b {
+  font-weight: 600;
+  color: var(--text-hi);
+}
+.sk-mention {
+  padding: 0 2px;
+  background: rgba(var(--fill-rgb), 0.12);
+  color: var(--accent);
+}
+.sk-msg__only {
+  font-size: 11px;
+  color: var(--faint);
+}
+/* A reply only its reader sees: set apart by a quiet ground. */
+.sk-msg--private {
+  background: var(--bg-2);
+}
+.sk-msg {
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+.sk-msg.is-gone {
+  display: none;
+}
+.sk-msg.is-entering {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* Scout's card: what it is about, the question quoted, then buttons, or the line that closed it. */
+.sk-card {
+  display: grid;
+  gap: 5px;
+  margin-top: 4px;
+}
+.sk-card__head {
+  font-size: 11.5px;
+  color: var(--dim);
+}
+.sk-card__state {
+  display: inline-grid;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-hi);
+}
+.sk-card__state > * {
+  grid-area: 1 / 1;
+  transition: opacity 0.25s;
+}
+.sk-card__quote {
+  padding-left: 9px;
+  border-left: 3px solid var(--line-2);
+  color: var(--text-hi);
+}
+.sk-card__note {
+  font-size: 11.5px;
+  color: var(--dim);
+}
+.sk-card__note b {
+  font-weight: 600;
+}
+.sk-card__ask {
+  display: grid;
+  gap: 7px;
+}
+.sk-card__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+.sk-sbtn {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-hi);
+  white-space: nowrap;
+  transition:
+    transform 0.16s var(--ease),
+    opacity 0.2s;
+}
+.sk-sbtn--primary,
+.sk-sbtn.is-picked {
+  border-color: var(--fill);
+  background: var(--fill);
+  color: var(--on-fill);
+}
+.sk-sbtn.is-pressed {
+  transform: scale(0.94);
+}
+.sk-card__done {
+  display: none;
+  font-size: 12px;
+  color: var(--text);
+}
+.sk-card__ok {
+  color: var(--ok);
+}
+.sk-card__done .sk-card__btns {
+  margin-top: 7px;
+}
+.is-answered .sk-card__ask,
+.sk-card__answered,
+.is-answered .sk-card__awaiting {
+  display: none;
+}
+.is-answered .sk-card__answered {
+  display: inline;
+}
+.is-answered .sk-card__done {
+  display: block;
+  animation: sk-rise 0.35s var(--ease) both;
+}
+.is-answered .sk-card__quote {
+  color: var(--dim);
+}
+
+/* Three squares between two pieces, lit one after another as something passes. */
+.sk-relay {
+  position: absolute;
+  display: flex;
+  gap: 6px;
+}
+.sk-relay i {
+  width: 6px;
+  height: 6px;
+  background: var(--fill);
+  opacity: 0.22;
+}
+.sk-relay i.is-on {
+  opacity: 1;
+}
+
+/* ---------- the hero: a question answered from Slack ---------- */
+
+.scene--slack-answer {
+  width: min(100%, 980px);
+  margin: 48px auto 0;
+}
+.scene--slack-answer .sk-stage {
+  height: 310px;
+  --sk-fade-x: 6%;
+  --sk-fade-bottom: 14%;
+}
+.sa__canvas {
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: 880px;
+  margin-left: -440px;
+}
+.sa__slack {
+  top: 52px;
+  left: 0;
+  width: 520px;
+}
+.sa__msg {
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+.sk-live .sa__msg:not(.is-on) {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.sa__relay {
+  top: 140px;
+  left: 536px;
+}
+.sa__lookout {
+  top: 14px;
+  left: 572px;
+  width: 308px;
+}
+.sa__lookout .sk-chip {
+  margin-left: auto;
+}
+.sa__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- beside What you need: @Scout, answered from your machine ---------- */
+
+.needs-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  width: min(100%, 1040px);
+  margin: 8px auto 0;
+}
+.needs-row .needs {
+  width: auto;
+  margin: 0;
+}
+.scene--slack-mention .sk-stage {
+  height: 340px;
+  --sk-fade-x: 4%;
+  --sk-fade-top: 4%;
+  --sk-fade-bottom: 4%;
+}
+.sm__term {
+  top: 8px;
+  left: 0;
+  right: 70px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 12px;
+  opacity: 0.85;
+}
+.sm__run {
+  margin-left: auto;
+}
+.sm__run-text {
+  display: inline-block;
+  transition:
+    opacity 0.16s,
+    transform 0.16s var(--ease);
+}
+.sm__chat {
+  top: 56px;
+  left: 30px;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.sm__msgs {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+/* ---------- Still your call: high risk opens the Lookout ---------- */
+
+.scene--slack-risk .sk-stage {
+  height: 330px;
+  --sk-fade-x: 3%;
+  --sk-fade-bottom: 10%;
+}
+.sr__slack {
+  top: 6px;
+  left: 0;
+  width: 78%;
+}
+.sr__lookout {
+  top: 168px;
+  right: 0;
+  width: 62%;
+  z-index: 1;
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+.sr__lookout .sk-chip {
+  margin-left: auto;
+}
+.sk-live .sr__lookout:not(.is-on),
+.sk-live .sr__msg:not(.is-on) {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.sr__msg {
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+.sr__need {
+  border-bottom: 0;
+}
+
+/* Phones: the same scenes with fewer pieces. */
+@media (max-width: 860px) {
+  .needs-row {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .scene--slack-answer .sk-stage {
+    height: 430px;
+  }
+  .sa__slack {
+    top: 16px;
+  }
+  .sa__canvas {
+    width: 340px;
+    margin-left: -170px;
+  }
+  .sa__slack {
+    width: 340px;
+  }
+  .sa__relay {
+    display: none;
+  }
+  .sa__lookout {
+    top: 236px;
+    left: 24px;
+    width: 316px;
+  }
+  .sa__rows [data-row='c'] {
+    display: none;
+  }
+  .scene--slack-mention .sk-stage {
+    height: 360px;
+  }
+  .sm__chat {
+    left: 12px;
+  }
+  .scene--slack-risk .sk-stage {
+    height: 380px;
+  }
+  .sr__slack {
+    width: 94%;
+  }
+  .sr__lookout {
+    top: 214px;
+    width: 86%;
+  }
+}

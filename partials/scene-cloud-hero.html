@@ -1,0 +1,60 @@
+<!-- Scene: the hosted Lookout: the team signs in with GitHub, and Cloud runs the approved checks on the commit an agent
+     pushed (src/scenes/cloudHeroScene.ts). The markup is the still frame. -->
+<figure class="scene scene--flat scene--cloud-hero">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="ch__canvas" data-scene="cloud-hero">
+      <div class="sk-panel ch__team">
+        <div class="sk-panel__bar">
+          <span class="sk-label">Acme · signed in with GitHub</span>
+        </div>
+        <ul class="ch__people">
+          <li class="is-on" data-person>
+            <span class="sk-avatar">AR</span><b>Alex Rivera</b><span class="ch__role">owner</span>
+          </li>
+          <li class="is-on" data-person>
+            <span class="sk-avatar">SO</span><b>Sam Okafor</b><span class="ch__role">member</span>
+          </li>
+          <li class="is-on" data-person>
+            <span class="sk-avatar">ML</span><b>Mei Lin</b><span class="ch__role">viewer</span>
+          </li>
+        </ul>
+      </div>
+      <span class="sk-relay ch__relay ch__relay--a"
+        ><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i
+      ></span>
+      <span class="sk-relay ch__relay ch__relay--b"
+        ><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i
+      ></span>
+      <div class="sk-panel ch__checks is-verified is-merged">
+        <div class="sk-panel__bar">
+          <span class="sk-label">#7 · claude-02 pushed</span>
+          <span class="sk-key">4f2a91c</span>
+        </div>
+        <ol class="ch__list">
+          <li class="sk-check is-done" data-check>
+            <i class="sk-check__icon"></i><span class="sk-check__name">lint</span
+            ><span class="sk-check__what">npm run lint</span><span class="sk-check__meta">1.4s</span>
+          </li>
+          <li class="sk-check is-done" data-check>
+            <i class="sk-check__icon"></i><span class="sk-check__name">tests</span
+            ><span class="sk-check__what">npm test</span><span class="sk-check__meta">412 passed</span>
+          </li>
+        </ol>
+        <div class="ch__verdict">
+          <span class="sk-chip sk-chip--ok"><span class="sk-dot"></span>verified on 4f2a91c</span>
+          <span class="ch__merged">PR #41 merged</span>
+        </div>
+      </div>
+    </div>
+    <!-- Scout stays outside the scene's root, which goes back to its markup after each turn. -->
+    <span class="scout-frame scout-frame--hero ch__frame">
+      <span data-cloud-scout data-size="2.4"></span>
+      <span class="frame-tag">Early access</span>
+    </span>
+  </div>
+  <figcaption class="sk-sr">
+    Teamtrail Cloud: Scout keeps the Lookout up for your team, who sign in with GitHub as owner, member or viewer. When
+    claude-02 pushes commit 4f2a91c, Cloud runs the approved checks on it, the work is verified on that commit and its
+    pull request merges.
+  </figcaption>
+</figure>

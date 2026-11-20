@@ -1,0 +1,60 @@
+<!-- Scene: a high-risk question shows Open in Lookout in Slack, and is answered there (src/scenes/slackRiskScene.ts).
+     The markup is the still frame. -->
+<figure class="scene scene--slack-risk" data-scene="slack-risk">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-panel sk-slack sr__slack">
+      <div class="sk-panel__bar">
+        <span class="sk-slack__channel"># offline-sync</span>
+      </div>
+      <div class="sk-msg sr__msg is-on">
+        <img class="sk-msg__avatar" src="/media/brand/scout-slack-64.png" width="30" height="30" alt="" />
+        <div class="sk-msg__body">
+          <div class="sk-msg__head"><b>Scout</b><span class="sk-msg__app">App</span><time>14:08</time></div>
+          <div class="sk-card">
+            <div class="sk-card__head">
+              <b class="sk-card__state"
+                ><span class="sk-card__awaiting">◆ Awaiting you</span
+                ><span class="sk-card__answered">◇ Answered</span></b
+              >
+              · Offline sync · #9 · codex-01
+            </div>
+            <div class="sk-card__quote">Drop the old notes table once sync ships?</div>
+            <div class="sk-card__ask">
+              <div class="sk-card__note">
+                <b>High risk: answer this in the Lookout. Answers given in Slack don't count for it.</b>
+              </div>
+              <div class="sk-card__btns">
+                <span class="sk-sbtn sk-sbtn--primary" data-open>Open in Lookout</span>
+              </div>
+            </div>
+            <div class="sk-card__done">
+              <span class="sk-card__ok">✓</span> Answered in Teamtrail by Alex Rivera: “Keep it for one more release”.
+              <div class="sk-card__btns"><span class="sk-sbtn">Open in Teamtrail</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sk-panel sr__lookout is-on">
+      <div class="sk-panel__bar">
+        <svg class="sk-logo" viewBox="0 0 200 200" width="14" height="14"><use href="#tt-logo" /></svg>
+        <span class="sk-label">Lookout · #9</span>
+        <span class="sk-chip sk-chip--urgent"><span class="sk-dot"></span>high risk</span>
+      </div>
+      <div class="sk-need is-primary is-open sr__need">
+        <span class="sk-label sk-need__kind">Question · #9 · codex-01</span>
+        <div class="sk-need__title">Drop the old notes table once sync ships?</div>
+        <div class="ny__choices">
+          <span class="sk-choice">Yes, drop it</span>
+          <span class="sk-choice" data-pick>Keep it for one more release</span>
+        </div>
+        <span class="sk-need__done"><i class="sk-tick"></i></span>
+        <div class="ny__answered"><i class="sk-tick"></i><span>Answered: keep it for one more release</span></div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    A question your risk policy rates high arrives in Slack with Open in Lookout instead of answer buttons. You answer
+    it in the Lookout, and the Slack card closes with that answer.
+  </figcaption>
+</figure>
