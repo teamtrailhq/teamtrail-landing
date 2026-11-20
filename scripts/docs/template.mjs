@@ -68,6 +68,7 @@ function head({ title, description, url, ld }) {
     <link rel="icon" href="/media/brand/favicon.svg?v=5" type="image/svg+xml" sizes="any" />
     <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png?v=5" />
     <link rel="alternate" type="text/markdown" href="${mdUrlFromPage(url)}" />
+${font('/node_modules/@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2')}
 ${font('/node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2')}
     <link rel="stylesheet" href="/src/styles.css" />
     <link rel="stylesheet" href="/src/docs.css" />

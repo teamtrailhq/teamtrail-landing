@@ -1,6 +1,6 @@
 // Loads every kind of page in a real Chrome, in both themes, and fails on any Content-Security-Policy
 // violation, console error, page error or failed request. It also uses what the policy could break: the theme
-// switch, the hero canvas, the video, copy buttons, the docs "open in" links, the star count and the waitlist.
+// switch, the video, copy buttons, the docs "open in" links, the star count and the waitlist.
 //   npm run build && npm run preview -- --port 4319   # sends vercel.json's headers
 //   BASE=http://localhost:4319 npm run verify:csp     # or BASE=<a Vercel preview URL>
 // The waitlist is submitted with the honeypot filled, so a real deployment answers ok and adds nobody.
@@ -64,12 +64,6 @@ async function scrollThrough(page) {
 }
 
 async function checkHome(page, where) {
-  const painted = await page.evaluate(() => {
-    const canvas = document.querySelector('canvas[data-field="hero"]');
-    const data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
-    return data.some((v) => v !== 0);
-  });
-  if (!painted) note(where, 'the hero canvas is blank');
   const video = page.locator('video').first();
   await video.scrollIntoViewIfNeeded();
   await page

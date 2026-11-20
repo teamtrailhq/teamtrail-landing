@@ -13,7 +13,7 @@ Static marketing site for [teamtrail.app](https://www.teamtrail.app): Vite + Typ
 
 Shared markup lives in `partials/` (`sprite`, `nav`, `footer`) and is pasted in at build time by `<!-- @include name -->` (see `vite.config.ts`). The sprite holds the brand marks, coloured per theme by `--tt-wordmark-*` and `--tt-logo-*` in `src/styles.css`: `#tt-wordmark` (`teamtrail.`) for spaces wider than tall, like the nav and footer, and `#tt-logo` (`t.`) for square ones. Never both side by side.
 
-Type is Londrina Solid for headlines, Figtree for reading and JetBrains Mono for code, both self-hosted through `@fontsource`. JS adds the hero background (`src/heroField.ts`, with the map in `src/hero/`, paused off-screen, a still frame with reduced motion), the install box that types through `npx teamtrail` and the Claude Code and Codex connect commands (`src/cmdCycle.ts`), the looping explainer video (muted, no controls, paused off-screen), the badge scramble, scroll reveals, copy buttons, the Scout avatar and the waitlist form. The pages read fine without it.
+The look is dark-first: near-black surfaces, hairline borders, square corners and one accent, blaze (`#FF6B2C`; a darker `#C2410C` for text on day), with rose only for what needs you and green only for what passed (tokens at the top of `src/styles.css`). Type is Inter (with its optical-size axis, so headlines get the display cut) for everything and JetBrains Mono for commands, code and labels, both self-hosted through `@fontsource`. Page heroes and the closing section sit on a CSS dot grid. JS adds the install box that types through `npx teamtrail` and the Claude Code and Codex connect commands (`src/cmdCycle.ts`), the looping explainer video (muted, no controls, paused off-screen), the badge scramble, scroll reveals, copy buttons, the Scout avatar and the waitlist form. The pages read fine without it.
 
 ## Run
 
@@ -105,7 +105,7 @@ Production is https://www.teamtrail.app (Vercel project `teamtrail`; the bare te
 
 Vercel reads `vercel.json` before it builds, so the headers are committed. The `security-headers` plugin (`scripts/security/headers.mjs`) recomputes them from the built pages on every build: when an inline script changes, `npm run build` rewrites `vercel.json` (commit it), and in CI a stale file fails the build instead of shipping a policy that blocks the site's own scripts. A new third-party script, embed, font or API host needs its source added in `csp.mjs`.
 
-Check it in a real Chrome, every page type in both themes, with the canvas, video, copy buttons, docs links and the waitlist:
+Check it in a real Chrome, every page type in both themes, with the video, copy buttons, docs links and the waitlist:
 
 ```bash
 npm run build && npm run preview -- --port 4319

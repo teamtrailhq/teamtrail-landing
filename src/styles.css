@@ -1,43 +1,19 @@
-/* Re-theme preview: four type pairings (data-font on <html>), all self-hosted. Only the pairing in use downloads. */
-@import '@fontsource/ibm-plex-sans/400.css';
-@import '@fontsource/ibm-plex-sans/500.css';
-@import '@fontsource/ibm-plex-sans/600.css';
-@import '@fontsource/ibm-plex-mono/400.css';
-@import '@fontsource/ibm-plex-mono/500.css';
-@import '@fontsource-variable/space-grotesk';
-@import '@fontsource/space-mono/400.css';
-@import '@fontsource/space-mono/700.css';
-@import '@fontsource-variable/instrument-sans';
 @import '@fontsource-variable/jetbrains-mono';
-@import '@fontsource-variable/manrope';
-@import '@fontsource-variable/fira-code';
-/* Inter with its optical-size axis, so big headlines get the display cut by themselves. */
+/* Inter with its optical-size axis, so big headlines get the display cut by themselves. The self-hosted build
+ * carries no stylistic sets (cv11, ss01, ss03), so it stays as drawn. */
 @import '@fontsource-variable/inter/opsz.css';
 
-/* Dark-first, near-black surfaces, hairline borders, square corners and one accent. Night is the default; day is
- * the visitor's choice. Switches on <html>: data-font (inter, plex, space, instrument,
- * manrope), data-accent (indigo, blue, amber, blaze, cyan, magenta, hivis) and data-corners (square, slight, rounded). */
+/* Two fonts: Inter for everything, JetBrains Mono for commands, code and labels. Dark-first: near-black surfaces,
+ * hairline borders, square corners and one accent, blaze (the paint mark that shows a trail), for primary buttons,
+ * labels, links and highlights. Red is only for what needs you; green only for what passed. Night is the default;
+ * day is the visitor's choice. */
 :root {
-  /* The accent: primary buttons, eyebrows, links and highlights. --acc fills, --acc-ink is the text colour on day. */
-  --acc: #8b7cf6;
-  --acc-rgb: 139, 124, 246;
-  --acc-hi: #a195f9;
-  --acc-ink: #6553e6;
-  --acc-ink-rgb: 101, 83, 230;
-  --on-acc: #ffffff;
-
-  /* Fonts: Inter + JetBrains Mono unless data-font says otherwise. */
   --sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
   --display: var(--sans);
   --head-weight: 600;
   --head-track: -0.022em;
   --hero-track: -0.03em;
-
-  /* Corners: square unless data-corners says otherwise. */
-  --r0: 0;
-  --r1: 0;
-  --r2: 0;
 
   color-scheme: light;
   --bg: #ffffff;
@@ -51,25 +27,25 @@
   --faint: #8d9199;
   --dot: rgba(0, 0, 0, 0.07);
   --ok: #0e9f63;
-  --accent: var(--acc-ink);
-  --accent-rgb: var(--acc-ink-rgb);
-  --copper: var(--acc);
-  --copper-hi: var(--acc-hi);
-  --copper-rgb: var(--acc-rgb);
+  /* Blaze: --fill for buttons and marks (near-black text on it), --accent for text and links, darker on day so it
+   * reads at 5.2:1 on white. */
+  --fill: #ff6b2c;
+  --fill-hi: #ff8a57;
+  --fill-rgb: 255, 107, 44;
+  --on-fill: #0a0a0b;
+  --accent: #c2410c;
+  --accent-rgb: 194, 65, 12;
   --star: #b7791f;
-  --on-copper: var(--on-acc);
-  --blaze: var(--dim);
-  --tt-keyline: #0e0f11;
   /* The logo's light and dark versions (partials/sprite.html #tt-logo). */
   --tt-logo-tile: #0e0f11;
   --tt-logo-edge: #0e0f11;
   --tt-logo-mark: #ffffff;
-  --tt-logo-dot: var(--acc);
+  --tt-logo-dot: var(--fill);
   --tt-wordmark-ink: #0e0f11;
-  --tt-wordmark-dot: var(--acc);
-  --lede: var(--text);
-  --urgent: #e5484d;
-  --urgent-rgb: 229, 72, 77;
+  --tt-wordmark-dot: var(--accent);
+  /* Needs you: rose, so it never reads as blaze. */
+  --urgent: #e0325f;
+  --urgent-rgb: 224, 50, 95;
   --bg-rgb: 255, 255, 255;
   --shadow: rgba(0, 0, 0, 0.12);
 
@@ -86,93 +62,6 @@
   --section: clamp(88px, 10vw, 136px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-:root[data-accent='blue'] {
-  --acc: #3b82f6;
-  --acc-rgb: 59, 130, 246;
-  --acc-hi: #5f9af8;
-  --acc-ink: #2563eb;
-  --acc-ink-rgb: 37, 99, 235;
-  --on-acc: #ffffff;
-}
-:root[data-accent='amber'] {
-  --acc: #f5871f;
-  --acc-rgb: 245, 135, 31;
-  --acc-hi: #f79c47;
-  --acc-ink: #b45f0b;
-  --acc-ink-rgb: 180, 95, 11;
-  --on-acc: #0a0a0b;
-}
-:root[data-accent='blaze'] {
-  --acc: #ff6b2c;
-  --acc-rgb: 255, 107, 44;
-  --acc-hi: #ff8a57;
-  --acc-ink: #c2410c;
-  --acc-ink-rgb: 194, 65, 12;
-  --on-acc: #0a0a0b;
-}
-:root[data-accent='cyan'] {
-  --acc: #22d3ee;
-  --acc-rgb: 34, 211, 238;
-  --acc-hi: #67e8f9;
-  --acc-ink: #0e7490;
-  --acc-ink-rgb: 14, 116, 144;
-  --on-acc: #0a0a0b;
-}
-:root[data-accent='magenta'] {
-  --acc: #e64fd9;
-  --acc-rgb: 230, 79, 217;
-  --acc-hi: #ee7be4;
-  --acc-ink: #a21caf;
-  --acc-ink-rgb: 162, 28, 175;
-  --on-acc: #0a0a0b;
-}
-:root[data-accent='hivis'] {
-  --acc: #ffd84d;
-  --acc-rgb: 255, 216, 77;
-  --acc-hi: #ffe380;
-  --acc-ink: #8a6500;
-  --acc-ink-rgb: 138, 101, 0;
-  --on-acc: #0a0a0b;
-}
-:root[data-font='plex'] {
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --code: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --head-track: -0.035em;
-  --hero-track: -0.045em;
-}
-:root[data-font='space'] {
-  --sans: 'Space Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --code: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --head-track: -0.035em;
-  --hero-track: -0.045em;
-}
-:root[data-font='instrument'] {
-  --sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --head-track: -0.035em;
-  --hero-track: -0.045em;
-}
-:root[data-font='manrope'] {
-  --sans: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --code: 'Fira Code Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --head-track: -0.025em;
-  --hero-track: -0.035em;
-}
-/* Inter: the self-hosted build carries no stylistic sets (cv11, ss01, ss03 are dropped from it), so it stays as
- * drawn; the optical-size axis gives headlines the display cut, which wants less negative tracking. */
-:root:is(:not([data-font]), [data-font='inter']) body {
-  letter-spacing: -0.006em;
-}
-:root[data-corners='slight'] {
-  --r0: 2px;
-  --r1: 3px;
-  --r2: 4px;
-}
-:root[data-corners='rounded'] {
-  --r0: 3px;
-  --r1: 7px;
-  --r2: 12px;
-}
 /* A script in each page's head sets data-theme to night unless the visitor chose day (src/theme.ts). Without scripts, the system's preference applies. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='day']) {
@@ -188,17 +77,15 @@
     --faint: #6b7079;
     --dot: rgba(255, 255, 255, 0.06);
     --ok: #3fcf8e;
-    --accent: var(--acc);
-    --accent-rgb: var(--acc-rgb);
-    --copper-hi: var(--acc-hi);
+    --accent: #ff6b2c;
+    --accent-rgb: 255, 107, 44;
     --star: #e3b341;
-    --tt-keyline: #f4f4f6;
     --tt-logo-tile: #f4f4f6;
     --tt-logo-edge: #f4f4f6;
     --tt-logo-mark: #0a0a0b;
     --tt-wordmark-ink: #f4f4f6;
-    --urgent: #ff5a5f;
-    --urgent-rgb: 255, 90, 95;
+    --urgent: #ff4d7a;
+    --urgent-rgb: 255, 77, 122;
     --bg-rgb: 10, 10, 11;
     --shadow: rgba(0, 0, 0, 0.6);
   }
@@ -216,17 +103,15 @@
   --faint: #6b7079;
   --dot: rgba(255, 255, 255, 0.06);
   --ok: #3fcf8e;
-  --accent: var(--acc);
-  --accent-rgb: var(--acc-rgb);
-  --copper-hi: var(--acc-hi);
+  --accent: #ff6b2c;
+  --accent-rgb: 255, 107, 44;
   --star: #e3b341;
-  --tt-keyline: #f4f4f6;
   --tt-logo-tile: #f4f4f6;
   --tt-logo-edge: #f4f4f6;
   --tt-logo-mark: #0a0a0b;
   --tt-wordmark-ink: #f4f4f6;
-  --urgent: #ff5a5f;
-  --urgent-rgb: 255, 90, 95;
+  --urgent: #ff4d7a;
+  --urgent-rgb: 255, 77, 122;
   --bg-rgb: 10, 10, 11;
   --shadow: rgba(0, 0, 0, 0.6);
 }
@@ -381,8 +266,8 @@ code {
   border-color: rgba(var(--accent-rgb), 0.45);
 }
 .tag--soon {
-  color: var(--copper);
-  border-color: rgba(var(--copper-rgb), 0.45);
+  color: var(--accent);
+  border-color: rgba(var(--fill-rgb), 0.45);
 }
 
 /* ---------- buttons ---------- */
@@ -412,14 +297,14 @@ code {
   color: var(--accent);
 }
 .btn--primary {
-  background: var(--copper);
-  border-color: var(--copper);
-  color: var(--on-copper);
+  background: var(--fill);
+  border-color: var(--accent);
+  color: var(--on-fill);
 }
 .btn--primary:hover {
-  background: var(--copper-hi);
-  border-color: var(--copper-hi);
-  color: var(--on-copper);
+  background: var(--fill-hi);
+  border-color: var(--fill-hi);
+  color: var(--on-fill);
 }
 .btn--sm {
   min-height: 38px;
@@ -513,7 +398,7 @@ code {
   height: 1em;
   margin-left: 2px;
   vertical-align: -2px;
-  background: var(--copper);
+  background: var(--fill);
   animation: caret 1s steps(1) infinite;
 }
 @keyframes caret {
@@ -522,7 +407,7 @@ code {
   }
 }
 .cmd .prompt {
-  color: var(--copper);
+  color: var(--accent);
 }
 .copy {
   display: grid;
@@ -721,26 +606,29 @@ code {
   min-height: min(100vh, 1000px);
   display: grid;
   place-items: center;
-  /* The bottom padding is the strip the trail walks along, clear of the copy (src/hero/topo.ts). */
   padding: 120px 0 140px;
   overflow: hidden;
   text-align: center;
 }
-.field {
+/* A dot grid behind page heroes and the closing section, faded out behind the copy. */
+.hero,
+.final {
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: -10px -10px;
+}
+.hero::after {
+  content: '';
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 42%, rgba(var(--bg-rgb), 0.92) 20%, transparent 80%),
+    linear-gradient(to bottom, transparent 70%, var(--bg));
   pointer-events: none;
-}
-/* The grain needs headline size; on phones the type is small enough that it only hurts reading. */
-@media (max-width: 700px) {
-  .hero h1 {
-    filter: none;
-  }
 }
 .hero__inner {
   position: relative;
+  z-index: 1;
   max-width: 1320px;
   display: flex;
   flex-direction: column;
@@ -750,23 +638,32 @@ code {
 .hero__badge {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   height: 28px;
   padding: 0 12px;
-  border: 1px solid rgba(var(--accent-rgb), 0.45);
-  background: rgba(var(--bg-rgb), 0.7);
+  border: 1px solid var(--line-2);
+  background: var(--bg-2);
   font-family: var(--sans);
   font-size: 13px;
-  letter-spacing: 0.04em;
-  color: var(--accent);
+  color: var(--text);
   font-weight: 500;
 }
+.hero__badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  flex: none;
+  background: var(--accent);
+}
+/* Headlines: the sans at 600, tight, in the heading colour; the second line steps back. */
 .hero h1 {
-  filter: url(#stamp);
   font-size: var(--fs-hero);
-  color: var(--copper);
+  color: var(--text-hi);
+  letter-spacing: var(--hero-track);
+  line-height: 1.02;
 }
 .hero h1 .line:nth-child(2) {
-  color: var(--blaze);
+  color: var(--dim);
 }
 .hero h1 .line {
   display: block;
@@ -780,7 +677,7 @@ code {
   max-width: 600px;
   font-size: var(--fs-lede);
   line-height: 1.6;
-  color: var(--lede);
+  color: var(--text);
 }
 .hero__actions {
   display: flex;
@@ -863,49 +760,42 @@ code {
   max-width: 620px;
 }
 
-/* Product shot on a map sheet: faint contour lines and a stitched border, like the Scout badge. */
+/* Product shots and the video: a hairline window with a title bar. */
 .shot {
   position: relative;
   isolation: isolate;
   margin: 0;
-  padding: clamp(20px, 2.8vw, 36px);
-  border-radius: 14px;
+  padding: 28px 0 0;
+  border: 1px solid var(--line-2);
   background: var(--bg-2);
-  box-shadow: inset 0 0 0 1px var(--line);
+  overflow: hidden;
 }
 .shot::before {
   content: '';
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--copper);
-  opacity: 0.3;
-  -webkit-mask: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22480%22 height=%22360%22 fill=%22none%22 stroke=%22%23000%22%3E%3Cpath d=%22M0 40C80 10 150 70 240 44S400 12 480 40%22/%3E%3Cpath d=%22M0 104C70 74 170 138 250 104S410 78 480 104%22/%3E%3Cpath d=%22M0 176C90 208 150 142 240 170S390 214 480 176%22/%3E%3Cpath d=%22M0 250C60 222 140 286 230 252S420 224 480 250%22/%3E%3Cpath d=%22M0 322C100 292 170 350 260 322S400 296 480 322%22/%3E%3Cpath d=%22M322 150c26-18 72-14 84 8s-22 40-56 36-52-28-28-44z%22/%3E%3Cpath d=%22M338 160c14-10 42-8 50 4s-12 22-32 20-30-14-18-24z%22/%3E%3Cpath d=%22M62 224c20-16 60-12 68 6s-20 30-46 26-40-18-22-32z%22/%3E%3C/svg%3E');
-  mask: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22480%22 height=%22360%22 fill=%22none%22 stroke=%22%23000%22%3E%3Cpath d=%22M0 40C80 10 150 70 240 44S400 12 480 40%22/%3E%3Cpath d=%22M0 104C70 74 170 138 250 104S410 78 480 104%22/%3E%3Cpath d=%22M0 176C90 208 150 142 240 170S390 214 480 176%22/%3E%3Cpath d=%22M0 250C60 222 140 286 230 252S420 224 480 250%22/%3E%3Cpath d=%22M0 322C100 292 170 350 260 322S400 296 480 322%22/%3E%3Cpath d=%22M322 150c26-18 72-14 84 8s-22 40-56 36-52-28-28-44z%22/%3E%3Cpath d=%22M338 160c14-10 42-8 50 4s-12 22-32 20-30-14-18-24z%22/%3E%3Cpath d=%22M62 224c20-16 60-12 68 6s-20 30-46 26-40-18-22-32z%22/%3E%3C/svg%3E');
-}
-.shot::after {
-  content: '';
-  position: absolute;
-  inset: clamp(7px, 0.8vw, 11px);
-  border: 1.5px dashed rgba(var(--copper-rgb), 0.5);
-  border-radius: 9px;
-  pointer-events: none;
+  inset: 0 0 auto;
+  z-index: 1;
+  height: 28px;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 16px 50%, var(--line-2) 3.5px, transparent 4px),
+    radial-gradient(circle at 30px 50%, var(--line-2) 3.5px, transparent 4px),
+    radial-gradient(circle at 44px 50%, var(--line-2) 3.5px, transparent 4px), var(--panel);
 }
 .shot img,
 .shot video {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  box-shadow:
-    0 0 0 1px var(--line-2),
-    0 30px 80px -30px var(--shadow);
 }
 .shot--hero {
   margin-top: 0;
+  box-shadow: 0 -24px 90px -10px rgba(var(--fill-rgb), 0.22);
 }
 /* A small crop shown at its own size (its width and height are CSS pixels; the file is 2x), never stretched. */
+.shot--natural {
+  padding: 40px 16px 16px;
+}
 .shot--natural img {
   width: auto;
   max-width: 100%;
@@ -945,7 +835,7 @@ code {
   color: var(--text-hi);
 }
 .trio .stat--up {
-  color: var(--copper);
+  color: var(--accent);
 }
 /* The study's cards follow its figures. */
 .trio + .cards {
@@ -999,7 +889,7 @@ code {
   color: var(--dim);
 }
 .role--you .role__kicker {
-  color: var(--copper);
+  color: var(--accent);
 }
 
 /* Mini visuals drawn in HTML/CSS. */
@@ -1017,7 +907,7 @@ code {
   border-color: transparent;
 }
 .mini-map .w {
-  background: var(--copper);
+  background: var(--fill);
   border-color: transparent;
 }
 .mini-map .q {
@@ -1080,7 +970,6 @@ code {
   order: 2;
 }
 .run .shot {
-  border: 0;
   display: grid;
   place-items: center;
 }
@@ -1228,11 +1117,15 @@ code {
   background: var(--bg);
 }
 .theme .shot {
-  padding: 14px;
-  margin-bottom: 8px;
+  padding: 22px 0 0;
+  margin-bottom: 10px;
 }
-.theme .shot::after {
-  inset: 5px;
+.theme .shot::before {
+  height: 22px;
+  background:
+    radial-gradient(circle at 12px 50%, var(--line-2) 2.5px, transparent 3px),
+    radial-gradient(circle at 22px 50%, var(--line-2) 2.5px, transparent 3px),
+    radial-gradient(circle at 32px 50%, var(--line-2) 2.5px, transparent 3px), var(--panel);
 }
 /* One shape for every card's screenshot, so the headlines line up. */
 .theme .shot img {
@@ -1406,10 +1299,11 @@ code {
 .spec .scout-sprite {
   outline: none !important;
 }
-/* /guides hero: the party floats over the trail field, clear of the copy. */
+/* /guides hero: the party floats around the copy. */
 .hero__party {
   position: absolute;
   inset: 0;
+  z-index: 1;
   pointer-events: none;
 }
 .hero__party .float {
@@ -1487,7 +1381,7 @@ code {
   color: var(--dim);
 }
 .roster .add b {
-  color: var(--copper);
+  color: var(--accent);
 }
 
 .waitlist {
@@ -1628,7 +1522,7 @@ code {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 50% 60% at 50% 50%, var(--bg) 30%, transparent 75%);
+  background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(var(--bg-rgb), 0.9) 25%, transparent 80%);
   pointer-events: none;
 }
 .final__inner {
@@ -1898,8 +1792,8 @@ code {
   top: 34px;
   z-index: 2;
   padding: 9px 14px 8px;
-  background: var(--copper);
-  color: var(--on-copper);
+  background: var(--fill);
+  color: var(--on-fill);
   font-family: var(--display);
   font-weight: var(--head-weight);
   font-size: 15px;
@@ -2064,7 +1958,7 @@ code {
   background: var(--panel);
 }
 .mode--cloud {
-  border-color: rgba(var(--copper-rgb), 0.45);
+  border-color: rgba(var(--fill-rgb), 0.45);
 }
 .mode h3 {
   margin: 6px 0 0;
@@ -2099,7 +1993,7 @@ code {
   background: var(--accent);
 }
 .mode--cloud li::before {
-  background: var(--copper);
+  background: var(--fill);
 }
 
 @media (max-width: 860px) {
@@ -2142,7 +2036,7 @@ code {
 /* The product name in running text: bold, in white, wherever Teamtrail (Local, Cloud) is mentioned. */
 /* A highlighted name (Scout, Teamtrail): same font and weight as the text around it, set apart by colour. */
 .mark {
-  color: var(--copper);
+  color: var(--accent);
   white-space: nowrap;
 }
 
@@ -2635,10 +2529,10 @@ html:has(.gdlg[open]) {
   margin-top: auto;
 }
 
-/* ---------- re-theme: dev-tool look over the same components ---------- */
+/* ---------- the look: type, labels, buttons, panels ---------- */
 
 body {
-  letter-spacing: -0.003em;
+  letter-spacing: -0.006em;
 }
 h1,
 h2 {
@@ -2665,43 +2559,6 @@ pre,
   font-variant-numeric: tabular-nums;
 }
 
-/* Dot grid in place of the terrain: behind page heroes and the closing section. The canvas stays in the markup. */
-.field {
-  display: none;
-}
-.hero,
-.final {
-  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
-  background-size: 20px 20px;
-  background-position: -10px -10px;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 55% at 50% 42%, rgba(var(--bg-rgb), 0.92) 20%, transparent 80%),
-    linear-gradient(to bottom, transparent 70%, var(--bg));
-  pointer-events: none;
-}
-.hero__inner,
-.hero__party {
-  z-index: 1;
-}
-.final::after {
-  background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(var(--bg-rgb), 0.9) 25%, transparent 80%);
-}
-
-/* Headlines: the sans at 600, tight, in the heading colour; the second line steps back. */
-.hero h1 {
-  filter: none;
-  color: var(--text-hi);
-  letter-spacing: var(--hero-track);
-  line-height: 1.02;
-}
-.hero h1 .line:nth-child(2) {
-  color: var(--dim);
-}
 .hero--home h1 {
   font-size: clamp(40px, 5.2vw, 72px);
 }
@@ -2710,26 +2567,6 @@ pre,
 }
 .hero--home h1 .line + .line {
   margin-top: 0;
-}
-.hero__lede {
-  color: var(--text);
-}
-.hero__badge {
-  gap: 8px;
-  border: 1px solid var(--line-2);
-  border-radius: var(--r0);
-  background: var(--bg-2);
-  font-family: var(--sans);
-  font-size: 13px;
-  letter-spacing: 0;
-  color: var(--text);
-}
-.hero__badge::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  flex: none;
-  background: var(--accent);
 }
 .mark {
   color: var(--text-hi);
@@ -2748,14 +2585,12 @@ pre,
 .chips span {
   font-family: var(--code);
   letter-spacing: 0.04em;
-  border-radius: var(--r0);
 }
 
 /* Buttons: plain sans, no stroke, the accent for the one primary action. */
 .btn {
   min-height: 40px;
   padding: 0 18px;
-  border-radius: var(--r1);
   font: 500 var(--fs-small) var(--sans);
   -webkit-text-stroke: 0;
   letter-spacing: 0;
@@ -2769,9 +2604,9 @@ pre,
   font-weight: 600;
 }
 .btn--primary:hover {
-  background: var(--copper-hi);
-  border-color: var(--copper-hi);
-  color: var(--on-copper);
+  background: var(--fill-hi);
+  border-color: var(--fill-hi);
+  color: var(--on-fill);
 }
 .btn--sm {
   min-height: 34px;
@@ -2781,10 +2616,8 @@ pre,
 .theme-switch {
   width: 34px;
   min-height: 34px;
-  border-radius: var(--r1);
 }
 .cmd {
-  border-radius: var(--r1);
   background: var(--bg-2);
   font-size: 15px;
 }
@@ -2798,9 +2631,6 @@ pre,
 .cmd__label {
   font-family: var(--code);
   letter-spacing: 0.06em;
-}
-.copy {
-  border-radius: var(--r0);
 }
 
 /* Nav: hairline under it, the wordmark set in the sans. */
@@ -2818,7 +2648,6 @@ pre,
   font-size: 14px;
 }
 .nav__menu {
-  border-radius: var(--r1);
   background: var(--panel);
 }
 .brand__word {
@@ -2837,55 +2666,6 @@ pre,
   font-size: 18px;
 }
 
-/* Product shots: a hairline window with a title bar, instead of the map sheet. */
-.shot {
-  padding: 28px 0 0;
-  border-radius: var(--r2);
-  background: var(--bg-2);
-  box-shadow: none;
-  border: 1px solid var(--line-2);
-  overflow: hidden;
-}
-.shot::before {
-  inset: 0 0 auto;
-  height: 28px;
-  z-index: 1;
-  border-radius: 0;
-  opacity: 1;
-  -webkit-mask: none;
-  mask: none;
-  border-bottom: 1px solid var(--line);
-  background:
-    radial-gradient(circle at 16px 50%, var(--line-2) 3.5px, transparent 4px),
-    radial-gradient(circle at 30px 50%, var(--line-2) 3.5px, transparent 4px),
-    radial-gradient(circle at 44px 50%, var(--line-2) 3.5px, transparent 4px), var(--panel);
-}
-.shot::after {
-  display: none;
-}
-.shot img,
-.shot video {
-  border-radius: 0;
-  box-shadow: none;
-}
-.shot--natural {
-  padding: 40px 16px 16px;
-}
-.shot--hero {
-  box-shadow: 0 -24px 90px -10px rgba(var(--acc-rgb), 0.22);
-}
-.theme .shot {
-  padding: 22px 0 0;
-  margin-bottom: 10px;
-}
-.theme .shot::before {
-  height: 22px;
-  background:
-    radial-gradient(circle at 12px 50%, var(--line-2) 2.5px, transparent 3px),
-    radial-gradient(circle at 22px 50%, var(--line-2) 2.5px, transparent 3px),
-    radial-gradient(circle at 32px 50%, var(--line-2) 2.5px, transparent 3px), var(--panel);
-}
-
 /* Grids of cells: hairlines between, panels inside. */
 .themes,
 .cards,
@@ -2893,7 +2673,6 @@ pre,
 .roster,
 .gcards,
 .trio {
-  border-radius: var(--r2);
   overflow: hidden;
 }
 .theme,
@@ -2938,7 +2717,6 @@ pre,
 .facts li {
   padding: 24px;
   border: 1px solid var(--line);
-  border-radius: var(--r2);
   background: var(--bg-2);
 }
 .facts {
@@ -2953,22 +2731,12 @@ pre,
 .faq__list summary::after {
   font-family: var(--code);
 }
-.mode,
-.needs,
-.waitlist input,
-.gdlg {
-  border-radius: var(--r2);
-}
 .waitlist input {
-  border-radius: var(--r1);
   min-height: 40px;
   background: var(--bg-2);
 }
 .mode--cloud {
-  border-color: rgba(var(--acc-rgb), 0.45);
-}
-.toast {
-  border-radius: var(--r1);
+  border-color: rgba(var(--fill-rgb), 0.45);
 }
 .sticker {
   font-family: var(--code);
@@ -2977,7 +2745,7 @@ pre,
   letter-spacing: 0.04em;
 }
 .mini-map .w {
-  background: var(--acc);
+  background: var(--fill);
 }
 .footer {
   font-size: 14px;
