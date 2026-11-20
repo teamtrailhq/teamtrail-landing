@@ -1,8 +1,8 @@
 <!-- Scene: the hosted Lookout: the team signs in with GitHub, and Cloud runs the approved checks on the commit an agent
      pushed (src/scenes/cloudHeroScene.ts). The markup is the still frame. -->
-<figure class="scene scene--flat scene--cloud-hero" data-scene="cloud-hero">
+<figure class="scene scene--flat scene--cloud-hero">
   <div class="sk-stage" aria-hidden="true">
-    <div class="ch__canvas">
+    <div class="ch__canvas" data-scene="cloud-hero">
       <div class="sk-panel ch__team">
         <div class="sk-panel__bar">
           <span class="sk-label">Acme · signed in with GitHub</span>
@@ -19,13 +19,13 @@
           </li>
         </ul>
       </div>
-      <span class="sk-relay ch__relay ch__relay--a"><i></i><i></i><i></i></span>
-      <span class="scout-frame scout-frame--hero ch__frame">
-        <span data-cloud-scout data-size="2.4"></span>
-        <span class="frame-tag">Early access</span>
-      </span>
-      <span class="sk-relay ch__relay ch__relay--b"><i></i><i></i><i></i></span>
-      <div class="sk-panel ch__checks is-verified">
+      <span class="sk-relay ch__relay ch__relay--a"
+        ><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i
+      ></span>
+      <span class="sk-relay ch__relay ch__relay--b"
+        ><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i
+      ></span>
+      <div class="sk-panel ch__checks is-verified is-merged">
         <div class="sk-panel__bar">
           <span class="sk-label">#7 · claude-02 pushed</span>
           <span class="sk-key">4f2a91c</span>
@@ -46,6 +46,11 @@
         </div>
       </div>
     </div>
+    <!-- Scout stays outside the scene's root, which goes back to its markup after each turn. -->
+    <span class="scout-frame scout-frame--hero ch__frame">
+      <span data-cloud-scout data-size="2.4"></span>
+      <span class="frame-tag">Early access</span>
+    </span>
   </div>
   <figcaption class="sk-sr">
     Teamtrail Cloud: Scout keeps the Lookout up for your team, who sign in with GitHub as owner, member or viewer. When

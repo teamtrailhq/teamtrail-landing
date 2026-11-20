@@ -5,6 +5,7 @@ import type { Scene } from './sequencer';
  * Beside What you need on /slack: Alex mentions @Scout and gets a private, read-only answer from the Teamtrail on
  * their machine (#12 is blocked by #9). Teamtrail stops; the next mention gets "Your Teamtrail isn't running".
  * New messages push the older ones up, as in a channel.
+ * The still is the first mention answered, Teamtrail running.
  */
 const msgs = (root: HTMLElement) => all(root, '[data-msg]');
 const msg = (root: HTMLElement, n: number) => one(root, `[data-msg="${n}"]`);
@@ -24,6 +25,7 @@ function running(root: HTMLElement, on: boolean) {
 
 export const slackMentionScene: Scene = {
   length: 10500,
+  still: 3000,
   fade: true,
   reset: ({ root }) => {
     for (const m of msgs(root)) m.classList.add('is-gone');

@@ -5,6 +5,7 @@ import type { Scene } from './sequencer';
  * /slack's hero: Scout posts an agent's question in a Slack thread, and the same question tops Needs you in the
  * Lookout (2 → 3). A button is pressed, the answer passes back to Teamtrail on your machine, the card closes with it
  * ("✓ Answered by @Alex Rivera via Slack … claude-02 resumed.") and the row resolves and leaves (3 → 2).
+ * The still is the card closed with the answer, the row resolved.
  */
 const msg = (root: HTMLElement) => one(root, '.sa__msg');
 const row = (root: HTMLElement) => one(root, '[data-row="a"]');
@@ -13,6 +14,7 @@ const relay = (root: HTMLElement) => all(root, '.sa__relay i');
 
 export const slackAnswerScene: Scene = {
   length: 10000,
+  still: 5000,
   fade: true,
   reset: ({ root }) => {
     msg(root).classList.remove('is-on', 'is-answered');

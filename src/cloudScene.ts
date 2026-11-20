@@ -1,5 +1,6 @@
 import { mountScout } from '@teamtrail/scout-avatar/mount';
 import { $ } from './dom';
+import { keepMounted } from './keepMounted';
 
 /**
  * /cloud's Scout: in his square frame in the hero scene, saying a short line every few seconds, and on the journey
@@ -32,9 +33,9 @@ export function initCloudScene(reducedMotion: boolean) {
   // Hero: Scout in his frame, saying a short line every few seconds.
   const scout = $('[data-cloud-scout]');
   if (scout) talkingScout(scout, Number(scout.dataset.size ?? 3), reducedMotion);
-  // Journey: Scout thinking, between the closed laptop and the phone.
-  const midScout = $('[data-cloud-mid-scout]');
+  // Journey: Scout thinking, between the closed laptop and the phone. The journey is a scene whose root goes back to
+  // its markup after each turn (src/scenes/sequencer.ts), which replaces Scout's host: mount him again on the new one.
   const midState = reducedMotion ? 'idle' : 'thinking';
   const midOpts = { ...SQUARE, size: 1.6, state: midState as 'idle' | 'thinking' };
-  if (midScout) mountScout(midScout, midOpts);
+  keepMounted('[data-cloud-mid-scout]', (host) => mountScout(host, midOpts));
 }

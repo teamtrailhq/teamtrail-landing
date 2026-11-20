@@ -4,6 +4,7 @@ import type { Scene } from './sequencer';
 /**
  * /cloud's journey: the laptop closes, the agent's work goes on in Cloud (its step bar fills and turns green), and a
  * question that needs you reaches the phone, where it is answered in the same Lookout.
+ * The still is the laptop closed, the run verified and the question on the phone.
  */
 const laptop = (root: HTMLElement) => one(root, '.jy__laptop');
 const run = (root: HTMLElement) => one(root, '.jy__run');
@@ -13,6 +14,7 @@ const row = (root: HTMLElement) => one(root, '.jy__row[data-row]');
 
 export const cloudAwayScene: Scene = {
   length: 10500,
+  still: 6800,
   fade: true,
   reset: ({ root }) => {
     laptop(root).classList.remove('is-closed');

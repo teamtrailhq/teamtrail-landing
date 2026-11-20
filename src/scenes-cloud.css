@@ -60,10 +60,17 @@
 .ch__relay--b {
   left: 608px;
 }
-.ch__canvas .ch__frame {
+.sk-stage > .ch__frame {
   position: absolute;
   top: 46px;
-  left: 336px;
+  left: calc(50% - 114px);
+}
+/* The scene's root is the canvas (Scout stays outside it): it fades between loops by itself. */
+.ch__canvas > * {
+  transition: opacity 0.45s var(--ease);
+}
+.ch__canvas.is-leaving > * {
+  opacity: 0;
 }
 .ch__checks {
   top: 34px;
@@ -249,11 +256,11 @@
   width: 2px;
   background: var(--urgent);
 }
-.jy__row i {
+.jy__row > i {
   height: 3px;
   background: var(--line-2);
 }
-.jy__row i:last-of-type {
+.jy__row > i:last-of-type {
   width: 70%;
 }
 .jy__row-kind {
@@ -317,9 +324,9 @@
   .ch__relay {
     display: none;
   }
-  .ch__canvas .ch__frame {
+  .sk-stage > .ch__frame {
     top: 18px;
-    left: 86px;
+    left: calc(50% - 84px);
   }
   .ch__checks {
     top: 184px;

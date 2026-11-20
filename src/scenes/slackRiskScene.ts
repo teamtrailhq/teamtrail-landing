@@ -4,6 +4,7 @@ import type { Scene } from './sequencer';
 /**
  * Still your call on /slack: a question the risk policy rates high arrives in Slack with Open in Lookout instead of
  * answer buttons. It opens in the Lookout, is answered there, and the Slack card closes with that answer.
+ * The still is the card with Open in Lookout, the question open in the Lookout.
  */
 const msg = (root: HTMLElement) => one(root, '.sr__msg');
 const lookout = (root: HTMLElement) => one(root, '.sr__lookout');
@@ -11,6 +12,7 @@ const need = (root: HTMLElement) => one(root, '.sr__need');
 
 export const slackRiskScene: Scene = {
   length: 10000,
+  still: 3500,
   fade: true,
   reset: ({ root }) => {
     msg(root).classList.remove('is-on', 'is-answered');
