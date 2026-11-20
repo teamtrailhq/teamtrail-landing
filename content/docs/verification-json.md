@@ -51,7 +51,7 @@ Without this file, nothing is verified. Teamtrail writes to it when you set the 
 | `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo. Set it in the check's **Folder** field; a folder set there must be a real folder, not a symbolic link. |
 | `guards`     | glob array       | `[]`      | Globs the [check guard](/docs/verification/#check-guard) also watches for this check, beyond the scripts, tool config and files it finds from the command.                         |
 
-Checks run with an allowlisted environment: the shell, locale and toolchain basics, without tokens, keys or anything named like a secret. Name extra variables a check needs in `TEAMTRAIL_CHECK_ENV` on your machine, never in the repo:
+Checks run with an allowlisted environment: the shell, locale and toolchain basics and toolchain caches, without tokens, keys or anything named like a secret. Name extra variables a check needs on your machine, never in the repo: in **Settings → Project → Check variables** (names only; see [Security](/docs/security/#check-commands)), or in `TEAMTRAIL_CHECK_ENV`:
 
 ```bash
 TEAMTRAIL_CHECK_ENV="DATABASE_URL, REDIS_URL, APP_*" teamtrail

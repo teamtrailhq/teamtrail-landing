@@ -69,7 +69,9 @@ The commands in [`verification.json`](/docs/verification-json/) run on your mach
   TEAMTRAIL_CHECK_ENV="DATABASE_URL, REDIS_URL, APP_*" teamtrail
   ```
 
-  An exact name passes even if it looks like a secret: that's your call. A pattern such as `APP_*` passes what it matches, except names that look like secrets. A failed check's log ends with the names of the variables it didn't get, never their values.
+  Or add them in **Settings → Project → Check variables**, on the machine Teamtrail runs on. It lists the names your repo's tests seem to read (from `.env.example` files and CI `env:`), whether checks get each one and whether the shell that started `teamtrail` has it set, with **Let checks read it** for one they don't get. Teamtrail keeps only the names, in your config folder (`projects/<id>/check-env.json`), never a value: values still come from that shell. Another device on the network can't see or change the list.
+
+  An exact name passes even if it looks like a secret: that's your call. In Settings, a name that reads like a credential (`STRIPE_SECRET_KEY`) is added only after you confirm it, since any code a check runs, agents' included, can read it: give checks test values only. A pattern such as `APP_*` passes what it matches, except names that look like secrets. Teamtrail's own credentials (`GITHUB_TOKEN`, `TEAMTRAIL_*`, `SLACK_*`, …) never pass. A failed check's log ends with the names of the variables it didn't get, never their values.
 
 **The honest limit.** Checks run as you, without a sandbox. The allowlist keeps secrets out of the environment, but a check can still read files your account can read (`~/.aws`, `~/.ssh`, `~/.npmrc`, Teamtrail's `credentials.json`) and reach your SSH agent. And approval covers the command line, not what it runs: `npm run check` runs `package.json` scripts, which an agent can edit. Approve commands you'd run yourself, and review changes to what they run.
 
