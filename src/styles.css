@@ -11,9 +11,11 @@
 @import '@fontsource-variable/jetbrains-mono';
 @import '@fontsource-variable/manrope';
 @import '@fontsource-variable/fira-code';
+/* Inter with its optical-size axis, so big headlines get the display cut by themselves. */
+@import '@fontsource-variable/inter/opsz.css';
 
 /* Dark-first, near-black surfaces, hairline borders, square corners and one accent. Night is the default; day is
- * the visitor's choice. Switches on <html>: data-font (plex, space, instrument, manrope), data-accent (indigo, blue,
+ * the visitor's choice. Switches on <html>: data-font (plex, space, instrument, manrope, inter), data-accent (indigo, blue,
  * amber) and data-corners (square, slight, rounded). */
 :root {
   /* The accent: primary buttons, eyebrows, links and highlights. --acc fills, --acc-ink is the text colour on day. */
@@ -113,6 +115,17 @@
   --code: 'Fira Code Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
   --head-track: -0.025em;
   --hero-track: -0.035em;
+}
+:root[data-font='inter'] {
+  --sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --head-track: -0.022em;
+  --hero-track: -0.03em;
+}
+/* Inter: the self-hosted build carries no stylistic sets (cv11, ss01, ss03 are dropped from it), so it stays as
+ * drawn; the optical-size axis gives headlines the display cut, which wants less negative tracking. */
+:root[data-font='inter'] body {
+  letter-spacing: -0.006em;
 }
 :root[data-corners='slight'] {
   --r0: 2px;
@@ -2607,6 +2620,12 @@ code,
 pre,
 .mono {
   font-variant-ligatures: none;
+}
+/* Figures that sit in columns or count up line up. */
+.trio .stat,
+.gh-stars,
+.prose table {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Dot grid in place of the terrain: behind page heroes and the closing section. The canvas stays in the markup. */
