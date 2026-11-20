@@ -44,8 +44,8 @@
   --tt-wordmark-ink: #0e0f11;
   --tt-wordmark-dot: var(--accent);
   /* Needs you: rose, so it never reads as blaze. */
-  --urgent: #e0325f;
-  --urgent-rgb: 224, 50, 95;
+  --urgent: #d62d59;
+  --urgent-rgb: 214, 45, 89;
   --bg-rgb: 255, 255, 255;
   --shadow: rgba(0, 0, 0, 0.12);
 
