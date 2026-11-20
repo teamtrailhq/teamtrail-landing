@@ -44,7 +44,25 @@ Kinds: `architecture`, `convention`, `gotcha`, `dead-end`, `glossary`, `fact` (e
 
 When an agent claims a ticket, Teamtrail picks the relevant live entries (by path globs in `scope`, by words in the ticket, by trail), each with the reason it was picked, within a fixed size budget. Discovery tickets get product knowledge first. Business rules are also suggested as [acceptance criteria](/docs/verification/).
 
-Agents can `search_knowledge`, `propose_knowledge` (always lands as `suggested`) and `flag_knowledge` when an entry looks outdated. Only you confirm, edit or retire entries, in the **Knowledge** view.
+Agents can `search_knowledge`, `propose_knowledge` (always lands as `suggested`) and `flag_knowledge` when an entry looks outdated. Only you confirm, edit or retire entries, in the **Field guide** (Records → Field guide).
+
+### Build and test notes
+
+Agents waste attempts guessing how a repo installs and runs its tests. In the Field guide, **Suggest build and test notes** (on the machine Teamtrail runs on) reads your repo's manifests, lockfiles, scripts and Makefile targets, plus your approved checks, and writes one `suggested` entry per package, such as "How to build and test apps/web":
+
+```markdown
+node, npm · package.json in apps/web
+
+- Install: `npm ci` in the top folder (the workspace installs it)
+- Test: `npm test` in apps/web
+- Run: `npm run dev` in apps/web
+- Checks on completion: web-test (`npm test` in apps/web)
+- Tests need: a browser (karma), DATABASE_URL
+```
+
+Nothing reaches agents until you confirm a note. Once you do, every claim whose `touches` or ticket paths fall in that package carries it under `commands`, with the setup steps and checks Teamtrail runs there and what its tests need. Variables are listed by name only, with whether checks on your machine get them; agents are told to ask you, never to hard-code a value. Until a note is confirmed, the claim says it waits and points the agent at the package's manifest.
+
+Each note is anchored to the package's manifest and lockfile. Suggest again after the repo changes: a suggestion is rewritten to match, and a confirmed note goes back to `suggested` only when its manifests changed (otherwise your edits stay). Teamtrail never writes an `AGENTS.md`.
 
 ### Staleness
 
