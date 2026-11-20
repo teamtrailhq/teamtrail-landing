@@ -191,6 +191,17 @@ Before agents build on a trail, Teamtrail runs your approved checks once on the 
 
 **Which commit.** Checks on main, the trail's combined run below and the revert check all read the same default-branch head: your local default branch, or `origin/<branch>` when it is ahead of it (as your clone last fetched it; Teamtrail fetches nothing). So the three never disagree about what main is.
 
+## Repo readiness
+
+**Settings → Project → Repo readiness** says whether Teamtrail can check agents' work in your repo on this machine, read from the repo's files and this machine, before anything runs:
+
+- **What blocks:** no checks, or checks nobody approved here; a check that can't run as written; a program the checks start that isn't on their `PATH`.
+- **What may make a check fail:** a toolchain missing or outside the version the repo pins (`.nvmrc`, `engines`, `.python-version`, `go.mod`, `rust-toolchain.toml` …), dependencies not installed, no browser for tests that drive one, a service the tests connect to that isn't reachable on 127.0.0.1, a variable the tests read that checks don't get (names only, never values; see `TEAMTRAIL_CHECK_ENV`), a check in another package's folder, a package no check runs.
+- **Fixes in one click** are only approvals of what's shown: add the suggested checks with their folders, run a check in the folder its command belongs to, or add the lockfile's frozen install as a [setup step](/docs/verification-json/#setup). Each is written to `verification.json` and approved on this machine in the same step. Teamtrail never installs, starts or sets anything on your machine; for those, the screen gives the commands to run yourself. **Check again** reads and probes afresh.
+- **Probes** run on this machine only: programs are found on the checks' `PATH` without running them; a version is read with `<program> --version` only for a binary outside the repo, never a version manager's shim; services get a TCP connect to 127.0.0.1.
+
+**While something blocks**, agents start no new implementation work on a trail whose work is verified with checks: research, junction and review tickets go on, and so does rework. Agents get `readiness.waits` from `next_ticket`, `claim_ticket` and `resume_trail`, tell you in one line and [wait for work](/docs/mcp-tools/#waiting-for-work); a claim by key is refused too. It shows in [Waiting on you](/docs/waiting-on-you/) as one item for the project. Fix it, or **Start anyway** for a trail: work starts past what blocks now, and **Undo start anyway** holds it again. A blocking problem that comes up later holds the trail again until you look at it. Both are kept on this machine only and journaled.
+
 ## Trail verified together
 
 Every ticket can pass on its own branch and the trail still break once they're merged together. So when every ticket in a trail is done and its work is on the default branch (the pull request's merge commit, or the verified commit when there was no pull request), Teamtrail runs the approved checks once more, automatically, on that commit (in [Cloud](/docs/cloud/), on its runner). It uses the same default-branch head as [checks on main](#checks-on-main), and reads reverts in that commit's history.
