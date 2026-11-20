@@ -5,9 +5,8 @@ Static marketing site for [teamtrail.app](https://www.teamtrail.app): Vite + Typ
 - `index.html`: Home, the story (trail, party, Scout, you) and what's coming.
 - `features/index.html`: everything that ships today, and the upcoming directions in detail.
 - `guides/index.html`: guides, with one card per guide in the public catalog (see [Guide cards](#guide-cards)); each card opens its details in a dialog (`src/guideDialog.ts`).
-- `cloud/index.html`: Teamtrail Cloud (early access): what it offers today and what's next, with Scout on a pixel cloud (`src/cloudScene.ts`) and its own waitlist.
+- `cloud/index.html`: Teamtrail Cloud (early access): what it offers today and what's next, with Scout in a square frame between line icons of a laptop and a phone (`src/cloudScene.ts`) and its own waitlist.
 - `slack/index.html`: Scout in Slack, Teamtrail's Slack app: what it does in Slack, what stays on your machine, and Add Scout to Slack (`src/slackScene.ts`).
-- `scout/index.html`: Adopt a Scout: sponsor Teamtrail on GitHub, and at the Scout tier a handmade Scout plush comes home with you.
 - `privacy/index.html`: the privacy policy for the site, Scout and Teamtrail Cloud.
 - `/docs/`: the docs, written as Markdown in `content/docs` (order and sections in `content/docs/nav.json`) and built into `docs/<slug>/index.html` pages by `scripts/docs/generate.mjs` (see [Search and LLMs](#search-and-llms)).
 
@@ -72,7 +71,7 @@ npm run guides:snapshot
 
 ## Product media
 
-Screenshots and the explainer video (`landing-journey-720.mp4` and its poster) live in `public/media/`; favicons and the OG image in `public/media/brand/`. The favicons, OG image and avatar are exported from the product repo's `packages/scout-avatar` (`npm run capture`, its `brand/` folder); `favicon.svg` is its `logoFaviconSvg()` (the light mark, the dark one on dark tabs), and the PNGs and `public/favicon.ico` (16, 32 and 48 px) are the light mark for browsers without SVG icons. Bump the `?v=` on the icon links (and in `scripts/docs/template.mjs`) when they change. Both come from the real product on a real project (`scripts/lib/realProject.mjs`): the dev seed in a git repo at `/Users/Shared/code/fieldnote-app` (`CAPTURE_CODE_DIR` to change it; its paths show in the shots, so one capture runs at a time), the built `teamtrail` server with a worktree per claimed ticket, and three real MCP agents (`scripts/dev-agent.mjs` in the product repo) that the scripts answer in Hands-off's Needs you list and in the bubble on the map. The shots of the map switch to Hands-on first (Hands-off is the default). Nothing is simulated.
+Screenshots and the explainer video (`landing-journey-720.mp4` and its poster) live in `public/media/`; favicons and the OG image in `public/media/brand/`. The favicons, OG image and avatar are exported from the product repo's `packages/scout-avatar` (`npm run capture`, its `brand/` folder); `favicon.svg` is its `logoFaviconSvg()` (the blaze `t.` tile, the same on light and dark tabs), and the PNGs and `public/favicon.ico` (16, 32 and 48 px) are the same tile for browsers without SVG icons. Bump the `?v=` on the icon links (and in `scripts/docs/template.mjs`) when they change. Both come from the real product on a real project (`scripts/lib/realProject.mjs`): the dev seed in a git repo at `/Users/Shared/code/fieldnote-app` (`CAPTURE_CODE_DIR` to change it; its paths show in the shots, so one capture runs at a time), the built `teamtrail` server with a worktree per claimed ticket, and three real MCP agents (`scripts/dev-agent.mjs` in the product repo) that the scripts answer in Hands-off's Needs you list and in the bubble on the map. The shots of the map switch to Hands-on first (Hands-off is the default). Nothing is simulated.
 
 ```bash
 (cd ../teamtrail && npm install && npm run build -w teamtrail)   # once, and after CLI or app changes

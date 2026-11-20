@@ -43,6 +43,12 @@
   --tt-logo-dot: var(--fill);
   --tt-wordmark-ink: #0e0f11;
   --tt-wordmark-dot: var(--accent);
+  /* Guide icons (guideMarkup from @teamtrail/scout-avatar): ink with one blaze accent on a square tile. */
+  --tt-guide-ink: #0e0f11;
+  --tt-guide-fill: #ffffff;
+  --tt-guide-accent: #d43f00;
+  --tt-guide-bg: #f4f4f6;
+  --tt-guide-line: rgba(0, 0, 0, 0.12);
   /* Needs you: rose, so it never reads as blaze. */
   --urgent: #d62d59;
   --urgent-rgb: 214, 45, 89;
@@ -84,6 +90,11 @@
     --tt-logo-edge: #f4f4f6;
     --tt-logo-mark: #0a0a0b;
     --tt-wordmark-ink: #f4f4f6;
+    --tt-guide-ink: #ededef;
+    --tt-guide-fill: #1c1c1f;
+    --tt-guide-accent: #ff6b2c;
+    --tt-guide-bg: #141416;
+    --tt-guide-line: rgba(255, 255, 255, 0.14);
     --urgent: #ff4d7a;
     --urgent-rgb: 255, 77, 122;
     --bg-rgb: 10, 10, 11;
@@ -110,6 +121,11 @@
   --tt-logo-edge: #f4f4f6;
   --tt-logo-mark: #0a0a0b;
   --tt-wordmark-ink: #f4f4f6;
+  --tt-guide-ink: #ededef;
+  --tt-guide-fill: #1c1c1f;
+  --tt-guide-accent: #ff6b2c;
+  --tt-guide-bg: #141416;
+  --tt-guide-line: rgba(255, 255, 255, 0.14);
   --urgent: #ff4d7a;
   --urgent-rgb: 255, 77, 122;
   --bg-rgb: 10, 10, 11;
@@ -1269,7 +1285,7 @@ code {
 .roster li > span:not(.spec) {
   grid-column: 2;
 }
-/* Each guide is Scout in its own colour (the reviewer keeps Scout's). */
+/* Each guide is its icon (src/main.ts), bobbing gently. */
 .spec {
   grid-row: 1 / span 2;
   display: grid;
@@ -1692,135 +1708,49 @@ code {
 
 /* ---------- /cloud ---------- */
 
-/* The sky: small clouds drifting behind the copy. */
-.sky {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.sky__cloud {
-  position: absolute;
-  left: 0;
-  opacity: 0.32;
-  animation: sky-drift 90s linear infinite;
-}
-.sky__cloud svg {
-  display: block;
-}
-.sky__cloud:nth-child(1) {
-  top: 16%;
-  animation-delay: -12s;
-}
-.sky__cloud:nth-child(2) {
-  top: 34%;
-  opacity: 0.22;
-  animation-duration: 120s;
-  animation-delay: -70s;
-}
-.sky__cloud:nth-child(3) {
-  top: 62%;
-  opacity: 0.26;
-  animation-duration: 100s;
-  animation-delay: -40s;
-}
-.sky__cloud:nth-child(4) {
-  top: 8%;
-  opacity: 0.16;
-  animation-duration: 140s;
-  animation-delay: -95s;
-}
-.sky__cloud:nth-child(5) {
-  top: 78%;
-  opacity: 0.18;
-  animation-duration: 130s;
-  animation-delay: -20s;
-}
-/* On phones the copy spans the full width, so the clouds pass under the words: keep them fainter there. */
-@media (max-width: 700px) {
-  .sky {
-    opacity: 0.45;
-  }
-}
-@keyframes sky-drift {
-  from {
-    transform: translateX(-20vw);
-  }
-  to {
-    transform: translateX(110vw);
-  }
-}
-
-/* Hero: Scout sitting on the big cloud, both bobbing gently. */
+/* Hero: Scout in a square frame, with the blaze early access tag on its corner. */
 .cloud-stage {
   position: relative;
   display: grid;
   justify-items: center;
-  margin-bottom: 4px;
-  animation: cloud-bob 5s ease-in-out infinite;
+  margin-bottom: 12px;
 }
-.cloud-stage__scout {
+/* Scout's square frame, in the hero and on the journey: a hairline edge on the page's second surface. */
+.scout-frame {
   position: relative;
-  z-index: 1;
-  width: 96px;
+  display: grid;
+  place-items: center;
+  width: 120px;
   height: 96px;
-  margin-bottom: -34px;
+  border: 1px solid var(--line-2);
+  background: var(--bg-2);
 }
-.cloud-stage__scout .scout {
+.scout-frame--hero {
+  width: 168px;
+  height: 136px;
+}
+.scout-frame .scout {
   margin: 0;
 }
-.cloud-stage__scout .scout-sprite {
+.scout-frame .scout-sprite {
   outline: none !important;
-  filter: drop-shadow(0 6px 0 var(--shadow));
 }
-.cloud-stage__cloud svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  filter: drop-shadow(0 14px 30px var(--shadow));
-}
-@keyframes cloud-bob {
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-/* "Coming soon": a skewed sticker with a hard shadow and notched corners. */
-.sticker {
+/* "Early access": a square blaze tag in mono capitals, pinned to the frame's top right corner. */
+.tag {
   position: absolute;
-  right: -46px;
-  top: 34px;
+  top: -11px;
+  left: calc(100% - 28px);
   z-index: 2;
-  padding: 9px 14px 8px;
+  padding: 4px 8px;
   background: var(--fill);
   color: var(--on-fill);
-  font-family: var(--display);
-  font-weight: var(--head-weight);
-  font-size: 15px;
+  font-family: var(--code);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
   text-transform: uppercase;
   white-space: nowrap;
-  clip-path: polygon(
-    0 4px,
-    4px 4px,
-    4px 0,
-    calc(100% - 4px) 0,
-    calc(100% - 4px) 4px,
-    100% 4px,
-    100% calc(100% - 4px),
-    calc(100% - 4px) calc(100% - 4px),
-    calc(100% - 4px) 100%,
-    4px 100%,
-    4px calc(100% - 4px),
-    0 calc(100% - 4px)
-  );
-  filter: drop-shadow(4px 4px 0 var(--shadow));
-  transform: rotate(-9deg) skewX(-6deg);
-  animation: sticker-wobble 4s ease-in-out infinite;
-}
-@keyframes sticker-wobble {
-  50% {
-    transform: rotate(-6deg) skewX(-6deg) translateY(-2px);
-  }
 }
 
 /* Away from the desk: laptop → cloud → phone, with packets flowing between. */
@@ -1853,26 +1783,10 @@ code {
   display: grid;
   place-items: center;
   height: 112px;
+  color: var(--text-hi);
 }
 .journey__art svg {
   display: block;
-}
-.journey__art--cloud {
-  align-content: end;
-}
-.journey__scout {
-  width: 52px;
-  height: 52px;
-  margin-bottom: -26px;
-  position: relative;
-  z-index: 1;
-}
-.journey__scout .scout {
-  margin: 0;
-}
-.journey__scout .scout-sprite {
-  outline: none !important;
-  filter: drop-shadow(0 4px 0 var(--shadow));
 }
 .zz {
   position: absolute;
@@ -2008,21 +1922,13 @@ code {
   .modes {
     grid-template-columns: 1fr;
   }
-  .sticker {
-    right: -6px;
-    top: auto;
-    bottom: 4px;
-    font-size: 13px;
-  }
-  .cloud-stage__cloud svg {
-    width: 240px;
+  .tag {
+    left: auto;
+    right: -8px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sky__cloud,
-  .cloud-stage,
-  .sticker,
   .zz,
   .ping,
   .journey__link i {
@@ -2508,27 +2414,6 @@ html:has(.gdlg[open]) {
   margin-top: clamp(40px, 6vw, 88px);
 }
 
-/* /scout: the plush photo beside its story, and a button at the foot of each way to support. */
-.adopt__photo {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.adopt__photo img {
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--line);
-}
-.adopt__photo figcaption {
-  font-size: var(--fs-small);
-  color: var(--dim);
-}
-.card .adopt__cta {
-  align-self: flex-start;
-  margin-top: auto;
-}
-
 /* ---------- the look: type, labels, buttons, panels ---------- */
 
 body {
@@ -2737,12 +2622,6 @@ pre,
 }
 .mode--cloud {
   border-color: rgba(var(--fill-rgb), 0.45);
-}
-.sticker {
-  font-family: var(--code);
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.04em;
 }
 .mini-map .w {
   background: var(--fill);

@@ -34,10 +34,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta name="theme-color" content="#0a0a0b" />
-    <link rel="icon" href="/media/brand/favicon-32.png?v=5" type="image/png" sizes="32x32" />
-    <link rel="icon" href="/media/brand/favicon-64.png?v=5" type="image/png" sizes="64x64" />
-    <link rel="icon" href="/media/brand/favicon.svg?v=5" type="image/svg+xml" sizes="any" />
-    <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png?v=5" />
+    <link rel="icon" href="/media/brand/favicon-32.png?v=6" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/media/brand/favicon-64.png?v=6" type="image/png" sizes="64x64" />
+    <link rel="icon" href="/media/brand/favicon.svg?v=6" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png?v=6" />
     <link
       rel="preload"
       href="/node_modules/@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2"
@@ -61,19 +61,12 @@
 
     <main id="main">
       <section class="hero hero--page hero--cloud" aria-labelledby="page-title">
-        <div class="sky" aria-hidden="true">
-          <span class="sky__cloud" data-cloud-small="0" data-scale="5"></span>
-          <span class="sky__cloud" data-cloud-small="1" data-scale="4"></span>
-          <span class="sky__cloud" data-cloud-small="2" data-scale="5"></span>
-          <span class="sky__cloud" data-cloud-small="1" data-scale="3"></span>
-          <span class="sky__cloud" data-cloud-small="0" data-scale="3"></span>
-        </div>
-
         <div class="wrap hero__inner">
-          <div class="cloud-stage" data-cloud-stage aria-hidden="true">
-            <span class="cloud-stage__scout" data-cloud-scout data-size="2.4"></span>
-            <span class="cloud-stage__cloud" data-cloud-big data-scale="7"></span>
-            <span class="sticker">Early access</span>
+          <div class="cloud-stage" aria-hidden="true">
+            <span class="scout-frame scout-frame--hero">
+              <span data-cloud-scout data-size="2.4"></span>
+              <span class="tag">Early access</span>
+            </span>
           </div>
           <span class="hero__badge" data-scramble>Teamtrail Cloud</span>
           <h1 id="page-title">
@@ -117,9 +110,11 @@
             </li>
             <li class="journey__link" aria-hidden="true"><i></i><i></i><i></i></li>
             <li>
-              <span class="journey__art journey__art--cloud" aria-hidden="true">
-                <span class="journey__scout" data-cloud-mid-scout></span>
-                <span data-cloud-mid></span>
+              <span class="journey__art" aria-hidden="true">
+                <span class="scout-frame">
+                  <span data-cloud-mid-scout></span>
+                  <span class="tag">Early access</span>
+                </span>
               </span>
               <h3>Teamtrail Cloud</h3>
               <p>Your Lookout and your trails, always on, in a workspace of their own.</p>

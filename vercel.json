@@ -42,6 +42,16 @@
   ],
   "redirects": [
     {
+      "source": "/scout",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/scout/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/specialists",
       "destination": "/guides",
       "permanent": true

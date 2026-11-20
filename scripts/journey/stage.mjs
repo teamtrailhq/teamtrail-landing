@@ -3,55 +3,62 @@
 // so they carry the teamtrail. wordmark (`wordmark`: the #tt-wordmark symbol's markup) and never the square t. tile.
 // Runs in the browser (page.addInitScript), so it must stay self-contained.
 export function installStage({ scout, wordmark, night }) {
-  // A field-notebook terminal in the site's own colours, light by day and dark at night.
+  // A terminal in the site's own colours (src/styles.css): white and near-black surfaces, hairline borders, square
+  // corners and one accent, blaze, on a dot grid like the site's heroes. Light by day and dark at night.
   const ink = night
     ? {
-        page: '#131c18',
-        win: '#17211c',
-        line: 'rgba(150,170,155,.26)',
-        text: '#c3cdc1',
-        hi: '#eaeee3',
-        dim: '#93a497',
-        ok: '#8fbf84',
-        acc: '#e8833a',
+        page: '#0a0a0b',
+        win: '#161618',
+        line: 'rgba(255,255,255,.14)',
+        dot: 'rgba(255,255,255,.06)',
+        text: '#c9cbd0',
+        hi: '#f4f4f6',
+        dim: '#9a9ea6',
+        ok: '#3fcf8e',
+        acc: '#ff6b2c',
+        shadow: 'rgba(0,0,0,.6)',
       }
     : {
-        page: '#ede7d2',
-        win: '#fbfaf4',
-        line: 'rgba(76,78,58,.26)',
-        text: '#38443c',
-        hi: '#1b2620',
-        dim: '#5e6a60',
-        ok: '#3f6b45',
-        acc: '#c8581e',
+        page: '#fafafa',
+        win: '#ffffff',
+        line: 'rgba(0,0,0,.14)',
+        dot: 'rgba(0,0,0,.07)',
+        text: '#3a3d44',
+        hi: '#0e0f11',
+        dim: '#62666e',
+        ok: '#0e9f63',
+        acc: '#c2410c',
+        shadow: 'rgba(0,0,0,.12)',
       };
+  const sans = "'Inter Variable',system-ui,sans-serif";
   const css = `
   #stage-cap{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;
     align-items:center;gap:10px;pointer-events:none;transition:opacity .35s}
-  #stage-cap b{font:600 13px 'Figtree Variable',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:${ink.acc}}
-  #stage-cap span{font:500 22px 'Figtree Variable',system-ui,sans-serif;color:${ink.hi};padding:12px 22px;border-radius:8px;background:${ink.win};
-    border:1px solid ${ink.line};box-shadow:0 18px 50px rgba(30,30,20,.28)}
-  #stage-ov{position:fixed;inset:0;z-index:9998;background:${ink.page};display:grid;place-items:center;transition:opacity .35s}
+  #stage-cap b{font:500 13px 'JetBrains Mono Variable',ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:${ink.acc}}
+  #stage-cap span{font:500 22px ${sans};letter-spacing:-.01em;color:${ink.hi};padding:12px 22px;background:${ink.win};
+    border:1px solid ${ink.line};box-shadow:0 18px 50px ${ink.shadow}}
+  #stage-ov{position:fixed;inset:0;z-index:9998;background:${ink.page};display:grid;place-items:center;transition:opacity .35s;
+    background-image:radial-gradient(${ink.dot} 1px,transparent 1px);background-size:20px 20px;background-position:-10px -10px}
   #stage-ov.off{opacity:0;pointer-events:none}
-  .st-win{width:1180px;height:640px;margin-bottom:90px;border:1px solid ${ink.line};border-radius:12px;overflow:hidden;background:${ink.win};display:flex;flex-direction:column;
-    box-shadow:0 40px 100px -30px rgba(30,30,20,.4)}
-  .st-bar{height:44px;display:flex;align-items:center;gap:8px;padding:0 18px;border-bottom:1.5px dashed ${ink.line};
-    font:500 14px 'Figtree Variable',sans-serif;color:${ink.dim}}
+  .st-win{width:1180px;height:640px;margin-bottom:90px;border:1px solid ${ink.line};overflow:hidden;background:${ink.win};display:flex;flex-direction:column;
+    box-shadow:0 40px 100px -30px ${ink.shadow}}
+  .st-bar{height:44px;display:flex;align-items:center;gap:8px;padding:0 18px;border-bottom:1px solid ${ink.line};
+    font:500 14px ${sans};color:${ink.dim}}
     .st-bar em{font-style:normal}
   .st-body{flex:1;padding:24px 28px;overflow:hidden;font:400 19px/1.6 'JetBrains Mono Variable',ui-monospace,Menlo,monospace;color:${ink.text};white-space:pre-wrap}
   .st-body .dim{color:${ink.dim}}.st-body .ok{color:${ink.ok}}.st-body .acc{color:${ink.acc}}.st-body .scout{color:${ink.hi}}
-  .st-body .user{color:${ink.hi}}.st-body .box{display:inline-block;border:1.5px solid ${ink.acc};border-radius:6px;padding:6px 14px;margin-bottom:6px}
+  .st-body .user{color:${ink.hi}}.st-body .box{display:inline-block;border:1px solid ${ink.acc};padding:6px 14px;margin-bottom:6px}
 .st-face{width:26px;height:26px;vertical-align:-7px}
-  .st-cur{display:inline-block;width:10px;height:1.1em;vertical-align:-3px;background:${ink.acc};animation:stb 1s steps(1) infinite}
+  .st-cur{display:inline-block;width:10px;height:1.1em;vertical-align:-3px;background:#ff6b2c;animation:stb 1s steps(1) infinite}
   @keyframes stb{50%{opacity:0}}
   .st-card{display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center;
-    --tt-wordmark-ink:${night ? '#eef0e4' : '#16302a'};--tt-wordmark-dot:${night ? '#e8833a' : '#e07a2f'}}
+    --tt-wordmark-ink:${ink.hi};--tt-wordmark-dot:${ink.acc}}
   .st-card h1{margin:0 0 14px;line-height:0}
   .st-card h1 svg{width:600px;height:auto;display:block}
-  .st-card p{margin:0;font:400 26px 'Figtree Variable',sans-serif;color:${night ? '#c3cdc1' : '#38443c'}}
-  .st-card code{font:400 28px 'JetBrains Mono Variable',monospace;color:${night ? '#eaeee3' : '#1b2620'};padding:14px 24px;border:1px solid ${night ? 'rgba(150,170,155,.32)' : 'rgba(76,78,58,.3)'}}
-  .st-card code span{color:${night ? '#8fbf84' : '#3f6b45'}}
-  .st-card small{font:400 15px 'Figtree Variable',sans-serif;letter-spacing:.1em;color:${night ? '#93a497' : '#5e6a60'};text-transform:uppercase}`;
+  .st-card p{margin:0;font:400 26px ${sans};color:${ink.text}}
+  .st-card code{font:400 28px 'JetBrains Mono Variable',monospace;color:${ink.hi};background:${ink.win};padding:14px 24px;border:1px solid ${ink.line}}
+  .st-card code span{color:${ink.acc}}
+  .st-card small{font:500 15px 'JetBrains Mono Variable',monospace;letter-spacing:.1em;color:${ink.dim};text-transform:uppercase}`;
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const el = (tag, attrs = {}, html = '') => Object.assign(document.createElement(tag), attrs, { innerHTML: html });
   let cap, ov;
