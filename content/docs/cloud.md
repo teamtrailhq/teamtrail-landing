@@ -34,7 +34,7 @@ An owner connects repositories through Teamtrail Cloud's GitHub App and picks wh
 
 ## Agents in sandboxes
 
-Turn on **Run my agents** and Cloud runs Claude Code or Codex on the ready work, each agent in its own sandbox, on your own Anthropic or OpenAI key. Each ticket gets a branch and a pull request. The **Agents** page shows each run, its logs, its model and its hours. While the [review limit](/docs/review-capacity/#teamtrail-cloud) holds a trail back, no agent starts on it.
+Turn on **Run my agents** and Cloud runs Claude Code or Codex on the ready work, each agent in its own sandbox, on your own Anthropic or OpenAI key. Each ticket gets a branch and a pull request. The **Agents** page shows each run, its logs, its model and its hours. While the [review limit](/docs/review-capacity/#teamtrail-cloud) holds a trail back, no agent starts on it. Start a trail before your project has [checks](/docs/verification/) and the Lookout says so, with **Set checks**: discovery runs first, and building waits until checks are set or you start anyway.
 
 What you see keeps up with the runs:
 
