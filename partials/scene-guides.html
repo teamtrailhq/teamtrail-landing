@@ -1,0 +1,68 @@
+<!-- Scene: a ticket gets its guides by type, the checklists are answered, the guide's check runs (src/scenes/guidesScene.ts). The markup is the still frame. -->
+<figure class="scene scene--guides" data-scene="guides">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-wide">
+      <div class="sk-panel gd__card">
+        <div class="sk-panel__bar">
+          <span class="sk-key">#7</span><span class="gd__title">Show sync status in the note list</span
+          ><span class="sk-chip">Task</span>
+        </div>
+        <div class="gd__sec">
+          <span class="sk-label">Guides</span>
+          <div class="gd__guides">
+            <span class="gd__guide is-on" data-guide="qa"><b>QA</b><span class="gd__via">by type</span></span>
+            <span class="gd__guide is-on" data-guide="security"
+              ><b>Security</b><span class="gd__via">by type</span></span
+            >
+            <span class="gd__guide is-on" data-guide="a11y"
+              ><b>Accessibility</b><span class="gd__via gd__via--added">added</span></span
+            >
+          </div>
+        </div>
+        <div class="gd__claim is-on">
+          <span class="sk-avatar">c</span><b>claude-02</b><span class="sk-agent__model">Opus</span
+          ><span class="gd__claim-what">claimed · got 3 guides</span>
+        </div>
+        <div class="gd__sec">
+          <span class="sk-label">Checklists · <span class="sk-num" data-total>17</span>/17 answered</span>
+          <div class="gd__list is-complete" data-list="qa">
+            <span class="gd__name">QA</span
+            ><span class="gd__bar gd__bar--5"
+              ><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i
+              ><i class="is-on"></i></span
+            ><span class="gd__count"><span class="sk-num" data-answered>5</span>/5</span>
+          </div>
+          <div class="gd__list is-complete" data-list="security">
+            <span class="gd__name">Security</span
+            ><span class="gd__bar gd__bar--6"
+              ><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i
+              ><i class="is-on"></i></span
+            ><span class="gd__count"><span class="sk-num" data-answered>6</span>/6</span>
+          </div>
+          <div class="gd__list is-complete" data-list="a11y">
+            <span class="gd__name">Accessibility</span
+            ><span class="gd__bar gd__bar--6"
+              ><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i
+              ><i class="is-on"></i></span
+            ><span class="gd__count"><span class="sk-num" data-answered>6</span>/6</span>
+          </div>
+        </div>
+        <ol class="gd__checks">
+          <li class="sk-check is-done" data-check="tests">
+            <i class="sk-check__icon"></i><span class="sk-check__name">tests</span
+            ><span class="sk-check__what">npm test</span><span class="sk-check__meta">pass</span>
+          </li>
+          <li class="sk-check is-done" data-check="a11y">
+            <i class="sk-check__icon"></i><span class="sk-check__name">a11y</span
+            ><span class="sk-check__what">pa11y-ci · from Accessibility</span><span class="sk-check__meta">pass</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    A task gets its guides by type, QA and Security, and Accessibility added to this ticket alone. The agent that claims
+    it answers every item of each guide's checklist, then the checks run, including the one the Accessibility guide
+    adds, and both pass.
+  </figcaption>
+</figure>

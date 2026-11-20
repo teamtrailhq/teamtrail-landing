@@ -398,8 +398,6 @@ const nodeCentre = (key) =>
   }, key);
 /** The home page's "How it works" cards: 4:5, shown about 330 pixels wide. */
 const CARD = { width: 380, height: 475 };
-/** The features page's tight crops, shown at their own size beside the text. */
-const FEATURE = { width: 380, height: 420 };
 
 /**
  * Opens the Settings page at a section by its deep link (`?settings=<section>`, see settingsGroups.ts in the app),
@@ -513,7 +511,6 @@ const openNeed = async (text) => {
 const handsOffShots = async () => {
   await openNeed('Is silent auto-merge acceptable');
   await shot('lookout-hands-off');
-  await zoom('lookout-needs-you', ['.home-needs'], { aspect: null });
   // Progress and Since you were away, under it. A taller window holds them whole.
   await page.setViewportSize({ ...size, height: 1700 });
   await wait(900);
@@ -778,13 +775,6 @@ await page.locator('.stats-btn').click();
 await page.locator('.perf-recs li').first().waitFor({ timeout: 10000 });
 await wait(800);
 await zoom('lookout-trail-stats', ['.perf-section >> nth=0', '.perf-section >> nth=1'], { aspect: 16 / 10 });
-// The features page's crop: what stands out, in a narrow window, so it reads at its own size.
-await page.setViewportSize({ width: FEATURE.width, height: 1000 });
-await wait(1200);
-const standout = await page.locator('.perf-section').first().boundingBox();
-await cardShot('lookout-card-stats', { x: 0, y: standout.y - 16, ...FEATURE });
-await page.setViewportSize(size);
-await wait(800);
 await page.keyboard.press('Escape');
 await wait(500);
 
@@ -796,25 +786,6 @@ await page.getByRole('button', { name: 'Review brief' }).first().click({ timeout
 await page.locator('.brief-dialog').waitFor();
 await wait(800);
 await zoom('lookout-discovery', ['.brief-dialog'], { aspect: 16 / 10 });
-// The features page's crop: the brief's top in a narrow window, so it reads at its own size.
-// The dialog keeps a margin from the window's edges: size the window so the dialog is a little wider than the crop, and
-// crop inside it, past its side padding but never through its text.
-let briefWidth = FEATURE.width + 40;
-for (let i = 0; i < 4; i++) {
-  await page.setViewportSize({ width: briefWidth, height: 1000 });
-  await wait(900);
-  const b = await page.locator('.brief-dialog').boundingBox();
-  if (Math.abs(b.width - (FEATURE.width + 16)) < 2) break;
-  briefWidth += Math.round(FEATURE.width + 16 - b.width);
-}
-const brief = await page.locator('.brief-dialog').boundingBox();
-await cardShot('lookout-card-brief', {
-  x: Math.round(brief.x + (brief.width - FEATURE.width) / 2),
-  y: Math.round(Math.max(0, brief.y)),
-  ...FEATURE,
-});
-await page.setViewportSize(size);
-await wait(800);
 await page.keyboard.press('Escape');
 await closeBubble();
 await page.locator('.trail-btn').click();
@@ -836,34 +807,6 @@ await zoom('lookout-knowledge', ['.knowledge-view'], { aspect: null });
 await page.keyboard.press('Escape');
 await page.setViewportSize(size);
 await wait(500);
-
-// Acceptance criteria on a ticket, with the knowledge it brings: its bubble's Full ticket, a drawer over the map.
-// A taller window, so the ticket shows whole down to its criteria and guides.
-await page.setViewportSize({ ...size, height: 1900 });
-await openTicket('Instrument current');
-await fullTicket();
-await page.locator('.ticket-drawer .criteria-section').waitFor({ timeout: 15000 });
-await wait(1000);
-await zoom('lookout-criteria', ['.ticket-drawer .ticket-head', '.ticket-drawer .criteria-section'], {
-  aspect: null,
-  within: '.ticket-drawer',
-});
-await closeDrawer();
-// A finished task's guides (QA, by its type) and the agent's answers to their checklists, from its completion.
-await openTicket('Add a sync_failures table');
-await fullTicket();
-await page.locator('.ticket-drawer .ticket-progress').waitFor({ timeout: 15000 });
-// The attempt's Details hold the checklist answers.
-await page.locator('.ticket-drawer .ticket-progress').getByRole('button', { name: 'Details' }).first().click();
-await wait(1000);
-await zoom('lookout-ticket-guide', ['.ticket-drawer .ticket-how', '.ticket-drawer .ticket-progress'], {
-  aspect: null,
-  within: '.ticket-drawer',
-});
-await closeDrawer();
-await closeBubble();
-await page.setViewportSize(size);
-await wait(600);
 
 // A proposed new plan, drawn on the map: the cancelled ticket, the new ones and the one rewired after them.
 await page.locator('.reroute-banner').waitFor({ timeout: 15000 });
@@ -941,17 +884,6 @@ await zoom('lookout-parallel-ticket', ['.ticket-drawer .ticket-head', '.ticket-d
   within: '.ticket-drawer',
 });
 await closeDrawer();
-await closeBubble();
-
-// Settings → Project → Workspaces: a worktree and branch for each claimed ticket (on in lib/realProject.mjs).
-await page.setViewportSize({ ...size, height: 1100 });
-await openSettings('workspaces', 'center');
-await page.locator('.worktrees-toggle[aria-pressed="true"]').waitFor();
-await page.locator('.ws-row').nth(1).waitFor({ timeout: 10000 });
-await wait(900);
-await zoom('lookout-workspaces', ['#settings-workspaces'], { aspect: null });
-await page.setViewportSize(size);
-await closeSettings();
 await closeBubble();
 
 // All projects: this repo and billing-service (lib/realProject.mjs), with one Needs you list across them.

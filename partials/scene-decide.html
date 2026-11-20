@@ -1,0 +1,64 @@
+<!-- Scene: the risk policy sorts agents' calls (src/scenes/decideScene.ts). The markup is the still frame. -->
+<figure class="scene scene--decide scene--row reveal" data-scene="decide">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-wide">
+      <div class="sk-panel sk-agent dc__call dc__call--a is-on is-routed" data-call="a">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">x</span><b>codex-01</b><span class="sk-agent__model">GPT-5.1</span
+          ><span class="sk-key dc__on">#7</span>
+        </div>
+        <div class="sk-agent__body">
+          <div class="dc__q">Label the status “Synced 2 min ago”?</div>
+          <div class="dc__risk">
+            <span class="sk-chip">product-behaviour · medium</span><span class="dc__route">decides, on the record</span>
+          </div>
+        </div>
+      </div>
+      <div class="sk-panel sk-agent dc__call dc__call--b is-on is-routed" data-call="b">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">c</span><b>claude-02</b><span class="sk-agent__model">Opus</span
+          ><span class="sk-key dc__on">#6</span>
+        </div>
+        <div class="sk-agent__body">
+          <div class="dc__q">Delete notes older than 30 days from the device?</div>
+          <div class="dc__risk">
+            <span class="sk-chip sk-chip--urgent"><span class="sk-dot"></span>data-deletion · high</span
+            ><span class="dc__route">asks you</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc__stack">
+        <div class="sk-panel dc__needs has-need">
+          <div class="sk-panel__bar">
+            <span class="sk-label">Needs you</span>
+            <span class="sk-chip dc__count"><span class="sk-num" data-count>0</span> need you</span>
+          </div>
+          <div class="sk-need dc__need is-on is-resolved" data-need>
+            <span class="sk-label sk-need__kind">Question · #6 · claude-02 · high risk</span>
+            <div class="sk-need__title">Delete notes older than 30 days from the device?</div>
+            <span class="sk-btn sk-btn--urgent sk-need__act">Answer</span>
+            <span class="sk-need__done"><i class="sk-tick"></i></span>
+            <div class="dc__choices">
+              <span class="sk-choice">Yes, after 30 days</span>
+              <span class="sk-choice is-picked">No, keep them on the device</span>
+            </div>
+            <div class="dc__answered"><i class="sk-tick"></i><span>D-14 · decided by Alex Rivera</span></div>
+          </div>
+          <div class="dc__empty">Nothing needs you</div>
+        </div>
+        <div class="sk-panel dc__away">
+          <div class="sk-panel__bar"><span class="sk-label">Since you were away</span></div>
+          <div class="dc__away-row is-on" data-away>
+            <span class="sk-key">#7</span><span>codex-01 decided: “Synced 2 min ago”</span
+            ><span class="dc__away-act">Keep</span><span class="dc__away-act">Overrule</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    Two agents reach a call. The risk policy rates codex-01's label wording as product behaviour, medium risk: it
+    decides and the call shows under Since you were away, to keep or overrule. claude-02's question is about deleting
+    data, high risk: it comes to Needs you, you answer it in place, and it is recorded as your decision, by name.
+  </figcaption>
+</figure>

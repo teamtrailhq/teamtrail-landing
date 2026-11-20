@@ -2,14 +2,20 @@ import { $$ } from '../dom';
 import { chartScene } from './chartScene';
 import { cloudAwayScene } from './cloudAwayScene';
 import { cloudHeroScene } from './cloudHeroScene';
+import { criteriaScene } from './criteriaScene';
+import { decideScene } from './decideScene';
+import { guidesScene } from './guidesScene';
 import { needsScene } from './needsScene';
 import { parallelScene } from './parallelScene';
+import { planScene } from './planScene';
 import { proofScene } from './proofScene';
+import { recordScene } from './recordScene';
 import { scenePlayer, type Scene } from './sequencer';
 import { slackAnswerScene } from './slackAnswerScene';
 import { slackMentionScene } from './slackMentionScene';
 import { slackRiskScene } from './slackRiskScene';
 import { takeTurns } from './turns';
+import { worktreesScene } from './worktreesScene';
 
 const SCENES: Record<string, Scene> = {
   needs: needsScene,
@@ -21,6 +27,12 @@ const SCENES: Record<string, Scene> = {
   'slack-risk': slackRiskScene,
   'cloud-hero': cloudHeroScene,
   'cloud-away': cloudAwayScene,
+  plan: planScene,
+  worktrees: worktreesScene,
+  decide: decideScene,
+  criteria: criteriaScene,
+  record: recordScene,
+  guides: guidesScene,
 };
 
 /**
