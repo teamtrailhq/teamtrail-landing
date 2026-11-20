@@ -34,10 +34,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta name="theme-color" content="#0a0a0b" />
-    <link rel="icon" href="/media/brand/favicon-32.png?v=6" type="image/png" sizes="32x32" />
-    <link rel="icon" href="/media/brand/favicon-64.png?v=6" type="image/png" sizes="64x64" />
-    <link rel="icon" href="/media/brand/favicon.svg?v=6" type="image/svg+xml" sizes="any" />
-    <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png?v=6" />
+    <link rel="icon" href="/media/brand/favicon-32.png?v=7" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/media/brand/favicon-64.png?v=7" type="image/png" sizes="64x64" />
+    <link rel="icon" href="/media/brand/favicon.svg?v=7" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/media/brand/linkedin-discord-avatar-512.png?v=7" />
     <link
       rel="preload"
       href="/node_modules/@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2"
@@ -62,12 +62,7 @@
     <main id="main">
       <section class="hero hero--page hero--cloud" aria-labelledby="page-title">
         <div class="wrap hero__inner">
-          <div class="cloud-stage" aria-hidden="true">
-            <span class="scout-frame scout-frame--hero">
-              <span data-cloud-scout data-size="2.4"></span>
-              <span class="frame-tag">Early access</span>
-            </span>
-          </div>
+          <!-- @include scene-cloud-hero -->
           <span class="hero__badge" data-scramble>Teamtrail Cloud</span>
           <h1 id="page-title">
             Your Lookout, <br />
@@ -100,10 +95,29 @@
               whatever you sign in from.
             </p>
           </header>
-          <ol class="journey reveal" role="list">
+          <!-- Scene: the trail goes on while the laptop is closed (src/scenes/cloudAwayScene.ts). The markup is the still
+               frame. -->
+          <ol class="journey reveal" role="list" data-scene="cloud-away">
             <li>
-              <span class="journey__art journey__art--laptop" data-px-laptop aria-hidden="true">
-                <span class="zz">z<span>z</span></span>
+              <span class="journey__art" aria-hidden="true">
+                <span class="jy__laptop is-closed">
+                  <span class="jy__open">
+                    <span class="jy__lid"
+                      ><span class="jy__screen"><i></i><i></i><i></i><span class="jy__bar"></span></span
+                    ></span>
+                    <span class="jy__base"></span>
+                  </span>
+                  <!-- Closed, seen from the front right: the lid's top, its edge over the base's, the hinge at the back. -->
+                  <svg class="jy__closed" viewBox="0 0 160 92" width="150" height="86">
+                    <path class="jy__face" d="M36 10H152L128 60H12Z" />
+                    <path class="jy__edge" d="M12 60H128V67H12ZM128 60L152 10V17L128 67Z" />
+                    <path class="jy__edge" d="M12 67H128V79H12ZM128 67L152 17V29L128 79Z" />
+                    <path class="jy__hinge" d="M151 19L146 29.5" />
+                    <path class="jy__notch" d="M60 64H80" />
+                    <path class="jy__feet" d="M22 79V83H32V79M108 79V83H118V79" />
+                  </svg>
+                  <span class="jy__zz">z<span>z</span></span>
+                </span>
               </span>
               <h3>Your laptop</h3>
               <p>Closed. Nothing has to stay on.</p>
@@ -115,14 +129,34 @@
                   <span data-cloud-mid-scout></span>
                   <span class="frame-tag">Early access</span>
                 </span>
+                <span class="sk-panel jy__run is-done">
+                  <span class="jy__run-head"><b>claude-02</b><span class="sk-key">#7</span></span>
+                  <span class="sk-steps"
+                    ><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i
+                    ><i class="is-on"></i
+                  ></span>
+                </span>
               </span>
               <h3>Teamtrail Cloud</h3>
               <p>Your Lookout and your trails, always on, in a workspace of their own.</p>
             </li>
-            <li class="journey__link" aria-hidden="true"><i></i><i></i><i></i></li>
+            <li class="journey__link jy__link" aria-hidden="true">
+              <i class="is-on"></i><i class="is-on"></i><i class="is-on"></i>
+            </li>
             <li>
-              <span class="journey__art journey__art--phone" data-px-phone aria-hidden="true">
-                <span class="ping"></span>
+              <span class="journey__art" aria-hidden="true">
+                <span class="jy__phone has-need">
+                  <span class="jy__phone-bar">
+                    <span class="sk-chip sk-chip--urgent jy__count"><span class="sk-dot"></span>1</span>
+                  </span>
+                  <span class="jy__row is-on" data-row>
+                    <span class="jy__row-kind">#8</span>
+                    <i></i><i></i>
+                    <span class="jy__tap">Answer</span>
+                    <span class="jy__ok"><i class="sk-tick"></i></span>
+                  </span>
+                  <span class="jy__row jy__row--quiet"><i></i><i></i></span>
+                </span>
               </span>
               <h3>Any browser</h3>
               <p>Your phone, a teammate's laptop: sign in with GitHub and you're there.</p>

@@ -1,0 +1,75 @@
+<!-- Scene: a question answered from Slack (src/scenes/slackAnswerScene.ts). The markup is the still frame. -->
+<figure class="scene scene--flat scene--slack-answer" data-scene="slack-answer">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sa__canvas">
+      <div class="sk-panel sk-slack sa__slack">
+        <div class="sk-panel__bar">
+          <img class="sk-slack__mark" src="/media/brand/slack-mark.svg" width="14" height="14" alt="" />
+          <span class="sk-slack__channel"># offline-sync</span>
+          <span class="sk-label">Acme</span>
+        </div>
+        <div class="sk-msg sa__msg is-on is-answered">
+          <img class="sk-msg__avatar" src="/media/brand/scout-slack-64.png" width="30" height="30" alt="" />
+          <div class="sk-msg__body">
+            <div class="sk-msg__head"><b>Scout</b><span class="sk-msg__app">App</span><time>10:42</time></div>
+            <div class="sk-card">
+              <div class="sk-card__head">
+                <b class="sk-card__state"
+                  ><span class="sk-card__awaiting">◆ Awaiting you</span
+                  ><span class="sk-card__answered">◇ Answered</span></b
+                >
+                · Offline sync · #6 · claude-02
+              </div>
+              <div class="sk-card__quote">Is silent auto-merge acceptable for shared notebooks?</div>
+              <div class="sk-card__ask">
+                <div class="sk-card__note"><b>Answering this decides #6</b></div>
+                <div class="sk-card__btns">
+                  <span class="sk-sbtn">Yes, merge silently</span>
+                  <span class="sk-sbtn is-picked" data-pick>No, ask the owner first</span>
+                  <span class="sk-sbtn">Reply…</span>
+                </div>
+              </div>
+              <div class="sk-card__done">
+                <span class="sk-card__ok">✓</span> Answered by <span class="sk-mention">@Alex Rivera</span> via Slack:
+                “No, ask the owner first”. claude-02 resumed.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="sk-relay sa__relay"><i></i><i></i><i></i></span>
+      <div class="sk-panel sa__lookout">
+        <div class="sk-panel__bar">
+          <svg class="sk-logo" viewBox="0 0 200 200" width="14" height="14"><use href="#tt-logo" /></svg>
+          <span class="sk-label">Needs you</span>
+          <span class="sk-chip sk-chip--urgent"
+            ><span class="sk-dot"></span><span class="sk-num" data-count>2</span> need you</span
+          >
+        </div>
+        <ol class="sa__rows">
+          <li class="sk-need is-resolved" data-row="a">
+            <span class="sk-label sk-need__kind">Question · #6 · claude-02</span>
+            <div class="sk-need__title">Is silent auto-merge acceptable for shared notebooks?</div>
+            <span class="sk-btn sk-btn--urgent sk-need__act">Answer</span>
+            <span class="sk-need__done"><i class="sk-tick"></i></span>
+            <div class="ny__answered"><i class="sk-tick"></i><span>Answered in Slack · Alex Rivera</span></div>
+          </li>
+          <li class="sk-need" data-row="b">
+            <span class="sk-label sk-need__kind">Approval · #4 · codex-01</span>
+            <div class="sk-need__title">Conflict log schema: verified, waiting for you</div>
+            <span class="sk-btn sk-btn--urgent sk-need__act">Review</span>
+          </li>
+          <li class="sk-need" data-row="c">
+            <span class="sk-label sk-need__kind">Plan · Offline sync</span>
+            <div class="sk-need__title">Approve the plan: 9 tickets, 14 criteria</div>
+            <span class="sk-btn sk-need__act">Review</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    Scout posts an agent's question in a Slack thread with answer buttons. You click one, the card closes with your
+    answer, the agent resumes, and the question leaves Needs you in the Lookout.
+  </figcaption>
+</figure>
