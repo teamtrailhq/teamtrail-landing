@@ -40,7 +40,7 @@
   --tt-logo-tile: #0e0f11;
   --tt-logo-edge: #0e0f11;
   --tt-logo-mark: #ffffff;
-  --tt-logo-dot: var(--fill);
+  --tt-logo-cursor: var(--fill);
   /* Guide icons (guideMarkup from @teamtrail/scout-avatar): the symbol alone on the page, ink with one blaze accent.
    * Older versions of the package drew a tile from --tt-guide-bg and --tt-guide-line: transparent, so none shows. */
   --tt-guide-ink: #0e0f11;
