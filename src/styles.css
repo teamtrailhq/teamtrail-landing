@@ -2446,12 +2446,14 @@ pre,
 
 .hero--home h1 {
   font-size: clamp(40px, 5.2vw, 72px);
+  line-height: 1.1;
+  margin-block: 12px 4px;
 }
 .hero--home .hero__inner {
-  gap: 26px;
+  gap: 30px;
 }
 .hero--home h1 .line + .line {
-  margin-top: 0;
+  margin-top: 0.06em;
 }
 .mark {
   color: var(--text-hi);
