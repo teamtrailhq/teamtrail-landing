@@ -44,12 +44,13 @@ Without this file, nothing is verified. Teamtrail writes to it when you set the 
 
 ### A check
 
-| Key          | Type             | Default   |                                                                                                                                                                                    |
-| ------------ | ---------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `run`        | string array     | required  | The command as argv, for example `["npm", "test"]`. A shell string is an error: there is no shell.                                                                                 |
-| `timeoutSec` | positive integer | `600`     | Time limit for this check.                                                                                                                                                         |
-| `cwd`        | path             | repo root | Working directory, relative to the repo root. It must stay inside the repo. Set it in the check's **Folder** field; a folder set there must be a real folder, not a symbolic link. |
-| `guards`     | glob array       | `[]`      | Globs the [check guard](/docs/verification/#check-guard) also watches for this check, beyond the scripts, tool config and files it finds from the command.                         |
+| Key          | Type             | Default      |                                                                                                                                                                                                                                                                                                     |
+| ------------ | ---------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `run`        | string array     | required     | The command as argv, for example `["npm", "test"]`. A shell string is an error: there is no shell.                                                                                                                                                                                                  |
+| `timeoutSec` | positive integer | `600`        | Time limit for this check.                                                                                                                                                                                                                                                                          |
+| `cwd`        | path             | repo root    | Working directory, relative to the repo root. It must stay inside the repo. Set it in the check's **Folder** field; a folder set there must be a real folder, not a symbolic link.                                                                                                                  |
+| `guards`     | glob array       | `[]`         | Globs the [check guard](/docs/verification/#check-guard) also watches for this check, beyond the scripts, tool config and files it finds from the command.                                                                                                                                          |
+| `paths`      | glob array       | every change | In a monorepo, the files this check is about, relative to the repo root (`apps/web/**`). A completion whose changes are all outside them doesn't run it. Set it in the check's **Paths** field; a suggested check for a workspace package comes with its folder. See [Monorepos](#monorepos-paths). |
 
 Checks run with an allowlisted environment: the shell, locale and toolchain basics, without tokens, keys or anything named like a secret. Name extra variables a check needs in `TEAMTRAIL_CHECK_ENV` on your machine, never in the repo:
 
@@ -60,6 +61,26 @@ TEAMTRAIL_CHECK_ENV="DATABASE_URL, REDIS_URL, APP_*" teamtrail
 Token-shaped output is redacted. With [workspaces](/docs/parallel-work/) on, a ticket's checks run in its worktree.
 
 Checks run as you, without a sandbox: they can read what your account can read. Approval covers the command line, not what it runs (`npm run check` runs `package.json` scripts an agent can edit).
+
+### Monorepos: paths
+
+Give each package's check the paths it is about, and a change to one package doesn't run the others' checks:
+
+```json
+"checks": {
+  "web": { "run": ["npm", "test"], "cwd": "apps/web", "paths": ["apps/web/**"] },
+  "api": { "run": ["uv", "run", "--frozen", "pytest"], "cwd": "services/api", "paths": ["services/api/**"] }
+}
+```
+
+A check with `paths` is skipped only when every changed file is outside them. Every check still runs when:
+
+- a changed file is shared by the whole repo: any lockfile, the top folder's manifests, workspace and tool config, toolchain pins (`.nvmrc`, `.python-version`, `mise.toml`) and CI config;
+- a changed file is in no check's `paths` (a change nobody scoped is everybody's);
+- the change reaches what the check runs, as the [check guard](/docs/verification/#check-guard) reads it (its scripts, its tools' config, its `guards`), or an acceptance criterion names the check as its evidence;
+- Teamtrail can't stand behind the list of changed files (no signed baseline from the claim), or nothing changed.
+
+Moving a file out of a package counts as a change in both places. [Checks on main](/docs/verification/#checks-on-main), a trail's combined run and remote agents' completions always run every check. A skipped check is listed on the attempt and in the [proof](/docs/verification/#verified-by-teamtrail) ("not run: changes outside apps/web"). `paths` are part of the file you approve, and shown in the approval diff.
 
 ### setup
 
