@@ -10,6 +10,7 @@ import { initScramble } from './scramble';
 import { initNav, initReveal } from './scroll';
 import { isNight, onThemeChange } from './theme';
 import { initThemeSwitch } from './themeSwitch';
+import { initTrail } from './trail';
 import { initVideo } from './video';
 import { initWaitlist } from './waitlist';
 
@@ -48,4 +49,5 @@ initCopy();
 initGuideDialogs();
 initCmdCycle(reducedMotion);
 initVideo(reducedMotion);
+initTrail();
 initWaitlist();
