@@ -13,7 +13,7 @@
   height: 480px;
 }
 .scene--guides .sk-stage {
-  height: 400px;
+  height: 440px;
 }
 /* A wider canvas than home's cards, centred, so the pieces keep their places at every column width. */
 .sk-wide {
@@ -918,8 +918,12 @@
 }
 .gd__checks {
   margin: 0;
-  padding: 0;
+  padding: 0 0 6px;
   list-style: none;
+}
+/* The kit's check line sets its command at line-height 1; here it gets room for descenders (pa11y). */
+.gd__checks .sk-check__what {
+  line-height: 1.45;
 }
 .sk-live .gd__guide:not(.is-on) {
   opacity: 0;
