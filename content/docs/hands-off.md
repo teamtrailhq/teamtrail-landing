@@ -35,7 +35,7 @@ One row is open at a time: the first, until you open or close another. An open r
 | A reroute           | **Review** opens the proposal, with its changes drawn on the map.                                                                               |
 | A suggested reroute | **Carry on** sets it aside; there is no proposal to review until an agent makes one.                                                            |
 
-A row on a ticket acts on what the row asks, even when the ticket has other items waiting. **Open ticket** opens the full ticket in a drawer over the home. Five rows show (three on a phone); **Show N more** shows the rest. With nothing waiting, Scout says so: _Nothing needs you. Agents keep going; you'll hear only if something does._
+A row on a ticket acts on what the row asks, even when the ticket has other items waiting. **Open ticket** opens the full ticket in a drawer over the home; **← Back**, Esc or your browser's Back returns you to the row you came from. A page opened from a row, such as **The whole conversation**, has **← Back** in the header. Five rows show (three on a phone); **Show N more** shows the rest. With nothing waiting, Scout says so: _Nothing needs you. Agents keep going; you'll hear only if something does._
 
 A long reason folds behind **Read more**. A row leaves as soon as it's handled, wherever you handled it: another tab, your phone, Slack or `teamtrail approve`. Agents waiting on it [pick up the work](/docs/mcp-tools/#waiting-for-work) at once.
 

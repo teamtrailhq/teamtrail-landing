@@ -212,7 +212,7 @@ A trail is **verified** only when every ticket's proof is and that combined run 
 - "#2 is reverted on main"
 - "test fails on main at abc1234 after merging"
 
-**Work that didn't land isn't the destination.** While a done ticket's pull request was closed without merging, or its work was reverted on the default branch, the trail isn't done: no flag at the destination and no Destination reached ("The work hasn't landed: #3 closed without merging"). It is done again once that work reaches the default branch, for example through a replacement pull request.
+**Work that didn't land isn't the destination.** While a done ticket's pull request was closed without merging, or its work was reverted on the default branch, the trail isn't done: the finish square at the destination stays unfilled and there is no Destination reached ("The work hasn't landed: #3 closed without merging"). It is done again once that work reaches the default branch, for example through a replacement pull request.
 
 **When it fails**, an item lands in [Waiting on you](/docs/waiting-on-you/) ("Trail checks fail on main after merging #2, #3"), the destination flag on the map turns red, and Destination reached offers **See what fails**. The flag's bubble shows the output, with **Add a fix ticket** and **Run again**. **When it passes**, the trail says "Verified together on main at abc1234".
 
