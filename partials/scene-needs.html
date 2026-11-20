@@ -1,0 +1,62 @@
+<!-- Scene: Hands-off's Needs you list (src/scenes/needsScene.ts). The markup is the still frame. -->
+<figure class="scene scene--needs" data-scene="needs">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-panel ny__progress">
+      <div class="sk-panel__bar">
+        <span class="sk-label">Progress · 6 of 14 done</span>
+      </div>
+      <div class="ny__bar">
+        <i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-done"></i
+        ><i class="is-done"></i><i class="is-done"></i><i class="is-live"></i><i class="is-live"></i
+        ><i class="is-need"></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+    <div class="sk-panel ny__list">
+      <div class="sk-panel__bar">
+        <span class="sk-label">Needs you</span>
+        <span class="sk-chip sk-chip--urgent ny__count"
+          ><span class="sk-dot"></span><span class="sk-num" data-count>3</span> need you</span
+        >
+      </div>
+      <ol class="ny__rows">
+        <li class="sk-need is-primary is-open" data-row="a">
+          <span class="sk-label sk-need__kind">Question · #6 · claude-02</span>
+          <div class="sk-need__title">Is silent auto-merge acceptable for shared notebooks?</div>
+          <span class="sk-btn sk-btn--urgent sk-need__act">Answer</span>
+          <span class="sk-need__done"><i class="sk-tick"></i></span>
+          <div class="ny__choices">
+            <span class="sk-choice">Yes, merge silently</span>
+            <span class="sk-choice">Yes, and tell the owner</span>
+            <span class="sk-choice is-picked">No, ask the owner first</span>
+          </div>
+          <div class="ny__answered"><i class="sk-tick"></i><span>Answered: no, ask the owner first</span></div>
+        </li>
+        <li class="sk-need" data-row="b">
+          <span class="sk-label sk-need__kind">Question · #7 · codex-01</span>
+          <div class="sk-need__title">Should merge summaries name who made each change?</div>
+          <span class="sk-btn sk-btn--urgent sk-need__act">Answer</span>
+        </li>
+        <li class="sk-need" data-row="c">
+          <span class="sk-label sk-need__kind">Plan · Fieldnote offline sync</span>
+          <div class="sk-need__title">Approve the plan: 9 tickets, 14 criteria</div>
+          <span class="sk-btn sk-need__act">Review</span>
+        </li>
+      </ol>
+      <div class="ny__away">
+        <span class="sk-label">Since you were away</span>
+        <div class="ny__away-row">
+          <span class="sk-key">#3</span><span>claude-02 decided: keep drafts in IndexedDB</span
+          ><span class="ny__away-act">Keep</span>
+        </div>
+        <div class="ny__away-row">
+          <span class="sk-key">#2</span><span>codex-01 finished: conflict log schema</span
+          ><span class="ny__away-ok"><i class="sk-tick"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    Hands-off's Needs you list: an agent's question arrives at the top, you answer it in place, the row resolves and the
+    next item rises, while the trail's progress shows behind it.
+  </figcaption>
+</figure>

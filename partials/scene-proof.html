@@ -1,0 +1,61 @@
+<!-- Scene: a completion verified and signed (src/scenes/proofScene.ts). The markup is the still frame. -->
+<figure class="scene scene--proof reveal" data-scene="proof">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-panel sk-agent proof__done is-on">
+      <div class="sk-agent__head">
+        <span class="sk-avatar">c</span><b>claude-02</b><span class="sk-agent__model">Opus</span
+        ><span class="sk-agent__state">done</span>
+      </div>
+      <div class="sk-agent__body">
+        <div class="sk-line"><span class="sk-line__cmd">complete_ticket</span> #8 · 6 files changed</div>
+        <div class="sk-worked"><span class="sk-chev"></span>Worked for 4 min · submitted for verification</div>
+      </div>
+    </div>
+    <div class="sk-panel proof__card is-on is-verified">
+      <div class="sk-panel__bar">
+        <span class="sk-label">Proof · #8</span>
+        <span class="sk-chip proof__state"
+          ><span class="sk-dot"></span><span class="proof__state-text">verified</span></span
+        >
+      </div>
+      <div class="proof__title">Instrument the sync failure rate in production</div>
+      <ol class="proof__checks">
+        <li class="sk-check is-done" data-check="lint">
+          <i class="sk-check__icon"></i><span class="sk-check__name">lint</span
+          ><span class="sk-check__what">npm run lint</span><span class="sk-check__meta">1.2s</span>
+        </li>
+        <li class="sk-check is-done" data-check="types">
+          <i class="sk-check__icon"></i><span class="sk-check__name">typecheck</span
+          ><span class="sk-check__what">tsc --noEmit</span><span class="sk-check__meta">4.8s</span>
+        </li>
+        <li class="sk-check is-done" data-check="tests">
+          <i class="sk-check__icon"></i><span class="sk-check__name">tests</span
+          ><span class="sk-check__what"><span class="proof__count">412</span> passed</span
+          ><span class="sk-check__meta">18.3s</span>
+        </li>
+        <li class="sk-check is-done" data-check="review">
+          <i class="sk-check__icon"></i><span class="sk-check__name">review</span
+          ><span class="sk-check__what">gpt-5 ≠ author opus</span><span class="sk-check__meta">pass</span>
+        </li>
+        <li class="sk-check is-done" data-check="guard">
+          <i class="sk-check__icon"></i><span class="sk-check__name">check guard</span
+          ><span class="sk-check__what">checks untouched</span><span class="sk-check__meta">pass</span>
+        </li>
+      </ol>
+      <div class="proof__verdict">
+        <span class="proof__seal"><i class="sk-tick"></i></span>
+        <span class="proof__verdict-text">
+          <b class="proof__yes">Verified by Teamtrail</b><b class="proof__wait">Verifying · 5 checks</b>
+        </span>
+      </div>
+      <div class="proof__digest">
+        <span class="proof__digest-text">sha256:4f9c07e1…e21a · signed ed25519 · proof-keys/arek-mbp.pub</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    An agent's completion comes in and Teamtrail checks it itself: lint, typecheck and 412 tests pass, a review by gpt-5
+    passes where the author was opus, and the check guard finds the checks untouched. The ticket turns Verified by
+    Teamtrail with a signed proof digest.
+  </figcaption>
+</figure>
