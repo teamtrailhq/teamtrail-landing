@@ -806,7 +806,6 @@ code {
 }
 .shot--hero {
   margin-top: 0;
-  box-shadow: 0 -24px 90px -10px rgba(var(--fill-rgb), 0.22);
 }
 /* A small crop shown at its own size (its width and height are CSS pixels; the file is 2x), never stretched. */
 .shot--natural {
@@ -1115,6 +1114,177 @@ code {
 }
 .hero--home .hero__actions {
   margin-top: 8px;
+}
+
+/* Home hero's trail (partials/trail.html): stretched over the hero, above its fade and under the copy. Strokes,
+   junctions and the destination keep their pixel size (vector-effect), so a junction stays square at any width. It
+   draws itself once on load; at rest, and with reduced motion, it is the finished trail. */
+.trail {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.trail path {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+.trail--narrow {
+  display: none;
+}
+.trail__line {
+  stroke: var(--fill);
+  stroke-opacity: 0.55;
+  stroke-width: 2.5px;
+  stroke-linejoin: miter;
+}
+/* The line's mask, in the trail's own units (it scales with the hero): wide enough to uncover the line anywhere. */
+.trail .trail__walk {
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linecap: square;
+  vector-effect: none;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.trail__branch {
+  stroke: var(--faint);
+  stroke-opacity: 0.55;
+  stroke-width: 1.5px;
+  stroke-dasharray: 4 5;
+}
+/* Junctions and the destination are zero-length strokes: a square cap is a square, a round cap a dot. */
+.trail__node,
+.trail__wait,
+.trail__hole {
+  stroke-linecap: square;
+}
+.trail__node {
+  stroke: var(--text-hi);
+  stroke-opacity: 0.8;
+  stroke-width: 10px;
+}
+.trail__wait {
+  stroke: var(--fill);
+  stroke-opacity: 0.75;
+  stroke-width: 11px;
+}
+.trail__hole {
+  stroke: var(--bg);
+  stroke-width: 7px;
+}
+.trail__ring,
+.trail__gap,
+.trail__dest {
+  stroke-linecap: round;
+}
+.trail__ring {
+  stroke: var(--fill);
+  stroke-opacity: 0.35;
+  stroke-width: 30px;
+}
+.trail__gap {
+  stroke: var(--bg);
+  stroke-width: 27px;
+}
+.trail__dest {
+  stroke: var(--fill);
+  stroke-width: 15px;
+}
+@media (max-width: 1099px) {
+  .trail--wide {
+    display: none;
+  }
+  .trail--narrow {
+    display: block;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .trail__walk {
+    animation: trail-draw 3.4s linear 0.4s both;
+  }
+  .trail--narrow .trail__walk {
+    animation-duration: 2.6s;
+    animation-delay: 0.3s;
+  }
+  .trail [class*='trail__at-'] {
+    animation: trail-arrive 0.45s var(--ease) both;
+  }
+  .trail--wide .trail__at-1 {
+    animation-delay: 0.61s;
+  }
+  .trail--wide .trail__at-2 {
+    animation-delay: 1.02s;
+  }
+  .trail--wide .trail__at-3 {
+    animation-delay: 1.98s;
+  }
+  .trail--wide .trail__at-4 {
+    animation-delay: 2.6s;
+  }
+  .trail--wide .trail__at-5 {
+    animation-delay: 3.61s;
+  }
+  .trail--wide .trail__at-6 {
+    animation-delay: 3.8s;
+  }
+  .trail--narrow .trail__at-1 {
+    animation-delay: 0.83s;
+  }
+  .trail--narrow .trail__at-2 {
+    animation-delay: 1.76s;
+  }
+  .trail--narrow .trail__at-3 {
+    animation-delay: 2.54s;
+  }
+  .trail--narrow .trail__at-6 {
+    animation-delay: 2.9s;
+  }
+  /* Once there, the waiting junction and the destination's ring breathe, slowly. */
+  .trail .trail__wait {
+    animation-name: trail-arrive, trail-breathe;
+    animation-duration: 0.45s, 4s;
+    animation-timing-function: var(--ease), ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: both, none;
+  }
+  .trail .trail__ring {
+    animation-name: trail-arrive, trail-breathe;
+    animation-duration: 0.45s, 5s;
+    animation-timing-function: var(--ease), ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: both, none;
+  }
+  .trail--wide .trail__wait {
+    animation-delay: 2.6s, 3.05s;
+  }
+  .trail--narrow .trail__wait {
+    animation-delay: 1.76s, 2.21s;
+  }
+  .trail--wide .trail__ring {
+    animation-delay: 3.8s, 4.25s;
+  }
+  .trail--narrow .trail__ring {
+    animation-delay: 2.9s, 3.35s;
+  }
+}
+@keyframes trail-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes trail-arrive {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes trail-breathe {
+  50% {
+    opacity: 0.35;
+  }
 }
 
 /* Theme cards: a screenshot, a short headline, one line and Read more. */
