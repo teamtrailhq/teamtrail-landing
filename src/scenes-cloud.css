@@ -89,11 +89,10 @@
   grid-template-columns: 14px 44px minmax(0, 1fr) auto;
 }
 .ch__verdict {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 44px;
-  padding: 0 14px;
+  display: grid;
+  justify-items: start;
+  gap: 7px;
+  padding: 10px 14px 11px;
   border-top: 1px solid var(--line);
 }
 .ch__verdict > * {
@@ -102,7 +101,6 @@
     transform 0.35s var(--ease);
 }
 .ch__merged {
-  margin-left: auto;
   white-space: nowrap;
   font: 400 11px/1 var(--code);
   color: var(--dim);
@@ -117,8 +115,52 @@
 .jy__laptop {
   position: relative;
   display: grid;
+  align-items: end;
   justify-items: center;
   width: 150px;
+  height: 128px;
+}
+.jy__open,
+.jy__closed {
+  grid-area: 1 / 1;
+  transition: opacity 0.35s;
+}
+.jy__open {
+  display: grid;
+  justify-items: center;
+}
+/* The closed laptop: square-cornered lines in the ink, the lid's top on the page's second surface. */
+.jy__closed {
+  display: block;
+  margin-bottom: 4px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: miter;
+}
+.jy__face {
+  fill: var(--bg-2);
+}
+.jy__edge {
+  fill: var(--panel);
+}
+.jy__hinge {
+  stroke-width: 5;
+  stroke-linecap: square;
+}
+.jy__notch {
+  stroke: var(--faint);
+}
+.jy__laptop:not(.is-closed) .jy__closed {
+  opacity: 0;
+}
+/* The lid folds down first, then the closed laptop takes its place. */
+.jy__laptop.is-closed .jy__open {
+  opacity: 0;
+  transition-delay: 0.5s;
+}
+.jy__laptop.is-closed .jy__closed {
+  transition-delay: 0.5s;
 }
 .jy__lid {
   display: block;
@@ -164,8 +206,8 @@
 }
 .jy__zz {
   position: absolute;
-  top: 34px;
-  right: 10px;
+  top: 6px;
+  right: 2px;
   font-weight: 600;
   font-size: 18px;
   color: var(--accent);
@@ -314,7 +356,7 @@
 
 @media (max-width: 560px) {
   .scene--cloud-hero .sk-stage {
-    height: 350px;
+    height: 370px;
   }
   .ch__canvas {
     width: 340px;

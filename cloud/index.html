@@ -101,10 +101,21 @@
             <li>
               <span class="journey__art" aria-hidden="true">
                 <span class="jy__laptop is-closed">
-                  <span class="jy__lid"
-                    ><span class="jy__screen"><i></i><i></i><i></i><span class="jy__bar"></span></span
-                  ></span>
-                  <span class="jy__base"></span>
+                  <span class="jy__open">
+                    <span class="jy__lid"
+                      ><span class="jy__screen"><i></i><i></i><i></i><span class="jy__bar"></span></span
+                    ></span>
+                    <span class="jy__base"></span>
+                  </span>
+                  <!-- Closed, seen from the front right: the lid's top, its edge over the base's, the hinge at the back. -->
+                  <svg class="jy__closed" viewBox="0 0 160 92" width="150" height="86">
+                    <path class="jy__face" d="M36 10H152L128 60H12Z" />
+                    <path class="jy__edge" d="M12 60H128V67H12ZM128 60L152 10V17L128 67Z" />
+                    <path class="jy__edge" d="M12 67H128V79H12ZM128 67L152 17V29L128 79Z" />
+                    <path class="jy__hinge" d="M151 19L146 29.5" />
+                    <path class="jy__notch" d="M60 64H80" />
+                    <path class="jy__feet" d="M22 79V83H32V79M108 79V83H118V79" />
+                  </svg>
                   <span class="jy__zz">z<span>z</span></span>
                 </span>
               </span>
