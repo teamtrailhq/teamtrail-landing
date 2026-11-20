@@ -1,16 +1,28 @@
 import { $$ } from '../dom';
 import { chartScene } from './chartScene';
+import { criteriaScene } from './criteriaScene';
+import { decideScene } from './decideScene';
+import { guidesScene } from './guidesScene';
 import { needsScene } from './needsScene';
 import { parallelScene } from './parallelScene';
+import { planScene } from './planScene';
 import { proofScene } from './proofScene';
+import { recordScene } from './recordScene';
 import { scenePlayer, type Scene } from './sequencer';
 import { takeTurns } from './turns';
+import { worktreesScene } from './worktreesScene';
 
 const SCENES: Record<string, Scene> = {
   needs: needsScene,
   chart: chartScene,
   parallel: parallelScene,
   proof: proofScene,
+  plan: planScene,
+  worktrees: worktreesScene,
+  decide: decideScene,
+  criteria: criteriaScene,
+  record: recordScene,
+  guides: guidesScene,
 };
 
 /**

@@ -1,0 +1,80 @@
+<!-- Scene: a worktree and branch per claimed ticket (src/scenes/worktreesScene.ts). The markup is the still frame. -->
+<figure class="scene scene--worktrees scene--row reveal" data-scene="worktrees">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-wide">
+      <div class="wt__main"><span class="wt__node"></span><span class="sk-label">main</span></div>
+      <i class="wt__rail"></i>
+      <i class="wt__branch wt__branch--a is-on"></i>
+      <div class="sk-panel wt__card wt__card--a is-on is-ready is-verified" data-wt="a">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">c</span><b>claude-02</b><span class="sk-agent__model">Opus</span
+          ><span class="wt__state"
+            ><span class="wt__prep">setting up</span><span class="wt__working"><span class="sk-dot"></span>working</span
+            ><span class="wt__verified"
+              ><i class="sk-tick"></i>verified<span class="wt__more"> · yours to merge</span></span
+            ></span
+          >
+        </div>
+        <div class="wt__body">
+          <div class="sk-agent__ticket">
+            <span class="sk-key">#4</span><span class="sk-agent__title">Queue edits while offline</span>
+          </div>
+          <div class="wt__line"><span class="wt__k">branch</span>teamtrail/offline-sync/4</div>
+          <div class="wt__line"><span class="wt__k">folder</span>../fieldnote.teamtrail/offline-sync-4</div>
+          <div class="wt__setup">
+            <i class="sk-check__icon"></i><span class="wt__k">setup</span>npm ci<span class="wt__time">14s</span>
+          </div>
+        </div>
+      </div>
+      <i class="wt__branch wt__branch--b is-on"></i>
+      <div class="sk-panel wt__card wt__card--b is-on is-ready" data-wt="b">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">x</span><b>codex-01</b><span class="sk-agent__model">GPT-5.1</span
+          ><span class="wt__state"
+            ><span class="wt__prep">setting up</span><span class="wt__working"><span class="sk-dot"></span>working</span
+            ><span class="wt__verified"
+              ><i class="sk-tick"></i>verified<span class="wt__more"> · yours to merge</span></span
+            ></span
+          >
+        </div>
+        <div class="wt__body">
+          <div class="sk-agent__ticket">
+            <span class="sk-key">#5</span><span class="sk-agent__title">Add a sync_failures table</span>
+          </div>
+          <div class="wt__line"><span class="wt__k">branch</span>teamtrail/offline-sync/5</div>
+          <div class="wt__line"><span class="wt__k">folder</span>../fieldnote.teamtrail/offline-sync-5</div>
+          <div class="wt__setup">
+            <i class="sk-check__icon"></i><span class="wt__k">setup</span>npm ci<span class="wt__time">14s</span>
+          </div>
+        </div>
+      </div>
+      <i class="wt__branch wt__branch--c is-on"></i>
+      <div class="sk-panel wt__card wt__card--c is-on is-ready" data-wt="c">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">c</span><b>claude-03</b><span class="sk-agent__model">Sonnet</span
+          ><span class="wt__state"
+            ><span class="wt__prep">setting up</span><span class="wt__working"><span class="sk-dot"></span>working</span
+            ><span class="wt__verified"
+              ><i class="sk-tick"></i>verified<span class="wt__more"> · yours to merge</span></span
+            ></span
+          >
+        </div>
+        <div class="wt__body">
+          <div class="sk-agent__ticket">
+            <span class="sk-key">#7</span><span class="sk-agent__title">Show sync status in the note list</span>
+          </div>
+          <div class="wt__line"><span class="wt__k">branch</span>teamtrail/offline-sync/7</div>
+          <div class="wt__line"><span class="wt__k">folder</span>../fieldnote.teamtrail/offline-sync-7</div>
+          <div class="wt__setup">
+            <i class="sk-check__icon"></i><span class="wt__k">setup</span>npm ci<span class="wt__time">14s</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    Three agents each claim a ticket, and each gets its own git worktree on its own branch, with the approved setup step
+    run in it first. When claude-02's work is verified, its branch stays as it is: Teamtrail never merges, pushes or
+    deletes it.
+  </figcaption>
+</figure>

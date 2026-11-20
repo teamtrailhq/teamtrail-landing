@@ -3,6 +3,7 @@
  * carries no stylistic sets (cv11, ss01, ss03), so it stays as drawn. */
 @import '@fontsource-variable/inter/opsz.css';
 @import './scenes.css';
+@import './scenes-pages.css';
 
 /* Two fonts: Inter for everything, JetBrains Mono for commands, code and labels. Dark-first: near-black surfaces,
  * hairline borders, square corners and one accent, blaze (the paint mark that shows a trail), for primary buttons,
@@ -801,18 +802,6 @@ code {
 .shot--hero {
   margin-top: 0;
 }
-/* A small crop shown at its own size, never stretched: the features page's close-ups are 380 CSS pixels wide (FEATURE in
- * scripts/media.mjs; the file is 2x), so the Lookout's text reads at its own size, and a little smaller on a phone.
- * CSS `width: auto` would take the file's 2x width, so the width is set here. */
-.shot--natural {
-  padding: 40px 16px 16px;
-}
-.shot--natural img {
-  width: 380px;
-  max-width: 100%;
-  margin-inline: auto;
-}
-
 /* ---------- problem ---------- */
 
 .trio {
@@ -1598,14 +1587,14 @@ code {
   transform: translateX(3px);
 }
 
-/* A theme on /features: one screenshot beside a short list of what's in it. */
+/* A theme on /features: one product scene beside a short list of what's in it. */
 .theme-row {
   display: grid;
   grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
   gap: clamp(32px, 4vw, 64px);
   align-items: start;
 }
-.theme-row--flip .shot {
+.theme-row--flip > .scene {
   order: 2;
 }
 .theme-row--flip {
@@ -2084,7 +2073,7 @@ code {
   .theme-row--flip {
     grid-template-columns: 1fr;
   }
-  .theme-row--flip .shot {
+  .theme-row--flip > .scene {
     order: 0;
   }
   .trio > li + li {

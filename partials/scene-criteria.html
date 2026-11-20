@@ -1,0 +1,74 @@
+<!-- Scene: criteria met with evidence, and the last gap closing itself (src/scenes/criteriaScene.ts). The markup is the still frame. -->
+<figure class="scene scene--criteria scene--row reveal" data-scene="criteria">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-wide">
+      <div class="sk-panel ac__done is-on">
+        <div class="sk-line">
+          <span class="sk-line__cmd">complete_ticket</span> #8 · claude-02 · Opus · 5 files changed
+        </div>
+      </div>
+      <div class="sk-panel ac__card is-on">
+        <div class="sk-panel__bar">
+          <span class="sk-key">#8</span><span class="ac__title">Retry failed syncs with backoff</span>
+        </div>
+        <div class="ac__sub">
+          <span class="sk-label">Acceptance criteria</span
+          ><span class="ac__confirmed"><i class="sk-tick"></i>confirmed by Alex Rivera before work</span>
+        </div>
+        <ol class="ac__list">
+          <li class="ac__row is-verified" data-ac="1">
+            <span class="sk-key">AC-1</span>
+            <span class="ac__text">Retries back off 1s, 2s, 4s, then stop</span>
+            <span class="ac__kind">unit</span>
+            <span class="ac__ev">check: tests</span>
+            <span class="ac__res"
+              ><span class="ac__run">running</span><span class="sk-chip sk-chip--ok ac__ok">verified</span
+              ><span class="sk-chip ac__claim">claimed</span></span
+            >
+          </li>
+          <li class="ac__row is-verified" data-ac="2">
+            <span class="sk-key">AC-2</span>
+            <span class="ac__text">A note is never overwritten without a conflict copy</span>
+            <span class="ac__kind">business rule · K-3</span>
+            <span class="ac__ev">check: e2e</span>
+            <span class="ac__res"
+              ><span class="ac__run">running</span><span class="sk-chip sk-chip--ok ac__ok">verified</span
+              ><span class="sk-chip ac__claim">claimed</span></span
+            >
+          </li>
+          <li class="ac__row is-claimed" data-ac="3">
+            <span class="sk-key">AC-3</span>
+            <span class="ac__text">A failed sync is logged with its reason</span>
+            <span class="ac__kind">integration</span>
+            <span class="ac__ev">test: logs the reason</span>
+            <span class="ac__res"
+              ><span class="ac__run">running</span><span class="sk-chip sk-chip--ok ac__ok">verified</span
+              ><span class="sk-chip ac__claim">claimed</span></span
+            >
+          </li>
+        </ol>
+        <div class="ac__gap is-on is-closed">
+          <span class="ac__gap-icon"><i class="sk-tick"></i></span>
+          <span class="ac__gap-text">
+            <b class="ac__gap-open">No independent review passed it</b><b class="ac__gap-shut">Review passed</b>
+            <span class="ac__gap-who"
+              ><span class="ac__gap-wait">codex-01 · GPT-5.1 is reviewing it</span
+              ><span class="ac__gap-done">GPT-5.1 ≠ author Opus</span></span
+            >
+          </span>
+        </div>
+        <div class="ac__verdict is-on is-verified">
+          <span class="sk-chip ac__v"
+            ><span class="sk-dot"></span><span class="ac__v-text">Verified by Teamtrail</span></span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    A ticket's acceptance criteria, confirmed before the work started. When the agent finishes, criteria backed by a
+    check are verified as the checks pass, and one backed only by the agent's own test is shown as claimed. The one gap
+    left, an independent review, closes by itself when an agent on another model passes it, and the ticket turns
+    Verified by Teamtrail.
+  </figcaption>
+</figure>
