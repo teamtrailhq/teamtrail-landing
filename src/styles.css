@@ -1395,6 +1395,20 @@ code {
     animation-delay: 2.9s, 6.2s;
   }
 }
+/* The trail field (src/trailField.ts): a canvas the script adds on wide screens, from the top of main to just under
+   the video, above the hero's fade and under the copy, the main trail and the video. Its top and height come from the
+   page; it is placed against the document, so nothing else on the page changes. */
+.trail-field {
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  pointer-events: none;
+}
+.trail-field.is-off {
+  display: none;
+}
 /* Out of view (src/trail.ts): paused where it is, so it repaints nothing and picks up in step. */
 .trail.is-still,
 .trail.is-still * {

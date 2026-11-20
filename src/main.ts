@@ -11,6 +11,7 @@ import { initNav, initReveal } from './scroll';
 import { isNight, onThemeChange } from './theme';
 import { initThemeSwitch } from './themeSwitch';
 import { initTrail } from './trail';
+import { initTrailField } from './trailField';
 import { initVideo } from './video';
 import { initWaitlist } from './waitlist';
 
@@ -50,4 +51,5 @@ initGuideDialogs();
 initCmdCycle(reducedMotion);
 initVideo(reducedMotion);
 initTrail();
+initTrailField(reducedMotion);
 initWaitlist();
