@@ -19,7 +19,7 @@ function partials(): Plugin {
       html
         .replaceAll('%SITE_URL%', SITE_URL)
         .replaceAll('%SCOUT_INSTALL_URL%', SCOUT_INSTALL_URL)
-        .replace(/<!-- @include (\w+) -->/g, (_, name: string) =>
+        .replace(/<!-- @include ([\w-]+) -->/g, (_, name: string) =>
           readFileSync(resolve(__dirname, 'partials', `${name}.html`), 'utf8'),
         ),
   };
