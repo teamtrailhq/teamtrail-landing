@@ -1,0 +1,1019 @@
+/* ---------- product scenes on /features and /guides ----------
+ * The same kit as home (scenes.css), in place of the screenshots beside each section's points: the plan approved in
+ * one step, a worktree per claim, the risk policy sorting calls, criteria met with evidence, a past decision answering
+ * a new question, and a ticket's guides. Each sits on the page, its sides and bottom fading into it. */
+
+.scene--row,
+.scene--guides {
+  --sk-fade-x: 4%;
+  --sk-fade-bottom: 12%;
+  --sk-held: var(--star);
+}
+.scene--row .sk-stage {
+  height: 480px;
+}
+.scene--guides .sk-stage {
+  height: 400px;
+}
+/* A wider canvas than home's cards, centred, so the pieces keep their places at every column width. */
+.sk-wide {
+  position: absolute;
+  inset: 0;
+  max-width: 520px;
+  margin-inline: auto;
+}
+.run > .scene {
+  align-self: center;
+}
+
+/* What every scene here shares: things that arrive, and a stack of states shown one at a time. */
+.pl__brief,
+.pl__plan,
+.pl__fact,
+.pl__row,
+.wt__card,
+.dc__call,
+.dc__risk,
+.ac__done,
+.ac__gap,
+.ac__verdict,
+.ac__ev,
+.rc__agent,
+.rc__found,
+.rc__go,
+.rc__cited,
+.gd__guide,
+.gd__claim {
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+.pl__state,
+.wt__state,
+.ac__res,
+.ac__gap-text,
+.ac__gap-who,
+.pl__foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.pl__state > *,
+.wt__state > *,
+.ac__res > *,
+.ac__gap-text > b,
+.ac__gap-who > *,
+.pl__foot > * {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.3s,
+    transform 0.3s var(--ease);
+}
+
+/* ---------- the plan: a brief, then every ticket's criteria confirmed in one step ---------- */
+.pl__brief {
+  top: 14px;
+  left: 0;
+  width: 84%;
+}
+.pl__brief-state {
+  color: var(--accent);
+}
+.pl__brief.is-accepted .pl__brief-state {
+  color: var(--ok);
+  border-color: rgba(var(--sk-ok-rgb), 0.4);
+  background: rgba(var(--sk-ok-rgb), 0.08);
+}
+.pl__brief-text {
+  display: inline-block;
+  transition:
+    opacity 0.16s,
+    transform 0.16s var(--ease);
+}
+.pl__by {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 12px 2px;
+  white-space: nowrap;
+}
+.pl__by b {
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.pl__by-what {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font: 400 11px/1 var(--code);
+  color: var(--faint);
+}
+.pl__facts {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 8px 12px 12px;
+}
+.pl__fact {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+.pl__fact dt {
+  font: 400 10.5px/1.3 var(--code);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.pl__fact dd {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pl__plan {
+  top: 196px;
+  left: 8%;
+  right: 0;
+  z-index: 1;
+}
+.pl__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pl__row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto 112px;
+  gap: 10px;
+  align-items: center;
+  height: 36px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.pl__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.pl__ac {
+  font: 400 11px/1 var(--code);
+  color: var(--faint);
+}
+.pl__state {
+  justify-items: end;
+  font: 400 11px/1 var(--code);
+}
+.pl__wait {
+  color: var(--sk-held);
+}
+.pl__ok,
+.pl__agent {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.pl__ok {
+  color: var(--ok);
+}
+.pl__agent {
+  color: var(--accent);
+}
+.pl__row:not(.is-confirmed) :is(.pl__ok, .pl__agent),
+.pl__row.is-confirmed .pl__wait,
+.pl__row.is-taken .pl__ok,
+.pl__row:not(.is-taken) .pl__agent {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.pl__foot {
+  justify-items: start;
+  padding: 10px 12px 11px;
+}
+.pl__approve {
+  border-color: var(--fill);
+  background: var(--fill);
+  color: var(--on-fill);
+}
+.pl__approved {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  font-size: 12.5px;
+  color: var(--ok);
+}
+.pl__plan.is-pressed .pl__approve {
+  transform: scale(0.94);
+}
+.pl__plan.is-approved .pl__approve,
+.pl__plan:not(.is-approved) .pl__approved {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.sk-live :is(.pl__brief, .pl__plan):not(.is-on) {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.sk-live :is(.pl__fact, .pl__row):not(.is-on) {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+/* ---------- worktrees: a branch and a folder of its own for every claim ---------- */
+.wt__main {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wt__node {
+  width: 9px;
+  height: 9px;
+  background: var(--text-hi);
+}
+.wt__rail {
+  position: absolute;
+  top: 26px;
+  bottom: 40px;
+  left: 4px;
+  width: 1px;
+  background: var(--line-2);
+}
+.wt__branch {
+  position: absolute;
+  left: 5px;
+  height: 1px;
+  background: var(--fill);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+.wt__branch--a {
+  top: 52px;
+  width: 35px;
+}
+.wt__branch--b {
+  top: 204px;
+  width: 55px;
+}
+.wt__branch--c {
+  top: 356px;
+  width: 75px;
+}
+.wt__card {
+  right: 0;
+}
+.wt__card--a {
+  top: 34px;
+  left: 40px;
+}
+.wt__card--b {
+  top: 186px;
+  left: 60px;
+}
+.wt__card--c {
+  top: 338px;
+  left: 80px;
+}
+.wt__state {
+  justify-items: end;
+  margin-left: auto;
+  font: 400 11px/1 var(--code);
+}
+.wt__prep {
+  color: var(--faint);
+}
+.wt__working,
+.wt__verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.wt__working {
+  color: var(--accent);
+}
+.wt__verified {
+  color: var(--ok);
+}
+.wt__card.is-ready .wt__prep,
+.wt__card:not(.is-ready) .wt__working,
+.wt__card.is-verified .wt__working,
+.wt__card:not(.is-verified) .wt__verified {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.wt__body {
+  display: grid;
+  gap: 5px;
+  padding: 10px 12px 11px;
+}
+.wt__body > div {
+  margin: 0;
+}
+.wt__line,
+.wt__setup {
+  overflow: hidden;
+  font: 400 11px/1.45 var(--code);
+  color: var(--dim);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.wt__k {
+  display: inline-block;
+  width: 54px;
+  color: var(--faint);
+}
+.wt__setup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wt__setup .wt__k {
+  width: 46px;
+}
+.wt__time {
+  margin-left: auto;
+  color: var(--faint);
+  transition: opacity 0.3s;
+}
+.wt__card:not(.is-ready) .wt__time {
+  opacity: 0;
+}
+.wt__card.is-ready .sk-check__icon {
+  border-color: rgba(var(--sk-ok-rgb), 0.5);
+  background: rgba(var(--sk-ok-rgb), 0.12);
+}
+.wt__card.is-ready .sk-check__icon::after {
+  transform: translateY(-1px) rotate(45deg);
+}
+.wt__card.is-setup:not(.is-ready) .sk-check__icon {
+  border-color: rgba(var(--fill-rgb), 0.7);
+}
+.wt__card.is-setup:not(.is-ready) .sk-check__icon::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: var(--fill);
+}
+.sk-live .wt__card:not(.is-on) {
+  opacity: 0;
+  transform: translateX(-12px);
+}
+.sk-live .wt__branch:not(.is-on) {
+  transform: scaleX(0);
+}
+
+/* ---------- decide: the risk policy sends each call to the agent or to you ---------- */
+.dc__call {
+  width: 80%;
+}
+.dc__call--a {
+  top: 12px;
+  left: 0;
+}
+.dc__call--b {
+  top: 122px;
+  right: 0;
+  z-index: 1;
+}
+.dc__call.is-routed {
+  opacity: 0.6;
+}
+.dc__on {
+  margin-left: auto;
+}
+.dc__q {
+  overflow: hidden;
+  font-weight: 500;
+  color: var(--text-hi);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dc__risk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.dc__route {
+  font: 400 11px/1 var(--code);
+  white-space: nowrap;
+  color: var(--dim);
+}
+.dc__call--b .dc__route {
+  color: var(--urgent);
+}
+.sk-live .dc__call:not(.is-on) {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.sk-live .dc__call:not(.is-rated) .dc__risk {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.dc__stack {
+  position: absolute;
+  top: 244px;
+  left: 3%;
+  right: 3%;
+  z-index: 2;
+  display: grid;
+  gap: 12px;
+}
+.dc__stack > .sk-panel {
+  position: relative;
+  transition: transform 0.4s var(--ease);
+}
+.dc__count {
+  margin-left: auto;
+}
+.dc__count.sk-chip--urgent .sk-num {
+  color: inherit;
+}
+.dc__need {
+  border-bottom: 0;
+}
+.dc__needs:not(.has-need) .dc__need,
+.dc__needs.has-need .dc__empty {
+  display: none;
+}
+.dc__empty {
+  padding: 13px 14px;
+  color: var(--faint);
+}
+.dc__choices,
+.dc__answered {
+  display: none;
+}
+.dc__need.is-open .dc__choices {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 5px;
+  margin-top: 9px;
+}
+.sk-live .dc__need.is-open .dc__choices > * {
+  animation: sk-rise 0.3s var(--ease) both;
+}
+.sk-live .dc__need.is-open .dc__choices > :nth-child(2) {
+  animation-delay: 0.07s;
+}
+.dc__need.is-resolved .dc__choices {
+  display: none;
+}
+.dc__need.is-resolved .dc__answered {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--ok);
+  animation: sk-rise 0.35s var(--ease) both;
+}
+.dc__away-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  height: 38px;
+  padding: 0 14px;
+  white-space: nowrap;
+}
+.dc__away-row > span:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--dim);
+}
+.dc__away-act {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.dc__away-act + .dc__away-act {
+  color: var(--dim);
+}
+.sk-live .dc__away-row:not(.is-on) {
+  display: none;
+}
+.sk-live .dc__away-row.is-on {
+  animation: sk-rise 0.35s var(--ease) both;
+}
+
+/* ---------- criteria: evidence per criterion, and the last gap closing by itself ---------- */
+.ac__done {
+  top: 12px;
+  left: 0;
+  width: 80%;
+  padding: 9px 12px;
+}
+.ac__card {
+  top: 64px;
+  left: 5%;
+  right: 0;
+  z-index: 1;
+}
+.ac__title {
+  overflow: hidden;
+  font-weight: 500;
+  color: var(--text-hi);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ac__sub {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 6px;
+  white-space: nowrap;
+}
+.ac__confirmed .sk-tick {
+  margin: 0 8px 0 2px;
+}
+.ac__confirmed {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 12px;
+  color: var(--ok);
+  text-overflow: ellipsis;
+}
+.ac__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ac__row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 3px 10px;
+  align-items: center;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.ac__row > .sk-key {
+  grid-row: 1;
+}
+.ac__text {
+  overflow: hidden;
+  font-weight: 500;
+  color: var(--text-hi);
+  text-overflow: ellipsis;
+}
+.ac__kind,
+.ac__ev {
+  grid-row: 2;
+  font: 400 11px/1.3 var(--code);
+  color: var(--faint);
+}
+.ac__kind {
+  grid-column: 2;
+}
+.ac__ev {
+  grid-column: 3;
+  justify-self: end;
+  color: var(--dim);
+}
+.ac__res {
+  justify-items: end;
+  min-width: 70px;
+}
+.ac__run {
+  font: 400 11px/19px var(--code);
+  color: var(--accent);
+}
+.ac__row:not(.is-running) .ac__run,
+.ac__row:not(.is-verified) .ac__ok,
+.ac__row:not(.is-claimed) .ac__claim {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.sk-live .ac__row:not(.is-running, .is-verified, .is-claimed) .ac__ev {
+  opacity: 0;
+}
+.ac__gap {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  margin: 12px 12px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line-2);
+}
+.ac__gap-icon {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(var(--fill-rgb), 0.7);
+  color: var(--panel);
+}
+.ac__gap-icon .sk-tick {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.ac__gap.is-closed {
+  border-color: rgba(var(--sk-ok-rgb), 0.45);
+  background: rgba(var(--sk-ok-rgb), 0.06);
+}
+.ac__gap.is-closed .ac__gap-icon {
+  border-color: var(--ok);
+  background: var(--ok);
+}
+.ac__gap.is-closed .ac__gap-icon .sk-tick {
+  opacity: 1;
+}
+.ac__gap-text {
+  gap: 2px;
+}
+.ac__gap-text > b {
+  grid-area: 1 / 1;
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.ac__gap-who {
+  grid-row: 2;
+  font: 400 11px/1.4 var(--code);
+}
+.ac__gap-wait {
+  color: var(--accent);
+}
+.ac__gap-done {
+  color: var(--faint);
+}
+.ac__gap:not(.is-closed) :is(.ac__gap-shut, .ac__gap-done),
+.ac__gap.is-closed :is(.ac__gap-open, .ac__gap-wait) {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.ac__verdict {
+  padding: 12px 12px 13px;
+}
+.ac__v {
+  height: 24px;
+  padding: 0 9px;
+  font-size: 11.5px;
+  color: var(--dim);
+}
+.ac__verdict.is-verified .ac__v {
+  color: var(--ok);
+  border-color: rgba(var(--sk-ok-rgb), 0.4);
+  background: rgba(var(--sk-ok-rgb), 0.08);
+}
+.ac__v-text {
+  display: inline-block;
+  transition:
+    opacity 0.16s,
+    transform 0.16s var(--ease);
+}
+.sk-live :is(.ac__done, .ac__card):not(.is-on) {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.sk-live :is(.ac__gap, .ac__verdict):not(.is-on) {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* ---------- the record: a past decision answers a new question; the scorecard ---------- */
+.rc__log {
+  top: 12px;
+  left: 0;
+  width: 78%;
+  transition: border-color 0.3s;
+}
+.rc__log.is-match {
+  border-color: rgba(var(--fill-rgb), 0.75);
+}
+.rc__log .sk-panel__bar .sk-chip {
+  margin-left: auto;
+}
+.rc__body {
+  display: grid;
+  gap: 5px;
+  padding: 10px 12px 12px;
+}
+.rc__body > div {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rc__q {
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.rc__words {
+  padding-left: 9px;
+  border-left: 2px solid var(--line-2);
+}
+.rc__meta,
+.rc__cited {
+  font: 400 11px/1.45 var(--code);
+  color: var(--dim);
+}
+.rc__cited {
+  color: var(--accent);
+}
+.rc__k {
+  display: inline-block;
+  width: 84px;
+  color: var(--faint);
+}
+.rc__agent {
+  top: 210px;
+  left: 18%;
+  right: 0;
+  z-index: 1;
+}
+.rc__on {
+  margin-left: auto;
+}
+.rc__agent .sk-line {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rc__found {
+  color: var(--accent);
+}
+.rc__score {
+  top: 340px;
+  left: 6%;
+  right: 6%;
+  opacity: 0.85;
+}
+.rc__bars {
+  display: grid;
+  gap: 2px;
+  padding: 8px 12px 12px;
+}
+.rc__bar {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr) 36px;
+  gap: 12px;
+  align-items: center;
+  height: 24px;
+  white-space: nowrap;
+}
+.rc__bar > span:first-child {
+  overflow: hidden;
+  font: 400 11px/1 var(--code);
+  color: var(--dim);
+  text-overflow: ellipsis;
+}
+.rc__bar > i {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+  background: var(--line-2);
+}
+.rc__bar .sk-num {
+  font: 400 11px/1 var(--code);
+  color: var(--text-hi);
+  text-align: right;
+}
+.rc__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--ok);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease);
+}
+.rc__fill--a {
+  transform: scaleX(0.81);
+}
+.rc__fill--b {
+  transform: scaleX(0.74);
+}
+.rc__fill--c {
+  transform: scaleX(0.62);
+}
+.sk-live .rc__score:not(.is-on) .rc__fill {
+  transform: scaleX(0);
+}
+.sk-live .rc__agent:not(.is-on) {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.sk-live :is(.rc__found, .rc__go):not(.is-on),
+.sk-live .rc__log:not(.is-cited) .rc__cited {
+  opacity: 0;
+  transform: translateY(3px);
+}
+
+/* ---------- guides: a ticket's guides by type, its checklists answered, the guide's check run ---------- */
+.gd__card {
+  top: 12px;
+  left: 0;
+  right: 0;
+}
+.gd__title {
+  overflow: hidden;
+  font-weight: 500;
+  color: var(--text-hi);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.gd__sec {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px 12px;
+}
+.gd__guides {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.gd__guide {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 26px;
+  padding: 0 9px;
+  border: 1px solid var(--line-2);
+  background: var(--bg-2);
+  white-space: nowrap;
+}
+.gd__guide b {
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.gd__via {
+  font: 400 10.5px/1 var(--code);
+  color: var(--faint);
+}
+.gd__via--added {
+  color: var(--accent);
+}
+.gd__claim {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 12px;
+  border-block: 1px solid var(--line);
+  white-space: nowrap;
+}
+.gd__claim b {
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.gd__claim-what {
+  margin-left: auto;
+  font: 400 11px/1 var(--code);
+  color: var(--accent);
+}
+.gd__list {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr) 40px;
+  gap: 12px;
+  align-items: center;
+  height: 22px;
+}
+.gd__name {
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.gd__bar {
+  display: grid;
+  gap: 3px;
+}
+.gd__bar--5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+.gd__bar--6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+.gd__bar i {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+  background: var(--line-2);
+}
+.gd__bar i::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--fill);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--ease);
+}
+.gd__bar i.is-on::after {
+  transform: none;
+}
+.gd__list.is-complete .gd__bar i::after {
+  background: var(--ok);
+}
+.gd__count {
+  font: 400 11px/1 var(--code);
+  color: var(--faint);
+  text-align: right;
+}
+.gd__list.is-complete .gd__count {
+  color: var(--ok);
+}
+.gd__checks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sk-live .gd__guide:not(.is-on) {
+  opacity: 0;
+  transform: scale(0.92);
+}
+.sk-live .gd__claim:not(.is-on) {
+  opacity: 0;
+}
+
+/* The title stays beside its key. */
+.ac__card .sk-panel__bar > .ac__title {
+  margin-left: 0;
+}
+.pl__by-what::before {
+  content: '· ';
+}
+
+/* Phones: the same scenes with fewer pieces. */
+@media (max-width: 560px) {
+  .scene--row .sk-stage {
+    height: 460px;
+  }
+  .pl__brief {
+    width: 92%;
+  }
+  .pl__plan {
+    left: 0;
+  }
+  .pl__row {
+    grid-template-columns: 24px minmax(0, 1fr) 118px;
+  }
+  .wt__more {
+    display: none;
+  }
+  .pl__ac {
+    display: none;
+  }
+  .wt__card--c,
+  .wt__branch--c {
+    display: none;
+  }
+  .wt__card--a {
+    left: 28px;
+  }
+  .wt__card--b {
+    left: 40px;
+  }
+  .wt__branch--a {
+    width: 23px;
+  }
+  .wt__branch--b {
+    width: 35px;
+  }
+  .dc__call {
+    width: 92%;
+  }
+  .scene--decide .sk-stage {
+    height: 530px;
+  }
+  .dc__call--b {
+    top: 140px;
+  }
+  .dc__stack {
+    top: 258px;
+    left: 0;
+    right: 0;
+  }
+  .ac__card {
+    left: 0;
+  }
+  .ac__done {
+    width: 94%;
+  }
+  .ac__kind {
+    display: none;
+  }
+  .ac__ev {
+    grid-column: 2 / -1;
+    justify-self: start;
+  }
+  .rc__log {
+    width: 92%;
+  }
+  .rc__agent {
+    left: 8%;
+  }
+  .rc__score {
+    left: 0;
+    right: 0;
+  }
+  .rc__bar {
+    grid-template-columns: 112px minmax(0, 1fr) 32px;
+  }
+  .gd__list {
+    grid-template-columns: 92px minmax(0, 1fr) 36px;
+  }
+}
