@@ -1,0 +1,65 @@
+<!-- Scene: @Scout answers from the Teamtrail on your machine, only while it runs (src/scenes/slackMentionScene.ts).
+     The markup is the still frame. -->
+<figure class="scene scene--flat scene--slack-mention" data-scene="slack-mention">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-panel sm__term">
+      <span class="sk-line"><span class="sk-line__cmd">$</span> npx teamtrail</span>
+      <span class="sk-agent__state is-live sm__run"
+        ><span class="sk-dot"></span><span class="sm__run-text">running</span></span
+      >
+    </div>
+    <div class="sk-panel sk-slack sm__chat">
+      <div class="sk-panel__bar">
+        <span class="sk-slack__channel"># offline-sync</span>
+      </div>
+      <div class="sm__msgs">
+        <div class="sk-msg" data-msg="1">
+          <span class="sk-avatar sk-msg__avatar">AR</span>
+          <div class="sk-msg__body">
+            <div class="sk-msg__head"><b>Alex Rivera</b><time>10:51</time></div>
+            <div class="sk-msg__lines">
+              <span><span class="sk-mention">@Scout</span> what's blocking #12?</span>
+            </div>
+          </div>
+        </div>
+        <div class="sk-msg sk-msg--private" data-msg="2">
+          <img class="sk-msg__avatar" src="/media/brand/scout-slack-64.png" width="30" height="30" alt="" />
+          <div class="sk-msg__body">
+            <div class="sk-msg__head">
+              <b>Scout</b><span class="sk-msg__app">App</span><span class="sk-msg__only">Only you can see this</span>
+            </div>
+            <div class="sk-msg__lines">
+              <span><b>#12 Conflict banner</b> · task · Offline sync</span>
+              <span>State: blocked</span>
+              <span>Blocked by: #9 Merge engine</span>
+            </div>
+          </div>
+        </div>
+        <div class="sk-msg is-gone" data-msg="3">
+          <span class="sk-avatar sk-msg__avatar">AR</span>
+          <div class="sk-msg__body">
+            <div class="sk-msg__head"><b>Alex Rivera</b><time>18:05</time></div>
+            <div class="sk-msg__lines">
+              <span><span class="sk-mention">@Scout</span> who's working?</span>
+            </div>
+          </div>
+        </div>
+        <div class="sk-msg sk-msg--private is-gone" data-msg="4">
+          <img class="sk-msg__avatar" src="/media/brand/scout-slack-64.png" width="30" height="30" alt="" />
+          <div class="sk-msg__body">
+            <div class="sk-msg__head">
+              <b>Scout</b><span class="sk-msg__app">App</span><span class="sk-msg__only">Only you can see this</span>
+            </div>
+            <div class="sk-msg__lines">
+              <span>Your Teamtrail isn't running. Start it (npx teamtrail in your project) and try again.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    You mention @Scout in a channel and it answers from the Teamtrail on your machine, privately: ticket #12 is blocked
+    by #9. Once Teamtrail stops, Scout says it isn't running.
+  </figcaption>
+</figure>
