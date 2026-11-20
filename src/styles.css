@@ -2713,8 +2713,9 @@ pre,
 }
 
 .hero--home h1 {
-  /* From 861px up the first line stays one line (nowrap above), so it scales to fit with room either side. */
-  font-size: clamp(40px, 3.9vw, 58px);
+  font-size: clamp(40px, 5.2vw, 72px);
+  /* Narrow enough that the first line breaks in two and the copy stays inside the main trail. */
+  max-width: 12.5em;
   line-height: 1.1;
   margin-block: 12px 4px;
 }
@@ -2723,6 +2724,10 @@ pre,
 }
 .hero--home h1 .line + .line {
   margin-top: 0.06em;
+}
+.hero--home h1 .line {
+  white-space: normal;
+  text-wrap: balance;
 }
 .mark {
   color: var(--text-hi);
