@@ -1187,7 +1187,10 @@ code {
 }
 /* A pulse is the dash; the gap is the rest of one period (a third of the hero's trail, all of the others). */
 .trail--wide .trail__beat {
-  stroke-dasharray: 0.025 0.30833;
+  stroke-dasharray: 0.02167 0.31167;
+}
+.trail--wide .trail__beat.trail__fork {
+  stroke-dasharray: 0.066 0.934;
 }
 .trail--narrow .trail__beat {
   stroke-dasharray: 0.1 0.9;
@@ -1258,23 +1261,32 @@ code {
 @media (prefers-reduced-motion: no-preference) {
   .trail__pulse {
     display: inline;
-    animation: trail-arrive 1.2s ease-out 3.6s both;
+    animation: trail-arrive 1.2s ease-out 4s both;
   }
   .trail--narrow .trail__pulse {
     animation-delay: 3s;
   }
   .trail__walk {
-    animation: trail-draw 3.4s linear 0.4s both;
+    animation: trail-draw 3.9s linear 0s both;
+  }
+  /* The fork right of the lede draws on from the junction as the main line reaches it. */
+  .trail--wide .trail__walk.trail__fork {
+    animation-duration: 1.29s;
+    animation-delay: 3.57s;
   }
   .trail--narrow .trail__walk {
     animation-duration: 2.6s;
     animation-delay: 0.3s;
   }
   .trail--wide .trail__beat {
-    animation: trail-beat-wide 4.5s linear 3.6s infinite both;
+    animation: trail-beat-wide 4.5s linear 4s infinite both;
+  }
+  /* The fork's pulse leaves the junction as the main line's passes it (a third of the way through its loop). */
+  .trail--wide .trail__beat.trail__fork {
+    animation: trail-beat-fork 4.5s linear 7.36s infinite both;
   }
   .trail--video .trail__beat {
-    animation: trail-beat-one 4.5s linear 3.6s infinite both;
+    animation: trail-beat-one 4.5s linear 4s infinite both;
   }
   .trail--narrow .trail__beat {
     animation: trail-beat-narrow 3.2s linear 3s infinite both;
@@ -1284,19 +1296,28 @@ code {
     animation: trail-arrive 0.45s var(--ease) both;
   }
   .trail--wide .trail__at-1 {
-    animation-delay: 1.05s;
+    animation-delay: 1.16s;
   }
   .trail--wide .trail__at-2 {
-    animation-delay: 1.59s;
+    animation-delay: 1.71s;
   }
   .trail--wide .trail__at-3 {
-    animation-delay: 2.03s;
+    animation-delay: 2.14s;
   }
   .trail--wide .trail__at-4 {
-    animation-delay: 2.45s;
+    animation-delay: 2.56s;
   }
   .trail--wide .trail__at-5 {
-    animation-delay: 3.26s;
+    animation-delay: 3.36s;
+  }
+  .trail--wide .trail__at-6 {
+    animation-delay: 3.57s;
+  }
+  .trail--wide .trail__at-9 {
+    animation-delay: 3.78s;
+  }
+  .trail--wide .trail__at-10 {
+    animation-delay: 3.99s;
   }
   .trail--narrow .trail__at-1 {
     animation-delay: 0.83s;
@@ -1320,7 +1341,7 @@ code {
     transform-origin: left center;
   }
   .trail--wide .trail__try.trail__at-1 {
-    animation-delay: 1.05s, 6s;
+    animation-delay: 1.16s, 6s;
   }
   .trail--narrow .trail__try.trail__at-1 {
     animation-delay: 0.83s, 5s;
@@ -1328,7 +1349,7 @@ code {
   .trail--wide .trail__try.trail__at-5 {
     animation-name: trail-arrive, trail-try-y;
     animation-duration: 0.45s, 14s;
-    animation-delay: 3.26s, 9s;
+    animation-delay: 3.36s, 9s;
     transform-origin: center bottom;
   }
   .trail__reach {
@@ -1340,19 +1361,28 @@ code {
     animation: trail-flash 4.5s ease-out infinite;
   }
   .trail--wide .trail__flash.trail__at-1 {
-    animation-delay: 6.16s;
+    animation-delay: 8.02s;
   }
   .trail--wide .trail__flash.trail__at-2 {
-    animation-delay: 3.84s;
+    animation-delay: 5.41s;
   }
   .trail--wide .trail__flash.trail__at-3 {
-    animation-delay: 5.57s;
+    animation-delay: 6.91s;
   }
   .trail--wide .trail__flash.trail__at-5 {
-    animation-delay: 5.95s;
+    animation-delay: 6.64s;
+  }
+  .trail--wide .trail__flash.trail__at-6 {
+    animation-delay: 7.36s;
+  }
+  .trail--wide .trail__flash.trail__at-9 {
+    animation-delay: 8.09s;
+  }
+  .trail--wide .trail__flash.trail__at-10 {
+    animation-delay: 8.82s;
   }
   .trail--video .trail__flash.trail__at-7 {
-    animation-delay: 5.42s;
+    animation-delay: 5.82s;
   }
   .trail--narrow .trail__flash {
     animation-duration: 3.2s;
@@ -1372,7 +1402,7 @@ code {
     animation-fill-mode: both, none;
   }
   .trail--wide .trail__hole {
-    animation-delay: 2.45s, 7.23s;
+    animation-delay: 2.56s, 8.35s;
   }
   .trail--narrow .trail__hole {
     animation-duration: 0.45s, 9.6s;
@@ -1380,7 +1410,7 @@ code {
   }
   /* The destination's ring brightens as each pulse arrives. */
   .trail .trail__ring {
-    animation: trail-ring 4.5s ease-out 8.1s infinite;
+    animation: trail-ring 4.5s ease-out 8.5s infinite;
   }
   .trail--narrow .trail__ring {
     animation-name: trail-arrive, trail-ring;
@@ -1408,7 +1438,8 @@ code {
 /* Out of view (src/trail.ts): paused where it is, so it repaints nothing and picks up in step. */
 .trail.is-still,
 .trail.is-still * {
-  animation-play-state: paused;
+  /* Important: more specific animation shorthands above would otherwise set it running again. */
+  animation-play-state: paused !important;
 }
 @keyframes trail-draw {
   from {
@@ -1422,10 +1453,18 @@ code {
 }
 @keyframes trail-beat-wide {
   from {
-    stroke-dashoffset: 0.025;
+    stroke-dashoffset: 0.02167;
   }
   to {
-    stroke-dashoffset: -0.30833;
+    stroke-dashoffset: -0.31167;
+  }
+}
+@keyframes trail-beat-fork {
+  from {
+    stroke-dashoffset: 0.066;
+  }
+  to {
+    stroke-dashoffset: -0.934;
   }
 }
 @keyframes trail-beat-one {
