@@ -1,0 +1,47 @@
+<!-- Scene: a trail charted from its destination (src/scenes/chartScene.ts). The markup is the still frame. -->
+<figure class="scene scene--chart" data-scene="chart">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-canvas">
+      <div class="sk-panel sk-prompt chart__prompt">
+        <span class="sk-label">New trail · Destination</span>
+        <div class="sk-prompt__text">
+          <span class="chart__typed">Notes sync offline. No edit is ever lost.</span><i class="sk-caret"></i>
+        </div>
+        <div class="sk-worked chart__status">
+          <span class="sk-chev"></span><span class="chart__status-text">claude-02 · worked for 12 sec · 4 tickets</span>
+        </div>
+      </div>
+      <i class="chart__wire w1"></i>
+      <i class="chart__wire w2"></i>
+      <i class="chart__wire w3"></i>
+      <i class="chart__wire w4"></i>
+      <i class="chart__wire w5"></i>
+      <i class="chart__wire w6"></i>
+      <i class="chart__wire w7"></i>
+      <i class="chart__wire w8"></i>
+      <div class="sk-ticket chart__t chart__t1">
+        <div class="sk-ticket__top"><span class="sk-key">#1</span><span class="sk-chip">Research</span></div>
+        <div class="sk-ticket__title">How do notes apps merge offline edits?</div>
+      </div>
+      <div class="sk-ticket chart__t chart__t2">
+        <div class="sk-ticket__top"><span class="sk-key">#4</span><span class="sk-chip">Task</span></div>
+        <div class="sk-ticket__title">Queue edits while offline</div>
+      </div>
+      <div class="sk-ticket chart__t chart__t3">
+        <div class="sk-ticket__top"><span class="sk-key">#5</span><span class="sk-chip">Task</span></div>
+        <div class="sk-ticket__title">Add a sync_failures table</div>
+      </div>
+      <div class="sk-ticket chart__t chart__t4 is-urgent">
+        <div class="sk-ticket__top">
+          <span class="sk-key">#6</span><span class="sk-chip">Junction</span
+          ><span class="sk-chip sk-chip--urgent chart__needs"><span class="sk-dot"></span>needs you</span>
+        </div>
+        <div class="sk-ticket__title">Is silent auto-merge acceptable for shared notebooks?</div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    A trail charted as decisions: the destination is typed, then tickets appear on the map joined by the trail, research
+    first, then tasks, then a junction that needs your call.
+  </figcaption>
+</figure>
