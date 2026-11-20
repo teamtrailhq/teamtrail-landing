@@ -41,12 +41,13 @@
   --tt-logo-edge: #0e0f11;
   --tt-logo-mark: #ffffff;
   --tt-logo-dot: var(--fill);
-  /* Guide icons (guideMarkup from @teamtrail/scout-avatar): ink with one blaze accent on a square tile. */
+  /* Guide icons (guideMarkup from @teamtrail/scout-avatar): the symbol alone on the page, ink with one blaze accent.
+   * Older versions of the package drew a tile from --tt-guide-bg and --tt-guide-line: transparent, so none shows. */
   --tt-guide-ink: #0e0f11;
   --tt-guide-fill: #ffffff;
   --tt-guide-accent: #d43f00;
-  --tt-guide-bg: #f4f4f6;
-  --tt-guide-line: rgba(0, 0, 0, 0.12);
+  --tt-guide-bg: transparent;
+  --tt-guide-line: transparent;
   /* Needs you: rose, so it never reads as blaze. */
   --urgent: #d62d59;
   --urgent-rgb: 214, 45, 89;
@@ -90,8 +91,6 @@
     --tt-guide-ink: #ededef;
     --tt-guide-fill: #1c1c1f;
     --tt-guide-accent: #ff6b2c;
-    --tt-guide-bg: #141416;
-    --tt-guide-line: rgba(255, 255, 255, 0.14);
     --urgent: #ff4d7a;
     --urgent-rgb: 255, 77, 122;
     --bg-rgb: 10, 10, 11;
@@ -120,8 +119,6 @@
   --tt-guide-ink: #ededef;
   --tt-guide-fill: #1c1c1f;
   --tt-guide-accent: #ff6b2c;
-  --tt-guide-bg: #141416;
-  --tt-guide-line: rgba(255, 255, 255, 0.14);
   --urgent: #ff4d7a;
   --urgent-rgb: 255, 77, 122;
   --bg-rgb: 10, 10, 11;
