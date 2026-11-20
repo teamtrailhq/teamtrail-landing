@@ -1,0 +1,19 @@
+<!--
+  The hero's trail, carried on past the video (wide screens only): down the frame's right side, just outside it,
+  to the destination under its corner; on the left, the path not taken goes a way down and back. Behind the frame,
+  never over the video. Same x as the hero's wide trail (the frame plus 24px a side), y percent of the frame plus
+  56px under it. Its pulses leave the hero's trail exactly as they arrive here (styles.css).
+-->
+<svg class="trail trail--video" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <mask id="trail-video-pulse" maskUnits="userSpaceOnUse" x="-10" y="-10" width="220" height="120">
+    <path class="trail__beat" pathLength="1" d="M198 0V97.2H184" />
+  </mask>
+  <path class="trail__branch trail__reach" d="M2 0V42" />
+  <path class="trail__line" d="M198 0V97.2H184" />
+  <path class="trail__pulse" mask="url(#trail-video-pulse)" d="M198 0V97.2H184" />
+  <path class="trail__node" d="M198 45h0" />
+  <path class="trail__flash trail__at-7" d="M198 45h0" />
+  <path class="trail__ring trail__at-8" d="M184 97.2h0" />
+  <path class="trail__gap" d="M184 97.2h0" />
+  <path class="trail__dest" d="M184 97.2h0" />
+</svg>
