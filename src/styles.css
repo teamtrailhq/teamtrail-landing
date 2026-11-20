@@ -2713,7 +2713,8 @@ pre,
 }
 
 .hero--home h1 {
-  font-size: clamp(40px, 5.2vw, 72px);
+  /* From 861px up the first line stays one line (nowrap above), so it scales to fit with room either side. */
+  font-size: clamp(40px, 3.9vw, 58px);
   line-height: 1.1;
   margin-block: 12px 4px;
 }
