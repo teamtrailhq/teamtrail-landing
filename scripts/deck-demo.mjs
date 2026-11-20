@@ -92,15 +92,12 @@ async function signIn(page, link) {
 
 // The recording: a fresh browser, as the person watching has.
 const scout = `data:image/png;base64,${fs.readFileSync(path.join(root, 'scripts/assets/scout-512.png')).toString('base64')}`;
-const wordmark = fs
-  .readFileSync(path.join(root, 'partials/sprite.html'), 'utf8')
-  .match(/<symbol id="tt-wordmark"[^>]*>([\s\S]*?)<\/symbol>/)[1];
 // The overlay injects its own <style>, which the Lookout's Content-Security-Policy (style-src 'self') would block.
 const ctx = await browser.newContext({ viewport: size, deviceScaleFactor: 1.2, bypassCSP: true });
 const page = await ctx.newPage();
 page.on('pageerror', (e) => console.log('pageerror:', e.message));
 await page.addInitScript(dayPrefs, 'day');
-await page.addInitScript(installStage, { scout, wordmark, night: false });
+await page.addInitScript(installStage, { scout, night: false });
 const wait = (ms) => page.waitForTimeout(ms);
 const stage = (fn, ...args) => page.evaluate(([f, a]) => window.__stage[f](...a), [fn, args]);
 const caption = ([label, text]) => stage('caption', label, text);

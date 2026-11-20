@@ -1,8 +1,9 @@
 // Overlay injected into the lookout page while the journey records: chapter label + caption,
 // full-screen terminal / Claude Code windows that type their lines, and the title and end cards. The cards are wide,
-// so they carry the teamtrail. wordmark (`wordmark`: the #tt-wordmark symbol's markup) and never the square t. tile.
+// so they carry the teamtrail. wordmark, set as the site's nav sets it (Inter 600, tight, a blaze dot), never the square
+// t. tile.
 // Runs in the browser (page.addInitScript), so it must stay self-contained.
-export function installStage({ scout, wordmark, night }) {
+export function installStage({ scout, night }) {
   // A terminal in the site's own colours (src/styles.css): white and near-black surfaces, hairline borders, square
   // corners and one accent, blaze, on a dot grid like the site's heroes. Light by day and dark at night.
   const ink = night
@@ -51,10 +52,9 @@ export function installStage({ scout, wordmark, night }) {
 .st-face{width:26px;height:26px;vertical-align:-7px}
   .st-cur{display:inline-block;width:10px;height:1.1em;vertical-align:-3px;background:#ff6b2c;animation:stb 1s steps(1) infinite}
   @keyframes stb{50%{opacity:0}}
-  .st-card{display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center;
-    --tt-wordmark-ink:${ink.hi};--tt-wordmark-dot:${ink.acc}}
-  .st-card h1{margin:0 0 14px;line-height:0}
-  .st-card h1 svg{width:600px;height:auto;display:block}
+  .st-card{display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center}
+  .st-card h1{margin:0 0 14px;font:600 128px/1 ${sans};letter-spacing:-.035em;color:${ink.hi}}
+  .st-card h1 i{font-style:normal;color:#ff6b2c}
   .st-card p{margin:0;font:400 26px ${sans};color:${ink.text}}
   .st-card code{font:400 28px 'JetBrains Mono Variable',monospace;color:${ink.hi};background:${ink.win};padding:14px 24px;border:1px solid ${ink.line}}
   .st-card code span{color:${ink.acc}}
@@ -82,7 +82,7 @@ export function installStage({ scout, wordmark, night }) {
     /** `copy` replaces the cards' English lines (the Polish deck demo): `tagline` on the title, `works` on the end. */
     card(kind, copy = {}) {
       ensure();
-      const word = `<h1><svg viewBox="-4.40 -77.20 414.70 83.00" role="img" aria-label="teamtrail.">${wordmark}</svg></h1>`;
+      const word = '<h1>teamtrail<i>.</i></h1>';
       const tagline = copy.tagline ?? 'The trail map for your AI coding agents.';
       const works = copy.works ?? 'Works with Claude Code, Codex and any MCP agent';
       ov.innerHTML =

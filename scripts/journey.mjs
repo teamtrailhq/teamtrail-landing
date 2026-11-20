@@ -33,16 +33,11 @@ const agentStep = async (text, times = 1) => {
 };
 const scout = `data:image/png;base64,${readFileSync(join(root, 'scripts/assets/scout-512.png')).toString('base64')}`;
 
-// The end card is wide, so it takes the teamtrail. wordmark, the same outlines the nav and footer use.
-const wordmark = readFileSync(join(root, 'partials/sprite.html'), 'utf8').match(
-  /<symbol id="tt-wordmark"[^>]*>([\s\S]*?)<\/symbol>/,
-)[1];
-
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? '/usr/local/bin/google-chrome' });
 // The overlay injects its own <style>, which the Lookout's Content-Security-Policy (style-src 'self') would block.
 const page = await (await browser.newContext({ viewport: size, colorScheme, bypassCSP: true })).newPage();
 page.on('pageerror', (e) => console.log('pageerror:', e.message));
-await page.addInitScript(installStage, { scout, wordmark, night });
+await page.addInitScript(installStage, { scout, night });
 const wait = (ms) => page.waitForTimeout(ms);
 const stage = (fn, ...args) => page.evaluate(([f, a]) => window.__stage[f](...a), [fn, args]);
 const caption = (label, text) => stage('caption', label, text);
