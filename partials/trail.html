@@ -1,7 +1,9 @@
 <!--
   Home hero's trail, behind the copy: blaze in square steps along the sides and the strip above the video,
-  through junctions (solid: passed; hollow: waiting) and paths not taken (dashed). The wide one leaves the hero down
-  the video's right side (partials/trailvideo.html), where the destination is; the narrow one ends in the strip.
+  through junctions (solid: passed; hollow: waiting) and paths not taken (dashed). The wide one spans the screen: in
+  from the left edge, and at the junction right of the lede it forks, out across the right margin to the right edge
+  and down the video's right side (partials/trailvideo.html), where the destination is. The narrow one ends in the
+  strip.
   Coordinates are percent of the box (x doubled in the wide one). styles.css stretches it over the hero, the wide
   one exactly as wide as the video's frame plus 24px a side, so it lines up with the video's trail, and keeps
   strokes and dots their pixel size. Masks do the moving, since a dash would be measured in pixels on the line
@@ -9,17 +11,26 @@
   Wide from 1100px; narrow below, only in the strip under the buttons.
 -->
 <svg class="trail trail--wide" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-  <mask id="trail-wide-walk" maskUnits="userSpaceOnUse" x="-80" y="-10" width="300" height="120">
-    <path class="trail__walk" pathLength="1" d="M-60 30H14V93H174V62H198V100" />
+  <mask id="trail-wide-walk" maskUnits="userSpaceOnUse" x="-140" y="-10" width="500" height="120">
+    <path class="trail__walk" pathLength="1" d="M-120 30H14V93H174V62H198V100" />
   </mask>
-  <mask id="trail-wide-pulse" maskUnits="userSpaceOnUse" x="-80" y="-10" width="300" height="120">
-    <path class="trail__beat" pathLength="1" d="M-60 30H14V93H174V62H198V100" />
+  <mask id="trail-fork-walk" maskUnits="userSpaceOnUse" x="-140" y="-10" width="500" height="120">
+    <path class="trail__walk trail__fork" pathLength="1" d="M198 62H206V46H330" />
+  </mask>
+  <mask id="trail-fork-pulse" maskUnits="userSpaceOnUse" x="-140" y="-10" width="500" height="120">
+    <path class="trail__beat trail__fork" pathLength="1" d="M198 62H206V46H330" />
+  </mask>
+  <mask id="trail-wide-pulse" maskUnits="userSpaceOnUse" x="-140" y="-10" width="500" height="120">
+    <path class="trail__beat" pathLength="1" d="M-120 30H14V93H174V62H198V100" />
   </mask>
   <path class="trail__branch trail__try trail__at-1" d="M14 30H24" />
   <path class="trail__branch trail__at-2" d="M14 93H2V100" />
   <path class="trail__branch trail__try trail__at-5" d="M174 62V52" />
-  <path class="trail__line" mask="url(#trail-wide-walk)" d="M-60 30H14V93H174V62H198V100" />
-  <path class="trail__pulse" mask="url(#trail-wide-pulse)" d="M-60 30H14V93H174V62H198V100" />
+  <path class="trail__branch trail__at-9" d="M206 46V36" />
+  <path class="trail__line" mask="url(#trail-wide-walk)" d="M-120 30H14V93H174V62H198V100" />
+  <path class="trail__pulse" mask="url(#trail-wide-pulse)" d="M-120 30H14V93H174V62H198V100" />
+  <path class="trail__line" mask="url(#trail-fork-walk)" d="M198 62H206V46H330" />
+  <path class="trail__pulse" mask="url(#trail-fork-pulse)" d="M198 62H206V46H330" />
   <path class="trail__node trail__at-1" d="M14 30h0" />
   <path class="trail__flash trail__at-1" d="M14 30h0" />
   <path class="trail__node trail__at-2" d="M14 93h0" />
@@ -30,6 +41,12 @@
   <path class="trail__hole trail__at-4" d="M112 93h0" />
   <path class="trail__node trail__at-5" d="M174 62h0" />
   <path class="trail__flash trail__at-5" d="M174 62h0" />
+  <path class="trail__node trail__at-6" d="M198 62h0" />
+  <path class="trail__flash trail__at-6" d="M198 62h0" />
+  <path class="trail__node trail__at-9" d="M206 46h0" />
+  <path class="trail__flash trail__at-9" d="M206 46h0" />
+  <path class="trail__node trail__at-10" d="M230 46h0" />
+  <path class="trail__flash trail__at-10" d="M230 46h0" />
 </svg>
 <svg class="trail trail--narrow" viewBox="0 0 60 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
   <mask id="trail-narrow-walk" maskUnits="userSpaceOnUse" x="-10" y="-10" width="80" height="120">
