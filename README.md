@@ -5,15 +5,14 @@ Static marketing site for [teamtrail.app](https://www.teamtrail.app): Vite + Typ
 - `index.html`: Home, the story (trail, party, Scout, you) and what's coming.
 - `features/index.html`: everything that ships today, and the upcoming directions in detail.
 - `guides/index.html`: guides, with one card per guide in the public catalog (see [Guide cards](#guide-cards)); each card opens its details in a dialog (`src/guideDialog.ts`).
-- `cloud/index.html`: Teamtrail Cloud (early access): what it offers today and what's next, with Scout on a pixel cloud (`src/cloudScene.ts`) and its own waitlist.
+- `cloud/index.html`: Teamtrail Cloud (early access): what it offers today and what's next, with Scout in a square frame between line icons of a laptop and a phone (`src/cloudScene.ts`) and its own waitlist.
 - `slack/index.html`: Scout in Slack, Teamtrail's Slack app: what it does in Slack, what stays on your machine, and Add Scout to Slack (`src/slackScene.ts`).
-- `scout/index.html`: Adopt a Scout: sponsor Teamtrail on GitHub, and at the Scout tier a handmade Scout plush comes home with you.
 - `privacy/index.html`: the privacy policy for the site, Scout and Teamtrail Cloud.
 - `/docs/`: the docs, written as Markdown in `content/docs` (order and sections in `content/docs/nav.json`) and built into `docs/<slug>/index.html` pages by `scripts/docs/generate.mjs` (see [Search and LLMs](#search-and-llms)).
 
 Shared markup lives in `partials/` (`sprite`, `nav`, `footer`) and is pasted in at build time by `<!-- @include name -->` (see `vite.config.ts`). The sprite holds the brand marks, coloured per theme by `--tt-wordmark-*` and `--tt-logo-*` in `src/styles.css`: `#tt-wordmark` (`teamtrail.`) for spaces wider than tall, like the nav and footer, and `#tt-logo` (`t.`) for square ones. Never both side by side.
 
-Type is Londrina Solid for headlines, Figtree for reading and JetBrains Mono for code, both self-hosted through `@fontsource`. JS adds the hero background (`src/heroField.ts`, with the map in `src/hero/`, paused off-screen, a still frame with reduced motion), the install box that types through `npx teamtrail` and the Claude Code and Codex connect commands (`src/cmdCycle.ts`), the looping explainer video (muted, no controls, paused off-screen), the badge scramble, scroll reveals, copy buttons, the Scout avatar and the waitlist form. The pages read fine without it.
+The look is dark-first: near-black surfaces, hairline borders, square corners and one accent, blaze (`#FF6B2C`; a darker `#C2410C` for text on day), with rose only for what needs you and green only for what passed (tokens at the top of `src/styles.css`). Type is Inter (with its optical-size axis, so headlines get the display cut) for everything and JetBrains Mono for commands, code and labels, both self-hosted through `@fontsource`. Page heroes and the closing section sit on a CSS dot grid. JS adds the install box that types through `npx teamtrail` and the Claude Code and Codex connect commands (`src/cmdCycle.ts`), the looping explainer video (muted, no controls, paused off-screen), the badge scramble, scroll reveals, copy buttons, the Scout avatar and the waitlist form. The pages read fine without it.
 
 ## Run
 
@@ -72,7 +71,7 @@ npm run guides:snapshot
 
 ## Product media
 
-Screenshots and the explainer video (`landing-journey-720.mp4` and its poster) live in `public/media/`; favicons and the OG image in `public/media/brand/`. The favicons, OG image and avatar are exported from the product repo's `packages/scout-avatar` (`npm run capture`, its `brand/` folder); `favicon.svg` is its `logoFaviconSvg()` (the light mark, the dark one on dark tabs), and the PNGs and `public/favicon.ico` (16, 32 and 48 px) are the light mark for browsers without SVG icons. Bump the `?v=` on the icon links (and in `scripts/docs/template.mjs`) when they change. Both come from the real product on a real project (`scripts/lib/realProject.mjs`): the dev seed in a git repo at `/Users/Shared/code/fieldnote-app` (`CAPTURE_CODE_DIR` to change it; its paths show in the shots, so one capture runs at a time), the built `teamtrail` server with a worktree per claimed ticket, and three real MCP agents (`scripts/dev-agent.mjs` in the product repo) that the scripts answer in Hands-off's Needs you list and in the bubble on the map. The shots of the map switch to Hands-on first (Hands-off is the default). Nothing is simulated.
+Screenshots and the explainer video (`landing-journey-720.mp4` and its poster) live in `public/media/`; favicons and the OG image in `public/media/brand/`. The favicons, OG image and avatar are exported from the product repo's `packages/scout-avatar` (`npm run capture`, its `brand/` folder); `favicon.svg` is its `logoFaviconSvg()` (the blaze `t.` tile, the same on light and dark tabs), and the PNGs and `public/favicon.ico` (16, 32 and 48 px) are the same tile for browsers without SVG icons. Bump the `?v=` on the icon links (and in `scripts/docs/template.mjs`) when they change. Both come from the real product on a real project (`scripts/lib/realProject.mjs`): the dev seed in a git repo at `/Users/Shared/code/fieldnote-app` (`CAPTURE_CODE_DIR` to change it; its paths show in the shots, so one capture runs at a time), the built `teamtrail` server with a worktree per claimed ticket, and three real MCP agents (`scripts/dev-agent.mjs` in the product repo) that the scripts answer in Hands-off's Needs you list and in the bubble on the map. The shots of the map switch to Hands-on first (Hands-off is the default). Nothing is simulated.
 
 ```bash
 (cd ../teamtrail && npm install && npm run build -w teamtrail)   # once, and after CLI or app changes
@@ -105,7 +104,7 @@ Production is https://www.teamtrail.app (Vercel project `teamtrail`; the bare te
 
 Vercel reads `vercel.json` before it builds, so the headers are committed. The `security-headers` plugin (`scripts/security/headers.mjs`) recomputes them from the built pages on every build: when an inline script changes, `npm run build` rewrites `vercel.json` (commit it), and in CI a stale file fails the build instead of shipping a policy that blocks the site's own scripts. A new third-party script, embed, font or API host needs its source added in `csp.mjs`.
 
-Check it in a real Chrome, every page type in both themes, with the canvas, video, copy buttons, docs links and the waitlist:
+Check it in a real Chrome, every page type in both themes, with the video, copy buttons, docs links and the waitlist:
 
 ```bash
 npm run build && npm run preview -- --port 4319

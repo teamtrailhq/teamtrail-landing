@@ -6,7 +6,6 @@ import { initCopy } from './copy';
 import { initGhStars } from './ghStars';
 import { $, $$ } from './dom';
 import { initGuideDialogs } from './guideDialog';
-import { mountHeroField } from './heroField';
 import { initScramble } from './scramble';
 import { initNav, initReveal } from './scroll';
 import { isNight, onThemeChange } from './theme';
@@ -18,20 +17,13 @@ document.documentElement.classList.add('js');
 initThemeSwitch();
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-for (const canvas of $$<HTMLCanvasElement>('canvas[data-field]')) {
-  mountHeroField(canvas, {
-    clearCenter: canvas.dataset.field === 'hero',
-    intensity: Number(canvas.dataset.intensity ?? 1),
-  });
-}
-
 const scout = $('[data-scout]');
 const scoutVariant = () => (isNight() ? 'night' : 'crt');
 if (scout) {
   const h = mountScout(scout, { size: 'sm', state: 'idle', framed: false, variant: scoutVariant() });
   onThemeChange(() => h.update({ variant: scoutVariant() }));
 }
-// Guides: symbol badges, one per speciality.
+// Guides: one flat icon per speciality, coloured by the page's --tt-guide-* tokens (styles.css).
 const GUIDE_ROLES: Record<string, GuideRole> = {
   reviewer: 'reviewer',
   qa: 'qa',
