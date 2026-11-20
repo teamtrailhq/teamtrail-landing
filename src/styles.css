@@ -2,6 +2,7 @@
 /* Inter with its optical-size axis, so big headlines get the display cut by themselves. The self-hosted build
  * carries no stylistic sets (cv11, ss01, ss03), so it stays as drawn. */
 @import '@fontsource-variable/inter/opsz.css';
+@import './scenes.css';
 
 /* Two fonts: Inter for everything, JetBrains Mono for commands, code and labels. Dark-first: near-black surfaces,
  * hairline borders, square corners and one accent, blaze (the paint mark that shows a trail), for primary buttons,

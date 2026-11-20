@@ -1,0 +1,60 @@
+<!-- Scene: agents in parallel (src/scenes/parallelScene.ts). The markup is the still frame. -->
+<figure class="scene scene--parallel" data-scene="parallel">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-canvas">
+      <div class="sk-panel sk-agent par__a is-claimed is-worked" data-agent="a">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">c</span><b>claude-02</b><span class="sk-agent__model">Opus</span
+          ><span class="sk-agent__state is-live"
+            ><span class="sk-dot"></span><span class="sk-on">working</span><span class="sk-off">idle</span></span
+          >
+        </div>
+        <div class="sk-agent__body">
+          <div class="sk-agent__idle">Looking for work</div>
+          <div class="sk-agent__ticket">
+            <span class="sk-key">#4</span><span class="sk-agent__title">Queue edits while offline</span>
+          </div>
+          <div class="sk-worked"><span class="sk-chev"></span><span class="par__worked">Worked for 12 sec</span></div>
+          <div class="sk-agent__files is-overlap">touches <span>src/sync/merge.ts</span></div>
+          <div class="sk-steps-row">
+            <span class="sk-steps"><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i></span
+            ><span class="sk-steps__label">Work 3/5</span>
+          </div>
+        </div>
+      </div>
+      <div class="par__overlap">
+        <span class="sk-chip sk-chip--urgent"><span class="sk-dot"></span>same files · src/sync/merge.ts</span>
+      </div>
+      <div class="sk-panel sk-agent par__b is-claimed is-worked" data-agent="b">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">x</span><b>codex-01</b><span class="sk-agent__model">GPT-5.1</span
+          ><span class="sk-agent__state is-live"
+            ><span class="sk-dot"></span><span class="sk-on">working</span><span class="sk-off">idle</span></span
+          >
+        </div>
+        <div class="sk-agent__body">
+          <div class="sk-agent__idle">Looking for work</div>
+          <div class="sk-agent__ticket">
+            <span class="sk-key">#5</span><span class="sk-agent__title">Add a sync_failures table</span>
+          </div>
+          <div class="sk-worked"><span class="sk-chev"></span><span class="par__worked">Worked for 9 sec</span></div>
+          <div class="sk-agent__files is-overlap">touches <span>src/sync/merge.ts</span></div>
+          <div class="sk-steps-row">
+            <span class="sk-steps"><i class="is-on"></i><i class="is-on"></i><i></i><i></i><i></i></span
+            ><span class="sk-steps__label">Work 2/5</span>
+          </div>
+        </div>
+      </div>
+      <div class="sk-panel sk-agent par__c">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">c</span><b>claude-03</b><span class="sk-agent__model">Sonnet</span
+          ><span class="sk-agent__state">waiting for work</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    Two agents work side by side, claude-02 on Opus and codex-01 on GPT-5.1, each on its own ticket with its steps
+    advancing. Teamtrail warns that both touch the same file, and codex-01 moves to another ticket.
+  </figcaption>
+</figure>
