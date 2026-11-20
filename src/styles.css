@@ -1,123 +1,185 @@
-@import '@fontsource/londrina-solid/400.css';
-@import '@fontsource/londrina-solid/900.css';
-@import '@fontsource-variable/figtree';
+/* Re-theme preview: four type pairings (data-font on <html>), all self-hosted. Only the pairing in use downloads. */
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource/space-mono/400.css';
+@import '@fontsource/space-mono/700.css';
+@import '@fontsource-variable/instrument-sans';
 @import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/fira-code';
 
-/* Three fonts, like the app: Londrina Solid for titles and the logo, Figtree for everything else, JetBrains Mono
- * for commands and code. Night is the default; day is the visitor's choice. */
+/* Dark-first, near-black surfaces, hairline borders, square corners and one accent. Night is the default; day is
+ * the visitor's choice. Switches on <html>: data-font (plex, space, instrument, manrope), data-accent (indigo, blue,
+ * amber) and data-corners (square, slight, rounded). */
 :root {
-  color-scheme: light;
-  --bg: #f3f1e7;
-  --bg-2: #ede7d2;
-  --panel: #fbfaf4;
-  --line: rgba(76, 78, 58, 0.18);
-  --line-2: rgba(76, 78, 58, 0.36);
-  --text: #38443c;
-  --text-hi: #1b2620;
-  --dim: #5e6a60;
-  --accent: #22627a;
-  --accent-rgb: 34, 98, 122;
-  --copper: #3f6b45;
-  --copper-hi: #345a3a;
-  --copper-rgb: 63, 107, 69;
-  --star: #b7791f;
-  --on-copper: #ffffff;
-  --blaze: #c8581e;
-  --tt-keyline: #10302d;
-  /* The logo's light and dark versions (partials/sprite.html #tt-logo). */
-  --tt-logo-tile: #e9f1e6;
-  --tt-logo-edge: #d3e2cd;
-  --tt-logo-mark: #4f8a48;
-  --tt-logo-dot: #e07a2f;
-  --tt-wordmark-ink: #16302a;
-  --tt-wordmark-dot: #e07a2f;
-  --lede: #4a5f4e;
-  --urgent: #c4301f;
-  --urgent-rgb: 196, 48, 31;
-  --bg-rgb: 243, 241, 231;
-  --shadow: rgba(58, 52, 34, 0.28);
+  /* The accent: primary buttons, eyebrows, links and highlights. --acc fills, --acc-ink is the text colour on day. */
+  --acc: #8b7cf6;
+  --acc-rgb: 139, 124, 246;
+  --acc-hi: #a195f9;
+  --acc-ink: #6553e6;
+  --acc-ink-rgb: 101, 83, 230;
+  --on-acc: #ffffff;
 
-  --display: 'Londrina Solid', 'Figtree Variable', sans-serif;
-  --sans: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Fonts: IBM Plex Sans + IBM Plex Mono unless data-font says otherwise. */
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --code: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --display: var(--sans);
+  --head-weight: 600;
+  --head-track: -0.035em;
+  --hero-track: -0.045em;
+
+  /* Corners: square unless data-corners says otherwise. */
+  --r0: 0;
+  --r1: 0;
+  --r2: 0;
+
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-2: #fafafa;
+  --panel: #ffffff;
+  --line: rgba(0, 0, 0, 0.08);
+  --line-2: rgba(0, 0, 0, 0.14);
+  --text: #3a3d44;
+  --text-hi: #0e0f11;
+  --dim: #62666e;
+  --faint: #8d9199;
+  --dot: rgba(0, 0, 0, 0.07);
+  --ok: #0e9f63;
+  --accent: var(--acc-ink);
+  --accent-rgb: var(--acc-ink-rgb);
+  --copper: var(--acc);
+  --copper-hi: var(--acc-ink);
+  --copper-rgb: var(--acc-rgb);
+  --star: #b7791f;
+  --on-copper: var(--on-acc);
+  --blaze: var(--dim);
+  --tt-keyline: #0e0f11;
+  /* The logo's light and dark versions (partials/sprite.html #tt-logo). */
+  --tt-logo-tile: #0e0f11;
+  --tt-logo-edge: #0e0f11;
+  --tt-logo-mark: #ffffff;
+  --tt-logo-dot: var(--acc);
+  --tt-wordmark-ink: #0e0f11;
+  --tt-wordmark-dot: var(--acc);
+  --lede: var(--text);
+  --urgent: #e5484d;
+  --urgent-rgb: 229, 72, 77;
+  --bg-rgb: 255, 255, 255;
+  --shadow: rgba(0, 0, 0, 0.12);
 
   --fs-label: 12px;
   --fs-small: 15px;
-  --fs-body: 17px;
-  --fs-lede: clamp(18px, 1.5vw, 20px);
-  --fs-h3: 23px;
-  --fs-h2: clamp(40px, 5.6vw, 76px);
-  --fs-hero: clamp(50px, 8.2vw, 124px);
+  --fs-body: 16px;
+  --fs-lede: clamp(17px, 1.4vw, 19px);
+  --fs-h3: 19px;
+  --fs-h2: clamp(32px, 3.4vw, 48px);
+  --fs-hero: clamp(42px, 5.4vw, 72px);
 
   --wrap: 1200px;
   --gutter: clamp(20px, 4vw, 40px);
-  --section: clamp(96px, 12vw, 160px);
+  --section: clamp(88px, 10vw, 136px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+:root[data-accent='blue'] {
+  --acc: #3b82f6;
+  --acc-rgb: 59, 130, 246;
+  --acc-hi: #5f9af8;
+  --acc-ink: #2563eb;
+  --acc-ink-rgb: 37, 99, 235;
+  --on-acc: #ffffff;
+}
+:root[data-accent='amber'] {
+  --acc: #f5871f;
+  --acc-rgb: 245, 135, 31;
+  --acc-hi: #f79c47;
+  --acc-ink: #b45f0b;
+  --acc-ink-rgb: 180, 95, 11;
+  --on-acc: #0a0a0b;
+}
+:root[data-font='space'] {
+  --sans: 'Space Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --code: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+:root[data-font='instrument'] {
+  --sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+:root[data-font='manrope'] {
+  --sans: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --code: 'Fira Code Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --head-track: -0.025em;
+  --hero-track: -0.035em;
+}
+:root[data-corners='slight'] {
+  --r0: 2px;
+  --r1: 3px;
+  --r2: 4px;
+}
+:root[data-corners='rounded'] {
+  --r0: 3px;
+  --r1: 7px;
+  --r2: 12px;
 }
 /* A script in each page's head sets data-theme to night unless the visitor chose day (src/theme.ts). Without scripts, the system's preference applies. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='day']) {
     color-scheme: dark;
-    --bg: #101815;
-    --bg-2: #131c18;
-    --panel: #17211c;
-    --line: rgba(150, 170, 155, 0.16);
-    --line-2: rgba(150, 170, 155, 0.32);
-    --text: #c3cdc1;
-    --text-hi: #eaeee3;
-    --dim: #93a497;
-    --accent: #7fc3d8;
-    --accent-rgb: 127, 195, 216;
-    --copper: #8fbf84;
-    --copper-hi: #a4cf99;
-    --copper-rgb: 143, 191, 132;
+    --bg: #0a0a0b;
+    --bg-2: #0f0f11;
+    --panel: #161618;
+    --line: rgba(255, 255, 255, 0.08);
+    --line-2: rgba(255, 255, 255, 0.14);
+    --text: #c9cbd0;
+    --text-hi: #f4f4f6;
+    --dim: #9a9ea6;
+    --faint: #6b7079;
+    --dot: rgba(255, 255, 255, 0.06);
+    --ok: #3fcf8e;
+    --accent: var(--acc);
+    --accent-rgb: var(--acc-rgb);
+    --copper-hi: var(--acc-hi);
     --star: #e3b341;
-    --on-copper: #101815;
-    --blaze: #e8833a;
-    --tt-keyline: #f1e8d3;
-    --tt-logo-tile: #17211c;
-    --tt-logo-edge: #2a3a31;
-    --tt-logo-mark: #8fbf84;
-    --tt-logo-dot: #e8833a;
-    --tt-wordmark-ink: #eef0e4;
-    --tt-wordmark-dot: #e8833a;
-    --lede: #b7cab3;
-    --urgent: #ff6b5c;
-    --urgent-rgb: 255, 107, 92;
-    --bg-rgb: 16, 24, 21;
-    --shadow: rgba(0, 0, 0, 0.5);
+    --tt-keyline: #f4f4f6;
+    --tt-logo-tile: #f4f4f6;
+    --tt-logo-edge: #f4f4f6;
+    --tt-logo-mark: #0a0a0b;
+    --tt-wordmark-ink: #f4f4f6;
+    --urgent: #ff5a5f;
+    --urgent-rgb: 255, 90, 95;
+    --bg-rgb: 10, 10, 11;
+    --shadow: rgba(0, 0, 0, 0.6);
   }
 }
 :root[data-theme='night'] {
   color-scheme: dark;
-  --bg: #101815;
-  --bg-2: #131c18;
-  --panel: #17211c;
-  --line: rgba(150, 170, 155, 0.16);
-  --line-2: rgba(150, 170, 155, 0.32);
-  --text: #c3cdc1;
-  --text-hi: #eaeee3;
-  --dim: #93a497;
-  --accent: #7fc3d8;
-  --accent-rgb: 127, 195, 216;
-  --copper: #8fbf84;
-  --copper-hi: #a4cf99;
-  --copper-rgb: 143, 191, 132;
+  --bg: #0a0a0b;
+  --bg-2: #0f0f11;
+  --panel: #161618;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.14);
+  --text: #c9cbd0;
+  --text-hi: #f4f4f6;
+  --dim: #9a9ea6;
+  --faint: #6b7079;
+  --dot: rgba(255, 255, 255, 0.06);
+  --ok: #3fcf8e;
+  --accent: var(--acc);
+  --accent-rgb: var(--acc-rgb);
+  --copper-hi: var(--acc-hi);
   --star: #e3b341;
-  --on-copper: #101815;
-  --blaze: #e8833a;
-  --tt-keyline: #f1e8d3;
-  --tt-logo-tile: #17211c;
-  --tt-logo-edge: #2a3a31;
-  --tt-logo-mark: #8fbf84;
-  --tt-logo-dot: #e8833a;
-  --tt-wordmark-ink: #eef0e4;
-  --tt-wordmark-dot: #e8833a;
-  --lede: #b7cab3;
-  --urgent: #ff6b5c;
-  --urgent-rgb: 255, 107, 92;
-  --bg-rgb: 16, 24, 21;
-  --shadow: rgba(0, 0, 0, 0.5);
+  --tt-keyline: #f4f4f6;
+  --tt-logo-tile: #f4f4f6;
+  --tt-logo-edge: #f4f4f6;
+  --tt-logo-mark: #0a0a0b;
+  --tt-wordmark-ink: #f4f4f6;
+  --urgent: #ff5a5f;
+  --urgent-rgb: 255, 90, 95;
+  --bg-rgb: 10, 10, 11;
+  --shadow: rgba(0, 0, 0, 0.6);
 }
 :root[data-theme='day'] {
   color-scheme: light;
@@ -185,7 +247,7 @@ ul[role='list'] {
 h1,
 h2 {
   font-family: var(--display);
-  font-weight: 900;
+  font-weight: var(--head-weight);
   color: var(--text-hi);
   line-height: 1.04;
 }
@@ -463,7 +525,7 @@ code {
   align-items: center;
   gap: 10px;
   font-family: var(--display);
-  font-weight: 900;
+  font-weight: var(--head-weight);
   font-size: 23px;
   color: var(--text-hi);
   letter-spacing: 0.018em;
@@ -828,7 +890,7 @@ code {
 /* A figure in place of a heading: the review section's numbers from the study. */
 .trio .stat {
   font-family: var(--display);
-  font-weight: 900;
+  font-weight: var(--head-weight);
   font-size: var(--fs-h2);
   line-height: 1;
   color: var(--text-hi);
@@ -1790,7 +1852,7 @@ code {
   background: var(--copper);
   color: var(--on-copper);
   font-family: var(--display);
-  font-weight: 900;
+  font-weight: var(--head-weight);
   font-size: 15px;
   text-transform: uppercase;
   white-space: nowrap;
@@ -1874,7 +1936,7 @@ code {
   right: -6px;
   top: 0;
   font-family: var(--display);
-  font-weight: 900;
+  font-weight: var(--head-weight);
   font-size: 18px;
   color: var(--accent);
   animation: zz-float 2.6s ease-in-out infinite;
@@ -1958,7 +2020,7 @@ code {
 .mode h3 {
   margin: 6px 0 0;
   font-family: var(--display);
-  font-weight: 900;
+  font-weight: var(--head-weight);
   font-size: 26px;
   color: var(--text-hi);
 }
@@ -2522,4 +2584,345 @@ html:has(.gdlg[open]) {
 .card .adopt__cta {
   align-self: flex-start;
   margin-top: auto;
+}
+
+/* ---------- re-theme: dev-tool look over the same components ---------- */
+
+body {
+  letter-spacing: -0.003em;
+}
+h1,
+h2 {
+  letter-spacing: var(--head-track);
+  line-height: 1.06;
+}
+h3 {
+  letter-spacing: -0.015em;
+}
+.prose h2,
+.prose h3 {
+  letter-spacing: -0.02em;
+}
+code,
+pre,
+.mono {
+  font-variant-ligatures: none;
+}
+
+/* Dot grid in place of the terrain: behind page heroes and the closing section. The canvas stays in the markup. */
+.field {
+  display: none;
+}
+.hero,
+.final {
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: -10px -10px;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 42%, rgba(var(--bg-rgb), 0.92) 20%, transparent 80%),
+    linear-gradient(to bottom, transparent 70%, var(--bg));
+  pointer-events: none;
+}
+.hero__inner,
+.hero__party {
+  z-index: 1;
+}
+.final::after {
+  background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(var(--bg-rgb), 0.9) 25%, transparent 80%);
+}
+
+/* Headlines: the sans at 600, tight, in the heading colour; the second line steps back. */
+.hero h1 {
+  filter: none;
+  color: var(--text-hi);
+  letter-spacing: var(--hero-track);
+  line-height: 1.02;
+}
+.hero h1 .line:nth-child(2) {
+  color: var(--dim);
+}
+.hero--home h1 {
+  font-size: clamp(40px, 5.2vw, 72px);
+}
+.hero--home .hero__inner {
+  gap: 26px;
+}
+.hero--home h1 .line + .line {
+  margin-top: 0;
+}
+.hero__lede {
+  color: var(--text);
+}
+.hero__badge {
+  gap: 8px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r0);
+  background: var(--bg-2);
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.hero__badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  flex: none;
+  background: var(--accent);
+}
+.mark {
+  color: var(--text-hi);
+}
+
+/* Labels: mono, small caps-free uppercase, in the accent. */
+.eyebrow,
+.kicker,
+.role__kicker {
+  font-family: var(--code);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 400;
+}
+.tag,
+.chips span {
+  font-family: var(--code);
+  letter-spacing: 0.04em;
+  border-radius: var(--r0);
+}
+
+/* Buttons: plain sans, no stroke, the accent for the one primary action. */
+.btn {
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: var(--r1);
+  font: 500 var(--fs-small) var(--sans);
+  -webkit-text-stroke: 0;
+  letter-spacing: 0;
+}
+.btn:hover {
+  border-color: var(--text-hi);
+  color: var(--text-hi);
+  background: rgba(var(--accent-rgb), 0.06);
+}
+.btn--primary {
+  font-weight: 600;
+}
+.btn--primary:hover {
+  background: var(--copper-hi);
+  border-color: var(--copper-hi);
+  color: var(--on-copper);
+}
+.btn--sm {
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: 14px;
+}
+.theme-switch {
+  width: 34px;
+  min-height: 34px;
+  border-radius: var(--r1);
+}
+.cmd {
+  border-radius: var(--r1);
+  background: var(--bg-2);
+  font-size: 15px;
+}
+.cmd .prompt,
+.cmd__label {
+  color: var(--faint);
+}
+.cmd__caret {
+  background: var(--accent);
+}
+.cmd__label {
+  font-family: var(--code);
+  letter-spacing: 0.06em;
+}
+.copy {
+  border-radius: var(--r0);
+}
+
+/* Nav: hairline under it, the wordmark set in the sans. */
+.nav {
+  border-bottom-color: var(--line);
+}
+.nav.is-scrolled {
+  background: rgba(var(--bg-rgb), 0.8);
+}
+.nav__inner {
+  height: 64px;
+}
+.nav__links {
+  font-weight: 500;
+  font-size: 14px;
+}
+.nav__menu {
+  border-radius: var(--r1);
+  background: var(--panel);
+}
+.brand__word {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  color: var(--text-hi);
+  line-height: 1;
+}
+.brand__word i {
+  font-style: normal;
+  color: var(--acc);
+}
+.footer .brand__word {
+  font-size: 18px;
+}
+
+/* Product shots: a hairline window with a title bar, instead of the map sheet. */
+.shot {
+  padding: 28px 0 0;
+  border-radius: var(--r2);
+  background: var(--bg-2);
+  box-shadow: none;
+  border: 1px solid var(--line-2);
+  overflow: hidden;
+}
+.shot::before {
+  inset: 0 0 auto;
+  height: 28px;
+  z-index: 1;
+  border-radius: 0;
+  opacity: 1;
+  -webkit-mask: none;
+  mask: none;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 16px 50%, var(--line-2) 3.5px, transparent 4px),
+    radial-gradient(circle at 30px 50%, var(--line-2) 3.5px, transparent 4px),
+    radial-gradient(circle at 44px 50%, var(--line-2) 3.5px, transparent 4px), var(--panel);
+}
+.shot::after {
+  display: none;
+}
+.shot img,
+.shot video {
+  border-radius: 0;
+  box-shadow: none;
+}
+.shot--natural {
+  padding: 40px 16px 16px;
+}
+.shot--hero {
+  box-shadow: 0 -24px 90px -10px rgba(var(--acc-rgb), 0.22);
+}
+.theme .shot {
+  padding: 22px 0 0;
+  margin-bottom: 10px;
+}
+.theme .shot::before {
+  height: 22px;
+  background:
+    radial-gradient(circle at 12px 50%, var(--line-2) 2.5px, transparent 3px),
+    radial-gradient(circle at 22px 50%, var(--line-2) 2.5px, transparent 3px),
+    radial-gradient(circle at 32px 50%, var(--line-2) 2.5px, transparent 3px), var(--panel);
+}
+
+/* Grids of cells: hairlines between, panels inside. */
+.themes,
+.cards,
+.cast,
+.roster,
+.gcards,
+.trio {
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+.theme,
+.card,
+.role,
+.roster li,
+.gcard {
+  background: var(--bg-2);
+}
+.theme h3,
+.card h3 {
+  font-size: 18px;
+}
+.read {
+  color: var(--text-hi);
+}
+.read:hover {
+  color: var(--accent);
+}
+.trio .stat {
+  letter-spacing: -0.04em;
+  font-size: clamp(40px, 4.4vw, 60px);
+}
+.trio .stat--up {
+  color: var(--accent);
+}
+.trio .stat + h3 {
+  font-size: var(--fs-small);
+  font-weight: 400;
+  color: var(--dim);
+  letter-spacing: 0;
+}
+.gates li::before {
+  width: auto;
+  height: auto;
+  margin-top: 0;
+  background: none;
+  content: '✓';
+  color: var(--ok);
+  font-family: var(--code);
+}
+.facts li {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  background: var(--bg-2);
+}
+.facts {
+  gap: 16px;
+}
+.facts h3 {
+  font-size: 17px;
+}
+.faq__list summary {
+  font-size: 17px;
+}
+.faq__list summary::after {
+  font-family: var(--code);
+}
+.mode,
+.needs,
+.waitlist input,
+.gdlg {
+  border-radius: var(--r2);
+}
+.waitlist input {
+  border-radius: var(--r1);
+  min-height: 40px;
+  background: var(--bg-2);
+}
+.mode--cloud {
+  border-color: rgba(var(--acc-rgb), 0.45);
+}
+.toast {
+  border-radius: var(--r1);
+}
+.sticker {
+  font-family: var(--code);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.mini-map .w {
+  background: var(--acc);
+}
+.footer {
+  font-size: 14px;
 }

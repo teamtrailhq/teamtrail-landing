@@ -13,7 +13,9 @@ import { isNight, onThemeChange } from './theme';
 import { initThemeSwitch } from './themeSwitch';
 import { initVideo } from './video';
 import { initWaitlist } from './waitlist';
+import { initPreviewLook } from './previewLook';
 
+initPreviewLook();
 document.documentElement.classList.add('js');
 initThemeSwitch();
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
