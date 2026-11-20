@@ -1,11 +1,11 @@
 import { type GuideRole, guideMarkup, mountScout } from '@teamtrail/scout-avatar/mount';
 import { initCloudScene } from './cloudScene';
-import { initSlackScene } from './slackScene';
 import { initCmdCycle } from './cmdCycle';
 import { initCopy } from './copy';
 import { initGhStars } from './ghStars';
 import { $, $$ } from './dom';
 import { initGuideDialogs } from './guideDialog';
+import { initScenes } from './scenes';
 import { initScramble } from './scramble';
 import { initNav, initReveal } from './scroll';
 import { isNight, onThemeChange } from './theme';
@@ -41,7 +41,6 @@ for (const el of $$('[data-spec]')) {
 }
 
 initCloudScene(reducedMotion);
-initSlackScene();
 initNav();
 void initGhStars();
 initReveal(reducedMotion);
@@ -50,6 +49,7 @@ initCopy();
 initGuideDialogs();
 initCmdCycle(reducedMotion);
 initVideo(reducedMotion);
+initScenes(reducedMotion);
 initTrail();
 initTrailField(reducedMotion);
 initWaitlist();

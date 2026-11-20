@@ -1,0 +1,83 @@
+<!-- Scene: a research brief and the plan approved in one step (src/scenes/planScene.ts). The markup is the still frame. -->
+<figure class="scene scene--plan scene--row reveal" data-scene="plan">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-wide">
+      <div class="sk-panel pl__brief is-on is-accepted">
+        <div class="sk-panel__bar">
+          <span class="sk-label">Brief · Offline sync</span>
+          <span class="sk-chip pl__brief-state"
+            ><span class="sk-dot"></span><span class="pl__brief-text">accepted</span></span
+          >
+        </div>
+        <div class="pl__by">
+          <span class="sk-avatar">c</span><b>claude-03</b><span class="sk-agent__model">Sonnet</span
+          ><span class="pl__by-what">research #1 · read 42 files</span>
+        </div>
+        <dl class="pl__facts">
+          <div class="pl__fact is-on">
+            <dt>Exists</dt>
+            <dd>Edits save straight to the server; nothing is queued.</dd>
+          </div>
+          <div class="pl__fact is-on">
+            <dt>Missing</dt>
+            <dd>An offline queue and a log of failed syncs.</dd>
+          </div>
+          <div class="pl__fact is-on">
+            <dt>Assumes</dt>
+            <dd>S-1 · One person edits a note at a time.</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="sk-panel pl__plan is-on is-approved">
+        <div class="sk-panel__bar">
+          <span class="sk-label">Plan · 4 tickets · 11 criteria</span>
+        </div>
+        <ol class="pl__rows">
+          <li class="pl__row is-on is-confirmed is-taken" data-row="4">
+            <span class="sk-key">#4</span><span class="pl__title">Queue edits while offline</span
+            ><span class="pl__ac">3 criteria</span>
+            <span class="pl__state"
+              ><span class="pl__wait">waits for the plan</span
+              ><span class="pl__ok"><i class="sk-tick"></i>confirmed</span
+              ><span class="pl__agent"><span class="sk-dot"></span>claude-02</span></span
+            >
+          </li>
+          <li class="pl__row is-on is-confirmed is-taken" data-row="5">
+            <span class="sk-key">#5</span><span class="pl__title">Add a sync_failures table</span
+            ><span class="pl__ac">2 criteria</span>
+            <span class="pl__state"
+              ><span class="pl__wait">waits for the plan</span
+              ><span class="pl__ok"><i class="sk-tick"></i>confirmed</span
+              ><span class="pl__agent"><span class="sk-dot"></span>codex-01</span></span
+            >
+          </li>
+          <li class="pl__row is-on is-confirmed" data-row="7">
+            <span class="sk-key">#7</span><span class="pl__title">Show sync status in the note list</span
+            ><span class="pl__ac">3 criteria</span>
+            <span class="pl__state"
+              ><span class="pl__wait">waits for the plan</span
+              ><span class="pl__ok"><i class="sk-tick"></i>confirmed</span></span
+            >
+          </li>
+          <li class="pl__row is-on is-confirmed" data-row="8">
+            <span class="sk-key">#8</span><span class="pl__title">Retry failed syncs with backoff</span
+            ><span class="pl__ac">3 criteria</span>
+            <span class="pl__state"
+              ><span class="pl__wait">waits for the plan</span
+              ><span class="pl__ok"><i class="sk-tick"></i>confirmed</span></span
+            >
+          </li>
+        </ol>
+        <div class="pl__foot">
+          <span class="sk-btn pl__approve">Approve the plan</span>
+          <span class="pl__approved"><i class="sk-tick"></i>Approved by Alex Rivera</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    A research agent's brief comes in: what exists, what's missing and what it assumes. Below it the plan lists four
+    tickets with their criteria, waiting for the plan. One click on Approve the plan accepts the brief and confirms
+    every ticket's criteria, and agents start on the first tickets.
+  </figcaption>
+</figure>

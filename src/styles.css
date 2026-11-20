@@ -2,6 +2,10 @@
 /* Inter with its optical-size axis, so big headlines get the display cut by themselves. The self-hosted build
  * carries no stylistic sets (cv11, ss01, ss03), so it stays as drawn. */
 @import '@fontsource-variable/inter/opsz.css';
+@import './scenes.css';
+@import './scenes-pages.css';
+@import './scenes-slack.css';
+@import './scenes-cloud.css';
 
 /* Two fonts: Inter for everything, JetBrains Mono for commands, code and labels. Dark-first: near-black surfaces,
  * hairline borders, square corners and one accent, blaze (the paint mark that shows a trail), for primary buttons,
@@ -800,18 +804,6 @@ code {
 .shot--hero {
   margin-top: 0;
 }
-/* A small crop shown at its own size, never stretched: the features page's close-ups are 380 CSS pixels wide (FEATURE in
- * scripts/media.mjs; the file is 2x), so the Lookout's text reads at its own size, and a little smaller on a phone.
- * CSS `width: auto` would take the file's 2x width, so the width is set here. */
-.shot--natural {
-  padding: 40px 16px 16px;
-}
-.shot--natural img {
-  width: 380px;
-  max-width: 100%;
-  margin-inline: auto;
-}
-
 /* ---------- problem ---------- */
 
 .trio {
@@ -1597,14 +1589,14 @@ code {
   transform: translateX(3px);
 }
 
-/* A theme on /features: one screenshot beside a short list of what's in it. */
+/* A theme on /features: one product scene beside a short list of what's in it. */
 .theme-row {
   display: grid;
   grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
   gap: clamp(32px, 4vw, 64px);
   align-items: start;
 }
-.theme-row--flip .shot {
+.theme-row--flip > .scene {
   order: 2;
 }
 .theme-row--flip {
@@ -2083,7 +2075,7 @@ code {
   .theme-row--flip {
     grid-template-columns: 1fr;
   }
-  .theme-row--flip .shot {
+  .theme-row--flip > .scene {
     order: 0;
   }
   .trio > li + li {
@@ -2127,13 +2119,6 @@ code {
 
 /* ---------- /cloud ---------- */
 
-/* Hero: Scout in a square frame, with the blaze early access tag on its corner. */
-.cloud-stage {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  margin-bottom: 12px;
-}
 /* Scout's square frame, in the hero and on the journey: a hairline edge on the page's second surface. */
 .scout-frame {
   position: relative;
@@ -2173,7 +2158,7 @@ code {
   white-space: nowrap;
 }
 
-/* Away from the desk: laptop → cloud → phone, with packets flowing between. */
+/* Away from the desk: laptop → cloud → phone, a scene (src/scenes/cloudAwayScene.ts, styles in scenes-cloud.css). */
 .journey {
   list-style: none;
   margin: 56px 0 0;
@@ -2202,77 +2187,24 @@ code {
   position: relative;
   display: grid;
   place-items: center;
-  height: 112px;
+  height: 132px;
   color: var(--text-hi);
 }
 .journey__art svg {
   display: block;
 }
-.zz {
-  position: absolute;
-  right: -6px;
-  top: 0;
-  font-family: var(--display);
-  font-weight: var(--head-weight);
-  font-size: 18px;
-  color: var(--accent);
-  animation: zz-float 2.6s ease-in-out infinite;
-}
-.zz span {
-  font-size: 13px;
-  margin-left: 2px;
-  vertical-align: 10px;
-}
-@keyframes zz-float {
-  50% {
-    transform: translateY(-6px);
-    opacity: 0.55;
-  }
-}
-.ping {
-  position: absolute;
-  top: 2px;
-  right: -4px;
-  width: 12px;
-  height: 12px;
-  background: var(--urgent);
-  box-shadow: 0 0 0 3px rgba(var(--urgent-rgb), 0.25);
-  animation: ping-blink 1.2s steps(1) infinite;
-}
-@keyframes ping-blink {
-  50% {
-    opacity: 0.25;
-  }
-}
 .journey__link {
   display: flex;
   justify-content: center;
   gap: 8px;
-  height: 112px;
+  height: 132px;
   align-items: center;
 }
 .journey__link i {
   width: 8px;
   height: 8px;
   background: var(--accent);
-  opacity: 0.2;
-  animation: packet 1.5s steps(1) infinite;
-}
-.journey__link i:nth-child(2) {
-  animation-delay: 0.5s;
-}
-.journey__link i:nth-child(3) {
-  animation-delay: 1s;
-}
-@keyframes packet {
-  0%,
-  33% {
-    opacity: 1;
-  }
-  34%,
-  100% {
-    opacity: 0.2;
-  }
+  opacity: 0.22;
 }
 
 /* Local or Cloud: two cards. */
@@ -2345,17 +2277,6 @@ code {
   .frame-tag {
     left: auto;
     right: -8px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .zz,
-  .ping,
-  .journey__link i {
-    animation: none;
-  }
-  .journey__link i {
-    opacity: 0.6;
   }
 }
 
@@ -2693,79 +2614,6 @@ html:has(.gdlg[open]) {
 }
 
 /* ---------- /slack: Scout in Slack ---------- */
-/* Scout and Slack's mark, side by side, floating out of step. Scout is mounted like on /cloud (slackScene.ts). */
-.slack-pair {
-  display: flex;
-  align-items: center;
-  gap: clamp(14px, 3vw, 28px);
-  margin-bottom: 4px;
-}
-.slack-pair__item {
-  display: grid;
-  place-items: center;
-  width: 112px;
-  height: 112px;
-  animation: slack-float 5s ease-in-out infinite;
-}
-.slack-pair__slack {
-  animation-delay: -2.5s;
-}
-.slack-pair__slack img {
-  width: 72px;
-  height: 72px;
-}
-.slack-pair__scout > span {
-  width: 96px;
-  height: 96px;
-}
-.slack-pair__scout .scout {
-  margin: 0;
-}
-.slack-pair__scout .scout-sprite {
-  outline: none !important;
-  filter: drop-shadow(0 6px 0 var(--shadow));
-}
-.slack-pair__link {
-  display: flex;
-  gap: 6px;
-}
-.slack-pair__link i {
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  opacity: 0.2;
-  animation: packet 1.5s steps(1) infinite;
-}
-.slack-pair__link i:nth-child(2) {
-  animation-delay: 0.5s;
-}
-.slack-pair__link i:nth-child(3) {
-  animation-delay: 1s;
-}
-@keyframes slack-float {
-  50% {
-    transform: translateY(-8px);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .slack-pair__item,
-  .slack-pair__link i {
-    animation: none;
-  }
-  .slack-pair__link i {
-    opacity: 0.6;
-  }
-}
-@media (max-width: 560px) {
-  .slack-pair__item {
-    width: 88px;
-    height: 88px;
-  }
-  .slack-pair__slack img {
-    width: 56px;
-    height: 56px;
-  }
-}
 .slack-note {
   max-width: 760px;
   margin-top: 40px;

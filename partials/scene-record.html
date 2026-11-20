@@ -1,0 +1,51 @@
+<!-- Scene: a past decision answers a new question, and the scorecard (src/scenes/recordScene.ts). The markup is the still frame. -->
+<figure class="scene scene--record scene--row reveal" data-scene="record">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="sk-wide">
+      <div class="sk-panel rc__log is-match is-cited">
+        <div class="sk-panel__bar">
+          <span class="sk-label">Logbook · D-9</span><span class="sk-chip">product-behaviour</span>
+        </div>
+        <div class="rc__body">
+          <div class="rc__q">Should a note deleted on one device be deleted everywhere?</div>
+          <div class="rc__words">“Yes, but keep it in the trash for 30 days.”</div>
+          <div class="rc__meta"><span class="rc__k">not chosen</span>delete only here · ask each time</div>
+          <div class="rc__meta"><span class="rc__k">decided by</span>Alex Rivera · on #3</div>
+          <div class="rc__cited"><span class="rc__k">cited by</span>D-15 · claude-03 on #11</div>
+        </div>
+      </div>
+      <div class="sk-panel sk-agent rc__agent is-on">
+        <div class="sk-agent__head">
+          <span class="sk-avatar">c</span><b>claude-03</b><span class="sk-agent__model">Sonnet</span
+          ><span class="sk-key rc__on">#11</span>
+        </div>
+        <div class="sk-agent__body">
+          <div class="sk-line">
+            <span class="sk-line__cmd">ask_human</span> <span class="rc__typed">Sync deletes to every device?</span>
+          </div>
+          <div class="sk-line rc__found is-on">← precedent D-9 · strong · same files and risk</div>
+          <div class="sk-worked rc__go is-on"><span class="sk-chev"></span>Not asked again · building on D-9</div>
+        </div>
+      </div>
+      <div class="sk-panel rc__score is-on">
+        <div class="sk-panel__bar"><span class="sk-label">Scorecard · verified first time</span></div>
+        <div class="rc__bars">
+          <div class="rc__bar">
+            <span>claude-02 · Opus</span><i><b class="rc__fill rc__fill--a"></b></i><span class="sk-num">81%</span>
+          </div>
+          <div class="rc__bar">
+            <span>codex-01 · GPT-5.1</span><i><b class="rc__fill rc__fill--b"></b></i><span class="sk-num">74%</span>
+          </div>
+          <div class="rc__bar">
+            <span>claude-03 · Sonnet</span><i><b class="rc__fill rc__fill--c"></b></i><span class="sk-num">62%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    An agent goes to ask a question that was already decided. Teamtrail finds decision D-9 in the logbook, with the
+    question, your words, the options not chosen and who decided, and hands it back instead of asking you again. Below,
+    the scorecard ranks agents by how often their work was verified first time.
+  </figcaption>
+</figure>
