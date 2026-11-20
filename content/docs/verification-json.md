@@ -52,7 +52,7 @@ Without this file, nothing is verified. Teamtrail writes to it when you set the 
 | `guards`     | glob array       | `[]`         | Globs the [check guard](/docs/verification/#check-guard) also watches for this check, beyond the scripts, tool config and files it finds from the command.                                                                                                                                          |
 | `paths`      | glob array       | every change | In a monorepo, the files this check is about, relative to the repo root (`apps/web/**`). A completion whose changes are all outside them doesn't run it. Set it in the check's **Paths** field; a suggested check for a workspace package comes with its folder. See [Monorepos](#monorepos-paths). |
 
-Checks run with an allowlisted environment: the shell, locale and toolchain basics, without tokens, keys or anything named like a secret. Name extra variables a check needs in `TEAMTRAIL_CHECK_ENV` on your machine, never in the repo:
+Checks run with an allowlisted environment: the shell, locale and toolchain basics and toolchain caches, without tokens, keys or anything named like a secret. Name extra variables a check needs on your machine, never in the repo: in **Settings → Project → Check variables** (names only; see [Security](/docs/security/#check-commands)), or in `TEAMTRAIL_CHECK_ENV`:
 
 ```bash
 TEAMTRAIL_CHECK_ENV="DATABASE_URL, REDIS_URL, APP_*" teamtrail
