@@ -1,8 +1,9 @@
-// Re-theme preview only: ?font=plex|space|instrument|manrope|inter, ?accent=indigo|blue|amber and ?corners=square|slight|rounded
+// Re-theme preview only: ?font=inter|plex|space|instrument|manrope,
+// ?accent=indigo|blue|amber|blaze|cyan|magenta|hivis and ?corners=square|slight|rounded
 // set data-font, data-accent and data-corners on <html>, kept for the visit so every page shows the same pick.
 const OPTIONS: Record<string, string[]> = {
-  font: ['plex', 'space', 'instrument', 'manrope', 'inter'],
-  accent: ['indigo', 'blue', 'amber'],
+  font: ['inter', 'plex', 'space', 'instrument', 'manrope'],
+  accent: ['indigo', 'blue', 'amber', 'blaze', 'cyan', 'magenta', 'hivis'],
   corners: ['square', 'slight', 'rounded'],
 };
 

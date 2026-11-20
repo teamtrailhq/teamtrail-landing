@@ -15,8 +15,8 @@
 @import '@fontsource-variable/inter/opsz.css';
 
 /* Dark-first, near-black surfaces, hairline borders, square corners and one accent. Night is the default; day is
- * the visitor's choice. Switches on <html>: data-font (plex, space, instrument, manrope, inter), data-accent (indigo, blue,
- * amber) and data-corners (square, slight, rounded). */
+ * the visitor's choice. Switches on <html>: data-font (inter, plex, space, instrument,
+ * manrope), data-accent (indigo, blue, amber, blaze, cyan, magenta, hivis) and data-corners (square, slight, rounded). */
 :root {
   /* The accent: primary buttons, eyebrows, links and highlights. --acc fills, --acc-ink is the text colour on day. */
   --acc: #8b7cf6;
@@ -26,13 +26,13 @@
   --acc-ink-rgb: 101, 83, 230;
   --on-acc: #ffffff;
 
-  /* Fonts: IBM Plex Sans + IBM Plex Mono unless data-font says otherwise. */
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --code: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Fonts: Inter + JetBrains Mono unless data-font says otherwise. */
+  --sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
   --display: var(--sans);
   --head-weight: 600;
-  --head-track: -0.035em;
-  --hero-track: -0.045em;
+  --head-track: -0.022em;
+  --hero-track: -0.03em;
 
   /* Corners: square unless data-corners says otherwise. */
   --r0: 0;
@@ -54,7 +54,7 @@
   --accent: var(--acc-ink);
   --accent-rgb: var(--acc-ink-rgb);
   --copper: var(--acc);
-  --copper-hi: var(--acc-ink);
+  --copper-hi: var(--acc-hi);
   --copper-rgb: var(--acc-rgb);
   --star: #b7791f;
   --on-copper: var(--on-acc);
@@ -102,13 +102,55 @@
   --acc-ink-rgb: 180, 95, 11;
   --on-acc: #0a0a0b;
 }
+:root[data-accent='blaze'] {
+  --acc: #ff6b2c;
+  --acc-rgb: 255, 107, 44;
+  --acc-hi: #ff8a57;
+  --acc-ink: #c2410c;
+  --acc-ink-rgb: 194, 65, 12;
+  --on-acc: #0a0a0b;
+}
+:root[data-accent='cyan'] {
+  --acc: #22d3ee;
+  --acc-rgb: 34, 211, 238;
+  --acc-hi: #67e8f9;
+  --acc-ink: #0e7490;
+  --acc-ink-rgb: 14, 116, 144;
+  --on-acc: #0a0a0b;
+}
+:root[data-accent='magenta'] {
+  --acc: #e64fd9;
+  --acc-rgb: 230, 79, 217;
+  --acc-hi: #ee7be4;
+  --acc-ink: #a21caf;
+  --acc-ink-rgb: 162, 28, 175;
+  --on-acc: #0a0a0b;
+}
+:root[data-accent='hivis'] {
+  --acc: #ffd84d;
+  --acc-rgb: 255, 216, 77;
+  --acc-hi: #ffe380;
+  --acc-ink: #8a6500;
+  --acc-ink-rgb: 138, 101, 0;
+  --on-acc: #0a0a0b;
+}
+:root[data-font='plex'] {
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --code: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --head-track: -0.035em;
+  --hero-track: -0.045em;
+}
 :root[data-font='space'] {
   --sans: 'Space Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --code: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --head-track: -0.035em;
+  --hero-track: -0.045em;
 }
 :root[data-font='instrument'] {
   --sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --head-track: -0.035em;
+  --hero-track: -0.045em;
 }
 :root[data-font='manrope'] {
   --sans: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -116,15 +158,9 @@
   --head-track: -0.025em;
   --hero-track: -0.035em;
 }
-:root[data-font='inter'] {
-  --sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --code: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --head-track: -0.022em;
-  --hero-track: -0.03em;
-}
 /* Inter: the self-hosted build carries no stylistic sets (cv11, ss01, ss03 are dropped from it), so it stays as
  * drawn; the optical-size axis gives headlines the display cut, which wants less negative tracking. */
-:root[data-font='inter'] body {
+:root:is(:not([data-font]), [data-font='inter']) body {
   letter-spacing: -0.006em;
 }
 :root[data-corners='slight'] {
@@ -2608,6 +2644,7 @@ h1,
 h2 {
   letter-spacing: var(--head-track);
   line-height: 1.06;
+  text-wrap: balance;
 }
 h3 {
   letter-spacing: -0.015em;
@@ -2794,7 +2831,7 @@ pre,
 }
 .brand__word i {
   font-style: normal;
-  color: var(--acc);
+  color: var(--accent);
 }
 .footer .brand__word {
   font-size: 18px;
