@@ -41,8 +41,6 @@
   --tt-logo-edge: #0e0f11;
   --tt-logo-mark: #ffffff;
   --tt-logo-dot: var(--fill);
-  --tt-wordmark-ink: #0e0f11;
-  --tt-wordmark-dot: var(--accent);
   /* Guide icons (guideMarkup from @teamtrail/scout-avatar): ink with one blaze accent on a square tile. */
   --tt-guide-ink: #0e0f11;
   --tt-guide-fill: #ffffff;
@@ -89,7 +87,6 @@
     --tt-logo-tile: #f4f4f6;
     --tt-logo-edge: #f4f4f6;
     --tt-logo-mark: #0a0a0b;
-    --tt-wordmark-ink: #f4f4f6;
     --tt-guide-ink: #ededef;
     --tt-guide-fill: #1c1c1f;
     --tt-guide-accent: #ff6b2c;
@@ -120,7 +117,6 @@
   --tt-logo-tile: #f4f4f6;
   --tt-logo-edge: #f4f4f6;
   --tt-logo-mark: #0a0a0b;
-  --tt-wordmark-ink: #f4f4f6;
   --tt-guide-ink: #ededef;
   --tt-guide-fill: #1c1c1f;
   --tt-guide-accent: #ff6b2c;
@@ -202,7 +198,7 @@ h2 {
   line-height: 1.04;
 }
 
-/* Card titles, buttons and bold text: Figtree semibold. */
+/* Card titles, buttons and bold text: Inter semibold. */
 h3,
 strong,
 b {
@@ -807,13 +803,16 @@ code {
 .shot--hero {
   margin-top: 0;
 }
-/* A small crop shown at its own size (its width and height are CSS pixels; the file is 2x), never stretched. */
+/* A small crop shown at its own size, never stretched: the features page's close-ups are 380 CSS pixels wide (FEATURE in
+ * scripts/media.mjs; the file is 2x), so the Lookout's text reads at its own size, and a little smaller on a phone.
+ * CSS `width: auto` would take the file's 2x width, so the width is set here. */
 .shot--natural {
   padding: 40px 16px 16px;
 }
 .shot--natural img {
-  width: auto;
+  width: 380px;
   max-width: 100%;
+  margin-inline: auto;
 }
 
 /* ---------- problem ---------- */
@@ -1313,9 +1312,10 @@ code {
     radial-gradient(circle at 22px 50%, var(--line-2) 2.5px, transparent 3px),
     radial-gradient(circle at 32px 50%, var(--line-2) 2.5px, transparent 3px), var(--panel);
 }
-/* One shape for every card's screenshot, so the headlines line up. */
+/* One shape for every card's screenshot, so the headlines line up: a 4:5 close-up (380 by 475 CSS pixels of the
+ * Lookout, saved at 2x), shown about its own size, so its text reads at 11 to 12 pixels even on a phone. */
 .theme .shot img {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   object-position: left top;
 }

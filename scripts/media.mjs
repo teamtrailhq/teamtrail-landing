@@ -129,10 +129,23 @@ const fit = (file, max) => {
   renameSync(tmp, file);
 };
 
+// ONLY=name,name saves just those shots (the run still walks every step before them) and ends once they're saved.
+const only = process.env.ONLY ? new Set(process.env.ONLY.split(',')) : null;
+const saved = new Set();
+/** Whether this run saves `name`. */
+const wanted = (name) => !only || only.has(name);
+/** Notes a saved shot; with ONLY, ends the run once every one asked for is saved. */
+const done = (name) => {
+  saved.add(name);
+  if (only && [...only].every((n) => saved.has(n))) process.exit(0);
+};
+
 const shot = async (name) => {
+  if (!wanted(name)) return;
   await clearUi();
   await page.screenshot({ path: join(media, `${name}.png`), scale: 'css' });
   console.log('saved', `${name}.png`);
+  done(name);
 };
 
 /** The margin of surrounding page every close-up keeps on each side of the part it shows, in CSS pixels. */
@@ -148,6 +161,7 @@ const MARGIN = 24;
  * keeps the crop inside a panel.
  */
 const zoom = async (name, sels, { aspect = 4 / 3, width, within } = {}) => {
+  if (!wanted(name)) return;
   await clearUi();
   // A selector that matches nothing (an optional neighbour) is left out of the union.
   const found = await Promise.all(
@@ -304,6 +318,7 @@ const zoom = async (name, sels, { aspect = 4 / 3, width, within } = {}) => {
   await page.screenshot({ path: file, clip });
   fit(file, width);
   console.log('saved', `${name}.png`, width ? `${width}w` : `${clip.width * 2}x${clip.height * 2}`);
+  done(name);
   return clip;
 };
 
@@ -316,6 +331,7 @@ const MAP_ASPECT = 16 / 10;
  * A question that comes in meanwhile opens its bubble and glides the map to it, so the frame is made again then.
  */
 const mapShot = async (name, pick, { fill = 0.94, aspect = MAP_ASPECT } = {}) => {
+  if (!wanted(name)) return;
   let cut = [];
   for (let attempt = 0; attempt < 4; attempt++) {
     await closeBubble();
@@ -331,10 +347,59 @@ const mapShot = async (name, pick, { fill = 0.94, aspect = MAP_ASPECT } = {}) =>
     await page.screenshot({ path: file, clip });
     fit(file, 1960);
     console.log('saved', `${name}.png`, '1960w');
+    done(name);
     return;
   }
   throw new Error(`${name} cuts through or covers: ${cut.join(', ') || 'a bubble kept opening'}`);
 };
+
+/**
+ * A fixed-size crop for a small place on the site (a home card, a features shot): `width` x `height` CSS pixels from
+ * (`x`, `y`), saved at 2x, so the day and night files are the same size and the app's text stays readable where the
+ * site shows the image at about its CSS size. The crop moves up or down by a few pixels, never resizes, so its top and
+ * bottom edges don't cut through a line of text.
+ */
+const cardShot = async (name, { x, y, width, height }) => {
+  if (!wanted(name)) return;
+  await clearUi();
+  const vp = page.viewportSize();
+  const dy = await page.evaluate(
+    ({ x, y, width, height }) => {
+      const rects = [];
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const range = document.createRange();
+      for (let t = walker.nextNode(); t; t = walker.nextNode()) {
+        if (!t.textContent.trim()) continue;
+        range.selectNodeContents(t);
+        for (const r of range.getClientRects()) if (r.width && r.right > x && r.left < x + width) rects.push(r);
+      }
+      const cuts = (edge) => rects.some((r) => r.top < edge - 0.5 && r.bottom > edge + 0.5);
+      for (let d = 0; d <= 48; d += 2)
+        for (const s of d ? [-d, d] : [0]) if (!cuts(y + s) && !cuts(y + s + height)) return s;
+      return 0;
+    },
+    { x, y, width, height },
+  );
+  const clip = { x: Math.round(x), y: Math.round(y + dy), width, height };
+  if (clip.x < 0 || clip.y < 0 || clip.x + width > vp.width || clip.y + height > vp.height)
+    throw new Error(`${name}: ${JSON.stringify(clip)} doesn't fit the ${vp.width}x${vp.height} window`);
+  await page.screenshot({ path: join(media, `${name}.png`), clip });
+  console.log('saved', `${name}.png`, `${width * 2}x${height * 2}`);
+  done(name);
+};
+/** The middle of a map card, by its key (`#24`). */
+const nodeCentre = (key) =>
+  page.evaluate((key) => {
+    const n = [...document.querySelectorAll('.map-zone .node')].find(
+      (n) => n.querySelector('.key')?.textContent?.trim() === key,
+    );
+    const r = n.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }, key);
+/** The home page's "How it works" cards: 4:5, shown about 330 pixels wide. */
+const CARD = { width: 380, height: 475 };
+/** The features page's tight crops, shown at their own size beside the text. */
+const FEATURE = { width: 380, height: 420 };
 
 /**
  * Opens the Settings page at a section by its deep link (`?settings=<section>`, see settingsGroups.ts in the app),
@@ -430,8 +495,13 @@ const openNeed = async (text) => {
     if (await more.count()) await more.click();
   }
   await row.waitFor({ timeout: 30000 });
-  if (!(await row.evaluate((el) => el.classList.contains('open')))) await row.locator('.ds-row-main').click();
-  await page.locator('.home-needs .home-need.open', { hasText: text }).waitFor({ timeout: 10000 });
+  // A click while the list re-renders (an agent's new item) can miss: click again until the row is open.
+  const open = page.locator('.home-needs .home-need.open', { hasText: text });
+  for (let i = 0; i < 4 && !(await open.count()); i++) {
+    await row.locator('.ds-row-main').click();
+    await open.waitFor({ timeout: 4000 }).catch(() => {});
+  }
+  await open.waitFor({ timeout: 10000 });
   await wait(900);
   return row;
 };
@@ -459,6 +529,12 @@ const handsOffShots = async () => {
   });
   await wait(900);
   await zoom('lookout-plan-approval', ['.home-need.open'], { aspect: null });
+  // The home page's Hands-off card: Needs you in a phone-narrow window, the questions and a new plan open among them.
+  await page.setViewportSize({ width: CARD.width, height: 1000 });
+  await wait(900);
+  await openNeed('Organizations already give');
+  const needs = await page.locator('.home-needs').boundingBox();
+  await cardShot('lookout-card-hands-off', { x: 0, y: needs.y - 16, ...CARD });
   await page.setViewportSize(size);
   await openNeed('Is silent auto-merge acceptable');
 };
@@ -561,6 +637,97 @@ await mapShot(
   },
   { fill: 0.9, aspect: 2 },
 );
+// The home page's map card: the first stretch of the trail close up, the walked path from main, work in flight and a
+// junction that needs you. The window is sized so the map's own area is the card's shape.
+await page.setViewportSize({ width: 1280, height: 800 });
+await wait(800);
+const cardAspect = CARD.width / CARD.height;
+await page.setViewportSize({ width: 1280, height: Math.ceil(800 + CARD.height + 8 - (await mapFrame(page)).height) });
+await wait(800);
+// Three cards of the first column, #24 in the middle: zoomed so the column's row pitch is a third of the card's height,
+// which puts the crop's top and bottom edges in the gaps between rows, and the columns beside it out of the frame.
+for (let attempt = 0; attempt < 4 && wanted('lookout-card-map') && !saved.has('lookout-card-map'); attempt++) {
+  await closeBubble();
+  await settleMap();
+  await page.locator('.map-zone').getByRole('button', { name: 'Fit' }).click();
+  await wait(900);
+  // The map eases its zoom, so a wheel turn lands short: measure the row pitch and turn again until it's right.
+  const pitch = () =>
+    page.evaluate(() => {
+      const top = (key) =>
+        [...document.querySelectorAll('.map-zone .node')]
+          .find((n) => n.querySelector('.key')?.textContent?.trim() === key)
+          ?.getBoundingClientRect().top;
+      return top('#24') - top('#23');
+    });
+  for (let pass = 0; pass < 5; pass++) {
+    const k = CARD.height / 3 / (await pitch());
+    if (Math.abs(k - 1) < 0.01) break;
+    const at = await nodeCentre('#24');
+    await page.mouse.move(at.x, at.y);
+    for (let i = 0; i < 6; i++) {
+      await page.mouse.wheel(0, -Math.log(k) / 0.0015 / 6);
+      await wait(80);
+    }
+    await wait(900);
+  }
+  // Then drag #24 to the middle of the map.
+  const area = await mapFrame(page, cardAspect);
+  const now = await nodeCentre('#24');
+  const grab = await page.evaluate((a) => {
+    for (let fy = 0.1; fy < 1; fy += 0.1)
+      for (let fx = 0.1; fx < 1; fx += 0.1) {
+        const p = { x: a.x + a.width * fx, y: a.y + a.height * fy };
+        const el = document.elementFromPoint(p.x, p.y);
+        if (el?.closest('.map-zone svg.graph') && !el.closest('.node, button, a, .bubble')) return p;
+      }
+    return null;
+  }, area);
+  if (!grab) continue;
+  await page.mouse.move(grab.x, grab.y);
+  await page.mouse.down();
+  await page.mouse.move(grab.x + area.x + area.width / 2 - now.x, grab.y + area.y + area.height / 2 - now.y, {
+    steps: 12,
+  });
+  await page.mouse.up();
+  await page.evaluate(() => window.getSelection()?.removeAllRanges());
+  await wait(900);
+  await settleMap();
+  await clearUi();
+  if (await page.locator('.bubble').count()) continue;
+  const f = await mapFrame(page, cardAspect);
+  const mid = await nodeCentre('#24');
+  // `main` sits just left of the column: start the crop past it, so its lines lead in from the edge.
+  const mainRight = await page.evaluate(
+    () => document.querySelector('.map-zone .node.main-mark')?.getBoundingClientRect().right,
+  );
+  const left = Math.max(mid.x - CARD.width / 2, (mainRight ?? -Infinity) + 10);
+  const clip = {
+    x: Math.round(Math.min(Math.max(left, f.x), f.x + f.width - CARD.width)),
+    y: Math.round(Math.min(Math.max(mid.y - CARD.height / 2, f.y), f.y + f.height - CARD.height)),
+    ...CARD,
+  };
+  const cut = await clippedCards(page, clip);
+  if (cut.length) {
+    console.log('map card cuts', cut.join(', '), JSON.stringify({ clip, f, mid, mainRight }));
+    if (process.env.DEBUG_DIR) await page.screenshot({ path: join(process.env.DEBUG_DIR, `map-cut-${attempt}.png`) });
+    continue;
+  }
+  await cardShot('lookout-card-map', clip);
+}
+// The home page's parallel card: Activity's agents on tickets, each with its ticket, model and step, in a phone-narrow
+// window.
+if (wanted('lookout-card-parallel')) {
+  await view('Activity');
+  await page.setViewportSize({ width: CARD.width, height: 1300 });
+  await page.locator('.sessions-head').waitFor({ timeout: 10000 });
+  await wait(1500);
+  const sessions = await page.locator('.sessions-head').boundingBox();
+  await cardShot('lookout-card-parallel', { x: 0, y: sessions.y - 16, ...CARD });
+  await page.setViewportSize(size);
+  await view('Map');
+  await page.locator('.map-zone .node').first().waitFor({ timeout: 15000 });
+}
 await page.setViewportSize(size);
 await wait(800);
 
@@ -611,6 +778,13 @@ await page.locator('.stats-btn').click();
 await page.locator('.perf-recs li').first().waitFor({ timeout: 10000 });
 await wait(800);
 await zoom('lookout-trail-stats', ['.perf-section >> nth=0', '.perf-section >> nth=1'], { aspect: 16 / 10 });
+// The features page's crop: what stands out, in a narrow window, so it reads at its own size.
+await page.setViewportSize({ width: FEATURE.width, height: 1000 });
+await wait(1200);
+const standout = await page.locator('.perf-section').first().boundingBox();
+await cardShot('lookout-card-stats', { x: 0, y: standout.y - 16, ...FEATURE });
+await page.setViewportSize(size);
+await wait(800);
 await page.keyboard.press('Escape');
 await wait(500);
 
@@ -622,6 +796,25 @@ await page.getByRole('button', { name: 'Review brief' }).first().click({ timeout
 await page.locator('.brief-dialog').waitFor();
 await wait(800);
 await zoom('lookout-discovery', ['.brief-dialog'], { aspect: 16 / 10 });
+// The features page's crop: the brief's top in a narrow window, so it reads at its own size.
+// The dialog keeps a margin from the window's edges: size the window so the dialog is a little wider than the crop, and
+// crop inside it, past its side padding but never through its text.
+let briefWidth = FEATURE.width + 40;
+for (let i = 0; i < 4; i++) {
+  await page.setViewportSize({ width: briefWidth, height: 1000 });
+  await wait(900);
+  const b = await page.locator('.brief-dialog').boundingBox();
+  if (Math.abs(b.width - (FEATURE.width + 16)) < 2) break;
+  briefWidth += Math.round(FEATURE.width + 16 - b.width);
+}
+const brief = await page.locator('.brief-dialog').boundingBox();
+await cardShot('lookout-card-brief', {
+  x: Math.round(brief.x + (brief.width - FEATURE.width) / 2),
+  y: Math.round(Math.max(0, brief.y)),
+  ...FEATURE,
+});
+await page.setViewportSize(size);
+await wait(800);
 await page.keyboard.press('Escape');
 await closeBubble();
 await page.locator('.trail-btn').click();
@@ -779,6 +972,7 @@ await clearUi();
 // Phone view of the same project: the header, the map and the tab bar (Hands-on), then Hands-off's home.
 const cdp = await ctx.newCDPSession(page);
 const phone = async (name) => {
+  if (!wanted(name)) return;
   await cdp.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
   await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true });
   await wait(2500);
@@ -788,6 +982,7 @@ const phone = async (name) => {
   });
   writeFileSync(join(media, `${name}.png`), Buffer.from(data, 'base64'));
   console.log('saved', `${name}.png`);
+  done(name);
   await cdp.send('Emulation.clearDeviceMetricsOverride');
   await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: false });
   await wait(1200);
