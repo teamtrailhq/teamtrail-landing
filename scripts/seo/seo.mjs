@@ -13,7 +13,6 @@ const CRUMBS = {
   '/guides/': 'Guides',
   '/cloud/': 'Cloud',
   '/slack/': 'Scout in Slack',
-  '/scout/': 'Adopt a Scout',
   '/privacy/': 'Privacy',
 };
 
