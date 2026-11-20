@@ -2929,8 +2929,24 @@ pre,
   line-height: 1;
 }
 .brand__word i {
-  font-style: normal;
-  color: var(--accent);
+  /* The wordmark's blaze block cursor: a terminal cursor on the baseline, a little under cap height. It blinks here,
+   * on the site only, and holds still under reduced motion. */
+  display: inline-block;
+  width: 0.32em;
+  height: 0.66em;
+  margin-left: 0.07em;
+  background: var(--fill);
+  animation: brand-blink 1.1s steps(1) infinite;
+}
+@keyframes brand-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand__word i {
+    animation: none;
+  }
 }
 .footer .brand__word {
   font-size: 18px;
