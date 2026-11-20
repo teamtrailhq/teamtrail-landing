@@ -2154,8 +2154,9 @@ code {
 .scout-frame .scout-sprite {
   outline: none !important;
 }
-/* "Early access": a square blaze tag in mono capitals, pinned to the frame's top right corner. */
-.tag {
+/* "Early access": a square blaze tag in mono capitals, pinned to Scout's frame's top right corner. Its own class: the
+ * site's .tag (cards, the guide catalog) stays in the flow. */
+.frame-tag {
   position: absolute;
   top: -11px;
   left: calc(100% - 28px);
@@ -2341,7 +2342,7 @@ code {
   .modes {
     grid-template-columns: 1fr;
   }
-  .tag {
+  .frame-tag {
     left: auto;
     right: -8px;
   }
