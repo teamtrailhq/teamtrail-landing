@@ -3,13 +3,15 @@ import type { Scene } from './sequencer';
 
 /**
  * Hands-off: a question arrives at the top of Needs you, is answered in place and resolves, then leaves and the next
- * item rises. The loop ends where it starts (two items, the question gone), so it needs no fade.
+ * item rises. The loop ends where it starts (two items, the question gone), so it needs no fade. The still is the
+ * question answered, before it resolves.
  */
 const rows = (root: HTMLElement) => all(root, '.sk-need, .ny__away');
 const row = (root: HTMLElement) => one(root, '[data-row="a"]');
 
 export const needsScene: Scene = {
   length: 9000,
+  still: 4300,
   reset: ({ root }) => {
     row(root).classList.remove('is-open', 'is-resolved', 'is-primary', 'is-entering', 'is-leaving', 'is-pressed');
     row(root).classList.add('is-gone');

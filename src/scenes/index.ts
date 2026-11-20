@@ -3,7 +3,8 @@ import { chartScene } from './chartScene';
 import { needsScene } from './needsScene';
 import { parallelScene } from './parallelScene';
 import { proofScene } from './proofScene';
-import { runScene, type Scene } from './sequencer';
+import { scenePlayer, type Scene } from './sequencer';
+import { takeTurns } from './turns';
 
 const SCENES: Record<string, Scene> = {
   needs: needsScene,
@@ -13,13 +14,14 @@ const SCENES: Record<string, Scene> = {
 };
 
 /**
- * The product scenes (partials/scene-*.html): each plays its loop while on screen. With reduced motion, or without
- * scripts, the markup's still frame stays.
+ * The product scenes (partials/scene-*.html) on this page, taking turns: one plays at a time, the others show their
+ * still frame. With reduced motion, or without scripts, every scene keeps its still frame.
  */
 export function initScenes(reducedMotion: boolean) {
   if (reducedMotion || !('IntersectionObserver' in window)) return;
-  for (const root of $$('[data-scene]')) {
+  const players = $$('[data-scene]').flatMap((root) => {
     const scene = SCENES[root.dataset.scene ?? ''];
-    if (scene) runScene(root, scene);
-  }
+    return scene ? [scenePlayer(root, scene)] : [];
+  });
+  takeTurns(players);
 }

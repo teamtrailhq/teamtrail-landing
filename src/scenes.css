@@ -2,7 +2,7 @@
  * Stylised fragments of the product, built in HTML and CSS (partials/scene-*.html), looped by src/scenes/. The scene
  * kit (sk-*) is the parts: a stage on the dot grid whose edges dissolve into the page, panels, ticket cards, Needs you
  * rows, agent rows with a step bar, chat and terminal lines, check lines and a Slack message. The markup is each
- * scene's still frame; under .sk-live (scripts on, motion allowed) the loop hides what hasn't happened yet. Only
+ * scene's still frame; under .sk-live (the scene taking its turn) the loop hides what hasn't happened yet. Only
  * transforms and opacity animate, except a few colours on state changes. */
 
 .scene {

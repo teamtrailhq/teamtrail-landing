@@ -1,8 +1,10 @@
+import type { Player } from './turns';
+
 /**
  * The scene sequencer: a loop of timed steps that add and remove classes, so CSS does the motion (transforms and
- * opacity). A scene's markup is its still frame, what shows without scripts or with reduced motion; `reset` sets the
- * loop's first frame and the steps walk it back to the still. A scene plays only while it is on screen and the tab
- * is showing.
+ * opacity). A scene's markup is its still frame, what shows without scripts, with reduced motion and while another
+ * scene has its turn (./turns). A turn starts on the still, plays round the loop and comes back to it: `reset` sets
+ * the loop's first frame and the steps walk it on.
  */
 export interface SceneCtx {
   root: HTMLElement;
@@ -15,6 +17,8 @@ export interface Scene {
   length: number;
   /** Fade the stage out and in between loops; off for scenes whose last frame is their first. */
   fade?: boolean;
+  /** Where in the loop the still frame is: the steps before it make the still. Defaults to the loop's end. */
+  still?: number;
   reset(ctx: SceneCtx): void;
   steps: Array<[at: number, run: (ctx: SceneCtx) => void]>;
 }
@@ -29,55 +33,50 @@ function instantly(root: HTMLElement, fn: () => void) {
   root.classList.remove('sk-instant');
 }
 
-export function runScene(root: HTMLElement, scene: Scene) {
+/** A scene on `root` that plays a turn when asked, and otherwise shows its still frame. */
+export function scenePlayer(root: HTMLElement, scene: Scene): Player {
+  const stillFrame = root.innerHTML;
+  const stillAt = scene.still ?? scene.length;
   let timers: number[] = [];
-  let playing = false;
-  let onScreen = false;
-  const ctx: SceneCtx = {
-    root,
-    later: (fn, ms) => void timers.push(window.setTimeout(fn, ms)),
+  const ctx: SceneCtx = { root, later: (fn, ms) => void timers.push(window.setTimeout(fn, ms)) };
+
+  /** Puts the looping scene where its still frame is, at once: it looks the same, and the steps can go on from it. */
+  const toStill = () =>
+    instantly(root, () => {
+      const now: SceneCtx = { root, later: (fn) => fn() };
+      root.classList.add('sk-live');
+      scene.reset(now);
+      for (const [at, run] of scene.steps) if (at < stillAt) run(now);
+    });
+
+  /** Back to the markup as written, the frame every scene shows when it isn't playing. */
+  const stop = () => {
+    timers.forEach(clearTimeout);
+    timers = [];
+    root.classList.remove('sk-live', 'is-leaving');
+    root.innerHTML = stillFrame;
   };
 
-  const schedule = () => {
-    for (const [at, run] of scene.steps) ctx.later(() => run(ctx), at);
-    ctx.later(next, scene.length);
-  };
-  const next = () => {
-    if (!scene.fade) {
-      instantly(root, () => scene.reset(ctx));
-      return schedule();
-    }
-    root.classList.add('is-leaving');
+  const play = (done: () => void) => {
+    toStill();
+    // From the still to the loop's end, the restart (faded or not), then the steps that lead back to the still.
+    for (const [at, run] of scene.steps) if (at >= stillAt) ctx.later(() => run(ctx), at - stillAt);
+    const restart = scene.length - stillAt;
+    const fade = scene.fade ? FADE_MS : 0;
+    if (scene.fade) ctx.later(() => root.classList.add('is-leaving'), restart);
     ctx.later(() => {
       instantly(root, () => scene.reset(ctx));
       root.classList.remove('is-leaving');
-      schedule();
-    }, FADE_MS);
+    }, restart + fade);
+    for (const [at, run] of scene.steps) if (at < stillAt) ctx.later(() => run(ctx), restart + fade + at);
+    ctx.later(
+      () => {
+        stop();
+        done();
+      },
+      restart + fade + stillAt,
+    );
   };
 
-  const play = () => {
-    if (playing) return;
-    playing = true;
-    instantly(root, () => scene.reset(ctx));
-    // A frame on the first state before the steps start, so the first one animates.
-    ctx.later(schedule, 60);
-  };
-  const stop = () => {
-    playing = false;
-    timers.forEach(clearTimeout);
-    timers = [];
-    root.classList.remove('is-leaving');
-  };
-  const update = () => (onScreen && !document.hidden ? play() : stop());
-
-  root.classList.add('sk-live');
-  instantly(root, () => scene.reset(ctx));
-  new IntersectionObserver(
-    ([entry]) => {
-      onScreen = entry.isIntersecting;
-      update();
-    },
-    { threshold: 0.2 },
-  ).observe(root);
-  document.addEventListener('visibilitychange', update);
+  return { root, play, stop };
 }

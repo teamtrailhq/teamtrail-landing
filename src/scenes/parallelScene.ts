@@ -3,7 +3,7 @@ import type { Scene, SceneCtx } from './sequencer';
 
 /**
  * Agents in parallel: claude-02 and codex-01 each claim a ticket and work through its steps; Teamtrail warns that both
- * touch the same file, and codex-01 moves to another ticket.
+ * touch the same file, and codex-01 moves to another ticket. The still is the warning, before codex-01 moves.
  */
 type Id = 'a' | 'b';
 const agent = (root: HTMLElement, id: Id) => one(root, `[data-agent="${id}"]`);
@@ -29,6 +29,7 @@ function worked({ root }: SceneCtx, id: Id, text: string, file: string, step: nu
 export const parallelScene: Scene = {
   length: 10000,
   fade: true,
+  still: 5000,
   reset: ({ root }) => {
     for (const id of ['a', 'b'] as const) {
       const el = agent(root, id);
