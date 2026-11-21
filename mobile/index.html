@@ -11,14 +11,14 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teamtrail for iPhone: your trails while you're away</title>
+    <title>Teamtrail for mobile: your trails while you're away</title>
     <meta
       name="description"
-      content="Teamtrail for iPhone, coming with Teamtrail Cloud: every workspace in one place, a notification only for the calls that are yours, and answers, approvals and merges from your phone."
+      content="Teamtrail for mobile, coming with Teamtrail Cloud: every workspace in one place, a notification only for the calls that are yours, and answers, approvals and merges from your phone."
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Teamtrail" />
-    <meta property="og:title" content="Teamtrail for iPhone: your trails while you're away" />
+    <meta property="og:title" content="Teamtrail for mobile: your trails while you're away" />
     <meta
       property="og:description"
       content="Every Cloud workspace on your phone. Notified only for the calls that are yours. Coming with Teamtrail Cloud."
@@ -29,7 +29,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="The teamtrail wordmark and the headline Your trails, while you're away, beside an iPhone showing Needs you: a high-risk question, work ready to merge, a plan to approve and a reroute."
+      content="The teamtrail wordmark and the headline Your trails, while you're away, beside a phone showing Needs you: a high-risk question, work ready to merge, a plan to approve and a reroute."
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-mobile-1200x630.png" />
@@ -48,7 +48,7 @@
     <main id="main">
       <section class="hero hero--page" aria-labelledby="page-title">
         <div class="wrap hero__inner">
-          <span class="hero__badge" data-scramble>Teamtrail for iPhone</span>
+          <span class="hero__badge" data-scramble>Teamtrail for mobile</span>
           <h1 id="page-title">Your trails, while you're away.</h1>
           <p class="hero__lede">
             Trails run for days. See every <span class="mark">Teamtrail Cloud</span> workspace and what its agents are
@@ -59,79 +59,71 @@
             <a class="btn btn--primary" href="#waitlist"
               >Get early access <span class="arrow" aria-hidden="true">↓</span></a
             >
-            <a class="btn" href="#notifications">What notifies you</a>
+            <a class="btn" href="#features">See what it does</a>
           </div>
           <!-- @include scene-mobile-needs -->
         </div>
       </section>
 
-      <!-- NOTIFICATIONS -->
-      <section class="section" id="notifications" aria-labelledby="s-notify">
+      <!-- SHOWCASE: one phone, the cards around it (src/scenes/showcase.ts). Without scripts the first card is chosen
+           and its pane shows its still frame. -->
+      <section class="section showcase" id="features" aria-labelledby="s-show" data-showcase>
         <div class="wrap">
-          <header class="head reveal">
-            <div class="head__title">
-              <span class="eyebrow">Only what needs you</span>
-              <h2 id="s-notify">A notification is a call that's yours.</h2>
-            </div>
-            <p>
-              Each item notifies once. Quiet hours hold them, a few an hour at most, and several on one trail arrive as
-              one.
-            </p>
-          </header>
-          <div class="cards cards--3">
-            <article class="card reveal">
-              <span class="card__n">Right away</span>
-              <h3>What holds the trail</h3>
-              <p>
-                High-risk questions, verified work ready to merge, a plan to approve, reroutes and setting requests,
-                checks failing on main, agents with nothing left to do.
-              </p>
-            </article>
-            <article class="card reveal">
-              <span class="card__n">Once a day</span>
-              <h3>What can wait</h3>
-              <p>
-                Questions agents go on without, criteria and knowledge to review, guides to approve, and verified work
-                that came back. One digest, at a time you pick.
-              </p>
-            </article>
-            <article class="card reveal">
-              <span class="card__n">Never</span>
-              <h3>What agents are doing</h3>
-              <p>Progress and activity never notify. They're in the app when you open it.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- ON THE GO -->
-      <section class="section section--flush" aria-labelledby="s-go">
-        <div class="wrap">
-          <header class="head reveal">
+          <header class="head head--center reveal">
             <div class="head__title">
               <span class="eyebrow">On the go</span>
-              <h2 id="s-go">Answer, approve and merge from your phone.</h2>
+              <h2 id="s-show">Everything that's yours.<br />Nothing that isn't.</h2>
             </div>
-            <p>
-              Every workspace in one place: trails by workspace, their progress, the agents at work and what happened
-              lately. The map stays in the Lookout.
-            </p>
+            <p>Answer and merge from your phone, watch every trail, and choose what may interrupt you.</p>
           </header>
-          <div class="go-scenes">
-            <div class="go-scene reveal">
-              <!-- @include scene-mobile-answer -->
-              <h3>Answers that count</h3>
-              <p>
-                Answer any question, high-risk ones too. It counts as your answer in the Lookout would, and the Logbook
-                records it as yours.
+          <div class="showcase__grid reveal">
+            <div class="showcase__side">
+              <button class="sc-card" type="button" data-show aria-controls="show-answer" aria-pressed="true">
+                <span class="sc-card__n">Answer</span>
+                <span class="sc-card__t">Answer with Face ID</span>
+                <span class="sc-card__line"
+                  >Any question, high-risk ones too. It counts as your answer in the Lookout.</span
+                >
+              </button>
+              <button class="sc-card" type="button" data-show aria-controls="show-merge" aria-pressed="false">
+                <span class="sc-card__n">Merge</span>
+                <span class="sc-card__t">Approve and merge</span>
+                <span class="sc-card__line"
+                  >Verified work shows its checks, its review and its criteria before you merge.</span
+                >
+              </button>
+            </div>
+            <div class="showcase__phone">
+              <div class="scene scene--flat scene--mobile">
+                <div class="sk-stage">
+                  <div class="device">
+                    <span class="device__island"></span>
+                    <div class="device__screen showcase__screen">
+                      <!-- @include scene-mobile-answer -->
+                      <!-- @include scene-mobile-merge -->
+                      <!-- @include scene-mobile-trails -->
+                      <!-- @include scene-mobile-notify -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="showcase__caption" aria-live="polite">
+                Any question, high-risk ones too. It counts as your answer in the Lookout.
               </p>
             </div>
-            <div class="go-scene reveal">
-              <!-- @include scene-mobile-merge -->
-              <h3>Merge with its proof</h3>
-              <p>
-                Verified work shows its checks, its review and its acceptance criteria before you approve and merge.
-              </p>
+            <div class="showcase__side">
+              <button class="sc-card" type="button" data-show aria-controls="show-trails" aria-pressed="false">
+                <span class="sc-card__n">Trails</span>
+                <span class="sc-card__t">Every trail at a glance</span>
+                <span class="sc-card__line">Progress and what waits on you, grouped by workspace.</span>
+              </button>
+              <button class="sc-card" type="button" data-show aria-controls="show-notify" aria-pressed="false">
+                <span class="sc-card__n">Notifications</span>
+                <span class="sc-card__t">Only what needs you</span>
+                <span class="sc-card__line"
+                  >What holds a trail comes right away; the rest waits for one daily digest.</span
+                >
+              </button>
             </div>
           </div>
         </div>
@@ -166,10 +158,7 @@
             <article class="card reveal">
               <span class="card__n">Face ID</span>
               <h3>Face ID on high-risk answers</h3>
-              <p>
-                Optional: turn it on in the first run or in Settings. Once it's on, the server refuses a high-risk
-                answer from the phone without it.
-              </p>
+              <p>Optional. When it's on, a high-risk answer asks for Face ID before it goes.</p>
             </article>
           </div>
         </div>

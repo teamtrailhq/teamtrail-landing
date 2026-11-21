@@ -553,30 +553,6 @@
   box-shadow: inset 0 0 0 1px rgba(var(--sk-ok-rgb), 0.55);
 }
 
-/* ---------- On the go: two phones side by side ---------- */
-
-.go-scenes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px;
-}
-.go-scene .scene--mobile {
-  width: 100%;
-  margin: 0;
-}
-.go-scene h3 {
-  margin-top: 8px;
-}
-.go-scene p {
-  margin-top: 8px;
-  font-size: var(--fs-small);
-  color: var(--dim);
-}
-@media (max-width: 860px) {
-  .go-scenes {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 .mm__count {
   display: inline-block;
   transition:
@@ -609,4 +585,262 @@
 /* Once the question joins the list, the last digest row makes room for it, so nothing runs under the tab bar. */
 .ip__list:has(.ip__row[data-q].is-on) .ip__extra {
   display: none;
+}
+
+/* ---------- the showcase: one phone, the cards around it (src/scenes/showcase.ts) ---------- */
+
+.showcase__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  margin-top: 56px;
+}
+.showcase__side {
+  display: grid;
+  gap: 16px;
+}
+.showcase__phone .scene--mobile {
+  width: 100%;
+  margin: 0;
+}
+.showcase__caption {
+  display: none;
+}
+.sc-card {
+  display: grid;
+  gap: 8px;
+  padding: 22px 24px;
+  border: 1px solid var(--line-2);
+  background: var(--bg-2);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.sc-card:not([aria-pressed='true']):hover {
+  border-color: rgba(var(--fill-rgb), 0.45);
+}
+.sc-card[aria-pressed='true'] {
+  background: var(--panel);
+  box-shadow: inset 0 2px 0 var(--fill);
+}
+.sc-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.sc-card__n {
+  font: 500 12px/1.3 var(--code);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.sc-card[aria-pressed='true'] .sc-card__n {
+  color: var(--accent);
+}
+.sc-card__t {
+  font: 600 18px/1.3 var(--sans);
+  letter-spacing: -0.01em;
+  color: var(--text-hi);
+}
+.sc-card__line {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--dim);
+}
+
+/* The panes share the one screen: the chosen one shows, crossfading in. */
+.showcase__screen {
+  padding-top: 0;
+}
+.sc-pane {
+  position: absolute;
+  inset: 0;
+  padding-top: 46px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s var(--ease),
+    visibility 0s linear 0.25s;
+}
+.sc-pane.is-shown {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s var(--ease);
+}
+.sc-pane > * {
+  transition: opacity 0.45s var(--ease);
+}
+.sc-pane.is-leaving > * {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-pane,
+  .sc-pane.is-shown {
+    transition: none;
+  }
+}
+
+/* Narrow: the phone first, the cards as a 2×2 grid of compact buttons, the chosen card's line under the phone. */
+@media (max-width: 900px) {
+  .showcase__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .showcase__side {
+    display: contents;
+  }
+  .showcase__phone {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+  .showcase__caption {
+    display: block;
+    min-height: 3em;
+    margin: 4px auto 14px;
+    max-width: 340px;
+    text-align: center;
+    font-size: 15px;
+    color: var(--dim);
+  }
+  .sc-card {
+    gap: 4px;
+    padding: 12px 14px;
+  }
+  .sc-card__t {
+    font-size: 15px;
+  }
+  .sc-card__line {
+    display: none;
+  }
+}
+
+/* ---------- Trails ---------- */
+
+.scene {
+  --sk-amber: rgb(178, 104, 0);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='day']) .scene {
+    --sk-amber: rgb(240, 170, 70);
+  }
+}
+:root[data-theme='night'] .scene {
+  --sk-amber: rgb(240, 170, 70);
+}
+.tr__trail {
+  display: grid;
+  gap: 7px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.tr__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.tr__top b {
+  font: 600 14px/1.3 var(--sans);
+  color: var(--text-hi);
+}
+.tr__segs {
+  display: flex;
+  gap: 2px;
+  height: 7px;
+}
+.tr__segs i {
+  flex: 1;
+  background: var(--line-2);
+  transition: background-color 0.4s;
+}
+.tr__segs i.is-done {
+  background: var(--ok);
+}
+.tr__segs i.is-work {
+  background: var(--fill);
+}
+.tr__segs i.is-need {
+  background: var(--urgent);
+}
+.tr__segs i.is-held {
+  background: var(--sk-amber);
+}
+.tr__meta {
+  font-size: 12px;
+  color: var(--dim);
+}
+.tr__done,
+.tr__agents {
+  display: inline-block;
+  transition:
+    opacity 0.16s,
+    transform 0.16s var(--ease);
+}
+.tr__need {
+  color: var(--urgent);
+}
+.tr__held {
+  color: var(--sk-amber);
+}
+
+/* ---------- Notifications ---------- */
+
+.nt__head {
+  display: grid;
+  gap: 4px;
+  padding: 12px 16px 2px;
+}
+.nt__group {
+  display: grid;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.nt__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: 33px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--text-hi);
+}
+.nt__row:last-child {
+  border-bottom: 0;
+}
+.nt__val {
+  font: 500 12px/1 var(--code);
+  color: var(--text-hi);
+}
+.nt__sw {
+  display: flex;
+  flex: none;
+  width: 30px;
+  height: 17px;
+  padding: 2px;
+  box-sizing: border-box;
+  background: var(--line-2);
+  transition: background-color 0.2s;
+}
+.nt__sw i {
+  width: 13px;
+  height: 13px;
+  background: #ffffff;
+  transition: transform 0.2s var(--ease);
+}
+.nt__sw.is-on {
+  background: var(--fill);
+}
+.nt__sw.is-on i {
+  transform: translateX(13px);
+  background: #0a0a0b;
 }

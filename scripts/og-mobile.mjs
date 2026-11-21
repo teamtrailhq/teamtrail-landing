@@ -68,7 +68,7 @@ await page.evaluate(
     });
     const word = document.querySelector('.footer .brand__word').cloneNode(true);
     Object.assign(word.style, { position: 'absolute', left: '84px', top: '56px', fontSize: '26px' });
-    const label = el('span', '', 'Teamtrail for iPhone · coming with Cloud');
+    const label = el('span', '', 'Teamtrail for mobile · coming with Cloud');
     Object.assign(label.style, {
       font: '500 19px/1.3 var(--code)',
       letterSpacing: '0.12em',

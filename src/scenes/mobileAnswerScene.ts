@@ -6,7 +6,8 @@ import type { Scene } from './sequencer';
  * confirms, and the app lands back on Needs you with the item gone and the agent going on.
  * The still is the end: back on Needs you.
  */
-const screen = (root: HTMLElement) => one(root, '.ma__screen');
+/** The pane is the screen: it switches between the question and Needs you. */
+const screen = (root: HTMLElement) => (root.matches('.ma__screen') ? root : one(root, '.ma__screen'));
 const button = (root: HTMLElement) => one(root, '.ma__btn');
 const face = (root: HTMLElement) => one(root, '.ma__face');
 
