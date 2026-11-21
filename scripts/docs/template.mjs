@@ -59,7 +59,7 @@ function head({ title, description, url, ld }) {
     <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="The teamtrail wordmark with its blaze block cursor over a dot grid, and a trail that steps across to its destination." />
+    <meta property="og:image:alt" content="The teamtrail wordmark, the logo of six block cursors followed by the name, over a dot grid, and a trail that steps across to its destination." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
     <meta name="theme-color" content="#0a0a0b" />
