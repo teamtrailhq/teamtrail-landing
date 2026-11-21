@@ -1,0 +1,846 @@
+/* ---------- /mobile's scenes (partials/scene-mobile-*.html, src/scenes/mobile*Scene.ts) ----------
+ * Each scene is the app on a phone. The phone is one shared block, `.device`: a graphite body with rounded corners and
+ * a pill at the top, the same in both themes because it is hardware. Everything on its screen keeps the site's square
+ * corners and tokens. No status bar icons and no maker's marks. */
+
+.scene--mobile {
+  width: min(100%, 560px);
+  margin: 48px auto 0;
+}
+.scene--mobile .sk-stage {
+  height: 698px;
+  --sk-fade-x: 4%;
+  --sk-fade-bottom: 0%;
+}
+
+/* ---------- the phone ---------- */
+
+.device {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  width: 300px;
+  height: 650px;
+  margin-left: -150px;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 50px;
+  background: #1b1c1f;
+  box-shadow:
+    inset 0 0 0 1.5px #3b3d43,
+    inset 0 0 0 4px #121315,
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    var(--sk-raise);
+}
+.device__screen {
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  padding-top: 46px;
+  overflow: hidden;
+  border-radius: 40px;
+  background: var(--bg-2);
+}
+.device__island {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  z-index: 8;
+  width: 86px;
+  height: 25px;
+  margin-left: -43px;
+  border-radius: 13px;
+  background: #000;
+}
+
+/* ---------- shared screen parts ---------- */
+
+.ph__back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-hi);
+  font-size: 13px;
+}
+.ph__back svg {
+  width: 14px;
+  height: 14px;
+}
+.ph__body {
+  display: grid;
+  gap: 10px;
+  padding: 12px 16px;
+}
+.ph__h {
+  font: 600 16px/1.25 var(--sans);
+  letter-spacing: -0.005em;
+  color: var(--text-hi);
+}
+.ph__p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text);
+}
+/* The action bar and the tab bar, pinned to the screen's bottom. */
+.ph__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: grid;
+  gap: 2px;
+  padding: 10px 16px 16px;
+  border-top: 1px solid var(--line-2);
+  background: var(--panel);
+}
+.ph__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  font-size: 12.5px;
+  color: var(--text-hi);
+}
+.ph__tabs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--line-2);
+  background: var(--panel);
+}
+.ph__tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 9px;
+  font: 500 9.5px/1 var(--code);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.ph__tab svg {
+  width: 17px;
+  height: 17px;
+}
+.ph__tab.is-on {
+  color: var(--text-hi);
+  box-shadow: inset 0 2px 0 var(--fill);
+}
+.ph__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  background: var(--fill);
+  color: var(--on-fill);
+  font: 600 13px/1 var(--sans);
+  transition:
+    transform 0.16s var(--ease),
+    background-color 0.3s,
+    color 0.3s;
+}
+.ph__btn.is-pressed {
+  transform: scale(0.97);
+}
+.ph__btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- Needs you (the hero, and where an answer lands) ---------- */
+
+.ip__head {
+  display: grid;
+  gap: 4px;
+  padding: 0 16px 12px;
+  border-bottom: 1px solid var(--line-2);
+}
+.ip__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ip__title b {
+  font: 600 21px/1.2 var(--sans);
+  letter-spacing: -0.01em;
+  color: var(--text-hi);
+}
+.ip__count {
+  height: 20px;
+  background: var(--urgent);
+  border-color: var(--urgent);
+  color: var(--sk-on-urgent);
+  font-size: 11px;
+  transition: opacity 0.2s;
+}
+.ip__count.is-empty {
+  opacity: 0;
+}
+.ip__group {
+  display: block;
+  padding: 12px 16px 6px;
+  color: var(--dim);
+}
+.ip__group--now {
+  color: var(--urgent);
+}
+.ip__row {
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  transition:
+    opacity 0.35s var(--ease),
+    transform 0.35s var(--ease),
+    background-color 0.2s;
+}
+.ip__mark {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  margin-top: 4px;
+  background: var(--text-hi);
+}
+.ip__row--urgent .ip__mark {
+  background: var(--urgent);
+}
+.ip__row--ok .ip__mark {
+  background: var(--ok);
+}
+.ip__row--quiet .ip__mark {
+  background: none;
+  border: 1.5px solid var(--dim);
+}
+.ip__body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.ip__kind {
+  color: var(--dim);
+}
+.ip__row--urgent .ip__kind {
+  color: var(--urgent);
+}
+.ip__kind em {
+  font-style: normal;
+  color: var(--ok);
+}
+.ip__t {
+  font: 600 13.5px/1.3 var(--sans);
+  color: var(--text-hi);
+}
+.ip__row--quiet .ip__t {
+  font-weight: 500;
+}
+.ip__meta {
+  font-size: 12px;
+  color: var(--dim);
+}
+.ip__answered {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--ok);
+}
+.ip__row.is-pressed {
+  background: var(--panel);
+  transform: scale(0.985);
+}
+.ip__row.is-resolved .ip__meta {
+  display: none;
+}
+.ip__row.is-resolved .ip__answered {
+  display: flex;
+}
+.ip__row.is-resolved .ip__mark {
+  background: var(--ok);
+}
+.ip__row.is-resolved .ip__kind {
+  color: var(--dim);
+}
+
+/* The notification: slides down from under the pill, then goes when tapped. */
+.ip__note {
+  position: absolute;
+  top: 52px;
+  left: 8px;
+  right: 8px;
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 11px;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  box-shadow: var(--sk-raise);
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(-24px);
+  transition:
+    opacity 0.35s var(--ease),
+    transform 0.35s var(--ease);
+}
+.ip__note.is-on {
+  opacity: 1;
+  transform: none;
+}
+.ip__note.is-pressed {
+  transform: scale(0.98);
+}
+.ip__icon {
+  flex: none;
+  padding: 4px;
+  background: #0a0a0b;
+}
+.ip__note-body {
+  display: grid;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+.ip__note-head {
+  display: flex;
+  justify-content: space-between;
+  color: var(--dim);
+  font-size: 11px;
+}
+.ip__note-head b {
+  font-weight: 500;
+  color: var(--dim);
+}
+.ip__note-t {
+  font-weight: 600;
+  color: var(--text-hi);
+}
+
+/* The question isn't in the list until the notification is tapped, with or without the loop. */
+.ip__row[data-q]:not(.is-on) {
+  display: none;
+}
+.sk-live .ip__row:not(.is-on),
+.sk-live .ip__later:not(.is-on) {
+  display: none;
+}
+
+/* ---------- answering a high-risk question ---------- */
+
+.ma__risk {
+  justify-self: start;
+}
+.ma__prior {
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border: 1px solid var(--line-2);
+  font-size: 12px;
+  color: var(--text-hi);
+}
+.ma__opts {
+  display: grid;
+  gap: 6px;
+}
+.ma__opt {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--text-hi);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.ma__opt i {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border: 1.5px solid var(--dim);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.ma__opt.is-picked {
+  border-color: var(--fill);
+}
+.ma__opt.is-picked i {
+  border-color: var(--fill);
+  background: var(--fill);
+}
+
+/* Face ID: the glyph over the screen, then a check. */
+.ma__face {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  background: rgba(var(--bg-rgb), 0.82);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.ma__face.is-on {
+  opacity: 1;
+}
+.ma__face svg {
+  width: 64px;
+  height: 64px;
+  color: var(--text-hi);
+  transition:
+    color 0.25s,
+    transform 0.3s var(--ease);
+}
+.ma__face.is-ok svg {
+  color: var(--ok);
+  transform: scale(1.06);
+}
+.ma__face .ma__ok {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.ma__face.is-ok .ma__ok {
+  opacity: 1;
+}
+.ma__face.is-ok .ma__scan {
+  opacity: 0;
+}
+
+/* After the answer: back on Needs you, the item gone. */
+.ma__list,
+.ma__screen.is-answered .ma__q {
+  display: none;
+}
+.ma__screen.is-answered .ma__list {
+  display: block;
+}
+.ma__done {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ok);
+}
+
+/* ---------- merging verified work ---------- */
+
+.mm__trail {
+  display: grid;
+  gap: 5px;
+}
+.mm__segs {
+  display: flex;
+  gap: 2px;
+  height: 6px;
+}
+.mm__segs i {
+  flex: 1;
+  background: var(--line-2);
+  transition: background-color 0.4s;
+}
+.mm__segs i.is-done {
+  background: var(--ok);
+}
+.mm__segs i.is-work {
+  background: var(--fill);
+}
+.mm__segs i.is-need {
+  background: var(--urgent);
+}
+.mm__verified .sk-label {
+  color: inherit;
+}
+.mm__verified {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(var(--sk-ok-rgb), 0.55);
+  background: rgba(var(--sk-ok-rgb), 0.1);
+  color: var(--ok);
+}
+.mm__lines {
+  display: grid;
+}
+.mm__line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--text-hi);
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+.mm__line:last-child {
+  border-bottom: 0;
+}
+.mm__line code {
+  font: 400 11.5px/1.3 var(--code);
+}
+.mm__line .sk-tick {
+  flex: none;
+  color: var(--ok);
+}
+.sk-live .mm__line:not(.is-on) {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.mm__pr {
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border: 1px solid var(--line-2);
+  font-size: 12px;
+  color: var(--text-hi);
+  transition:
+    border-color 0.3s,
+    background-color 0.3s;
+}
+.mm__pr .sk-label b {
+  font-weight: 400;
+}
+.mm__merged,
+.mm__pr.is-merged .mm__open {
+  display: none;
+}
+.mm__pr.is-merged .mm__merged {
+  display: inline;
+  color: var(--ok);
+}
+.mm__pr.is-merged {
+  border-color: rgba(var(--sk-ok-rgb), 0.55);
+  background: rgba(var(--sk-ok-rgb), 0.08);
+}
+.mm__btn .mm__busy,
+.mm__btn .mm__done,
+.mm__btn.is-busy .mm__idle,
+.mm__btn.is-done .mm__idle,
+.mm__btn.is-done .mm__busy {
+  display: none;
+}
+.mm__btn.is-busy .mm__busy,
+.mm__btn.is-done .mm__done {
+  display: inline;
+}
+.mm__btn.is-busy {
+  background: var(--panel);
+  color: var(--text-hi);
+}
+.mm__btn.is-done {
+  background: none;
+  color: var(--ok);
+  box-shadow: inset 0 0 0 1px rgba(var(--sk-ok-rgb), 0.55);
+}
+
+.mm__count {
+  display: inline-block;
+  transition:
+    opacity 0.16s,
+    transform 0.16s var(--ease);
+}
+.ma__field {
+  display: grid;
+  gap: 5px;
+}
+.ma__field i {
+  display: block;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  font: 400 12px/32px var(--sans);
+  font-style: normal;
+  color: var(--dim);
+}
+.mm__diff {
+  color: var(--dim);
+}
+.mm__open-pr {
+  color: var(--accent);
+}
+.mm__btn.is-done + .mm__not-now {
+  visibility: hidden;
+}
+/* Once the question joins the list, the last digest row makes room for it, so nothing runs under the tab bar. */
+.ip__list:has(.ip__row[data-q].is-on) .ip__extra {
+  display: none;
+}
+
+/* ---------- the showcase: one phone, the cards around it (src/scenes/showcase.ts) ---------- */
+
+.showcase__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  margin-top: 56px;
+}
+.showcase__side {
+  display: grid;
+  gap: 16px;
+}
+.showcase__phone .scene--mobile {
+  width: 100%;
+  margin: 0;
+}
+.showcase__caption {
+  display: none;
+}
+.sc-card {
+  display: grid;
+  gap: 8px;
+  padding: 22px 24px;
+  border: 1px solid var(--line-2);
+  background: var(--bg-2);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.sc-card:not([aria-pressed='true']):hover {
+  border-color: rgba(var(--fill-rgb), 0.45);
+}
+.sc-card[aria-pressed='true'] {
+  background: var(--panel);
+  box-shadow: inset 0 2px 0 var(--fill);
+}
+.sc-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.sc-card__n {
+  font: 500 12px/1.3 var(--code);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.sc-card[aria-pressed='true'] .sc-card__n {
+  color: var(--accent);
+}
+.sc-card__t {
+  font: 600 18px/1.3 var(--sans);
+  letter-spacing: -0.01em;
+  color: var(--text-hi);
+}
+.sc-card__line {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--dim);
+}
+
+/* The panes share the one screen: the chosen one shows, crossfading in. */
+.showcase__screen {
+  padding-top: 0;
+}
+.sc-pane {
+  position: absolute;
+  inset: 0;
+  padding-top: 46px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s var(--ease),
+    visibility 0s linear 0.25s;
+}
+.sc-pane.is-shown {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s var(--ease);
+}
+.sc-pane > * {
+  transition: opacity 0.45s var(--ease);
+}
+.sc-pane.is-leaving > * {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-pane,
+  .sc-pane.is-shown {
+    transition: none;
+  }
+}
+
+/* Narrow: the phone first, the cards as a 2×2 grid of compact buttons, the chosen card's line under the phone. */
+@media (max-width: 900px) {
+  .showcase__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .showcase__side {
+    display: contents;
+  }
+  .showcase__phone {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+  .showcase__caption {
+    display: block;
+    min-height: 3em;
+    margin: 4px auto 14px;
+    max-width: 340px;
+    text-align: center;
+    font-size: 15px;
+    color: var(--dim);
+  }
+  .sc-card {
+    gap: 4px;
+    padding: 12px 14px;
+  }
+  .sc-card__t {
+    font-size: 15px;
+  }
+  .sc-card__line {
+    display: none;
+  }
+}
+
+/* ---------- Trails ---------- */
+
+.scene {
+  --sk-amber: rgb(178, 104, 0);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='day']) .scene {
+    --sk-amber: rgb(240, 170, 70);
+  }
+}
+:root[data-theme='night'] .scene {
+  --sk-amber: rgb(240, 170, 70);
+}
+.tr__trail {
+  display: grid;
+  gap: 7px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.tr__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.tr__top b {
+  font: 600 14px/1.3 var(--sans);
+  color: var(--text-hi);
+}
+.tr__segs {
+  display: flex;
+  gap: 2px;
+  height: 7px;
+}
+.tr__segs i {
+  flex: 1;
+  background: var(--line-2);
+  transition: background-color 0.4s;
+}
+.tr__segs i.is-done {
+  background: var(--ok);
+}
+.tr__segs i.is-work {
+  background: var(--fill);
+}
+.tr__segs i.is-need {
+  background: var(--urgent);
+}
+.tr__segs i.is-held {
+  background: var(--sk-amber);
+}
+.tr__meta {
+  font-size: 12px;
+  color: var(--dim);
+}
+.tr__done,
+.tr__agents {
+  display: inline-block;
+  transition:
+    opacity 0.16s,
+    transform 0.16s var(--ease);
+}
+.tr__need {
+  color: var(--urgent);
+}
+.tr__held {
+  color: var(--sk-amber);
+}
+
+/* ---------- Notifications ---------- */
+
+.nt__head {
+  display: grid;
+  gap: 4px;
+  padding: 12px 16px 2px;
+}
+.nt__group {
+  display: grid;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.nt__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: 33px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--text-hi);
+}
+.nt__row:last-child {
+  border-bottom: 0;
+}
+.nt__val {
+  font: 500 12px/1 var(--code);
+  color: var(--text-hi);
+}
+.nt__sw {
+  display: flex;
+  flex: none;
+  width: 30px;
+  height: 17px;
+  padding: 2px;
+  box-sizing: border-box;
+  background: var(--line-2);
+  transition: background-color 0.2s;
+}
+.nt__sw i {
+  width: 13px;
+  height: 13px;
+  background: #ffffff;
+  transition: transform 0.2s var(--ease);
+}
+.nt__sw.is-on {
+  background: var(--fill);
+}
+.nt__sw.is-on i {
+  transform: translateX(13px);
+  background: #0a0a0b;
+}

@@ -5,12 +5,18 @@ import { cloudHeroScene } from './cloudHeroScene';
 import { criteriaScene } from './criteriaScene';
 import { decideScene } from './decideScene';
 import { guidesScene } from './guidesScene';
+import { mobileAnswerScene } from './mobileAnswerScene';
+import { mobileMergeScene } from './mobileMergeScene';
+import { mobileNeedsScene } from './mobileNeedsScene';
+import { mobileNotifyScene } from './mobileNotifyScene';
+import { mobileTrailsScene } from './mobileTrailsScene';
 import { needsScene } from './needsScene';
 import { parallelScene } from './parallelScene';
 import { planScene } from './planScene';
 import { proofScene } from './proofScene';
 import { recordScene } from './recordScene';
 import { scenePlayer, type Scene } from './sequencer';
+import { initShowcase } from './showcase';
 import { slackAnswerScene } from './slackAnswerScene';
 import { slackMentionScene } from './slackMentionScene';
 import { slackRiskScene } from './slackRiskScene';
@@ -27,6 +33,11 @@ const SCENES: Record<string, Scene> = {
   'slack-risk': slackRiskScene,
   'cloud-hero': cloudHeroScene,
   'cloud-away': cloudAwayScene,
+  'mobile-needs': mobileNeedsScene,
+  'mobile-answer': mobileAnswerScene,
+  'mobile-merge': mobileMergeScene,
+  'mobile-trails': mobileTrailsScene,
+  'mobile-notify': mobileNotifyScene,
   plan: planScene,
   worktrees: worktreesScene,
   decide: decideScene,
@@ -40,10 +51,14 @@ const SCENES: Record<string, Scene> = {
  * still frame. With reduced motion, or without scripts, every scene keeps its still frame.
  */
 export function initScenes(reducedMotion: boolean) {
-  if (reducedMotion || !('IntersectionObserver' in window)) return;
+  const motion = !reducedMotion && 'IntersectionObserver' in window;
+  // The showcase's cards switch its panes with or without motion; with motion it also takes turns, as one scene.
+  const showcases = $$('[data-showcase]').map((root) => initShowcase(root, SCENES, motion));
+  if (!motion) return;
   const players = $$('[data-scene]').flatMap((root) => {
     const scene = SCENES[root.dataset.scene ?? ''];
-    return scene ? [scenePlayer(root, scene)] : [];
+    return scene && !root.closest('[data-showcase]') ? [scenePlayer(root, scene)] : [];
   });
-  takeTurns(players);
+  const turns = takeTurns([...players, ...showcases.map((s) => s.player)]);
+  for (const s of showcases) s.onClaim(turns.claim);
 }

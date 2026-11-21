@@ -19,7 +19,8 @@
     "verify:csp": "node scripts/verify-csp.mjs",
     "test": "node --experimental-strip-types --test \"test/*.test.mjs\"",
     "format": "prettier --write .",
-    "guides:snapshot": "node scripts/guides/snapshot.mjs"
+    "guides:snapshot": "node scripts/guides/snapshot.mjs",
+    "og:mobile": "node scripts/og-mobile.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

@@ -1,0 +1,104 @@
+<!-- Scene: Needs you across workspaces fills in, a high-risk question arrives as a notification, joins the top of the list
+     and is answered there (src/scenes/mobileNeedsScene.ts). The markup is the still frame: the notification over the
+     list, the moment it arrives. -->
+<figure class="scene scene--flat scene--mobile" data-scene="mobile-needs">
+  <div class="sk-stage" aria-hidden="true">
+    <div class="device">
+      <span class="device__island"></span>
+      <div class="device__screen">
+        <div class="ip__head">
+          <div class="ip__title">
+            <b>Needs you</b><span class="sk-chip sk-chip--urgent ip__count"><span class="sk-num">4</span></span>
+          </div>
+          <span class="sk-label">3 workspaces · 4 trails running</span>
+        </div>
+        <div class="ip__list">
+          <span class="sk-label ip__group ip__group--now">Right away</span>
+          <div class="ip__row ip__row--urgent" data-q>
+            <span class="ip__mark"></span>
+            <span class="ip__body">
+              <span class="sk-label ip__kind">Question · high risk · #14</span>
+              <span class="ip__t">Drop the legacy invoices table or keep it read-only?</span>
+              <span class="ip__meta">Acme · Billing v2 · an agent waits</span>
+              <span class="ip__answered"><i class="sk-tick"></i> Answered with Face ID</span>
+            </span>
+          </div>
+          <div class="ip__row ip__row--ok is-on">
+            <span class="ip__mark"></span>
+            <span class="ip__body">
+              <span class="sk-label ip__kind">Merge · #9 · <em>verified</em></span>
+              <span class="ip__t">Stripe webhook retries</span>
+              <span class="ip__meta">Acme · Billing v2 · PR #412</span>
+            </span>
+          </div>
+          <div class="ip__row is-on">
+            <span class="ip__mark"></span>
+            <span class="ip__body">
+              <span class="sk-label ip__kind">Brief · plan ready</span>
+              <span class="ip__t">Approve the reindex plan</span>
+              <span class="ip__meta">Acme · Search reindex · 7 tickets</span>
+            </span>
+          </div>
+          <div class="ip__row is-on">
+            <span class="ip__mark"></span>
+            <span class="ip__body">
+              <span class="sk-label ip__kind">Reroute · R-2</span>
+              <span class="ip__t">Split #6 into a parser and a writer</span>
+              <span class="ip__meta">Personal · CLI rewrite</span>
+            </span>
+          </div>
+          <span class="sk-label ip__group ip__later is-on">Can wait · in tonight's digest</span>
+          <div class="ip__row ip__row--quiet ip__later is-on">
+            <span class="ip__mark"></span>
+            <span class="ip__body">
+              <span class="sk-label ip__kind">Question · #21</span>
+              <span class="ip__t">Name the new search flag?</span>
+              <span class="ip__meta">Acme · Search reindex</span>
+            </span>
+          </div>
+          <div class="ip__row ip__row--quiet ip__later ip__extra is-on">
+            <span class="ip__mark"></span>
+            <span class="ip__body">
+              <span class="sk-label ip__kind">Criteria · 5 to review</span>
+              <span class="ip__t">CLI rewrite criteria</span>
+            </span>
+          </div>
+        </div>
+        <div class="ph__tabs">
+          <span class="ph__tab is-on"
+            ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 5h16v11H9l-5 4z" /></svg
+            >Needs you</span
+          >
+          <span class="ph__tab"
+            ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="4" width="5" height="5" />
+              <rect x="16" y="15" width="5" height="5" />
+              <path d="M8 6.5h5v11h3" /></svg
+            >Trails</span
+          >
+          <span class="ph__tab"
+            ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 7h10M18 7h2M4 17h4M12 17h8" />
+              <rect x="14" y="5" width="4" height="4" />
+              <rect x="8" y="15" width="4" height="4" /></svg
+            >Settings</span
+          >
+        </div>
+        <div class="ip__note is-on">
+          <svg class="ip__icon" viewBox="0 0 200 200" width="30" height="30"><use href="#tt-logo" /></svg>
+          <span class="ip__note-body">
+            <span class="ip__note-head"><b>Teamtrail</b><span>now</span></span>
+            <b class="ip__note-t">High-risk question · Billing v2</b>
+            <span>An agent waits on your call.</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="sk-sr">
+    A high-risk question reaches your phone as a notification that names only its kind and trail. It joins Needs you,
+    one list across your workspaces, above work ready to merge, a plan to approve and a reroute, and you answer it there
+    with Face ID. What can wait goes to tonight's digest.
+  </figcaption>
+</figure>

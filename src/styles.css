@@ -6,6 +6,7 @@
 @import './scenes-pages.css';
 @import './scenes-slack.css';
 @import './scenes-cloud.css';
+@import './scenes-mobile.css';
 
 /* Two fonts: Inter for everything, JetBrains Mono for commands, code and labels. Dark-first: near-black surfaces,
  * hairline borders, square corners and one accent, blaze (the paint mark that shows a trail), for primary buttons,
@@ -760,6 +761,9 @@ code {
 }
 .head--center p {
   max-width: 620px;
+}
+.head--center .head__title {
+  align-items: center;
 }
 
 /* Product shots and the video: a hairline window with a title bar. */
