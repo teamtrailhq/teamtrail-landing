@@ -23,6 +23,11 @@ const registered = new Set([...registry.matchAll(/^\s+'?([\w-]+)'?: \w+,$/gm)].m
 test('every data-scene on the site is a registered scene', () => {
   assert.ok(named.some((n) => n.name === 'slack-answer'));
   assert.ok(named.some((n) => n.name === 'cloud-away'));
+  for (const name of ['mobile-needs', 'mobile-answer', 'mobile-merge'])
+    assert.ok(
+      named.some((n) => n.name === name),
+      name,
+    );
   assert.deepEqual(
     named.filter((n) => !registered.has(n.name)).map((n) => `${n.file}: ${n.name}`),
     [],

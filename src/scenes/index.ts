@@ -5,6 +5,8 @@ import { cloudHeroScene } from './cloudHeroScene';
 import { criteriaScene } from './criteriaScene';
 import { decideScene } from './decideScene';
 import { guidesScene } from './guidesScene';
+import { mobileAnswerScene } from './mobileAnswerScene';
+import { mobileMergeScene } from './mobileMergeScene';
 import { mobileNeedsScene } from './mobileNeedsScene';
 import { needsScene } from './needsScene';
 import { parallelScene } from './parallelScene';
@@ -29,6 +31,8 @@ const SCENES: Record<string, Scene> = {
   'cloud-hero': cloudHeroScene,
   'cloud-away': cloudAwayScene,
   'mobile-needs': mobileNeedsScene,
+  'mobile-answer': mobileAnswerScene,
+  'mobile-merge': mobileMergeScene,
   plan: planScene,
   worktrees: worktreesScene,
   decide: decideScene,

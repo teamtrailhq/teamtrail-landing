@@ -112,33 +112,28 @@
               <span class="eyebrow">On the go</span>
               <h2 id="s-go">Answer, approve and merge from your phone.</h2>
             </div>
+            <p>
+              Every workspace in one place: trails by workspace, their progress, the agents at work and what happened
+              lately. The map stays in the Lookout.
+            </p>
           </header>
-          <ul class="facts reveal" role="list">
-            <li>
+          <div class="go-scenes">
+            <div class="go-scene reveal">
+              <!-- @include scene-mobile-answer -->
               <h3>Answers that count</h3>
               <p>
-                Answer any question, high-risk ones too. Your answer counts as it would in the Lookout, and the Logbook
+                Answer any question, high-risk ones too. It counts as your answer in the Lookout would, and the Logbook
                 records it as yours.
               </p>
-            </li>
-            <li>
-              <h3>Face ID, if you want it</h3>
-              <p>Turn it on when you set up the app, or later in Settings, and high-risk answers ask for it first.</p>
-            </li>
-            <li>
+            </div>
+            <div class="go-scene reveal">
+              <!-- @include scene-mobile-merge -->
               <h3>Merge with its proof</h3>
               <p>
-                Verified work shows its checks, its review and its acceptance criteria before you approve and merge it.
+                Verified work shows its checks, its review and its acceptance criteria before you approve and merge.
               </p>
-            </li>
-            <li>
-              <h3>Every workspace in one place</h3>
-              <p>
-                Trails grouped by workspace, each with its progress, the agents at work and what happened lately. The
-                map stays in the Lookout.
-              </p>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -151,22 +146,32 @@
               <h2 id="s-private">Your lock screen says little.</h2>
             </div>
           </header>
-          <ul class="facts reveal" role="list">
-            <li>
+          <div class="cards cards--3">
+            <article class="card reveal">
+              <span class="card__n">Lock screen</span>
               <h3>No question text</h3>
               <p>
                 A notification names the kind and the trail, never the question. A setting shows the text if you want
                 it.
               </p>
-            </li>
-            <li>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Sign-in</span>
               <h3>A token of its own</h3>
               <p>
                 You sign in with GitHub, and the phone gets its own sign-in that you can revoke without touching your
                 other devices.
               </p>
-            </li>
-          </ul>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Face ID</span>
+              <h3>Face ID on high-risk answers</h3>
+              <p>
+                Optional: turn it on in the first run or in Settings. Once it's on, the server refuses a high-risk
+                answer from the phone without it.
+              </p>
+            </article>
+          </div>
         </div>
       </section>
 

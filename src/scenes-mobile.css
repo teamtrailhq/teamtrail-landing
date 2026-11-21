@@ -1,35 +1,118 @@
-/* ---------- /mobile's scene (partials/scene-mobile-needs.html, src/scenes/mobileNeedsScene.ts) ----------
- * A phone with Needs you across workspaces, and a lock-screen notification that slides down over it. Stylised: no
- * status bar or system chrome, square corners like the rest of the site. */
+/* ---------- /mobile's scenes (partials/scene-mobile-*.html, src/scenes/mobile*Scene.ts) ----------
+ * Each scene is the app on a phone. The phone is one shared block, `.device`: a graphite body with rounded corners and
+ * a pill at the top, the same in both themes because it is hardware. Everything on its screen keeps the site's square
+ * corners and tokens. No status bar icons and no maker's marks. */
 
 .scene--mobile {
   width: min(100%, 560px);
   margin: 48px auto 0;
 }
 .scene--mobile .sk-stage {
-  height: 540px;
+  height: 668px;
   --sk-fade-x: 4%;
-  --sk-fade-bottom: 22%;
-}
-.ip__canvas {
-  position: absolute;
-  inset: 0 auto 0 50%;
-  width: 320px;
-  margin-left: -160px;
+  --sk-fade-bottom: 0%;
 }
 
-.ip__phone {
+/* ---------- the phone ---------- */
+
+.device {
   position: absolute;
-  top: 28px;
-  left: 14px;
-  width: 292px;
-  height: 600px;
-  padding: 34px 0 0;
-  background: var(--bg-2);
-  border: 1px solid var(--line-2);
-  outline: 6px solid var(--panel);
-  box-shadow: var(--sk-raise);
+  top: 24px;
+  left: 50%;
+  width: 300px;
+  height: 620px;
+  margin-left: -150px;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 50px;
+  background: #1b1c1f;
+  box-shadow:
+    inset 0 0 0 1.5px #3b3d43,
+    inset 0 0 0 4px #121315,
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    var(--sk-raise);
 }
+.device__screen {
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  padding-top: 46px;
+  overflow: hidden;
+  border-radius: 40px;
+  background: var(--bg-2);
+}
+.device__island {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  z-index: 8;
+  width: 86px;
+  height: 25px;
+  margin-left: -43px;
+  border-radius: 13px;
+  background: #000;
+}
+
+/* ---------- shared screen parts ---------- */
+
+.ph__back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-hi);
+  font-size: 13px;
+}
+.ph__back svg {
+  width: 14px;
+  height: 14px;
+}
+.ph__body {
+  display: grid;
+  gap: 10px;
+  padding: 12px 16px;
+}
+.ph__h {
+  font: 600 16px/1.25 var(--sans);
+  letter-spacing: -0.005em;
+  color: var(--text-hi);
+}
+.ph__p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text);
+}
+.ph__btn {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  background: var(--fill);
+  color: var(--on-fill);
+  font: 600 13px/1 var(--sans);
+  transition:
+    transform 0.16s var(--ease),
+    background-color 0.3s,
+    color 0.3s;
+}
+.ph__btn.is-pressed {
+  transform: scale(0.97);
+}
+.ph__btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- Needs you (the hero, and where an answer lands) ---------- */
+
 .ip__head {
   display: grid;
   gap: 4px;
@@ -65,7 +148,6 @@
 .ip__group--now {
   color: var(--urgent);
 }
-
 .ip__row {
   display: flex;
   gap: 10px;
@@ -143,21 +225,21 @@
   color: var(--dim);
 }
 
-/* The notification: slides down over the phone, then goes when tapped. */
+/* The notification: slides down from under the pill, then goes when tapped. */
 .ip__note {
   position: absolute;
-  top: 46px;
-  left: 0;
-  right: 0;
+  top: 52px;
+  left: 8px;
+  right: 8px;
   z-index: 5;
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  padding: 11px 12px;
+  padding: 10px 11px;
   background: var(--panel);
   border: 1px solid var(--line-2);
   box-shadow: var(--sk-raise);
-  font-size: 12.5px;
+  font-size: 12px;
   opacity: 0;
   transform: translateY(-24px);
   transition:
@@ -186,7 +268,7 @@
   display: flex;
   justify-content: space-between;
   color: var(--dim);
-  font-size: 11.5px;
+  font-size: 11px;
 }
 .ip__note-head b {
   font-weight: 500;
@@ -197,8 +279,255 @@
   color: var(--text-hi);
 }
 
-/* While the loop plays, what hasn't happened yet isn't there. */
 .sk-live .ip__row:not(.is-on),
 .sk-live .ip__later:not(.is-on) {
   display: none;
+}
+
+/* ---------- answering a high-risk question ---------- */
+
+.ma__risk {
+  justify-self: start;
+}
+.ma__prior {
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border: 1px solid var(--line-2);
+  font-size: 12px;
+  color: var(--text-hi);
+}
+.ma__opts {
+  display: grid;
+  gap: 6px;
+}
+.ma__opt {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--text-hi);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.ma__opt i {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border: 1.5px solid var(--dim);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.ma__opt.is-picked {
+  border-color: var(--fill);
+}
+.ma__opt.is-picked i {
+  border-color: var(--fill);
+  background: var(--fill);
+}
+
+/* Face ID: the glyph over the screen, then a check. */
+.ma__face {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  background: rgba(var(--bg-rgb), 0.82);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.ma__face.is-on {
+  opacity: 1;
+}
+.ma__face svg {
+  width: 64px;
+  height: 64px;
+  color: var(--text-hi);
+  transition:
+    color 0.25s,
+    transform 0.3s var(--ease);
+}
+.ma__face.is-ok svg {
+  color: var(--ok);
+  transform: scale(1.06);
+}
+.ma__face .ma__ok {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.ma__face.is-ok .ma__ok {
+  opacity: 1;
+}
+.ma__face.is-ok .ma__scan {
+  opacity: 0;
+}
+
+/* After the answer: back on Needs you, the item gone. */
+.ma__list,
+.ma__screen.is-answered .ma__q {
+  display: none;
+}
+.ma__screen.is-answered .ma__list {
+  display: block;
+}
+.ma__done {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ok);
+}
+
+/* ---------- merging verified work ---------- */
+
+.mm__trail {
+  display: grid;
+  gap: 5px;
+}
+.mm__segs {
+  display: flex;
+  gap: 2px;
+  height: 6px;
+}
+.mm__segs i {
+  flex: 1;
+  background: var(--line-2);
+  transition: background-color 0.4s;
+}
+.mm__segs i.is-done {
+  background: var(--ok);
+}
+.mm__segs i.is-work {
+  background: var(--fill);
+}
+.mm__segs i.is-need {
+  background: var(--urgent);
+}
+.mm__verified .sk-label {
+  color: inherit;
+}
+.mm__verified {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(var(--sk-ok-rgb), 0.55);
+  background: rgba(var(--sk-ok-rgb), 0.1);
+  color: var(--ok);
+}
+.mm__lines {
+  display: grid;
+}
+.mm__line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--text-hi);
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+.mm__line:last-child {
+  border-bottom: 0;
+}
+.mm__line code {
+  font: 400 11.5px/1.3 var(--code);
+}
+.mm__line .sk-tick {
+  flex: none;
+  color: var(--ok);
+}
+.sk-live .mm__line:not(.is-on) {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.mm__pr {
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border: 1px solid var(--line-2);
+  font-size: 12px;
+  color: var(--text-hi);
+  transition:
+    border-color 0.3s,
+    background-color 0.3s;
+}
+.mm__pr .sk-label b {
+  font-weight: 400;
+}
+.mm__merged,
+.mm__pr.is-merged .mm__open {
+  display: none;
+}
+.mm__pr.is-merged .mm__merged {
+  display: inline;
+  color: var(--ok);
+}
+.mm__pr.is-merged {
+  border-color: rgba(var(--sk-ok-rgb), 0.55);
+  background: rgba(var(--sk-ok-rgb), 0.08);
+}
+.mm__btn .mm__busy,
+.mm__btn .mm__done,
+.mm__btn.is-busy .mm__idle,
+.mm__btn.is-done .mm__idle,
+.mm__btn.is-done .mm__busy {
+  display: none;
+}
+.mm__btn.is-busy .mm__busy,
+.mm__btn.is-done .mm__done {
+  display: inline;
+}
+.mm__btn.is-busy {
+  background: var(--panel);
+  color: var(--text-hi);
+}
+.mm__btn.is-done {
+  background: none;
+  color: var(--ok);
+  box-shadow: inset 0 0 0 1px rgba(var(--sk-ok-rgb), 0.55);
+}
+
+/* ---------- On the go: two phones side by side ---------- */
+
+.go-scenes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+}
+.go-scene .scene--mobile {
+  width: 100%;
+  margin: 0;
+}
+.go-scene h3 {
+  margin-top: 8px;
+}
+.go-scene p {
+  margin-top: 8px;
+  font-size: var(--fs-small);
+  color: var(--dim);
+}
+@media (max-width: 860px) {
+  .go-scenes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.mm__count {
+  display: inline-block;
+  transition:
+    opacity 0.16s,
+    transform 0.16s var(--ease);
 }

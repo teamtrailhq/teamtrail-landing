@@ -2611,7 +2611,6 @@ html:has(.gdlg[open]) {
   font-size: var(--fs-small);
 }
 .slack-note a,
-.facts p a,
 .legal a {
   color: var(--accent);
 }
