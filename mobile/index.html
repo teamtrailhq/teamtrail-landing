@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      try {
+        var t = localStorage.getItem('teamtrail-theme');
+        document.documentElement.dataset.theme = t || 'night';
+      } catch (e) {
+        document.documentElement.dataset.theme = 'night';
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teamtrail for mobile: your trails while you're away</title>
+    <meta
+      name="description"
+      content="Teamtrail for mobile, coming with Teamtrail Cloud: every workspace in one place, a notification only for the calls that are yours, and answers, approvals and merges from your phone."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Teamtrail" />
+    <meta property="og:title" content="Teamtrail for mobile: your trails while you're away" />
+    <meta
+      property="og:description"
+      content="Every Cloud workspace on your phone. Notified only for the calls that are yours. Coming with Teamtrail Cloud."
+    />
+    <meta property="og:url" content="%SITE_URL%/mobile/" />
+    <meta property="og:image" content="%SITE_URL%/media/brand/og-mobile-1200x630.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="The teamtrail wordmark and the headline Your trails, while you're away, beside a phone showing Needs you: a high-risk question, work ready to merge, a plan to approve and a reroute."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="%SITE_URL%/media/brand/og-mobile-1200x630.png" />
+    <meta name="theme-color" content="#0a0a0b" />
+    <link rel="icon" href="/media/brand/favicon-32.png?v=8" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/media/brand/favicon-64.png?v=8" type="image/png" sizes="64x64" />
+    <link rel="icon" href="/media/brand/favicon.svg?v=8" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/media/brand/app-icon-512.png?v=8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <!-- @include sprite -->
+    <!-- @include nav -->
+
+    <main id="main">
+      <section class="hero hero--page" aria-labelledby="page-title">
+        <div class="wrap hero__inner">
+          <span class="hero__badge" data-scramble>Teamtrail for mobile</span>
+          <h1 id="page-title">Your trails, while you're away.</h1>
+          <p class="hero__lede">
+            Trails run for days. See every <span class="mark">Teamtrail Cloud</span> workspace and what its agents are
+            doing, and answer when they need you. Your phone tells you only what's yours to decide. Coming with
+            <span class="mark">Teamtrail Cloud</span>, in early access.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#waitlist"
+              >Get early access <span class="arrow" aria-hidden="true">↓</span></a
+            >
+            <a class="btn" href="#features">See what it does</a>
+          </div>
+          <!-- @include scene-mobile-needs -->
+        </div>
+      </section>
+
+      <!-- SHOWCASE: one phone, the cards around it (src/scenes/showcase.ts). Without scripts the first card is chosen
+           and its pane shows its still frame. -->
+      <section class="section showcase" id="features" aria-labelledby="s-show" data-showcase>
+        <div class="wrap">
+          <header class="head head--center reveal">
+            <div class="head__title">
+              <span class="eyebrow">On the go</span>
+              <h2 id="s-show">Everything that's yours.<br />Nothing that isn't.</h2>
+            </div>
+            <p>Answer and merge from your phone, watch every trail, and choose what may interrupt you.</p>
+          </header>
+          <div class="showcase__grid reveal">
+            <div class="showcase__side">
+              <button class="sc-card" type="button" data-show aria-controls="show-answer" aria-pressed="true">
+                <span class="sc-card__n">Answer</span>
+                <span class="sc-card__t">Answer with Face ID</span>
+                <span class="sc-card__line"
+                  >Any question, high-risk ones too. It counts as your answer in the Lookout.</span
+                >
+              </button>
+              <button class="sc-card" type="button" data-show aria-controls="show-merge" aria-pressed="false">
+                <span class="sc-card__n">Merge</span>
+                <span class="sc-card__t">Approve and merge</span>
+                <span class="sc-card__line"
+                  >Verified work shows its checks, its review and its criteria before you merge.</span
+                >
+              </button>
+            </div>
+            <div class="showcase__phone">
+              <div class="scene scene--flat scene--mobile">
+                <div class="sk-stage">
+                  <div class="device">
+                    <span class="device__island"></span>
+                    <div class="device__screen showcase__screen">
+                      <!-- @include scene-mobile-answer -->
+                      <!-- @include scene-mobile-merge -->
+                      <!-- @include scene-mobile-trails -->
+                      <!-- @include scene-mobile-notify -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="showcase__caption" aria-live="polite">
+                Any question, high-risk ones too. It counts as your answer in the Lookout.
+              </p>
+            </div>
+            <div class="showcase__side">
+              <button class="sc-card" type="button" data-show aria-controls="show-trails" aria-pressed="false">
+                <span class="sc-card__n">Trails</span>
+                <span class="sc-card__t">Every trail at a glance</span>
+                <span class="sc-card__line">Progress and what waits on you, grouped by workspace.</span>
+              </button>
+              <button class="sc-card" type="button" data-show aria-controls="show-notify" aria-pressed="false">
+                <span class="sc-card__n">Notifications</span>
+                <span class="sc-card__t">Only what needs you</span>
+                <span class="sc-card__line"
+                  >What holds a trail comes right away; the rest waits for one daily digest.</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRIVATE -->
+      <section class="section" aria-labelledby="s-private">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">What stays private</span>
+              <h2 id="s-private">Your lock screen says little.</h2>
+            </div>
+          </header>
+          <div class="cards cards--3">
+            <article class="card reveal">
+              <span class="card__n">Lock screen</span>
+              <h3>No question text</h3>
+              <p>
+                A notification names the kind and the trail, never the question. A setting shows the text if you want
+                it.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Sign-in</span>
+              <h3>A token of its own</h3>
+              <p>
+                You sign in with GitHub, and the phone gets its own sign-in that you can revoke without touching your
+                other devices.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Face ID</span>
+              <h3>Face ID on high-risk answers</h3>
+              <p>Optional. When it's on, a high-risk answer asks for Face ID before it goes.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- WAITLIST -->
+      <section class="final" id="waitlist" aria-labelledby="s-wait">
+        <div class="wrap final__inner reveal">
+          <span class="tag tag--soon">Early access</span>
+          <h2 id="s-wait">Comes with <span class="mark">Teamtrail Cloud</span>.</h2>
+          <p>
+            The app works with Cloud workspaces. Join the Cloud waitlist and we'll email you once, when your invite is
+            ready. Until then, <span class="mark">Teamtrail Local</span> is free on your own machine.
+          </p>
+          <form
+            class="waitlist"
+            data-waitlist
+            data-list="cloud"
+            data-done="You’re on the list. We’ll email you when your Teamtrail Cloud invite is ready."
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="you@company.com"
+              aria-label="Email address"
+              required
+              autocomplete="email"
+            />
+            <!-- Honeypot: hidden from people, filled in by bots. -->
+            <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <button class="btn btn--primary" type="submit">Get early access</button>
+            <span class="waitlist__status" data-waitlist-status role="status" aria-live="polite"></span>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

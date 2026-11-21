@@ -131,6 +131,7 @@ export default defineConfig({
         guides: resolve(__dirname, 'guides/index.html'),
         cloud: resolve(__dirname, 'cloud/index.html'),
         slack: resolve(__dirname, 'slack/index.html'),
+        mobile: resolve(__dirname, 'mobile/index.html'),
         privacy: resolve(__dirname, 'privacy/index.html'),
         notFound: resolve(__dirname, '404.html'),
       },

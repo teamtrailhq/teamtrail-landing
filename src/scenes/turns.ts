@@ -2,6 +2,7 @@
  * Scenes take turns: one plays at a time on the whole page. The scenes on screen queue in document order; the playing
  * one runs a full turn, then hands to the next one on screen (to itself when it is alone). A scene that leaves the
  * screen stops and hands over, and nothing plays while the tab is hidden. The others show their still frame.
+ * `claim` lets a scene someone chose (the /mobile showcase) take the turn at once, from the one playing.
  */
 export interface Player {
   root: HTMLElement;
@@ -14,7 +15,7 @@ export interface Player {
 const before = (a: Player, b: Player) =>
   a.root.compareDocumentPosition(b.root) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
 
-export function takeTurns(players: Player[]) {
+export function takeTurns(players: Player[]): { claim(player: Player): void } {
   const order = [...players].sort(before);
   const byRoot = new Map<Element, Player>(order.map((p) => [p.root, p]));
   const onScreen = new Set<Player>();
@@ -55,4 +56,13 @@ export function takeTurns(players: Player[]) {
     playing?.stop();
     playing = undefined;
   });
+
+  return {
+    claim(player) {
+      if (document.hidden || !onScreen.has(player)) return;
+      playing?.stop();
+      playing = player;
+      player.play(() => handOver(player));
+    },
+  };
 }

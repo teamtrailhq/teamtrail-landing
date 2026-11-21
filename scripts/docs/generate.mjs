@@ -59,6 +59,7 @@ function llmsIndex(siteUrl, pages, nav) {
     `- [Features](${siteUrl}/features/): Everything the Lookout does today.`,
     `- [Guides](${siteUrl}/guides/): Reviewer, QA, security and docs guides for tickets, and the catalog.`,
     `- [Teamtrail Cloud](${siteUrl}/cloud/): Hosted trails that keep running while you're away (coming soon).`,
+    `- [Teamtrail for mobile](${siteUrl}/mobile/): Every Cloud workspace on your phone; answer what needs you, notified only for your calls (coming with Cloud).`,
     '',
   );
   for (const section of nav.sections) {
