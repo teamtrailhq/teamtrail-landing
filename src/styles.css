@@ -2800,33 +2800,25 @@ pre,
 .nav__menu {
   background: var(--panel);
 }
+/* The wordmark: the logo mark (#tt-logo in partials/sprite.html), then the name. The mark is 0.86em square, 0.24em
+ * before the name, its centre on the lowercase letters' optical middle; it keeps its own colours in both themes. */
 .brand__word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.24em;
   font-family: var(--sans);
   font-weight: 600;
   font-size: 20px;
   letter-spacing: -0.03em;
   color: var(--text-hi);
   line-height: 1;
+  white-space: nowrap;
 }
-.brand__word i {
-  /* The wordmark's blaze block cursor: a terminal cursor on the baseline, a little under cap height. It blinks here,
-   * on the site only, and holds still under reduced motion. */
-  display: inline-block;
-  width: 0.32em;
-  height: 0.66em;
-  margin-left: 0.07em;
-  background: var(--fill);
-  animation: brand-blink 1.1s steps(1) infinite;
-}
-@keyframes brand-blink {
-  50% {
-    opacity: 0;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .brand__word i {
-    animation: none;
-  }
+.brand__mark {
+  flex: none;
+  width: 0.86em;
+  height: 0.86em;
+  transform: translateY(0.04em);
 }
 .footer .brand__word {
   font-size: 18px;

@@ -1,7 +1,7 @@
 // Overlay injected into the lookout page while the journey records: chapter label + caption,
 // full-screen terminal / Claude Code windows that type their lines, and the title and end cards. The cards are wide,
-// so they carry the teamtrail wordmark, set as the site's nav sets it (Inter 600, tight, a blaze block cursor, still
-// here as everywhere but the site), never the square t. tile.
+// so they carry the teamtrail wordmark, set as the site's nav sets it: the logo mark, then the name in Inter 600, tight,
+// never the mark alone.
 // Runs in the browser (page.addInitScript), so it must stay self-contained.
 export function installStage({ scout, night }) {
   // A terminal in the site's own colours (src/styles.css): white and near-black surfaces, hairline borders, square
@@ -53,8 +53,8 @@ export function installStage({ scout, night }) {
   .st-cur{display:inline-block;width:10px;height:1.1em;vertical-align:-3px;background:#ff6b2c;animation:stb 1s steps(1) infinite}
   @keyframes stb{50%{opacity:0}}
   .st-card{display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center}
-  .st-card h1{margin:0 0 14px;font:600 128px/1 ${sans};letter-spacing:-.035em;color:${ink.hi}}
-  .st-card h1 i{display:inline-block;width:.32em;height:.66em;margin-left:.07em;background:#ff6b2c}
+  .st-card h1{display:flex;align-items:center;gap:.24em;margin:0 0 14px;font:600 128px/1 ${sans};letter-spacing:-.035em;color:${ink.hi}}
+  .st-card h1 svg{flex:none;width:.86em;height:.86em;transform:translateY(.04em)}
   .st-card p{margin:0;font:400 26px ${sans};color:${ink.text}}
   .st-card code{font:400 28px 'JetBrains Mono Variable',monospace;color:${ink.hi};background:${ink.win};padding:14px 24px;border:1px solid ${ink.line}}
   .st-card code span{color:${ink.acc}}
@@ -82,7 +82,11 @@ export function installStage({ scout, night }) {
     /** `copy` replaces the cards' English lines (the Polish deck demo): `tagline` on the title, `works` on the end. */
     card(kind, copy = {}) {
       ensure();
-      const word = '<h1>teamtrail<i></i></h1>';
+      // The logo mark (partials/sprite.html), drawn inline: the page under the overlay is the Lookout, not the site.
+      const arm = 'x="88" y="10" width="24" height="56"';
+      const arms = [60, 120, 180, 240, 300].map((d) => `<rect ${arm} transform="rotate(${d} 100 100)"/>`).join('');
+      const mark = `<svg viewBox="0 0 200 200" aria-hidden="true"><g fill="#FF6B2C">${arms}</g><rect ${arm} fill="#8E8E96"/></svg>`;
+      const word = `<h1>${mark}teamtrail</h1>`;
       const tagline = copy.tagline ?? 'The trail map for your AI coding agents.';
       const works = copy.works ?? 'Works with Claude Code, Codex and any MCP agent';
       ov.innerHTML =
