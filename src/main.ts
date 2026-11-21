@@ -40,7 +40,6 @@ for (const el of $$('[data-spec]')) {
   el.innerHTML = `<svg viewBox="0 0 200 200" width="${size}" height="${size}" aria-hidden="true">${guideMarkup(role)}</svg>`;
 }
 
-initCloudScene(reducedMotion);
 initNav();
 void initGhStars();
 initReveal(reducedMotion);
@@ -50,6 +49,9 @@ initGuideDialogs();
 initCmdCycle(reducedMotion);
 initVideo(reducedMotion);
 initScenes(reducedMotion);
+// After initScenes: each scene keeps its markup as written to put back after a turn, so Scout must not be in it yet.
+// Mounted first, his inline styles would come back as style attributes, which the CSP (style-src 'self') blocks.
+initCloudScene(reducedMotion);
 initTrail();
 initTrailField(reducedMotion);
 initWaitlist();
