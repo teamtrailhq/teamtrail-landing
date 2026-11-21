@@ -8,7 +8,7 @@
   margin: 48px auto 0;
 }
 .scene--mobile .sk-stage {
-  height: 668px;
+  height: 698px;
   --sk-fade-x: 4%;
   --sk-fade-bottom: 0%;
 }
@@ -20,7 +20,7 @@
   top: 24px;
   left: 50%;
   width: 300px;
-  height: 620px;
+  height: 650px;
   margin-left: -150px;
   padding: 10px;
   box-sizing: border-box;
@@ -85,11 +85,59 @@
   line-height: 1.45;
   color: var(--text);
 }
-.ph__btn {
+/* The action bar and the tab bar, pinned to the screen's bottom. */
+.ph__bar {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 30px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: grid;
+  gap: 2px;
+  padding: 10px 16px 16px;
+  border-top: 1px solid var(--line-2);
+  background: var(--panel);
+}
+.ph__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  font-size: 12.5px;
+  color: var(--text-hi);
+}
+.ph__tabs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--line-2);
+  background: var(--panel);
+}
+.ph__tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 9px;
+  font: 500 9.5px/1 var(--code);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.ph__tab svg {
+  width: 17px;
+  height: 17px;
+}
+.ph__tab.is-on {
+  color: var(--text-hi);
+  box-shadow: inset 0 2px 0 var(--fill);
+}
+.ph__btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -279,6 +327,10 @@
   color: var(--text-hi);
 }
 
+/* The question isn't in the list until the notification is tapped, with or without the loop. */
+.ip__row[data-q]:not(.is-on) {
+  display: none;
+}
 .sk-live .ip__row:not(.is-on),
 .sk-live .ip__later:not(.is-on) {
   display: none;
@@ -530,4 +582,31 @@
   transition:
     opacity 0.16s,
     transform 0.16s var(--ease);
+}
+.ma__field {
+  display: grid;
+  gap: 5px;
+}
+.ma__field i {
+  display: block;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  font: 400 12px/32px var(--sans);
+  font-style: normal;
+  color: var(--dim);
+}
+.mm__diff {
+  color: var(--dim);
+}
+.mm__open-pr {
+  color: var(--accent);
+}
+.mm__btn.is-done + .mm__not-now {
+  visibility: hidden;
+}
+/* Once the question joins the list, the last digest row makes room for it, so nothing runs under the tab bar. */
+.ip__list:has(.ip__row[data-q].is-on) .ip__extra {
+  display: none;
 }
