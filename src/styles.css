@@ -762,6 +762,9 @@ code {
 .head--center p {
   max-width: 620px;
 }
+.head--center .head__title {
+  align-items: center;
+}
 
 /* Product shots and the video: a hairline window with a title bar. */
 .shot {
