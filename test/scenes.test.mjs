@@ -4,7 +4,14 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 
 // Every scene a page or partial names is one the scene index plays, and every scene's still frame is inside its loop.
-const PAGES = ['index.html', 'slack/index.html', 'cloud/index.html', 'features/index.html', 'guides/index.html'];
+const PAGES = [
+  'index.html',
+  'slack/index.html',
+  'cloud/index.html',
+  'mobile/index.html',
+  'features/index.html',
+  'guides/index.html',
+];
 const PARTIALS = readdirSync('partials').map((f) => join('partials', f));
 const named = [...PAGES, ...PARTIALS].flatMap((f) =>
   [...readFileSync(f, 'utf8').matchAll(/data-scene="([\w-]+)"/g)].map((m) => ({ file: f, name: m[1] })),

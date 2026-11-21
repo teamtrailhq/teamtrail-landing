@@ -6,6 +6,7 @@
 @import './scenes-pages.css';
 @import './scenes-slack.css';
 @import './scenes-cloud.css';
+@import './scenes-mobile.css';
 
 /* Two fonts: Inter for everything, JetBrains Mono for commands, code and labels. Dark-first: near-black surfaces,
  * hairline borders, square corners and one accent, blaze (the paint mark that shows a trail), for primary buttons,
@@ -2610,6 +2611,7 @@ html:has(.gdlg[open]) {
   font-size: var(--fs-small);
 }
 .slack-note a,
+.facts p a,
 .legal a {
   color: var(--accent);
 }

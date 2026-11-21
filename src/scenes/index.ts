@@ -5,6 +5,7 @@ import { cloudHeroScene } from './cloudHeroScene';
 import { criteriaScene } from './criteriaScene';
 import { decideScene } from './decideScene';
 import { guidesScene } from './guidesScene';
+import { mobileNeedsScene } from './mobileNeedsScene';
 import { needsScene } from './needsScene';
 import { parallelScene } from './parallelScene';
 import { planScene } from './planScene';
@@ -27,6 +28,7 @@ const SCENES: Record<string, Scene> = {
   'slack-risk': slackRiskScene,
   'cloud-hero': cloudHeroScene,
   'cloud-away': cloudAwayScene,
+  'mobile-needs': mobileNeedsScene,
   plan: planScene,
   worktrees: worktreesScene,
   decide: decideScene,

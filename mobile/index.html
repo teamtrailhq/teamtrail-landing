@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      try {
+        var t = localStorage.getItem('teamtrail-theme');
+        document.documentElement.dataset.theme = t || 'night';
+      } catch (e) {
+        document.documentElement.dataset.theme = 'night';
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teamtrail for iPhone: your trails while you're away</title>
+    <meta
+      name="description"
+      content="Teamtrail for iPhone, coming with Teamtrail Cloud: every workspace in one place, a notification only for the calls that are yours, and answers, approvals and merges from your phone."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Teamtrail" />
+    <meta property="og:title" content="Teamtrail for iPhone: your trails while you're away" />
+    <meta
+      property="og:description"
+      content="Every Cloud workspace on your phone. Notified only for the calls that are yours. Coming with Teamtrail Cloud."
+    />
+    <meta property="og:url" content="%SITE_URL%/mobile/" />
+    <meta property="og:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="The teamtrail wordmark with its blaze block cursor over a dot grid, and a trail that steps across to its destination."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="%SITE_URL%/media/brand/og-image-1200x630.png" />
+    <meta name="theme-color" content="#0a0a0b" />
+    <link rel="icon" href="/media/brand/favicon-32.png?v=8" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/media/brand/favicon-64.png?v=8" type="image/png" sizes="64x64" />
+    <link rel="icon" href="/media/brand/favicon.svg?v=8" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/media/brand/app-icon-512.png?v=8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <!-- @include sprite -->
+    <!-- @include nav -->
+
+    <main id="main">
+      <section class="hero hero--page" aria-labelledby="page-title">
+        <div class="wrap hero__inner">
+          <span class="hero__badge" data-scramble>Teamtrail for iPhone</span>
+          <h1 id="page-title">Your trails, while you're away.</h1>
+          <p class="hero__lede">
+            Trails run for days. See every <span class="mark">Teamtrail Cloud</span> workspace and what its agents are
+            doing, and answer when they need you. Your phone tells you only what's yours to decide. Coming with
+            <span class="mark">Teamtrail Cloud</span>, in early access.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#waitlist"
+              >Get early access <span class="arrow" aria-hidden="true">↓</span></a
+            >
+            <a class="btn" href="#notifications">What notifies you</a>
+          </div>
+          <!-- @include scene-mobile-needs -->
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section class="section" id="notifications" aria-labelledby="s-notify">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">Only what needs you</span>
+              <h2 id="s-notify">A notification is a call that's yours.</h2>
+            </div>
+            <p>
+              Each item notifies once. Quiet hours hold them, a few an hour at most, and several on one trail arrive as
+              one.
+            </p>
+          </header>
+          <div class="cards cards--3">
+            <article class="card reveal">
+              <span class="card__n">Right away</span>
+              <h3>What holds the trail</h3>
+              <p>
+                High-risk questions, verified work ready to merge, a plan to approve, reroutes and setting requests,
+                checks failing on main, agents with nothing left to do.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Once a day</span>
+              <h3>What can wait</h3>
+              <p>
+                Questions agents go on without, criteria and knowledge to review, guides to approve, and verified work
+                that came back. One digest, at a time you pick.
+              </p>
+            </article>
+            <article class="card reveal">
+              <span class="card__n">Never</span>
+              <h3>What agents are doing</h3>
+              <p>Progress and activity never notify. They're in the app when you open it.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ON THE GO -->
+      <section class="section section--flush" aria-labelledby="s-go">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">On the go</span>
+              <h2 id="s-go">Answer, approve and merge from your phone.</h2>
+            </div>
+          </header>
+          <ul class="facts reveal" role="list">
+            <li>
+              <h3>Answers that count</h3>
+              <p>
+                Answer any question, high-risk ones too. Your answer counts as it would in the Lookout, and the Logbook
+                records it as yours.
+              </p>
+            </li>
+            <li>
+              <h3>Face ID, if you want it</h3>
+              <p>Turn it on when you set up the app, or later in Settings, and high-risk answers ask for it first.</p>
+            </li>
+            <li>
+              <h3>Merge with its proof</h3>
+              <p>
+                Verified work shows its checks, its review and its acceptance criteria before you approve and merge it.
+              </p>
+            </li>
+            <li>
+              <h3>Every workspace in one place</h3>
+              <p>
+                Trails grouped by workspace, each with its progress, the agents at work and what happened lately. The
+                map stays in the Lookout.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PRIVATE -->
+      <section class="section" aria-labelledby="s-private">
+        <div class="wrap">
+          <header class="head reveal">
+            <div class="head__title">
+              <span class="eyebrow">What stays private</span>
+              <h2 id="s-private">Your lock screen says little.</h2>
+            </div>
+          </header>
+          <ul class="facts reveal" role="list">
+            <li>
+              <h3>No question text</h3>
+              <p>
+                A notification names the kind and the trail, never the question. A setting shows the text if you want
+                it.
+              </p>
+            </li>
+            <li>
+              <h3>A token of its own</h3>
+              <p>
+                You sign in with GitHub, and the phone gets its own sign-in that you can revoke without touching your
+                other devices.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- WAITLIST -->
+      <section class="final" id="waitlist" aria-labelledby="s-wait">
+        <div class="wrap final__inner reveal">
+          <span class="tag tag--soon">Early access</span>
+          <h2 id="s-wait">Comes with <span class="mark">Teamtrail Cloud</span>.</h2>
+          <p>
+            The app works with Cloud workspaces. Join the Cloud waitlist and we'll email you once, when your invite is
+            ready. Until then, <span class="mark">Teamtrail Local</span> is free on your own machine.
+          </p>
+          <form
+            class="waitlist"
+            data-waitlist
+            data-list="cloud"
+            data-done="You’re on the list. We’ll email you when your Teamtrail Cloud invite is ready."
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="you@company.com"
+              aria-label="Email address"
+              required
+              autocomplete="email"
+            />
+            <!-- Honeypot: hidden from people, filled in by bots. -->
+            <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <button class="btn btn--primary" type="submit">Get early access</button>
+            <span class="waitlist__status" data-waitlist-status role="status" aria-live="polite"></span>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

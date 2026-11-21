@@ -1,0 +1,204 @@
+/* ---------- /mobile's scene (partials/scene-mobile-needs.html, src/scenes/mobileNeedsScene.ts) ----------
+ * A phone with Needs you across workspaces, and a lock-screen notification that slides down over it. Stylised: no
+ * status bar or system chrome, square corners like the rest of the site. */
+
+.scene--mobile {
+  width: min(100%, 560px);
+  margin: 48px auto 0;
+}
+.scene--mobile .sk-stage {
+  height: 540px;
+  --sk-fade-x: 4%;
+  --sk-fade-bottom: 22%;
+}
+.ip__canvas {
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: 320px;
+  margin-left: -160px;
+}
+
+.ip__phone {
+  position: absolute;
+  top: 28px;
+  left: 14px;
+  width: 292px;
+  height: 600px;
+  padding: 34px 0 0;
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  outline: 6px solid var(--panel);
+  box-shadow: var(--sk-raise);
+}
+.ip__head {
+  display: grid;
+  gap: 4px;
+  padding: 0 16px 12px;
+  border-bottom: 1px solid var(--line-2);
+}
+.ip__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ip__title b {
+  font: 600 21px/1.2 var(--sans);
+  letter-spacing: -0.01em;
+  color: var(--text-hi);
+}
+.ip__count {
+  height: 20px;
+  background: var(--urgent);
+  border-color: var(--urgent);
+  color: var(--sk-on-urgent);
+  font-size: 11px;
+  transition: opacity 0.2s;
+}
+.ip__count.is-empty {
+  opacity: 0;
+}
+.ip__group {
+  display: block;
+  padding: 12px 16px 6px;
+  color: var(--dim);
+}
+.ip__group--now {
+  color: var(--urgent);
+}
+
+.ip__row {
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  transition:
+    opacity 0.35s var(--ease),
+    transform 0.35s var(--ease),
+    background-color 0.2s;
+}
+.ip__mark {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  margin-top: 4px;
+  background: var(--text-hi);
+}
+.ip__row--urgent .ip__mark {
+  background: var(--urgent);
+}
+.ip__row--ok .ip__mark {
+  background: var(--ok);
+}
+.ip__row--quiet .ip__mark {
+  background: none;
+  border: 1.5px solid var(--dim);
+}
+.ip__body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.ip__kind {
+  color: var(--dim);
+}
+.ip__row--urgent .ip__kind {
+  color: var(--urgent);
+}
+.ip__kind em {
+  font-style: normal;
+  color: var(--ok);
+}
+.ip__t {
+  font: 600 13.5px/1.3 var(--sans);
+  color: var(--text-hi);
+}
+.ip__row--quiet .ip__t {
+  font-weight: 500;
+}
+.ip__meta {
+  font-size: 12px;
+  color: var(--dim);
+}
+.ip__answered {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--ok);
+}
+.ip__row.is-pressed {
+  background: var(--panel);
+  transform: scale(0.985);
+}
+.ip__row.is-resolved .ip__meta {
+  display: none;
+}
+.ip__row.is-resolved .ip__answered {
+  display: flex;
+}
+.ip__row.is-resolved .ip__mark {
+  background: var(--ok);
+}
+.ip__row.is-resolved .ip__kind {
+  color: var(--dim);
+}
+
+/* The notification: slides down over the phone, then goes when tapped. */
+.ip__note {
+  position: absolute;
+  top: 46px;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 11px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  box-shadow: var(--sk-raise);
+  font-size: 12.5px;
+  opacity: 0;
+  transform: translateY(-24px);
+  transition:
+    opacity 0.35s var(--ease),
+    transform 0.35s var(--ease);
+}
+.ip__note.is-on {
+  opacity: 1;
+  transform: none;
+}
+.ip__note.is-pressed {
+  transform: scale(0.98);
+}
+.ip__icon {
+  flex: none;
+  padding: 4px;
+  background: #0a0a0b;
+}
+.ip__note-body {
+  display: grid;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+.ip__note-head {
+  display: flex;
+  justify-content: space-between;
+  color: var(--dim);
+  font-size: 11.5px;
+}
+.ip__note-head b {
+  font-weight: 500;
+  color: var(--dim);
+}
+.ip__note-t {
+  font-weight: 600;
+  color: var(--text-hi);
+}
+
+/* While the loop plays, what hasn't happened yet isn't there. */
+.sk-live .ip__row:not(.is-on),
+.sk-live .ip__later:not(.is-on) {
+  display: none;
+}

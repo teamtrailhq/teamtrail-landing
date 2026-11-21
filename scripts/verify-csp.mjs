@@ -14,7 +14,18 @@ const HEADERS = ['content-security-policy', 'x-frame-options', 'x-content-type-o
 const LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)/.test(BASE);
 // `vite preview` answers unknown paths with Home, so the not-found page is opened by name there.
 const NOT_FOUND = LOCAL ? '/404.html' : '/no-such-page';
-const PAGES = ['/', '/features/', '/guides/', '/cloud/', '/slack/', '/privacy/', '/docs/', '/docs/install/', NOT_FOUND];
+const PAGES = [
+  '/',
+  '/features/',
+  '/guides/',
+  '/cloud/',
+  '/slack/',
+  '/mobile/',
+  '/privacy/',
+  '/docs/',
+  '/docs/install/',
+  NOT_FOUND,
+];
 
 const BYPASS = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 const extraHTTPHeaders = BYPASS ? { 'x-vercel-protection-bypass': BYPASS, 'x-vercel-set-bypass-cookie': 'true' } : {};
@@ -103,7 +114,13 @@ async function checkWaitlist(page, where) {
   });
 }
 
-const CHECKS = { '/': checkHome, '/guides/': checkGuides, '/docs/install/': checkDocs, '/cloud/': checkWaitlist };
+const CHECKS = {
+  '/': checkHome,
+  '/guides/': checkGuides,
+  '/docs/install/': checkDocs,
+  '/cloud/': checkWaitlist,
+  '/mobile/': checkWaitlist,
+};
 
 async function visit(context, path, theme) {
   const where = `${path} (${theme})`;
