@@ -34,3 +34,9 @@ test("each scene's loop is 9 to 11 s, and its still frame and steps fall inside 
   }
   assert.deepEqual(wrong, []);
 });
+
+test('scenes keep their still frames before Scout is mounted in them (style attributes break the CSP)', () => {
+  const main = readFileSync('src/main.ts', 'utf8');
+  assert.ok(main.indexOf('initScenes(reducedMotion)') > 0);
+  assert.ok(main.indexOf('initScenes(reducedMotion)') < main.indexOf('initCloudScene(reducedMotion)'));
+});
