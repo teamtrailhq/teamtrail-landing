@@ -281,6 +281,8 @@ await wait(1200);
 // Under it, how far the trail is and who's at work.
 await caption('Hands-off · progress', 'How far the trail is, and every agent at work. Nothing to herd.');
 await homeTo('.home-progress');
+await page.mouse.move(size.width - 2, size.height - 2);
+await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur());
 await wait(3200);
 
 await term(
@@ -296,6 +298,9 @@ await agentStep('closed #6');
 await wait(1500);
 await caption('Since you were away', 'Back after a break? What agents decided, what changed and what was verified.');
 await homeTo('.home-since');
+// Park the pointer off the rows and drop focus, so no tooltip shows over them.
+await page.mouse.move(size.width - 2, size.height - 2);
+await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur());
 await wait(3800);
 
 // The map, when you want it: Hands-on, one click.
@@ -319,6 +324,7 @@ await closeBubble();
 await wait(2600);
 await view('Logbook');
 await page.locator('.dv-row button').first().click();
+await page.mouse.move(size.width - 2, size.height - 2);
 await caption('Every call, kept', 'Every answer is logged in the Logbook, with its reasoning.');
 await wait(2800);
 await view('Map');
