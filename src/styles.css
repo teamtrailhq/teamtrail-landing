@@ -40,11 +40,6 @@
   --accent: #c2410c;
   --accent-rgb: 194, 65, 12;
   --star: #b7791f;
-  /* The logo's light and dark versions (partials/sprite.html #tt-logo). */
-  --tt-logo-tile: #0e0f11;
-  --tt-logo-edge: #0e0f11;
-  --tt-logo-mark: #ffffff;
-  --tt-logo-cursor: var(--fill);
   /* Guide icons (guideMarkup from @teamtrail/scout-avatar): the symbol alone on the page, ink with one blaze accent.
    * Older versions of the package drew a tile from --tt-guide-bg and --tt-guide-line: transparent, so none shows. */
   --tt-guide-ink: #0e0f11;
@@ -89,9 +84,6 @@
     --accent: #ff6b2c;
     --accent-rgb: 255, 107, 44;
     --star: #e3b341;
-    --tt-logo-tile: #f4f4f6;
-    --tt-logo-edge: #f4f4f6;
-    --tt-logo-mark: #0a0a0b;
     --tt-guide-ink: #ededef;
     --tt-guide-fill: #1c1c1f;
     --tt-guide-accent: #ff6b2c;
@@ -117,9 +109,6 @@
   --accent: #ff6b2c;
   --accent-rgb: 255, 107, 44;
   --star: #e3b341;
-  --tt-logo-tile: #f4f4f6;
-  --tt-logo-edge: #f4f4f6;
-  --tt-logo-mark: #0a0a0b;
   --tt-guide-ink: #ededef;
   --tt-guide-fill: #1c1c1f;
   --tt-guide-accent: #ff6b2c;
