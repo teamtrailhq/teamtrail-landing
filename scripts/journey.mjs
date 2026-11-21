@@ -65,6 +65,8 @@ const closeDialogs = async () => {
 const openTicket = async (title) => {
   await closeBubble();
   await page.locator('.map-zone').getByRole('button', { name: 'Fit' }).click();
+  // Off the button, so its title doesn't show as a tooltip.
+  await page.mouse.move(size.width / 2, size.height - 4);
   await wait(700);
   await page.locator('.map-zone .node', { hasText: title }).first().click();
   await page.locator('.bubble').waitFor({ timeout: 15000 });
@@ -412,10 +414,11 @@ await wait(3000);
 await together.getByRole('button', { name: 'Close' }).click();
 await together.waitFor({ state: 'detached' });
 await page.locator('g.destination').click();
+// Off the square at once: its title would show as a tooltip while the bubble loads.
+await page.mouse.move(size.width / 2, size.height - 4);
 await page
   .locator('.bubble .trail-checks', { hasText: `Verified together on main at ${head}` })
   .waitFor({ timeout: 15000 });
-await page.mouse.move(size.width / 2, size.height - 4);
 await wait(3600);
 await caption('', '');
 await stage('card', 'end');
