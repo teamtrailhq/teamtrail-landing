@@ -126,6 +126,10 @@ The canonical address is `https://www.teamtrail.app` (`$SITE_URL` overrides it).
 
 [MIT](LICENSE). The Teamtrail and Scout names and artwork are trademarks and aren't covered by the license.
 
+## The nav, the footer, the theme and the trail field
+
+They come from the product repo's `packages/site` (`@teamtrail/site`, linked as `file:../teamtrail/packages/site`, like `packages/scout-avatar`), which Teamtrail Cloud's welcome page uses too, so the two stay one bar and one theme. `vite.config.ts` renders the nav (marking the page it's on), the footer and the theme's boot script into every page at build time; `src/main.ts` starts the nav, the theme toggle and the star count from its `./browser`, and `src/heroField.ts` mounts its trail field around the home hero. Its styles (`--site-*` tokens, nav, phone nav, footer) are imported at the top of `src/styles.css`. Change them there, in the product repo; this repo picks them up on its next build.
+
 ## Sign in to Cloud (off until launch)
 
 The nav and `/cloud` have Sign in links to Teamtrail Cloud, left out of every build until Cloud is live. To try them against local Cloud (`npm run dev` in teamtrail-cloud, at `http://app.localhost:7600`):

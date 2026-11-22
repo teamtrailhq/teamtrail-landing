@@ -66,7 +66,7 @@ await page.evaluate(
       justifyContent: 'center',
       gap: '26px',
     });
-    const word = document.querySelector('.footer .brand__word').cloneNode(true);
+    const word = document.querySelector('.site-footer .site-brand__word').cloneNode(true);
     Object.assign(word.style, { position: 'absolute', left: '84px', top: '56px', fontSize: '26px' });
     const label = el('span', '', 'Teamtrail for mobile · coming with Cloud');
     Object.assign(label.style, {

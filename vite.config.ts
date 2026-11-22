@@ -10,18 +10,22 @@ import { loadCatalog } from './scripts/guides/catalog.mjs';
 import { analytics } from './scripts/analytics.mjs';
 import { securityHeadersPlugin } from './scripts/security/headers.mjs';
 import { seo } from './scripts/seo/seo.mjs';
+// By path, not as '@teamtrail/site': Vite bundles the config's relative imports, but leaves a package's to Node, which
+// can't run its TypeScript.
+import { siteFooter, siteNav, themeBootScript } from './node_modules/@teamtrail/site/src/index';
 
-/** `<!-- @include nav -->` pastes partials/nav.html, so the pages share one nav, footer and icon sprite. */
+/**
+ * `<!-- @include name -->` pastes partials/<name>.html, so the pages share one sprite, trail and command box. The
+ * nav, the footer and the theme's boot script come from teamtrail's packages/site (sitePartial), shared with
+ * Teamtrail Cloud's welcome page; the nav marks the page it is on.
+ */
 function partials(): Plugin {
   return {
     name: 'partials',
-    transformIndexHtml: (html) =>
-      cloudSignIn(html)
+    transformIndexHtml: (html, ctx) =>
+      cloudSignIn(html, ctx.path)
         .replaceAll('%SITE_URL%', SITE_URL)
-        .replaceAll('%SCOUT_INSTALL_URL%', SCOUT_INSTALL_URL)
-        .replace(/<!-- @include ([\w-]+) -->/g, (_, name: string) =>
-          readFileSync(resolve(__dirname, 'partials', `${name}.html`), 'utf8'),
-        ),
+        .replaceAll('%SCOUT_INSTALL_URL%', SCOUT_INSTALL_URL),
   };
 }
 
@@ -41,19 +45,32 @@ const SITE_URL = (process.env.SITE_URL ?? 'https://www.teamtrail.app').replace(/
 
 /**
  * Sign in to Teamtrail Cloud (the nav, /cloud): left out of the pages until Cloud is live. A build with
- * CLOUD_SIGN_IN=1 keeps the `<!-- @cloud-sign-in -->…<!-- /@cloud-sign-in -->` blocks and points them at
- * $CLOUD_APP_URL (default https://app.teamtrail.app; http://app.localhost:7600 to try it against local Cloud).
+ * CLOUD_SIGN_IN=1 puts it in the nav and keeps the `<!-- @cloud-sign-in -->…<!-- /@cloud-sign-in -->` blocks, all
+ * pointing at $CLOUD_APP_URL (default https://app.teamtrail.app; http://app.localhost:7600 to try it against local Cloud).
  * Turned on at launch by setting CLOUD_SIGN_IN=1 for Production in Vercel.
  */
 const CLOUD_SIGN_IN = process.env.CLOUD_SIGN_IN === '1';
 const CLOUD_APP_URL = (process.env.CLOUD_APP_URL ?? 'https://app.teamtrail.app').replace(/\/$/, '');
 const SIGN_IN_BLOCK = /<!-- @cloud-sign-in -->([\s\S]*?)<!-- \/@cloud-sign-in -->\n?/g;
 
-function cloudSignIn(html: string) {
+/** The chrome the site shares with Cloud (packages/site), else a partial of this site's own. */
+function sitePartial(name: string, path: string) {
+  if (name === 'nav') return siteNav({ path, signIn: CLOUD_SIGN_IN ? { href: `${CLOUD_APP_URL}/` } : undefined });
+  if (name === 'footer') return `${siteFooter()}\n<div class="toast" role="status" aria-live="polite"></div>`;
+  if (name === 'theme-head') return `<script>${THEME_BOOT}</script>`;
+  return readFileSync(resolve(__dirname, 'partials', `${name}.html`), 'utf8');
+}
+
+/** The theme before first paint: the cookie Cloud shares (tt_theme), else this site's own choice, else night. */
+const THEME_BOOT = themeBootScript({
+  names: { day: 'day', night: 'night' },
+  storageKey: 'teamtrail-theme',
+  fallback: 'night',
+});
+
+function cloudSignIn(html: string, path: string) {
   return html
-    .replace(/<!-- @include ([\w-]+) -->/g, (_, name: string) =>
-      readFileSync(resolve(__dirname, 'partials', `${name}.html`), 'utf8'),
-    )
+    .replace(/<!-- @include ([\w-]+) -->/g, (_, name: string) => sitePartial(name, path))
     .replace(SIGN_IN_BLOCK, (_, inner: string) => (CLOUD_SIGN_IN ? inner : ''))
     .replaceAll('%CLOUD_APP_URL%', CLOUD_APP_URL);
 }

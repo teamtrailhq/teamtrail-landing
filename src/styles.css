@@ -7,6 +7,11 @@
 @import './scenes-slack.css';
 @import './scenes-cloud.css';
 @import './scenes-mobile.css';
+/* The nav, the footer and the hero's trail field, shared with Teamtrail Cloud (teamtrail's packages/site). */
+@import '@teamtrail/site/tokens.css';
+@import '@teamtrail/site/nav.css';
+@import '@teamtrail/site/nav-phone.css';
+@import '@teamtrail/site/footer.css';
 
 /* Two fonts: Inter for everything, JetBrains Mono for commands, code and labels. Dark-first: near-black surfaces,
  * hairline borders, square corners and one accent, blaze (the paint mark that shows a trail), for primary buttons,
@@ -435,147 +440,7 @@ code {
   display: block;
 }
 
-/* ---------- nav ---------- */
-
-.nav {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 50;
-  transition:
-    background-color 0.3s var(--ease),
-    border-color 0.3s var(--ease);
-  border-bottom: 1px solid transparent;
-}
-.nav.is-scrolled {
-  background: rgba(var(--bg-rgb), 0.82);
-  backdrop-filter: blur(10px);
-  border-bottom-color: var(--line);
-}
-.nav__inner {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  height: 68px;
-}
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--display);
-  font-weight: var(--head-weight);
-  font-size: 23px;
-  color: var(--text-hi);
-  letter-spacing: 0.018em;
-}
-.brand__logo {
-  display: block;
-  flex: none;
-}
-.nav__inner {
-  position: relative;
-}
-/* Menu centred on the page, independent of the logo's width. */
-.nav__links {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 32px;
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: var(--fs-small);
-  color: var(--dim);
-}
-.nav__links a:hover,
-.nav__links a[aria-current='page'] {
-  color: var(--text-hi);
-}
-/* "Product" ▾: opens on hover, keyboard focus, or a tap (scroll.ts toggles .is-open). */
-.nav__group {
-  position: relative;
-}
-.nav__group-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  cursor: pointer;
-}
-.nav__group-btn svg {
-  width: 9px;
-  height: 6px;
-  transition: transform 0.2s var(--ease);
-}
-.nav__group:hover .nav__group-btn,
-.nav__group:focus-within .nav__group-btn,
-.nav__group.is-open .nav__group-btn,
-.nav__group.is-current .nav__group-btn {
-  color: var(--text-hi);
-}
-.nav__menu {
-  position: absolute;
-  top: 100%;
-  left: -14px;
-  display: grid;
-  min-width: 190px;
-  padding: 6px;
-  margin-top: 10px;
-  border: 1px solid var(--line-2);
-  background: var(--bg-2);
-  box-shadow: 0 14px 34px var(--shadow);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-4px);
-  transition:
-    opacity 0.15s var(--ease),
-    transform 0.15s var(--ease),
-    visibility 0.15s;
-}
-/* A bridge over the gap, so the menu stays open while the pointer moves down to it. */
-.nav__menu::before {
-  content: '';
-  position: absolute;
-  inset: -12px 0 auto;
-  height: 12px;
-}
-.nav__group:hover .nav__menu,
-.nav__group:focus-within .nav__menu,
-.nav__group.is-open .nav__menu {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-}
-.nav__group:hover .nav__group-btn svg,
-.nav__group.is-open .nav__group-btn svg {
-  transform: rotate(180deg);
-}
-.nav__menu a {
-  padding: 8px 10px;
-  white-space: nowrap;
-}
-.nav__menu a:hover,
-.nav__menu a:focus-visible {
-  background: rgba(var(--accent-rgb), 0.08);
-  outline: none;
-}
-.nav__cta {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-/* Sign in to Teamtrail Cloud: a bordered button like the theme and GitHub ones, never the accent fill (Install's),
-   only in builds with CLOUD_SIGN_IN=1 (vite.config.ts). */
-@media (max-width: 900px) {
-  .nav__signin {
-    display: none;
-  }
-}
+/* "Have an invite? Sign in" on /cloud, only in builds with CLOUD_SIGN_IN=1 (vite.config.ts). */
 .signin-note {
   margin-top: 16px;
   color: var(--dim);
@@ -584,38 +449,6 @@ code {
   color: var(--text-hi);
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-.theme-switch {
-  display: inline-grid;
-  place-items: center;
-  width: 38px;
-  min-height: 38px;
-  padding: 0;
-  color: var(--text);
-  background: transparent;
-  border: 1px solid var(--line-2);
-  border-radius: inherit;
-  cursor: pointer;
-}
-.theme-switch:hover {
-  color: var(--text-hi);
-  border-color: var(--text);
-}
-.theme-switch svg {
-  width: 18px;
-  height: 18px;
-}
-.theme-switch .moon,
-:root[data-look='night'] .theme-switch .sun {
-  display: none;
-}
-:root[data-look='night'] .theme-switch .moon {
-  display: block;
-}
-.nav__cta .gh {
-  width: 15px;
-  height: 15px;
-  fill: currentColor;
 }
 
 /* ---------- hero ---------- */
@@ -1422,20 +1255,6 @@ code {
     animation-delay: 2.9s, 6.2s;
   }
 }
-/* The trail field (src/trailField.ts): a canvas the script adds on wide screens, from the top of main to just under
-   the video, above the hero's fade and under the copy, the main trail and the video. Its top and height come from the
-   page; it is placed against the document, so nothing else on the page changes. */
-.trail-field {
-  position: absolute;
-  left: 0;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  pointer-events: none;
-}
-.trail-field.is-off {
-  display: none;
-}
 /* Out of view (src/trail.ts): paused where it is, so it repaints nothing and picks up in step. */
 .trail.is-still,
 .trail.is-still * {
@@ -1965,29 +1784,6 @@ code {
   z-index: 1;
 }
 
-/* ---------- footer ---------- */
-
-.footer {
-  padding: 56px 0 40px;
-  border-top: 1px solid var(--line);
-  font-size: var(--fs-small);
-  color: var(--dim);
-}
-.footer__inner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 32px;
-}
-.footer nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 28px;
-}
-.footer a:hover {
-  color: var(--text-hi);
-}
-
 /* ---------- toast ---------- */
 
 .toast {
@@ -2068,9 +1864,6 @@ code {
 }
 
 @media (max-width: 860px) {
-  .nav__links {
-    display: none;
-  }
   .head,
   .split,
   .faq {
@@ -2120,9 +1913,6 @@ code {
   }
   .cmd {
     font-size: 14px;
-  }
-  .nav__cta .label {
-    display: none;
   }
 }
 
@@ -2296,105 +2086,6 @@ code {
   white-space: nowrap;
 }
 
-/* ---------- phone nav: a Menu button and a panel with every link (860px and narrower) ---------- */
-.nav__burger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 38px;
-  height: 34px;
-  padding: 0 9px;
-  border: 1px solid var(--line-2);
-  background: none;
-  color: var(--text-hi);
-  cursor: pointer;
-}
-.nav__burger span {
-  display: block;
-  height: 1.5px;
-  background: currentColor;
-  transition: transform 0.2s var(--ease);
-}
-.nav.is-menu-open .nav__burger span:first-child {
-  transform: translateY(3.25px) rotate(45deg);
-}
-.nav.is-menu-open .nav__burger span:last-child {
-  transform: translateY(-3.25px) rotate(-45deg);
-}
-.nav.is-menu-open {
-  background: var(--bg-2);
-  border-bottom-color: var(--line);
-}
-.nav__phone {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  max-height: calc(100vh - 68px);
-  overflow-y: auto;
-  border-bottom: 1px solid var(--line);
-  background: var(--bg-2);
-  box-shadow: 0 18px 40px var(--shadow);
-}
-.nav__phone[hidden] {
-  display: none;
-}
-.nav__phone-links {
-  display: flex;
-  flex-direction: column;
-  padding-top: 8px;
-  padding-bottom: 20px;
-}
-.nav__phone-links > a {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-  font: 400 var(--fs-body) var(--sans);
-  -webkit-text-stroke: 0.4px currentColor;
-  letter-spacing: 0.06em;
-  color: var(--text-hi);
-}
-/* Theme switch and Install side by side, Star on GitHub across the row below: one height for all three. */
-.nav__phone-cta {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 10px;
-  margin-top: 20px;
-}
-.nav__phone-cta .theme-switch {
-  width: 46px;
-  min-height: 46px;
-}
-.nav__phone-cta .btn {
-  min-height: 46px;
-  justify-content: center;
-  gap: 8px;
-}
-.nav__phone-cta .btn:last-child {
-  grid-column: 1 / -1;
-}
-.nav__phone-cta .gh {
-  width: 15px;
-  height: 15px;
-  fill: currentColor;
-}
-@media (max-width: 860px) {
-  .nav__burger {
-    display: inline-flex;
-  }
-  .nav__inner {
-    gap: 14px;
-  }
-}
-@media (max-width: 560px) {
-  .nav__cta {
-    display: none;
-  }
-  .nav__burger {
-    margin-left: auto;
-  }
-}
-
 /* ---------- /guides catalog cards (rendered at build time by scripts/guides/cards.mjs) ---------- */
 
 .hero__actions > .cmd--wide {
@@ -2521,25 +2212,6 @@ code {
 /* Keeps a file name such as ./my-guide.md from breaking at its hyphen. */
 .nowrap {
   white-space: nowrap;
-}
-
-/* GitHub stars on the nav button: a gold star and the live count, after a thin divider. */
-.gh-stars {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: 2px;
-  padding-left: 10px;
-  border-left: 1px solid var(--line-2);
-  font-variant-numeric: tabular-nums;
-}
-.gh-stars[hidden] {
-  display: none;
-}
-.gh-star {
-  width: 14px;
-  height: 14px;
-  color: var(--star);
 }
 
 /* /guides: a guide's details in a native modal dialog (src/guideDialog.ts). */
@@ -2716,7 +2388,6 @@ pre,
 }
 /* Figures that sit in columns or count up line up. */
 .trio .stat,
-.gh-stars,
 .prose table {
   font-variant-numeric: tabular-nums;
 }
@@ -2783,10 +2454,7 @@ pre,
   padding: 0 12px;
   font-size: 14px;
 }
-.theme-switch {
-  width: 34px;
-  min-height: 34px;
-}
+
 .cmd {
   background: var(--bg-2);
   font-size: 15px;
@@ -2801,47 +2469,6 @@ pre,
 .cmd__label {
   font-family: var(--code);
   letter-spacing: 0.06em;
-}
-
-/* Nav: hairline under it, the wordmark set in the sans. */
-.nav {
-  border-bottom-color: var(--line);
-}
-.nav.is-scrolled {
-  background: rgba(var(--bg-rgb), 0.8);
-}
-.nav__inner {
-  height: 64px;
-}
-.nav__links {
-  font-weight: 500;
-  font-size: 14px;
-}
-.nav__menu {
-  background: var(--panel);
-}
-/* The wordmark: the logo mark (#tt-logo in partials/sprite.html), then the name. The mark is 0.86em square, 0.24em
- * before the name, its centre on the lowercase letters' optical middle; it keeps its own colours in both themes. */
-.brand__word {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.24em;
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: 20px;
-  letter-spacing: -0.03em;
-  color: var(--text-hi);
-  line-height: 1;
-  white-space: nowrap;
-}
-.brand__mark {
-  flex: none;
-  width: 0.86em;
-  height: 0.86em;
-  transform: translateY(0.04em);
-}
-.footer .brand__word {
-  font-size: 18px;
 }
 
 /* Grids of cells: hairlines between, panels inside. */
@@ -2918,7 +2545,4 @@ pre,
 }
 .mini-map .w {
   background: var(--fill);
-}
-.footer {
-  font-size: 14px;
 }

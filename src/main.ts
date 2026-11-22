@@ -1,22 +1,23 @@
 import { type GuideRole, guideMarkup, mountScout } from '@teamtrail/scout-avatar/mount';
+import { initGhStars, initSiteNav } from '@teamtrail/site/browser';
 import { initCloudScene } from './cloudScene';
 import { initCmdCycle } from './cmdCycle';
 import { initCopy } from './copy';
-import { initGhStars } from './ghStars';
 import { $, $$ } from './dom';
 import { initGuideDialogs } from './guideDialog';
+import { initHeroField } from './heroField';
 import { initScenes } from './scenes';
 import { initScramble } from './scramble';
-import { initNav, initReveal } from './scroll';
-import { isNight, onThemeChange } from './theme';
-import { initThemeSwitch } from './themeSwitch';
+import { initReveal } from './scroll';
+import { isNight, onThemeChange, theme } from './theme';
+import { initThemedMedia } from './themedMedia';
 import { initTrail } from './trail';
-import { initTrailField } from './trailField';
 import { initVideo } from './video';
 import { initWaitlist } from './waitlist';
 
 document.documentElement.classList.add('js');
-initThemeSwitch();
+initSiteNav(theme);
+initThemedMedia();
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scout = $('[data-scout]');
@@ -40,7 +41,6 @@ for (const el of $$('[data-spec]')) {
   el.innerHTML = `<svg viewBox="0 0 200 200" width="${size}" height="${size}" aria-hidden="true">${guideMarkup(role)}</svg>`;
 }
 
-initNav();
 void initGhStars();
 initReveal(reducedMotion);
 initScramble(reducedMotion);
@@ -53,5 +53,5 @@ initScenes(reducedMotion);
 // Mounted first, his inline styles would come back as style attributes, which the CSP (style-src 'self') blocks.
 initCloudScene(reducedMotion);
 initTrail();
-initTrailField(reducedMotion);
+initHeroField(reducedMotion);
 initWaitlist();

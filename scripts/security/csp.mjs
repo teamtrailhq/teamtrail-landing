@@ -35,7 +35,7 @@ export function cspProblems(html) {
 }
 
 /**
- * The policy. Everything is same-origin except the GitHub API (the star count, src/ghStars.ts):
+ * The policy. Everything is same-origin except the GitHub API (the star count, initGhStars in teamtrail's packages/site):
  * scripts are Vite's bundles, Vercel Web Analytics (/_vercel/insights/*) and the hashed inline scripts;
  * styles and fonts are bundled; images are /media plus the data: SVG mask in the stylesheet; the waitlist
  * posts to /api/waitlist. Nothing may frame the site, and it frames nothing.
