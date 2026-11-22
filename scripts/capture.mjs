@@ -60,7 +60,7 @@ if (want('hero')) {
 if (want('desktop')) {
   const page = await open({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await revealAll(page);
-  await page.evaluate(() => document.querySelector('#nav')?.setAttribute('style', 'position:relative'));
+  await page.evaluate(() => document.querySelector('[data-site-nav]')?.setAttribute('style', 'position:relative'));
   await sleep(300);
   await page.screenshot({ path: join(out, 'landing-desktop.png'), fullPage: true });
   await page.close();
@@ -71,7 +71,7 @@ if (want('mobile')) {
   const page = await open({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
   await revealAll(page);
   await page.evaluate(() => {
-    document.querySelector('#nav')?.setAttribute('style', 'position:relative');
+    document.querySelector('[data-site-nav]')?.setAttribute('style', 'position:relative');
   });
   await sleep(300);
   await page.screenshot({ path: join(out, 'landing-mobile.png'), fullPage: true });
