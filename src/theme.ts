@@ -17,6 +17,16 @@ function notify() {
   for (const listener of listeners) listener();
 }
 
+/**
+ * The choice as Teamtrail Cloud reads it too: `tt_theme` (light or dark) on the whole teamtrail.app domain, so
+ * app.teamtrail.app opens in the same look, and its own switch writes it back. Host-only on other hosts (previews,
+ * local dev).
+ */
+function shareLook(look: Look) {
+  const site = /(^|\.)teamtrail\.app$/.test(location.hostname) ? '; Domain=teamtrail.app; Secure' : '';
+  document.cookie = `tt_theme=${look === 'day' ? 'light' : 'dark'}; Path=/; Max-Age=31536000; SameSite=Lax${site}`;
+}
+
 export function chooseLook(look: Look) {
   document.documentElement.dataset.theme = look;
   try {
@@ -24,6 +34,7 @@ export function chooseLook(look: Look) {
   } catch {
     // Private windows can refuse storage; the choice still holds for this page.
   }
+  shareLook(look);
   notify();
 }
 

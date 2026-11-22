@@ -147,7 +147,12 @@ for (const theme of ['night', 'day']) {
     permissions: ['clipboard-write'],
     extraHTTPHeaders,
   });
-  await context.addInitScript((look) => localStorage.setItem('teamtrail-theme', look), theme);
+  // Every page starts in this look: the site's own choice and the cookie it shares with Cloud (src/theme.ts), which
+  // the boot script reads first. Each visit clicks the switch, which writes both.
+  await context.addInitScript((look) => {
+    localStorage.setItem('teamtrail-theme', look);
+    document.cookie = `tt_theme=${look === 'day' ? 'light' : 'dark'}; Path=/`;
+  }, theme);
   for (const path of PAGES) await visit(context, path, theme);
   await context.close();
 }

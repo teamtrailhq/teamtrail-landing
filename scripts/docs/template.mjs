@@ -45,7 +45,7 @@ function head({ title, description, url, ld }) {
   return `<!doctype html>
 <html lang="en">
   <head>
-    <script>try{document.documentElement.dataset.theme=localStorage.getItem('teamtrail-theme')||'night'}catch(e){document.documentElement.dataset.theme='night'}</script>
+    <!-- @include theme-head -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escape(title)}</title>
