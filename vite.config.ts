@@ -16,7 +16,7 @@ function partials(): Plugin {
   return {
     name: 'partials',
     transformIndexHtml: (html) =>
-      html
+      cloudSignIn(html)
         .replaceAll('%SITE_URL%', SITE_URL)
         .replaceAll('%SCOUT_INSTALL_URL%', SCOUT_INSTALL_URL)
         .replace(/<!-- @include ([\w-]+) -->/g, (_, name: string) =>
@@ -38,6 +38,25 @@ function partials(): Plugin {
 const SCOUT_INSTALL_URL = 'https://scout.teamtrail.app/install-slack';
 
 const SITE_URL = (process.env.SITE_URL ?? 'https://www.teamtrail.app').replace(/\/$/, '');
+
+/**
+ * Sign in to Teamtrail Cloud (the nav, /cloud): left out of the pages until Cloud is live. A build with
+ * CLOUD_SIGN_IN=1 keeps the `<!-- @cloud-sign-in -->…<!-- /@cloud-sign-in -->` blocks and points them at
+ * $CLOUD_APP_URL (default https://app.teamtrail.app; http://app.localhost:7600 to try it against local Cloud).
+ * Turned on at launch by setting CLOUD_SIGN_IN=1 for Production in Vercel.
+ */
+const CLOUD_SIGN_IN = process.env.CLOUD_SIGN_IN === '1';
+const CLOUD_APP_URL = (process.env.CLOUD_APP_URL ?? 'https://app.teamtrail.app').replace(/\/$/, '');
+const SIGN_IN_BLOCK = /<!-- @cloud-sign-in -->([\s\S]*?)<!-- \/@cloud-sign-in -->\n?/g;
+
+function cloudSignIn(html: string) {
+  return html
+    .replace(/<!-- @include ([\w-]+) -->/g, (_, name: string) =>
+      readFileSync(resolve(__dirname, 'partials', `${name}.html`), 'utf8'),
+    )
+    .replace(SIGN_IN_BLOCK, (_, inner: string) => (CLOUD_SIGN_IN ? inner : ''))
+    .replaceAll('%CLOUD_APP_URL%', CLOUD_APP_URL);
+}
 
 /**
  * The docs: content/docs/*.md and nav.json become docs/<slug>/index.html pages (build inputs), raw Markdown at
