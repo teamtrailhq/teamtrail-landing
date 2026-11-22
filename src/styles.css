@@ -569,17 +569,8 @@ code {
   align-items: center;
   gap: 10px;
 }
-/* Sign in to Teamtrail Cloud: a plain link before Install, only in builds with CLOUD_SIGN_IN=1 (vite.config.ts). */
-.nav__signin {
-  padding: 0 6px;
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: var(--fs-small);
-  color: var(--dim);
-}
-.nav__signin:hover {
-  color: var(--text-hi);
-}
+/* Sign in to Teamtrail Cloud: a bordered button like the theme and GitHub ones, never the accent fill (Install's),
+   only in builds with CLOUD_SIGN_IN=1 (vite.config.ts). */
 @media (max-width: 900px) {
   .nav__signin {
     display: none;
