@@ -125,3 +125,13 @@ The canonical address is `https://www.teamtrail.app` (`$SITE_URL` overrides it).
 ## License
 
 [MIT](LICENSE). The Teamtrail and Scout names and artwork are trademarks and aren't covered by the license.
+
+## Sign in to Cloud (off until launch)
+
+The nav and `/cloud` have Sign in links to Teamtrail Cloud, left out of every build until Cloud is live. To try them against local Cloud (`npm run dev` in teamtrail-cloud, at `http://app.localhost:7600`):
+
+```sh
+CLOUD_SIGN_IN=1 CLOUD_APP_URL=http://app.localhost:7600 npm run dev
+```
+
+At launch, set `CLOUD_SIGN_IN=1` for Production in Vercel (the links then go to `https://app.teamtrail.app`) and redeploy.

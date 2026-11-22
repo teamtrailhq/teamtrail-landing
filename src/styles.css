@@ -569,6 +569,31 @@ code {
   align-items: center;
   gap: 10px;
 }
+/* Sign in to Teamtrail Cloud: a plain link before Install, only in builds with CLOUD_SIGN_IN=1 (vite.config.ts). */
+.nav__signin {
+  padding: 0 6px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--dim);
+}
+.nav__signin:hover {
+  color: var(--text-hi);
+}
+@media (max-width: 900px) {
+  .nav__signin {
+    display: none;
+  }
+}
+.signin-note {
+  margin-top: 16px;
+  color: var(--dim);
+}
+.signin-note a {
+  color: var(--text-hi);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .theme-switch {
   display: inline-grid;
   place-items: center;
