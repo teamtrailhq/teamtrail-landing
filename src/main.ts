@@ -26,7 +26,7 @@ if (scout) {
   const h = mountScout(scout, { size: 'sm', state: 'idle', framed: false, variant: scoutVariant() });
   onThemeChange(() => h.update({ variant: scoutVariant() }));
 }
-// Guides: one flat symbol per speciality, alone on the page, coloured by its --tt-guide-* tokens (styles.css).
+// Guides: one line drawing per speciality, alone on the page, coloured by its --tt-guide-* tokens (styles.css).
 const GUIDE_ROLES: Record<string, GuideRole> = {
   reviewer: 'reviewer',
   qa: 'qa',

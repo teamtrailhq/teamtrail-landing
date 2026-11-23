@@ -46,10 +46,12 @@
   --accent: #c2410c;
   --accent-rgb: 194, 65, 12;
   --star: #b7791f;
-  /* Guide icons (guideMarkup from @teamtrail/scout-avatar): the symbol alone on the page, ink with one blaze accent.
-   * Older versions of the package drew a tile from --tt-guide-bg and --tt-guide-line: transparent, so none shows. */
+  /* Guide icons (guideMarkup from @teamtrail/scout-avatar): line drawings like the scenes, ink lines on light panels,
+   * grey text bars (mute) and one blaze accent. Older versions drew a tile from --tt-guide-bg and --tt-guide-line:
+   * transparent, so none shows. */
   --tt-guide-ink: #0e0f11;
-  --tt-guide-fill: #ffffff;
+  --tt-guide-fill: #f4f4f5;
+  --tt-guide-mute: #d5d6da;
   --tt-guide-accent: #d43f00;
   --tt-guide-bg: transparent;
   --tt-guide-line: transparent;
@@ -91,7 +93,8 @@
     --accent-rgb: 255, 107, 44;
     --star: #e3b341;
     --tt-guide-ink: #ededef;
-    --tt-guide-fill: #1c1c1f;
+    --tt-guide-fill: #161618;
+    --tt-guide-mute: #3a3b40;
     --tt-guide-accent: #ff6b2c;
     --urgent: #ff4d7a;
     --urgent-rgb: 255, 77, 122;
@@ -116,7 +119,8 @@
   --accent-rgb: 255, 107, 44;
   --star: #e3b341;
   --tt-guide-ink: #ededef;
-  --tt-guide-fill: #1c1c1f;
+  --tt-guide-fill: #161618;
+  --tt-guide-mute: #3a3b40;
   --tt-guide-accent: #ff6b2c;
   --urgent: #ff4d7a;
   --urgent-rgb: 255, 77, 122;
